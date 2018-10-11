@@ -1,0 +1,2216 @@
+---
+swagger: "2.0"
+info:
+  description: >
+    ## Service Domain Role:
+  
+    This service domain orchestrates a consumer checking/demand deposit account. The typical range of services and fees covers payments and deposits, standing orders, sweeps, liens, check and debit card access.
+    
+    ## Example of Use:
+    
+    A customer processes a series of services (e.g., request printed statements, initiate a transfer, set up a standing order) through the call center by accessing their current account.
+  
+    ## General Comments:
+    
+    The Current Account or Demand Deposit Account as it can be called is a financial facility that represents the general checking account facility at the core of the consumer and small business banking activity. There is a range of supporting features that make up the standard facility (checks/cheques, standing orders, debit cards, phone and on-line banking services etc.). The fulfillment can include a range of optional services, fees and interest payments and penalties and will often be bundled and or underlie/support other financial facilities and financial transactions.
+  
+  version: "4.0.0"
+  title: "Service Domain - Current Account"
+host: "virtserver.swaggerhub.com"
+basePath: "/BIAN/current-account/3.0.1"
+schemes:
+- "https"
+paths:
+  /current-account/current-account-fulfillment-arrangement:
+    get:
+      tags:
+      - "retrieve"
+      summary: "Retrieve Current Account Control Record Ids"
+      operationId: "retrieveCurrentAccountFulfillmentArrangementReferenceIds"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "collection-filter"
+        in: "query"
+        description: "Filter to refine the result set. ex- 'customer-reference-id\
+          \ = CR123'"
+        required: false
+        type: "string"
+      responses:
+        200:
+          description: "successful"
+          schema:
+            type: "array"
+            items:
+              type: "string"
+            example:
+            - "CAR123"
+            - "CAR345"
+  /current-account/current-account-fulfillment-arrangement/behavior-qualifiers:
+    get:
+      tags:
+      - "retrieve"
+      summary: "Retrieve all Behaviour Qualifier names in the Current Account Service Domain."
+      operationId: "retrieveCurrentAccountFulfillmentArrangementBehaviorQualifiers"
+      produces:
+      - "application/json"
+      parameters: []
+      responses:
+        200:
+          description: "successful"
+          schema:
+            type: "array"
+            items:
+              type: "string"
+            example:
+            - "deposit"
+            - "payment"
+            - "standing-order"
+            - "direct-debit"
+            - "sweep"
+            - "inventory"
+            - "lien"
+            - "statements"
+            - "interest"
+            - "fees"
+            - "reports"
+  /current-account/current-account-fulfillment-arrangement/{cr-reference-id}/{behavior-qualifier}:
+    get:
+      tags:
+      - "retrieve"
+      summary: "Retrieve Behaviour Qualifier Reference Ids for a given Behavior Qulifier."
+      operationId: "RetrieveBehaviorQualifierReferenceIds"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "cr-reference-id"
+        in: "path"
+        description: "Product Instance Reference"
+        required: true
+        type: "string"
+      - name: "behavior-qualifier"
+        in: "path"
+        description: "Behavior Qualifier Name. ex- deposit"
+        required: true
+        type: "string"
+      - name: "collection-filter"
+        in: "query"
+        description: "Filter to refine the result set. ex- 'amount> $5000'"
+        required: false
+        type: "string"
+      responses:
+        200:
+          description: "successful"
+          schema:
+            type: "array"
+            items:
+              type: "string"
+            example:
+            - "DEP345"
+            - "DEP789"
+            - "DEP456"
+  /current-account/current-account-fulfillment-arrangement/{cr-reference-id}:
+    get:
+      tags:
+      - "retrieve"
+      summary: "Retrieve Current Account Master Control Record data"
+      operationId: "retrieveCurrentAccountFulfillmentArrangement"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "cr-reference-id"
+        in: "path"
+        description: "Product Instance Reference"
+        required: true
+        type: "string"
+      responses:
+        200:
+          description: "successful"
+          schema:
+            $ref: "#/definitions/CurrentAccountBaseWithIdAndStatus"
+    delete:
+      tags:
+      - "terminate"
+      summary: "Delete a Current Account"
+      operationId: "terminateCurrentAccountFulfillmentArrangement"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "cr-reference-id"
+        in: "path"
+        description: "Product Instance Reference"
+        required: true
+        type: "string"
+      responses:
+        204:
+          description: "successful"
+  /current-account/current-account-fulfillment-arrangement/{cr-reference-id}/deposits/{bq-reference-id}:
+    get:
+      tags:
+      - "retrieve"
+      summary: "Retrieve a Deposit"
+      operationId: "retrieveCurrentAccountFulfillmentArrangementDeposit"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "cr-reference-id"
+        in: "path"
+        description: "Product Instance Reference"
+        required: true
+        type: "string"
+      - name: "bq-reference-id"
+        in: "path"
+        description: "Deposit Transaction Reference"
+        required: true
+        type: "string"
+      responses:
+        200:
+          description: "successful"
+          schema:
+            $ref: "#/definitions/DepositBaseWithIdAndRoot"
+  /current-account/current-account-fulfillment-arrangement/{cr-reference-id}/payments/{bq-reference-id}:
+    get:
+      tags:
+      - "retrieve"
+      summary: "Retrieve a Payment"
+      operationId: "retrieveCurrentAccountFulfillmentArrangementPayment"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "cr-reference-id"
+        in: "path"
+        description: "Product Instance Reference"
+        required: true
+        type: "string"
+      - name: "bq-reference-id"
+        in: "path"
+        description: "Payment Instruction Reference"
+        required: true
+        type: "string"
+      responses:
+        200:
+          description: "successful"
+          schema:
+            $ref: "#/definitions/PaymentBaseWithIdAndRoot"
+  /current-account/current-account-fulfillment-arrangement/{cr-reference-id}/standing-orders/{bq-reference-id}:
+    get:
+      tags:
+      - "retrieve"
+      summary: "Retrieve a Standing Order"
+      operationId: "retrieveCurrentAccountFulfillmentArrangementStandingOrder"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "cr-reference-id"
+        in: "path"
+        description: "Product Instance Reference"
+        required: true
+        type: "string"
+      - name: "bq-reference-id"
+        in: "path"
+        description: "Standing Order Facility Reference"
+        required: true
+        type: "string"
+      responses:
+        200:
+          description: "successful"
+          schema:
+            $ref: "#/definitions/StandingOrderBaseWithIdAndRoot"
+  /current-account/current-account-fulfillment-arrangement/{cr-reference-id}/direct-debits/{bq-reference-id}:
+    get:
+      tags:
+      - "retrieve"
+      summary: "Retrieve a Direct Debit"
+      operationId: "retrieveCurrentAccountFulfillmentArrangementDirectDebit"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "cr-reference-id"
+        in: "path"
+        description: "Product Instance Reference"
+        required: true
+        type: "string"
+      - name: "bq-reference-id"
+        in: "path"
+        description: "Direct Debit Facility Reference"
+        required: true
+        type: "string"
+      responses:
+        200:
+          description: "successful"
+          schema:
+            $ref: "#/definitions/DirectDebitBaseWithIdAndRoot"
+  /current-account/current-account-fulfillment-arrangement/{cr-reference-id}/sweeps/{bq-reference-id}:
+    get:
+      tags:
+      - "retrieve"
+      summary: "Retrieve a Sweep"
+      operationId: "retrieveCurrentAccountFulfillmentArrangementSweep"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "cr-reference-id"
+        in: "path"
+        description: "Product Instance Reference"
+        required: true
+        type: "string"
+      - name: "bq-reference-id"
+        in: "path"
+        description: "Sweep Facility Reference"
+        required: true
+        type: "string"
+      responses:
+        200:
+          description: "successful"
+          schema:
+            $ref: "#/definitions/SweepBaseWithIdAndRoot"
+  /current-account/current-account-fulfillment-arrangement/{cr-reference-id}/inventories/{bq-reference-id}:
+    get:
+      tags:
+      - "retrieve"
+      summary: "Retrieve an Inventory"
+      operationId: "retrieveCurrentAccountFulfillmentArrangementInventory"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "cr-reference-id"
+        in: "path"
+        description: "Product Instance Reference"
+        required: true
+        type: "string"
+      - name: "bq-reference-id"
+        in: "path"
+        description: "Inventory Item Reference"
+        required: true
+        type: "string"
+      responses:
+        200:
+          description: "successful"
+          schema:
+            $ref: "#/definitions/InventoryBaseWithIdAndRoot"
+  /current-account/current-account-fulfillment-arrangement/{cr-reference-id}/liens/{bq-reference-id}:
+    get:
+      tags:
+      - "retrieve"
+      summary: "Retrieve a Lien"
+      operationId: "retrieveCurrentAccountFulfillmentArrangementLien"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "cr-reference-id"
+        in: "path"
+        description: "Product Instance Reference"
+        required: true
+        type: "string"
+      - name: "bq-reference-id"
+        in: "path"
+        description: "Lien Facility Reference"
+        required: true
+        type: "string"
+      responses:
+        200:
+          description: "successful"
+          schema:
+            $ref: "#/definitions/LienBaseWithIdAndRoot"
+  /current-account/current-account-fulfillment-arrangement/{cr-reference-id}/interests/{bq-reference-id}:
+    get:
+      tags:
+      - "retrieve"
+      summary: "Retrieve an Interest"
+      operationId: "retrieveCurrentAccountFulfillmentArrangementInterest"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "cr-reference-id"
+        in: "path"
+        description: "Product Instance Reference"
+        required: true
+        type: "string"
+      - name: "bq-reference-id"
+        in: "path"
+        description: "Interest Rate Transaction Reference"
+        required: true
+        type: "string"
+      responses:
+        200:
+          description: "successful"
+          schema:
+            $ref: "#/definitions/InterestBaseWithIdAndRoot"
+  /current-account/current-account-fulfillment-arrangement/{cr-reference-id}/fees/{bq-reference-id}:
+    get:
+      tags:
+      - "retrieve"
+      summary: "Retrieve a Fee"
+      operationId: "retrieveCurrentAccountFulfillmentArrangementFee"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "cr-reference-id"
+        in: "path"
+        description: "Product Instance Reference"
+        required: true
+        type: "string"
+      - name: "bq-reference-id"
+        in: "path"
+        description: "Fee Transaction Reference"
+        required: true
+        type: "string"
+      responses:
+        200:
+          description: "successful"
+          schema:
+            $ref: "#/definitions/FeeBaseWithIdAndRoot"
+  /current-account/current-account-fulfillment-arrangement/{cr-reference-id}/statements/{bq-reference-id}:
+    get:
+      tags:
+      - "retrieve"
+      summary: "Retrieve a Statement"
+      operationId: "retrieveCurrentAccountFulfillmentArrangementStatement"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "cr-reference-id"
+        in: "path"
+        description: "Product Instance Reference"
+        required: true
+        type: "string"
+      - name: "bq-reference-id"
+        in: "path"
+        description: "Statement Instance Reference"
+        required: true
+        type: "string"
+      responses:
+        200:
+          description: "successful"
+          schema:
+            $ref: "#/definitions/StatementBaseWithIdAndRoot"
+  /current-account/current-account-fulfillment-arrangement/{cr-reference-id}/reports/{bq-reference-id}:
+    get:
+      tags:
+      - "retrieve"
+      summary: "Retrieve a Report"
+      operationId: "retrieveCurrentAccountFulfillmentArrangementReport"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "cr-reference-id"
+        in: "path"
+        description: "Product Instance Reference"
+        required: true
+        type: "string"
+      - name: "bq-reference-id"
+        in: "path"
+        description: "Report Instance Reference"
+        required: true
+        type: "string"
+      responses:
+        200:
+          description: "successful"
+          schema:
+            $ref: "#/definitions/RepostBaseWithIdAndRoot"
+  /current-account/current-account-fulfillment-arrangement/initiation:
+    post:
+      tags:
+      - "initiate"
+      summary: "Initiates a new Current Account creation"
+      operationId: "initiateCurrentAccountFulfillmentArrangement"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "Initiate control record request payload"
+        required: true
+        schema:
+          $ref: "#/definitions/CurrentAccountBase"
+      responses:
+        201:
+          description: "A new current account fulfillment arrangement is created"
+          schema:
+            $ref: "#/definitions/CurrentAccountBaseWithIdAndStatus"
+  /current-account/current-account-fulfillment-arrangement/{cr-reference-id}/updation:
+    put:
+      tags:
+      - "update"
+      summary: "Update a Current Account"
+      operationId: "updateCurrentAccountFulfillmentArrangement"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "cr-reference-id"
+        in: "path"
+        description: "Product Instance Reference"
+        required: true
+        type: "string"
+      - in: "body"
+        name: "body"
+        description: "Update control record request payload"
+        required: true
+        schema:
+          $ref: "#/definitions/CurrentAccountWithStatus"
+      responses:
+        200:
+          description: "successful"
+          schema:
+            $ref: "#/definitions/CurrentAccountBaseWithIdAndStatus"
+  /current-account/current-account-fulfillment-arrangement/{cr-reference-id}/recording:
+    post:
+      tags:
+      - "record"
+      summary: "Record a Current Account"
+      operationId: "recordCurrentAccountFulfillmentArrangement"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "cr-reference-id"
+        in: "path"
+        description: "productInstanceReference"
+        required: true
+        type: "string"
+      - in: "body"
+        name: "body"
+        description: "Record control record request payload"
+        required: true
+        schema:
+          $ref: "#/definitions/CurrentAccountRecordRequest"
+      responses:
+        201:
+          description: "A new Record is created"
+          schema:
+            $ref: "#/definitions/CurrentAccountRecordResponse"
+  /current-account/current-account-fulfillment-arrangement/{cr-reference-id}/deposits/{bq-reference-id}/execution:
+    put:
+      tags:
+      - "execute"
+      summary: "Executes a Deposit Update"
+      description: "Update an exising Deposit"
+      operationId: "executeCurrentAccountFulfillmentArrangementDepositUpdate"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "cr-reference-id"
+        in: "path"
+        description: "Product Instance Reference"
+        required: true
+        type: "string"
+      - name: "bq-reference-id"
+        in: "path"
+        description: "Deposit reference id"
+        required: true
+        type: "string"
+      - in: "body"
+        name: "body"
+        description: "Execute deposits request payload"
+        required: true
+        schema:
+          $ref: "#/definitions/DepositBase"
+      responses:
+        200:
+          description: "successful"
+          schema:
+            $ref: "#/definitions/DepositBaseWithIdAndRoot"
+  /current-account/current-account-fulfillment-arrangement/{cr-reference-id}/deposits/execution:
+    post:
+      tags:
+      - "execute"
+      summary: "Executes a Deposit Creation"
+      description: "Create a new Deposit"
+      operationId: "executeCurrentAccountFulfillmentArrangementDepositCreate"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "cr-reference-id"
+        in: "path"
+        description: "Product Instance Reference"
+        required: true
+        type: "string"
+      - in: "body"
+        name: "body"
+        description: "Execute deposits request payload"
+        required: true
+        schema:
+          $ref: "#/definitions/DepositBase"
+      responses:
+        201:
+          description: "Created a deposit successfully"
+          schema:
+            $ref: "#/definitions/DepositBaseWithIdAndRoot"
+  /current-account/current-account-fulfillment-arrangement/{cr-reference-id}/payments/{bq-reference-id}/execution:
+    put:
+      tags:
+      - "execute"
+      summary: "Executes a Payment Update"
+      description: "Update an exising Payment"
+      operationId: "executeCurrentAccountFulfillmentArrangementPaymentUpdate"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "cr-reference-id"
+        in: "path"
+        description: "Product Instance Reference"
+        required: true
+        type: "string"
+      - name: "bq-reference-id"
+        in: "path"
+        description: "deposit reference id"
+        required: true
+        type: "string"
+      - in: "body"
+        name: "body"
+        description: "Execute payments request payload"
+        required: true
+        schema:
+          $ref: "#/definitions/PaymentBase"
+      responses:
+        200:
+          description: "successful"
+          schema:
+            $ref: "#/definitions/PaymentBaseWithIdAndRoot"
+  /current-account/current-account-fulfillment-arrangement/{cr-reference-id}/payments/execution:
+    post:
+      tags:
+      - "execute"
+      summary: "Executes a new Payment Creation"
+      description: "Create a new Payment"
+      operationId: "executeCurrentAccountFulfillmentArrangementPaymentCreate"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "cr-reference-id"
+        in: "path"
+        description: "Product Instance Reference"
+        required: true
+        type: "string"
+      - in: "body"
+        name: "body"
+        description: "Execute payments request payload"
+        required: true
+        schema:
+          $ref: "#/definitions/PaymentBase"
+      responses:
+        201:
+          description: "Creted a a Payment successfully"
+          schema:
+            $ref: "#/definitions/PaymentBaseWithIdAndRoot"
+  /current-account/current-account-fulfillment-arrangement/{cr-reference-id}/standing-orders/{bq-reference-id}/requisition:
+    put:
+      tags:
+      - "request"
+      summary: "Requests a Standing Order Update"
+      description: "Update an exising Standing order"
+      operationId: "requestCurrentAccountFulfillmentArrangementStandingOrderUpdate"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "cr-reference-id"
+        in: "path"
+        description: "Product Instance Reference"
+        required: true
+        type: "string"
+      - name: "bq-reference-id"
+        in: "path"
+        description: "Standing Order Facility Reference"
+        required: true
+        type: "string"
+      - in: "body"
+        name: "body"
+        description: "Request standing order request payload"
+        required: true
+        schema:
+          $ref: "#/definitions/StandingOrderBase"
+      responses:
+        200:
+          description: "successful"
+          schema:
+            $ref: "#/definitions/StandingOrderBaseWithIdAndRoot"
+  /current-account/current-account-fulfillment-arrangement/{cr-reference-id}/standing-orders/requisition:
+    post:
+      tags:
+      - "request"
+      summary: "Requests a Standing Order Creation."
+      description: "Create a new Standing order"
+      operationId: "requestCurrentAccountFulfillmentArrangementStandingOrderCreate"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "cr-reference-id"
+        in: "path"
+        description: "Product Instance Reference"
+        required: true
+        type: "string"
+      - in: "body"
+        name: "body"
+        description: "Request standing order request payload"
+        required: true
+        schema:
+          $ref: "#/definitions/StandingOrderBase"
+      responses:
+        201:
+          description: "Created a standing order successfully"
+          schema:
+            $ref: "#/definitions/StandingOrderBaseWithIdAndRoot"
+  /current-account/current-account-fulfillment-arrangement/{cr-reference-id}/direct-debits/{bq-reference-id}/requisition:
+    put:
+      tags:
+      - "request"
+      summary: "Requests a Direct Debit Update"
+      description: "Update an exising Direct Debit"
+      operationId: "requestCurrentAccountFulfillmentArrangementDirectDebitUpdate"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "cr-reference-id"
+        in: "path"
+        description: "Product Instance Reference"
+        required: true
+        type: "string"
+      - name: "bq-reference-id"
+        in: "path"
+        description: "Direct Debit Facility Reference"
+        required: true
+        type: "string"
+      - in: "body"
+        name: "body"
+        description: "Request direct debits request payload"
+        required: true
+        schema:
+          $ref: "#/definitions/DirectDebitBase"
+      responses:
+        200:
+          description: "successful"
+          schema:
+            $ref: "#/definitions/DirectDebitBaseWithIdAndRoot"
+  /current-account/current-account-fulfillment-arrangement/{cr-reference-id}/direct-debits/requisition:
+    post:
+      tags:
+      - "request"
+      summary: "Requests a Direct Debit Creation"
+      description: "Create a new Direct Debit"
+      operationId: "requestCurrentAccountFulfillmentArrangementDirectDebitCreate"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "cr-reference-id"
+        in: "path"
+        description: "Product Instance Reference"
+        required: true
+        type: "string"
+      - in: "body"
+        name: "body"
+        description: "Request direct debits request payload"
+        required: true
+        schema:
+          $ref: "#/definitions/DirectDebitBase"
+      responses:
+        201:
+          description: "Created a direct debit successfully"
+          schema:
+            $ref: "#/definitions/DirectDebitBaseWithIdAndRoot"
+  /current-account/current-account-fulfillment-arrangement/{cr-reference-id}/sweeps/{bq-reference-id}/requisition:
+    put:
+      tags:
+      - "request"
+      summary: "Requests a Sweep Update"
+      description: "Update an exising Sweep"
+      operationId: "requestCurrentAccountFulfillmentArrangementSweepUpdate"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "cr-reference-id"
+        in: "path"
+        description: "Product Instance Reference"
+        required: true
+        type: "string"
+      - name: "bq-reference-id"
+        in: "path"
+        description: "Sweep Facility Reference"
+        required: true
+        type: "string"
+      - in: "body"
+        name: "body"
+        description: "Request sweeps request payload"
+        required: true
+        schema:
+          $ref: "#/definitions/SweepBase"
+      responses:
+        200:
+          description: "successful"
+          schema:
+            $ref: "#/definitions/SweepBaseWithIdAndRoot"
+  /current-account/current-account-fulfillment-arrangement/{cr-reference-id}/sweeps/requisition:
+    post:
+      tags:
+      - "request"
+      summary: "Requests a Sweep Creation"
+      description: "Create a new Sweep"
+      operationId: "requestCurrentAccountFulfillmentArrangementSweepCreate"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "cr-reference-id"
+        in: "path"
+        description: "Product Instance Reference"
+        required: true
+        type: "string"
+      - in: "body"
+        name: "body"
+        description: "Request sweeps request payload"
+        required: true
+        schema:
+          $ref: "#/definitions/SweepBase"
+      responses:
+        201:
+          description: "Created a Sweep successfully"
+          schema:
+            $ref: "#/definitions/SweepBaseWithIdAndRoot"
+  /current-account/current-account-fulfillment-arrangement/{cr-reference-id}/inventories/{bq-reference-id}/requisition:
+    put:
+      tags:
+      - "request"
+      summary: "Requests an Inventory Update"
+      description: "Update an exising Inventory"
+      operationId: "requestCurrentAccountFulfillmentArrangementInventoryUpdate"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "cr-reference-id"
+        in: "path"
+        description: "Product Instance Reference"
+        required: true
+        type: "string"
+      - name: "bq-reference-id"
+        in: "path"
+        description: "Inventory Item Reference"
+        required: true
+        type: "string"
+      - in: "body"
+        name: "body"
+        description: "Request inventories request payload"
+        required: true
+        schema:
+          $ref: "#/definitions/InventoryBase"
+      responses:
+        200:
+          description: "successful"
+          schema:
+            $ref: "#/definitions/InventoryBaseWithIdAndRoot"
+  /current-account/current-account-fulfillment-arrangement/{cr-reference-id}/inventories/requisition:
+    post:
+      tags:
+      - "request"
+      summary: "Requests an Inventory Creation"
+      description: "Create a new Inventory"
+      operationId: "requestCurrentAccountFulfillmentArrangementInventoryCreate"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "cr-reference-id"
+        in: "path"
+        description: "Product Instance Reference"
+        required: true
+        type: "string"
+      - in: "body"
+        name: "body"
+        description: "Request inventories request payload"
+        required: true
+        schema:
+          $ref: "#/definitions/InventoryBase"
+      responses:
+        201:
+          description: "Created an inventory successfully"
+          schema:
+            $ref: "#/definitions/InventoryBaseWithIdAndRoot"
+  /current-account/current-account-fulfillment-arrangement/{cr-reference-id}/liens/{bq-reference-id}/requisition:
+    put:
+      tags:
+      - "request"
+      summary: "Requests a Lien Update"
+      description: "Update an exising Lien"
+      operationId: "requestCurrentAccountFulfillmentArrangementLienUpdate"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "cr-reference-id"
+        in: "path"
+        description: "Product Instance Reference"
+        required: true
+        type: "string"
+      - name: "bq-reference-id"
+        in: "path"
+        description: "Lien Facility Reference"
+        required: true
+        type: "string"
+      - in: "body"
+        name: "body"
+        description: "Request liens request payload"
+        required: true
+        schema:
+          $ref: "#/definitions/LienBase"
+      responses:
+        200:
+          description: "successful"
+          schema:
+            $ref: "#/definitions/LienBaseWithIdAndRoot"
+  /current-account/current-account-fulfillment-arrangement/{cr-reference-id}/liens/requisition:
+    post:
+      tags:
+      - "request"
+      summary: "Requests a Lien Creation"
+      description: "Create a new Lien"
+      operationId: "requestCurrentAccountFulfillmentArrangementLienCreate"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "cr-reference-id"
+        in: "path"
+        description: "Product Instance Reference"
+        required: true
+        type: "string"
+      - in: "body"
+        name: "body"
+        description: "Request liens request payload"
+        required: true
+        schema:
+          $ref: "#/definitions/LienBase"
+      responses:
+        201:
+          description: "Created a Lien successfully"
+          schema:
+            $ref: "#/definitions/LienBaseWithIdAndRoot"
+definitions:
+  
+  CurrentAccountBase:
+    type: "object"
+    properties:
+      customerReference:
+        type: "string"
+        example: "CR6789"
+        description: |
+          `status: Registered`
+          bian-reference:  CashAccount(asAccount).AccountPartyRole(asAccountOwnerRole)
+          iso-link:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_EysE9cTGEeChad0JzLk7QA_-200588046)
+      bankBranchLocationReference:
+        type: "string"
+        example: "for booking purposes"
+        description: |
+          `status: Registered`
+          bian-reference:  CashAccount(asAccount).AccountPartyRole(asAccountServicerRole)(asRole).Player(asParty).Location
+          iso-link: [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_FNqJt8TGEeChad0JzLk7QA_-1317971633/elements/_z2I6YGx5EeKmZJ0Ago--9g_239738909)
+          general-info: for booking purposes
+      dateType:
+        type: "string"
+        example: "open"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      date:
+        $ref: 'https://api.swaggerhub.com/domains/BIAN/Common-Model/1.0.0#/definitions/ISODateTime'
+      involvedPartyReference:
+        type: "string"
+        example: "cosigner"
+        description: |
+          `status: Registered`
+          bian-reference:  CashAccountContract(asAgreement).RoleInAgreement(asGuaranteePartyRole)
+          iso-link:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_G7hIgGcwEeOYlMxMjJVrrQ)
+          general-info: e.g. guarantor/co-signer
+      involvedPartyObligationEntitlement:
+        type: "string"
+        example: "partyEntitilement"
+        description: |
+          `status: Provisionally Registered`
+          bian-reference:  CashAccountContract(asAgreement).Obligation
+          `status: Registered`
+          bian-reference:  CashAccountContract(asAgreement).Obligation
+          iso-link:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_FL4BCcTGEeChad0JzLk7QA_-1814618756)
+      partyReference:
+        type: "string"
+        example: "5"
+        description: |
+          `status: Registered`
+          bian-reference:  CashAccount(asAccount).AccountPartyRole(asAccountOwnerRole)(asRole).Player(asOrganization).OrganisationIdentification.LEI
+          iso-link:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_FEHzNMTGEeChad0JzLk7QA_-1382123937/elements/_yagFILl5EeOpCN0IL2Swqw)
+          `status: Registered`
+          bian-reference:  CashAccount(asAccount).AccountPartyRole(asAccountOwnerRole)(asRole).Player(asPerson).PersonIdentification.TaxIdentificationNumber
+          iso-link:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_FEHzNMTGEeChad0JzLk7QA_-1382123937/elements/_FEHzNcTGEeChad0JzLk7QA_-1792766550)
+      accountType:
+        type: "string"
+        example: "current"
+        description: |
+          `status: Registered`
+          bian-reference:  CashAccount.CashAccountType
+          iso-link:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_E4gZEcTGEeChad0JzLk7QA_2010102987/elements/_E4gZE8TGEeChad0JzLk7QA_1025780411)
+      accountCurrency:
+        $ref: 'https://api.swaggerhub.com/domains/BIAN/Common-Model/1.0.0#/definitions/CurrencyCode'
+      accountLimitType:
+        type: "string"
+        example: "netting"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      accountLimit:
+        type: "string"
+        example: "50000"
+        description: |
+          `status: Registered`
+          bian-reference:  (asDebitCreditFacility).Limit
+          iso-link:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_FAsrxsTGEeChad0JzLk7QA_-351673533/elements/_FAsryMTGEeChad0JzLk7QA_-1033977641)
+      allowedAccess:
+        type: "string"
+        example: "admin"
+        description: |
+          `status: Provisionally Registered`
+          bian-reference:  CashAccount(asAccount).AccountRestriction.RestrictionDescription
+          `status: Registered`
+          bian-reference:  CashAccount(asAccount).AccountRestriction.RestrictionType
+          iso-link:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_E10RdcTGEeChad0JzLk7QA_-917313471/elements/_E10RdsTGEeChad0JzLk7QA_-1031152537)
+      optionType:
+        type: "string"
+        example: "Email Statements"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      option:
+        type: "string"
+        example: "test@email.com"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      taxReference:
+        type: "string"
+        example: "taxid00001"
+        description: |
+          `status: Registered`
+          bian-reference:  CashAccount.CashEntry.Amount
+          iso-link:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_FAi6wsTGEeChad0JzLk7QA_-1438285571/elements/_FAi6w8TGEeChad0JzLk7QA_1158844272)
+          general-info: Tax-Id
+  
+  CurrentAccountBaseWithIdAndStatus:
+    type: "object"
+    properties:
+      productInstanceReference:
+        type: "string"
+        example: "1"
+        description: |
+          `status: Registered`
+          bias-reference:  CashAccount(asAccount).Identification
+          iso-link:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_E1rHgsTGEeChad0JzLk7QA_-1068889728/elements/_E1rHhcTGEeChad0JzLk7QA_-755813725)
+          general-info: account number
+      currentAccountNumber:
+        type: "string"
+        example: "BIAN"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      accountStatus:
+        type: "string"
+        example: "active"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      customerReference:
+        type: "string"
+        example: "CR6789"
+        description: |
+          `status: Registered`
+          bian-reference:  CashAccount(asAccount).AccountPartyRole(asAccountOwnerRole)
+          iso-link:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_EysE9cTGEeChad0JzLk7QA_-200588046)
+      bankBranchLocationReference:
+        type: "string"
+        example: "for booking purposes"
+        description: |
+          ``status: Registered`
+          bian-reference:  CashAccount(asAccount).AccountPartyRole(asAccountServicerRole)(asRole).Player(asParty).Location
+          iso-link:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_FNqJt8TGEeChad0JzLk7QA_-1317971633/elements/_z2I6YGx5EeKmZJ0Ago--9g_239738909)
+          general-info: for booking purposes
+      dateType:
+        type: "string"
+        example: "open"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      date:
+        $ref: 'https://api.swaggerhub.com/domains/BIAN/Common-Model/1.0.0#/definitions/ISODateTime'
+      involvedPartyReference:
+        type: "string"
+        example: "cosigner"
+        description: |
+          `status: Registered`
+          bian-reference:  CashAccountContract(asAgreement).RoleInAgreement(asGuaranteePartyRole)
+          iso-link:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_G7hIgGcwEeOYlMxMjJVrrQ)
+          general-info: e.g. guarantor/co-signer
+      involvedPartyObligationEntitlement:
+        type: "string"
+        example: "partyEntitilement"
+        description: |
+          `status: Provisionally Registered`
+          bian-reference:  CashAccountContract(asAgreement).Obligation
+          `status: Registered`
+          bian-reference:  CashAccountContract(asAgreement).Obligation
+          iso-link:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_FL4BCcTGEeChad0JzLk7QA_-1814618756)
+      partyReference:
+        type: "string"
+        example: "5"
+        description: |
+          `status: Registered`
+          bian-reference:  CashAccount(asAccount).AccountPartyRole(asAccountOwnerRole)(asRole).Player(asOrganization).OrganisationIdentification.LEI
+          iso-link:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_FEHzNMTGEeChad0JzLk7QA_-1382123937/elements/_yagFILl5EeOpCN0IL2Swqw)
+          `status: Registered`
+          bian-reference:  CashAccount(asAccount).AccountPartyRole(asAccountOwnerRole)(asRole).Player(asPerson).PersonIdentification.TaxIdentificationNumber
+          iso-link:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_FEHzNMTGEeChad0JzLk7QA_-1382123937/elements/_FEHzNcTGEeChad0JzLk7QA_-1792766550)
+      accountType:
+        type: "string"
+        example: "current"
+        description: |
+          `status: Registered`
+          bian-reference:  CashAccount.CashAccountType
+          iso-link:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_E4gZEcTGEeChad0JzLk7QA_2010102987/elements/_E4gZE8TGEeChad0JzLk7QA_1025780411)
+      accountCurrency:
+        $ref: 'https://api.swaggerhub.com/domains/BIAN/Common-Model/1.0.0#/definitions/CurrencyCode'
+      accountLimitType:
+        type: "string"
+        example: "netting"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      accountLimit:
+        type: "string"
+        example: "50000"
+        description: |
+          `status: Registered`
+          bian-reference:  (asDebitCreditFacility).Limit
+          iso-link:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_FAsrxsTGEeChad0JzLk7QA_-351673533/elements/_FAsryMTGEeChad0JzLk7QA_-1033977641)
+      allowedAccess:
+        type: "string"
+        example: "admin"
+        description: |
+          `status: Provisionally Registered`
+          bian-reference:  CashAccount(asAccount).AccountRestriction.RestrictionDescription
+          `status: Registered`
+          bian-reference:  CashAccount(asAccount).AccountRestriction.RestrictionType
+          iso-link:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_E10RdcTGEeChad0JzLk7QA_-917313471/elements/_E10RdsTGEeChad0JzLk7QA_-1031152537)
+      optionType:
+        type: "string"
+        example: "Email Statements"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      option:
+        type: "string"
+        example: "test@email.com"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      taxReference:
+        type: "string"
+        example: "taxid00001"
+        description: |
+          `status: Registered`
+          bian-reference:  CashAccount.CashEntry.Amount
+          iso-link:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_FAi6wsTGEeChad0JzLk7QA_-1438285571/elements/_FAi6w8TGEeChad0JzLk7QA_1158844272)
+          general-info: Tax-Id
+  
+  CurrentAccountWithStatus:
+    type: "object"
+    properties:
+      accountStatus:
+        type: "string"
+        example: "active"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      customerReference:
+        type: "string"
+        example: "CR6789"
+        description: |
+          `status: Registered`
+          bian-reference:  CashAccount(asAccount).AccountPartyRole(asAccountOwnerRole)
+          iso-link:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_EysE9cTGEeChad0JzLk7QA_-200588046)
+      bankBranchLocationReference:
+        type: "string"
+        example: "for booking purposes"
+        description: |
+          `status: Registered`
+          bian-reference:  CashAccount(asAccount).AccountPartyRole(asAccountServicerRole)(asRole).Player(asParty).Location
+          iso-link:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_FNqJt8TGEeChad0JzLk7QA_-1317971633/elements/_z2I6YGx5EeKmZJ0Ago--9g_239738909)
+          general-info: for booking purposes
+      dateType:
+        type: "string"
+        example: "open"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      date:
+        $ref: 'https://api.swaggerhub.com/domains/BIAN/Common-Model/1.0.0#/definitions/ISODateTime'
+      involvedPartyReference:
+        type: "string"
+        example: "cosigner"
+        description: |
+          `status: Registered`
+          bian-reference:  CashAccountContract(asAgreement).RoleInAgreement(asGuaranteePartyRole)
+          iso-link:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_G7hIgGcwEeOYlMxMjJVrrQ)
+          general-info: e.g. guarantor/co-signer
+      involvedPartyObligationEntitlement:
+        type: "string"
+        example: "partyEntitilement"
+        description: |
+          `status: Provisionally Registered`
+          bian-reference:  CashAccountContract(asAgreement).Obligation
+          `status: Registered`
+          bian-reference:  CashAccountContract(asAgreement).Obligation
+          iso-link:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_FL4BCcTGEeChad0JzLk7QA_-1814618756)
+      partyReference:
+        type: "string"
+        example: "5"
+        description: |
+          `status: Registered`
+          bian-reference:  CashAccount(asAccount).AccountPartyRole(asAccountOwnerRole)(asRole).Player(asOrganization).OrganisationIdentification.LEI
+          iso-link:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_FEHzNMTGEeChad0JzLk7QA_-1382123937/elements/_yagFILl5EeOpCN0IL2Swqw)
+          `status: Registered`
+          bian-reference:  CashAccount(asAccount).AccountPartyRole(asAccountOwnerRole)(asRole).Player(asPerson).PersonIdentification.TaxIdentificationNumber
+          iso-link:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_FEHzNMTGEeChad0JzLk7QA_-1382123937/elements/_FEHzNcTGEeChad0JzLk7QA_-1792766550)
+      accountType:
+        type: "string"
+        example: "current"
+        description: |
+          `status: Registered`
+          iso-link: [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_E4gZEcTGEeChad0JzLk7QA_2010102987/elements/_E4gZE8TGEeChad0JzLk7QA_1025780411)
+      accountCurrency:
+        $ref: 'https://api.swaggerhub.com/domains/BIAN/Common-Model/1.0.0#/definitions/CurrencyCode'
+      accountLimitType:
+        type: "string"
+        example: "netting"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      accountLimit:
+        type: "string"
+        example: "50000"
+        description: |
+          `status: Registered`
+          bian-reference:  (asDebitCreditFacility).Limit
+          iso-link:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_FAsrxsTGEeChad0JzLk7QA_-351673533/elements/_FAsryMTGEeChad0JzLk7QA_-1033977641)
+      allowedAccess:
+        type: "string"
+        example: "admin"
+        description: |
+          `status: Provisionally Registered`
+          bian-reference:  CashAccount(asAccount).AccountRestriction.RestrictionDescription
+          `status: Registered`
+          bian-reference:  CashAccount(asAccount).AccountRestriction.RestrictionType
+          iso-link:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_E10RdcTGEeChad0JzLk7QA_-917313471/elements/_E10RdsTGEeChad0JzLk7QA_-1031152537)
+      optionType:
+        type: "string"
+        example: "Email Statements"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      option:
+        type: "string"
+        example: "test@email.com"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      taxReference:
+        type: "string"
+        example: "taxid00001"
+        description: |
+          `status: Registered`
+          bian-reference:  CashAccount.CashEntry.Amount
+          iso-link:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_FAi6wsTGEeChad0JzLk7QA_-1438285571/elements/_FAi6w8TGEeChad0JzLk7QA_1158844272)
+          general-info: Tax-Id
+
+  DepositBase:
+    type: "object"
+    properties:
+      payeeReference:
+        type: "string"
+        example: "PR123"
+        description: |
+          `status: Registered`
+          iso-link: [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_EysE9cTGEeChad0JzLk7QA_-200588046)
+          general-info: customer
+      payeeProductInstaceReference:
+        type: "string"
+        example: "PPIR123"
+        description: |
+          `status: Registered`
+          bian-reference:  CashAccount(asAccount).Identification
+          iso-link: [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_E1rHgsTGEeChad0JzLk7QA_-1068889728/elements/_E1rHhcTGEeChad0JzLk7QA_-755813725)
+          general-info: customer account reference
+      payeeBankReference:
+        type: "string"
+        example: "PBR123"
+        description: |
+          `status: Registered`
+          bian-reference:  CashAccount(asAccount).AccountPartyRole(asAccountServicerRole)
+          iso-link: [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_Ey118MTGEeChad0JzLk7QA_1536519000)
+      amount:
+        $ref: 'https://api.swaggerhub.com/domains/BIAN/Common-Model/1.0.0#/definitions/CurrencyAndAmount'
+      
+      currency:
+        $ref: 'https://api.swaggerhub.com/domains/BIAN/Common-Model/1.0.0#/definitions/CurrencyCode'
+      
+      valueDate:
+        $ref: 'https://api.swaggerhub.com/domains/BIAN/Common-Model/1.0.0#/definitions/ISODateTime'
+  
+  DepositBaseWithIdAndRoot:
+    type: "object"
+    properties:
+      payeeReference:
+        type: "string"
+        example: "customer"
+        description: |
+          `status: Registered`
+          bian-reference:  CashAccount(asAccount).AccountPartyRole(asAccountOwnerRole)
+          iso-link: [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_EysE9cTGEeChad0JzLk7QA_-200588046)
+          general-info: customer
+      payeeProductInstaceReference:
+        type: "string"
+        example: "customer account reference"
+        description: |
+          `status: Registered`
+          bian-reference:  CashAccount(asAccount).Identification
+          iso-link: [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_E1rHgsTGEeChad0JzLk7QA_-1068889728/elements/_E1rHhcTGEeChad0JzLk7QA_-755813725)
+          general-info: customer account reference
+      payeeBankReference:
+        type: "string"
+        example: "5"
+        description: |
+          `status: Registered`
+          bian-reference:  CashAccount(asAccount).AccountPartyRole(asAccountServicerRole)
+          iso-link: [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_Ey118MTGEeChad0JzLk7QA_1536519000)
+      amount:
+        $ref: 'https://api.swaggerhub.com/domains/BIAN/Common-Model/1.0.0#/definitions/CurrencyAndAmount'
+      currency:
+        $ref: 'https://api.swaggerhub.com/domains/BIAN/Common-Model/1.0.0#/definitions/CurrencyCode'
+      valueDate:
+        $ref: 'https://api.swaggerhub.com/domains/BIAN/Common-Model/1.0.0#/definitions/ISODateTime'
+      depositTransactionReference:
+        type: "string"
+        example: "1"
+        description: |
+          `status: Registered`
+          bian-reference:  CashAccount.CashEntry.AccountOwnerTransactionIdentification
+          iso-link:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_FA2cwMTGEeChad0JzLk7QA_1385452657/elements/_xSkzARdqEeKdr-hW_Ia1WQ_1315262931)
+          `status: Registered`
+          bian-reference:  CashAccount.CashEntry.AccountServicerTransactionIdentification
+          iso-link:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_FA2cwMTGEeChad0JzLk7QA_1385452657/elements/_xSkzAhdqEeKdr-hW_Ia1WQ_-1649127135)
+      customerReference:
+        type: "string"
+        example: "account holder"
+        description: |
+          `status: Registered`
+          bian-reference:  CashAccount(asAccount).AccountPartyRole(asAccountOwnerRole)
+          iso-link:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_EysE9cTGEeChad0JzLk7QA_-200588046)
+          general-info: account holder
+      accountLimitType:
+        type: "string"
+        example: "transaction credit"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      accountLimit:
+        $ref: 'https://api.swaggerhub.com/domains/BIAN/Common-Model/1.0.0#/definitions/CurrencyAndAmount'
+      productInstanceReference:
+        type: "string"
+        example: "payee account number"
+        description: |
+          `status: Registered`
+          bian-reference:  CashAccount(asAccount).Identification
+          iso-link: [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_E1rHgsTGEeChad0JzLk7QA_-1068889728/elements/_E1rHhcTGEeChad0JzLk7QA_-755813725)
+  
+  PaymentBase:
+    type: "object"
+    properties:
+      customerReference:
+        type: "string"
+        example: "CR726464"
+        description: |
+          `status: Registered`
+          bian-reference:  CashAccount(asAccount).AccountPartyRole(asAccountOwnerRole)
+          iso-link:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_EysE9cTGEeChad0JzLk7QA_-200588046)
+      payeeReference:
+        type: "string"
+        example: "4"
+        description: |
+          `status: Registered`
+          bian-reference:  CashAccount.Payment.PartyRole(asCreditorRole)
+          iso-link: [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_EteNycTGEeChad0JzLk7QA_-591715083)
+      payeeProductInstanceReference:
+        type: "string"
+        example: "payee account"
+        description: |
+          `status: Provisionally Registered`
+          bian-reference:  CashAccount.Payment.PartyRole(asCreditorRole)(asPaymentPartyRole).CashAccount
+          iso-link: [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_EvtpdMTGEeChad0JzLk7QA_-1076538618/elements/_EvtpdsTGEeChad0JzLk7QA_1151666800)
+          general-info: account number
+      payeeBankReference:
+        type: "string"
+        example: "4"
+        description: |
+          `status: Registered`
+          bian-reference:  CashAccount.Payment.PartyRole(asCreditorAgentRole)
+          iso-link: [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_EteNyMTGEeChad0JzLk7QA_-246206935)
+      accountLimitType:
+        type: "string"
+        example: "position"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      accountLimit:
+        $ref: 'https://api.swaggerhub.com/domains/BIAN/Common-Model/1.0.0#/definitions/CurrencyAndAmount'
+      amount:
+        $ref: 'https://api.swaggerhub.com/domains/BIAN/Common-Model/1.0.0#/definitions/CurrencyAndAmount'
+      currency:
+        $ref: 'https://api.swaggerhub.com/domains/BIAN/Common-Model/1.0.0#/definitions/CurrencyCode'
+      valueDate:
+        $ref: 'https://api.swaggerhub.com/domains/BIAN/Common-Model/1.0.0#/definitions/ISODateTime'
+      paymentMechanism:
+        type: "string"
+        example: "usd"
+        description: |
+          `status: Registered`
+          bian-reference:  CashAccount.Payment.PaymentInstrument
+          iso-link: [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_FCL5hcTGEeChad0JzLk7QA_1746210980/elements/_FAi6ycTGEeChad0JzLk7QA_1746210990)
+  
+  PaymentBaseWithIdAndRoot:
+    type: "object"
+    properties:
+      paymentInstructionReference:
+        type: "string"
+        example: "PIR736464"
+        description: |
+          `status: Provisionally Registered`
+          bian-reference:  CashAccount.Payment.PaymentOrder
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      productInstanceReference:
+        type: "string"
+        example: "account number"
+        description: |
+          `status: Registered`
+          bian-reference:  CashAccount.Payment.PartyRole(asCreditorRole)(asPaymentPartyRole).CashAccount.Identification
+          iso-link: [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_E1rHgsTGEeChad0JzLk7QA_-1068889728/elements/_E1rHhcTGEeChad0JzLk7QA_-755813725)
+      customerReference:
+        type: "string"
+        example: "CR726464"
+        description: |
+          `status: Registered`
+          bian-reference:  CashAccount(asAccount).AccountPartyRole(asAccountOwnerRole)
+          iso-link: [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_EysE9cTGEeChad0JzLk7QA_-200588046)
+      payeeReference:
+        type: "string"
+        example: "4"
+        description: |
+          `status: Registered`
+          bian-reference:  CashAccount.Payment.PartyRole(asCreditorRole)
+          iso-link: [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_EteNycTGEeChad0JzLk7QA_-591715083)
+      payeeProductInstanceReference:
+        type: "string"
+        example: "payee account"
+        description: |
+          `status: Provisionally Registered`
+          bian-reference:  CashAccount.Payment.PartyRole(asCreditorRole)(asPaymentPartyRole).CashAccount
+          iso-link: [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_EvtpdMTGEeChad0JzLk7QA_-1076538618/elements/_EvtpdsTGEeChad0JzLk7QA_1151666800)
+          general-info: customer account reference
+      payeeBankReference:
+        type: "string"
+        example: "4"
+        description: |
+          `status: Registered`
+          bian-reference:  CashAccount.Payment.PartyRole(asCreditorAgentRole)
+          iso-link: [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_EteNyMTGEeChad0JzLk7QA_-246206935)
+      accountLimitType:
+        type: "string"
+        example: "position"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      accountLimit:
+        $ref: 'https://api.swaggerhub.com/domains/BIAN/Common-Model/1.0.0#/definitions/CurrencyAndAmount'
+      amount:
+        $ref: 'https://api.swaggerhub.com/domains/BIAN/Common-Model/1.0.0#/definitions/CurrencyAndAmount'
+      currency:
+        $ref: 'https://api.swaggerhub.com/domains/BIAN/Common-Model/1.0.0#/definitions/CurrencyCode'
+      valueDate:
+        $ref: 'https://api.swaggerhub.com/domains/BIAN/Common-Model/1.0.0#/definitions/ISODateTime'
+      paymentMechanism:
+        type: "string"
+        example: "usd"
+        description: |
+          `status: Registered`
+          bian-reference:  CashAccount.Payment.PaymentInstrument
+          iso-link: [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_FCL5hcTGEeChad0JzLk7QA_1746210980/elements/_FAi6ycTGEeChad0JzLk7QA_1746210990)
+  
+  StandingOrderBase:
+    type: "object"
+    properties:
+      standingOrderPurpose:
+        type: "string"
+        example: "for compliance reporting"
+        description: |
+          `status: Registered`
+          bian-reference:  CashAccount.RelatedCreditStandingOrder.EventDescription
+          iso-link:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_E7CIosTGEeChad0JzLk7QA_1664636213/elements/_E7CIo8TGEeChad0JzLk7QA_-1879461400)
+          `status: Registered`
+          bian-reference:  CashAccount.RelatedDebitStandingOrder.EventDescription
+          iso-link:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_E7CIosTGEeChad0JzLk7QA_1664636213/elements/_E7CIo8TGEeChad0JzLk7QA_-1879461400)
+      payeeReference:
+        type: "string"
+        example: "4"
+        description: |
+          `status: Registered`
+          bian-reference:  CashAccount.RelatedCreditStandingOrder.CreditAccount(asAccount).AccountOwnerRole
+          iso-link:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_EysE9cTGEeChad0JzLk7QA_-200588046)
+          `status: Registered`
+          bian-reference:  CashAccount.RelatedDebitStandingOrder.CreditAccount(asAccount).AccountOwnerRole
+          iso-link:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_EysE9cTGEeChad0JzLk7QA_-200588046)
+      payeeProductInstanceReference:
+        type: "string"
+        example: "payee account4"
+        description: |
+          `status: Registered`
+          bian-reference:  CashAccount.RelatedCreditStandingOrder.CreditAccount
+          iso-link:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_E7CIosTGEeChad0JzLk7QA_1664636213/elements/_DK7EY7ShEeGXa-y3CFzLMQ_463118596)
+          `status: Registered`
+          bian-reference:  CashAccount.RelatedDebitStandingOrder.CreditAccount
+          iso-link:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_E7CIosTGEeChad0JzLk7QA_1664636213/elements/_DK7EY7ShEeGXa-y3CFzLMQ_463118596)
+          general-info: customer account reference
+      payeeBankReference:
+        type: "string"
+        example: "12344"
+        description: |
+          `status: Registered`
+          bian-reference:  CashAccount.RelatedCreditStandingOrder.CreditAccount(asAccount).AccountServicerRole
+          iso-link:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_Ey118MTGEeChad0JzLk7QA_1536519000)
+          `status: Registered`
+          bian-reference:  CashAccount.RelatedDebitStandingOrder.CreditAccount(asAccount).AccountServicerRole
+          iso-link:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_Ey118MTGEeChad0JzLk7QA_1536519000)
+      amount:
+        $ref: 'https://api.swaggerhub.com/domains/BIAN/Common-Model/1.0.0#/definitions/CurrencyAndAmount'
+      currency:
+        $ref: 'https://api.swaggerhub.com/domains/BIAN/Common-Model/1.0.0#/definitions/CurrencyCode'
+      paymentSchedule:
+        type: "string"
+        example: "start date"
+        description: |
+          `status: Registered`
+          bian-reference:  CashAccount.RelatedCreditStandingOrder.Day
+          iso-link:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_E7CIosTGEeChad0JzLk7QA_1664636213/elements/_E7CIpMTGEeChad0JzLk7QA_-1145087031)
+          `status: Registered`
+          bian-reference:  CashAccount.RelatedDebitStandingOrder.Frequency
+          iso-link:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_E7CIosTGEeChad0JzLk7QA_1664636213/elements/_E7CIqcTGEeChad0JzLk7QA_-1544240334)
+
+  
+  StandingOrderBaseWithIdAndRoot:
+    type: "object"
+    properties:
+      standingOrderPurpose:
+        type: "string"
+        example: "for compliance reporting"
+        description: |
+          `status: Registered`
+          bian-reference:  CashAccount.RelatedCreditStandingOrder.EventDescription
+          iso-link:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_E7CIosTGEeChad0JzLk7QA_1664636213/elements/_E7CIo8TGEeChad0JzLk7QA_-1879461400)
+          `status: Registered`
+          bian-reference:  CashAccount.RelatedDebitStandingOrder.EventDescription
+          iso-link:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_E7CIosTGEeChad0JzLk7QA_1664636213/elements/_E7CIo8TGEeChad0JzLk7QA_-1879461400)
+      payeeReference:
+        type: "string"
+        example: "4"
+        description: |
+          `status: Registered`
+          bian-reference:  CashAccount.RelatedCreditStandingOrder.CreditAccount(asAccount).AccountOwnerRole
+          iso-link:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_EysE9cTGEeChad0JzLk7QA_-200588046)
+          `status: Registered`
+          bian-reference:  CashAccount.RelatedDebitStandingOrder.CreditAccount(asAccount).AccountOwnerRole
+          iso-link:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_EysE9cTGEeChad0JzLk7QA_-200588046)
+      payeeProductInstanceReference:
+        type: "string"
+        example: "payee account4"
+        description: |
+          `status: Registered`
+          bian-reference:  CashAccount.RelatedCreditStandingOrder.CreditAccount
+          iso-link:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_E7CIosTGEeChad0JzLk7QA_1664636213/elements/_DK7EY7ShEeGXa-y3CFzLMQ_463118596)
+          `status: Registered`
+          bian-reference:  CashAccount.RelatedDebitStandingOrder.CreditAccount
+          iso-link:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_E7CIosTGEeChad0JzLk7QA_1664636213/elements/_DK7EY7ShEeGXa-y3CFzLMQ_463118596)
+          general-info: customer account reference
+      payeeBankReference:
+        type: "string"
+        example: "12344"
+        description: |
+          `status: Registered`
+          bian-reference:  CashAccount.RelatedCreditStandingOrder.CreditAccount(asAccount).AccountServicerRole
+          iso-link:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_Ey118MTGEeChad0JzLk7QA_1536519000)
+          `status: Registered`
+          bian-reference:  CashAccount.RelatedDebitStandingOrder.CreditAccount(asAccount).AccountServicerRole
+          iso-link:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_Ey118MTGEeChad0JzLk7QA_1536519000)
+      amount:
+        $ref: 'https://api.swaggerhub.com/domains/BIAN/Common-Model/1.0.0#/definitions/CurrencyAndAmount'
+      currency:
+        $ref: 'https://api.swaggerhub.com/domains/BIAN/Common-Model/1.0.0#/definitions/CurrencyCode'
+      paymentSchedule:
+        type: "string"
+        example: "start date"
+        description: |
+          `status: Registered`
+          bian-reference:  CashAccount.RelatedCreditStandingOrder.Day
+          iso-link:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_E7CIosTGEeChad0JzLk7QA_1664636213/elements/_E7CIpMTGEeChad0JzLk7QA_-1145087031)
+          `status: Registered`
+          bian-reference:  CashAccount.RelatedDebitStandingOrder.Frequency
+          iso-link:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_E7CIosTGEeChad0JzLk7QA_1664636213/elements/_E7CIqcTGEeChad0JzLk7QA_-1544240334)
+      standingOrderFacilityReference:
+        type: "string"
+        example: "SOFR123"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      customerReference:
+        type: "string"
+        example: "3"
+        description: |
+          `status: Registered`
+          bian-reference:  CashAccount(asAccount).AccountPartyRole(asAccountOwnerRole)
+          iso-link:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_EysE9cTGEeChad0JzLk7QA_-200588046)
+      productInstanceReference:
+        type: "string"
+        example: "current account number"
+        description: |
+          `status: Registered`
+          bian-reference:  CashAccount(asAccount).Identification
+          iso-link:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_E1rHgsTGEeChad0JzLk7QA_-1068889728/elements/_E1rHhcTGEeChad0JzLk7QA_-755813725)
+          general-info: account number
+  
+  DirectDebitBase:
+    type: "object"
+    properties:
+      directDebitMandateReference:
+        type: "string"
+        example: "payee"
+        description: |
+          `status: Registered`
+          bian-reference:  CashAccountContract(asAccountContract).AccountAuthorisation(asDirectDebitMandate).MandateIdentification
+          iso-link:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_FctSUcTGEeChad0JzLk7QA_1037644309/elements/_C-4qwERwEeKKnZkMwum2NA_253647161)
+          general-info: payee
+      directDebitPurpose:
+        type: "string"
+        example: "for compliance reporting"
+        description: |
+          `status: Registered`
+          bian-reference:  CashAccountContract(asAccountContract).AccountAuthorisation(asDirectDebitMandate).Description
+          iso-link:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_E2tpUMTGEeChad0JzLk7QA_1799405832/elements/_E2tpUcTGEeChad0JzLk7QA_700879817)
+          general-info: e.g. for compliance reporting
+      directDebitServiceConfiguration:
+        type: "string"
+        example: "limits"
+        description: |
+          `status: Registered`
+          bian-reference:  CashAccountContract(asAccount).AccountAuthorisation(asDirectDebitMandate).CollectionAmount
+          iso-link:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_FCCvlMTGEeChad0JzLk7QA_-1453577952/elements/_FCCvl8TGEeChad0JzLk7QA_1129069978)
+          `status: Registered`
+          bian-reference:  CashAccountContract(asAccount).AccountAuthorisation(asDirectDebitMandate).MaximumAmount
+          iso-link:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_FCCvlMTGEeChad0JzLk7QA_-1453577952/elements/_FCCvmcTGEeChad0JzLk7QA_-960859698)
+          `status: Registered`
+          bian-reference:  CashAccountContract(asAccountContract).AccountAuthorisation(asDirectDebitMandate).FinalCollectionDate
+          iso-link:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_FCCvlMTGEeChad0JzLk7QA_-1453577952/elements/_FCCvlsTGEeChad0JzLk7QA_1037644588)
+          `status: Registered`
+          bian-reference:  CashAccountContract(asAccountContract).AccountAuthorisation(asDirectDebitMandate).FirstCollectionDate
+          iso-link:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_FCCvlMTGEeChad0JzLk7QA_-1453577952/elements/_FCCvlcTGEeChad0JzLk7QA_1037644587)
+          `status: Registered`
+          bian-reference:  CashAccountContract(asAccountContract).AccountAuthorisation(asDirectDebitMandate).Frequency
+          iso-link:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_FCCvlMTGEeChad0JzLk7QA_-1453577952/elements/_FCCvmMTGEeChad0JzLk7QA_1037644589)
+          general-info: amount/limits/schedule
+      bankBranchLocationReference:
+        type: "string"
+        example: "for booking purposes"
+        description: |
+          `status: Registered`
+          iso-link: [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_FNg_x8TGEeChad0JzLk7QA_908383601/elements/_FNqJtcTGEeChad0JzLk7QA_-1846259904)
+          general-info: for booking purposes
+      payeeReference:
+        type: "string"
+        example: "4"
+        description: |
+          `status: Registered`
+          bian-reference:  CashAccountContract(asAccountContract).AccountAuthorisation(asDirectDebitMandate).MandatePartyRole(asMandateHolder)
+          iso-link:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_EvHMh8TGEeChad0JzLk7QA_1036121131)
+      payeeProductInstanceReference:
+        type: "string"
+        example: "payee account"
+        description: |
+          `status: Provisionally Registered`
+          bian-reference:  CashAccountContract(asAccountContract).AccountAuthorisation(asDirectDebitMandate)(asMandate).CreditorAccount
+          `status: Registered`
+          bian-reference:  CashAccountContract(asAccountContract).AccountAuthorisation(asDirectDebitMandate)(asMandate).CreditorAccount
+          iso-link:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_E4gZEcTGEeChad0JzLk7QA_2010102987)
+      payeeBankReference:
+        type: "string"
+        example: "4"
+        description: |
+          `status: Registered`
+          bian-reference:  CashAccountContract(asAccountContract).AccountAuthorisation(asDirectDebitMandate).CreditorAccount(asAccount).AccountPartyRole(asAccountServicerRole)
+          iso-link:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_Ey118MTGEeChad0JzLk7QA_1536519000)
+      amount:
+        $ref: 'https://api.swaggerhub.com/domains/BIAN/Common-Model/1.0.0#/definitions/CurrencyAndAmount'
+      currency:
+        $ref: 'https://api.swaggerhub.com/domains/BIAN/Common-Model/1.0.0#/definitions/CurrencyCode'
+  
+  DirectDebitBaseWithIdAndRoot:
+    type: "object"
+    properties:
+      directDebitMandateReference:
+        type: "string"
+        example: "payee"
+        description: |
+          `status: Registered`
+          bian-reference:  CashAccountContract(asAccountContract).AccountAuthorisation(asDirectDebitMandate).MandateIdentification
+          iso-link:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_FctSUcTGEeChad0JzLk7QA_1037644309/elements/_C-4qwERwEeKKnZkMwum2NA_253647161)
+          general-info: payee
+      directDebitPurpose:
+        type: "string"
+        example: "for compliance reporting"
+        description: |
+          `status: Registered`
+          bian-reference:  CashAccountContract(asAccountContract).AccountAuthorisation(asDirectDebitMandate).Description
+          iso-link:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_E2tpUMTGEeChad0JzLk7QA_1799405832/elements/_E2tpUcTGEeChad0JzLk7QA_700879817)
+          general-info: e.g. for compliance reporting
+      directDebitServiceConfiguration:
+        type: "string"
+        example: "limits"
+        description: |
+          `status: Registered`
+          bian-reference:  CashAccountContract(asAccount).AccountAuthorisation(asDirectDebitMandate).CollectionAmount
+          iso-link:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_FCCvlMTGEeChad0JzLk7QA_-1453577952/elements/_FCCvl8TGEeChad0JzLk7QA_1129069978)
+          `status: Registered`
+          bian-reference:  CashAccountContract(asAccount).AccountAuthorisation(asDirectDebitMandate).MaximumAmount
+          iso-link:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_FCCvlMTGEeChad0JzLk7QA_-1453577952/elements/_FCCvmcTGEeChad0JzLk7QA_-960859698)
+          `status: Registered`
+          bian-reference:  CashAccountContract(asAccountContract).AccountAuthorisation(asDirectDebitMandate).FinalCollectionDate
+          iso-link:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_FCCvlMTGEeChad0JzLk7QA_-1453577952/elements/_FCCvlsTGEeChad0JzLk7QA_1037644588)
+          `status: Registered`
+          bian-reference:  CashAccountContract(asAccountContract).AccountAuthorisation(asDirectDebitMandate).FirstCollectionDate
+          iso-link:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_FCCvlMTGEeChad0JzLk7QA_-1453577952/elements/_FCCvlcTGEeChad0JzLk7QA_1037644587)
+          `status: Registered`
+          bian-reference:  CashAccountContract(asAccountContract).AccountAuthorisation(asDirectDebitMandate).Frequency
+          iso-link:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_FCCvlMTGEeChad0JzLk7QA_-1453577952/elements/_FCCvmMTGEeChad0JzLk7QA_1037644589)
+          general-info: amount/limits/schedule
+      bankBranchLocationReference:
+        type: "string"
+        example: "for booking purposes"
+        description: |
+          `status: Registered`
+          bian-reference:  CashAccount(asAccount).AccountPartyRole(asAccountServicerRole)(asRole).Player(asOrganisation).Branch.PlaceOfOperation
+          iso-link:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_FNg_x8TGEeChad0JzLk7QA_908383601/elements/_FNqJtcTGEeChad0JzLk7QA_-1846259904)
+          `status: Registered`
+          bian-reference:  CashAccount(asAccount).AccountPartyRole(asAccountServicerRole)(asRole).Player(asOrganisation).Branch.PlaceOfRegistration
+          iso-link:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_FNg_x8TGEeChad0JzLk7QA_908383601/elements/_FNqJtMTGEeChad0JzLk7QA_-847083437)
+          `status: Registered`
+          bian-reference:  CashAccount(asAccount).AccountPartyRole(asAccountServicerRole)(asRole).Player(asOrganisation).PlaceOfOperation
+          iso-link:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_FNg_x8TGEeChad0JzLk7QA_908383601/elements/_FNqJtcTGEeChad0JzLk7QA_-1846259904)
+          `status: Registered`
+          bian-reference:  CashAccount(asAccount).AccountPartyRole(asAccountServicerRole)(asRole).Player(asOrganisation).PlaceOfRegistration
+          iso-link:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_FNg_x8TGEeChad0JzLk7QA_908383601/elements/_FNqJtMTGEeChad0JzLk7QA_-847083437)
+          general-info: for booking purposes
+      payeeReference:
+        type: "string"
+        example: "4"
+        description: |
+          `status: Registered`
+          bian-reference:  CashAccount(asAccount).AccountPartyRole(asAccountOwnerRole)
+          iso-link:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_EysE9cTGEeChad0JzLk7QA_-200588046)
+      payeeProductInstanceReference:
+        type: "string"
+        example: "payee account"
+        description: |
+          `status: Registered`
+          bian-reference:  CashAccount(asAccount).Identification
+          iso-link:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_E1rHgsTGEeChad0JzLk7QA_-1068889728/elements/_E1rHhcTGEeChad0JzLk7QA_-755813725)
+      payeeBankReference:
+        type: "string"
+        example: "4"
+        description: |
+          `status: Registered`
+          bian-reference:  CashAccount(asAccount).AccountPartyRole(asAccountServicerRole)
+          iso-link:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_Ey118MTGEeChad0JzLk7QA_1536519000)
+      amount:
+        $ref: 'https://api.swaggerhub.com/domains/BIAN/Common-Model/1.0.0#/definitions/CurrencyAndAmount'
+      currency:
+        $ref: 'https://api.swaggerhub.com/domains/BIAN/Common-Model/1.0.0#/definitions/CurrencyCode'
+      directDebitFacilityReference:
+        type: "string"
+        example: "1"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      customerReference:
+        type: "string"
+        example: "3"
+        description: |
+          `status: Registered`
+          bian-reference:  CashAccount(asAccount).AccountPartyRole(asAccountOwnerRole)
+          iso-link:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_EysE9cTGEeChad0JzLk7QA_-200588046)
+      productInstanceReference:
+        type: "string"
+        example: "account number"
+        description: |
+          `status: Registered`
+          bian-reference:  CashAccountContract(asAccountContract).AccountAuthorisation(asDirectDebitMandate)(asMandate).DebtorAccount(asAccount).Identification
+          iso-link:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_E1rHgsTGEeChad0JzLk7QA_-1068889728/elements/_E1rHhcTGEeChad0JzLk7QA_-755813725
+          general-info: customer account reference
+  
+  SweepBase:
+    type: "object"
+    properties:
+      payeeReference:
+        type: "string"
+        example: "sweep account owner"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      payeeProductInstanceReference:
+        type: "string"
+        example: "sweep account"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      sweepServiceConfiguration:
+        type: "string"
+        example: "threshold"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+  SweepBaseWithIdAndRoot:
+    type: "object"
+    properties:
+      payeeReference:
+        type: "string"
+        example: "sweep account owner"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      payeeProductInstanceReference:
+        type: "string"
+        example: "sweep account"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      sweepServiceConfiguration:
+        type: "string"
+        example: "threshold"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      sweepFacilityReference:
+        type: "string"
+        example: "1"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      customerReference:
+        type: "string"
+        example: "3"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      productInstanceReference:
+        type: "string"
+        example: "account number"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+  
+  InventoryBase:
+    type: "object"
+    properties:
+      inventoryItemType:
+        type: "string"
+        example: "pay-in slip"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      inventoryItemProperties:
+        type: "string"
+        example: "sequence numbers"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      inventoryItemStatus:
+        type: "string"
+        example: "issued"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+  InventoryBaseWithIdAndRoot:
+    type: "object"
+    properties:
+      inventoryItemType:
+        type: "string"
+        example: "pay-in slip"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      inventoryItemProperties:
+        type: "string"
+        example: "sequence numbers"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      inventoryItemStatus:
+        type: "string"
+        example: "issued"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      inventoryFacilityReference:
+        type: "string"
+        example: "1"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      customerReference:
+        type: "string"
+        example: "3"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      productInstanceReference:
+        type: "string"
+        example: "account number"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+  
+  LienBase:
+    type: "object"
+    properties:
+      lienType:
+        type: "string"
+        example: "final"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      lienOriginator:
+        type: "string"
+        example: "1"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      lienStartDate:
+        $ref: 'https://api.swaggerhub.com/domains/BIAN/Common-Model/1.0.0#/definitions/ISODateTime'
+      lienExpiryDate:
+        $ref: 'https://api.swaggerhub.com/domains/BIAN/Common-Model/1.0.0#/definitions/ISODateTime'
+      lienStatus:
+        type: "string"
+        example: "2"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      lienServiceConfiguration:
+        type: "string"
+        example: "3"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+  LienBaseWithIdAndRoot:
+    type: "object"
+    properties:
+      lienType:
+        type: "string"
+        example: "final"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      lienOriginator:
+        type: "string"
+        example: "1"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      lienStartDate:
+        $ref: 'https://api.swaggerhub.com/domains/BIAN/Common-Model/1.0.0#/definitions/ISODateTime'
+      lienExpiryDate:
+        $ref: 'https://api.swaggerhub.com/domains/BIAN/Common-Model/1.0.0#/definitions/ISODateTime'
+      lienStatus:
+        type: "string"
+        example: "2"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Date
+      lienServiceConfiguration:
+        type: "string"
+        example: "3"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Date
+      lienFacilityReference:
+        type: "string"
+        example: "2"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      customerReference:
+        type: "string"
+        example: "3"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      productInstanceReference:
+        type: "string"
+        example: "account number"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+  InterestBaseWithIdAndRoot:
+    type: "object"
+    properties:
+      interestRateTransactionReference:
+        type: "string"
+        example: "2"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      rateConfiguration:
+        type: "string"
+        example: "service domain level structure"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      applicableInterestRate:
+        type: "string"
+        example: "5%"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Rate
+      rateApplicationSchedule:
+        type: "string"
+        example: "2"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      accuredInterestAmount:
+        $ref: 'https://api.swaggerhub.com/domains/BIAN/Common-Model/1.0.0#/definitions/CurrencyAndAmount'
+      customerReference:
+        type: "string"
+        example: "3"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      productInstanceReference:
+        type: "string"
+        example: "2"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+  FeeBaseWithIdAndRoot:
+    type: "object"
+    properties:
+      feeTransactionReference:
+        type: "string"
+        example: "2"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      feeConfiguration:
+        type: "string"
+        example: "customer level fee structure"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      feeType:
+        type: "string"
+        example: "1"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      feeCharge:
+        type: "string"
+        example: "10000"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Amount
+      feeProjectionsCommitments:
+        type: "string"
+        example: "2"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      feeActualAmount:
+        $ref: 'https://api.swaggerhub.com/domains/BIAN/Common-Model/1.0.0#/definitions/CurrencyAndAmount'
+      customerReference:
+        type: "string"
+        example: "3"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      productInstanceReference:
+        type: "string"
+        example: "account number"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+  StatementBaseWithIdAndRoot:
+    type: "object"
+    properties:
+      balanceType:
+        type: "string"
+        example: "booked"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      balance:
+        type: "string"
+        example: "1000"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Amount
+      statementInstanceReference:
+        type: "string"
+        example: "24"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      statementType:
+        type: "string"
+        example: "balance"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      statementTrasactionType:
+        type: "string"
+        example: "content"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      statementPeriod:
+        type: "string"
+        example: "01/08/2018 - 31/08/2018"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      transactionRecordReference:
+        type: "string"
+        example: "TTR45"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      transactionType:
+        type: "string"
+        example: "2"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      transactionPrincipleAmount:
+        $ref: 'https://api.swaggerhub.com/domains/BIAN/Common-Model/1.0.0#/definitions/CurrencyAndAmount'
+      transactionCounterparty:
+        type: "string"
+        example: "payee"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      transactionObligation:
+        type: "string"
+        example: "product"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      transactionDateTime:
+        type: "string"
+        example: "08/08/2018"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::DateTime
+      customerReference:
+        type: "string"
+        example: "3"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      productInstanceReference:
+        type: "string"
+        example: "2"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+  RepostBaseWithIdAndRoot:
+    type: "object"
+    properties:
+      reportInstanceReference:
+        type: "string"
+        example: "2"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      reportType:
+        type: "string"
+        example: "2"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      reportOptionsSelectionCriteria:
+        type: "string"
+        example: "defines content"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      reportPeriod:
+        type: "string"
+        example: "01/08/2018 - 31/08/2018"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      reportFormatTemplate:
+        type: "string"
+        example: "1"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      customerReference:
+        type: "string"
+        example: "3"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      productInstanceReference:
+        type: "string"
+        example: "2"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+
+  CurrentAccountRecordRequest:
+    type: "object"
+    properties:
+      recordingRecordType:
+        type: "string"
+        example: "Behavior model performance feedback"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      recordingRecord:
+        type: "object"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+        properties: {}
+      recordingRecordDateTime:
+           $ref: 'https://api.swaggerhub.com/domains/BIAN/Common-Model/1.0.0#/definitions/ISODateTime'
+      employeeBusinessUnitReference:
+        type: "string"
+        example: "REF456"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+  CurrentAccountRecordResponse:
+    type: "object"
+    properties:
+      recordingRecordReference:
+        type: "string"
+        example: "RRR4678"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      recordingRecordStatus:
+        type: "string"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
