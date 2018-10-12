@@ -1,0 +1,1321 @@
+swagger: '2.0'
+info:
+  version: "4.0.0"
+  title: 'Service Domain - Contact Handler'
+  description: >
+        ## Description: 
+      
+        This service domain handles a customer's interactive contact with the bank. This will typically involve launching of one or more channel/device specific dialogue sessions as necessary within the customer contact
+      
+        ## Example of use:
+      
+        A customer is self serving on the web and then requests to talk to a servicing representative directory using the VoIP capability presented on the banks web portal.
+
+      
+        ## General comment:
+      
+        BIAN defines a customer contact as the overarching structure handling a customer interaction from start to end. A contact can include one or more servicing dialogue 'sessions' in parallel or sequence to support different device/channel uses within the contact and to allow for the customer to be passed on to different servicing specialists as necessary during the contact. Each session is handled at a servicing position where the Contact Dialogue service domain is called to handle the specific customer interaction. Contact Handler concludes the contact, handles the authorization permissions and shares any contact information collected during the contact between sessions as necessary
+
+# Added by API Auto Mocking Plugin
+host: virtserver.swaggerhub.com
+basePath: /BIAN/sd-contact-handler/4.0.0
+schemes:
+ - https
+
+paths:
+
+  /contact-handler/customer-contact-operating-session:
+    get:
+      tags: 
+      - retrieve
+      summary: "Retrieve customer contact operating session"
+      operationId: retrieveCustomerContactOperatingSessionIds
+      produces: 
+      - application/json
+      parameters:
+      - name : collection-filter
+        in: query
+        description: "Filter to refine the result set. ex- 'contactHandlingServiceStatus=Active'"
+        type: string
+      responses:
+        200:
+          description: "Successfully retrieved contact handler operating session ids"
+          schema:
+            type: array
+            items:
+              type: string
+            example: ['CHSSR4568', 'CHSSR4687']
+  
+  /contact-handler/customer-contact-operating-session/behavior-qualifiers:
+    get:
+      tags: 
+      - retrieve
+      summary: "Retrieve all customer contact operating session behaviour qualifier names in the customer servicing resource allocation service domain"
+      operationId: retrieveCustomerContactOperatingSessionBqNames
+      produces: 
+      - application/json
+      responses:
+        200:
+          description: "Successfully retrieved contact handler operating session  behavior qualifiers names"
+          schema:
+            type: array
+            items:
+              type: string
+            example: ['Inbound', 'Authentication', 'Routing', 'Session','Outbound','History'] 
+  
+  /contact-handler/customer-contact-operating-session/{cr-reference-id}/{behavior-qualifier}:
+    get:
+      tags: 
+      - retrieve
+      summary: "Retrieve behaviour qualifier reference Ids of the given behavior qualifier"
+      operationId: retrieveCustomerContactOperatingSessionBqIds
+      produces: 
+      - application/json
+      parameters:
+      - in: path
+        name: cr-reference-id
+        description: "Contact Handling Service Session Reference"
+        type: string
+        required: true
+      - name : behavior-qualifier
+        in: path
+        description: "Behavior Qualifier Name. ex- 'inbounds'"
+        required: true
+        type: string
+      - name : collection-filter
+        in: query
+        description: "Filter to refine the result set. ex- 'customerReference=CR219966005'"
+        type: string
+      responses:
+        200:
+          description: "Successfully retrieved contact handler operating session behavior qualifiers ids"
+          schema:
+            type: array
+            items:
+              type: string
+            example: ['ICR45345', 'CCARR789','CCRSR5689'] 
+
+  /contact-handler/customer-contact-operating-session/{cr-reference-id}:
+    get:
+      tags: 
+      - retrieve
+      summary: "Retrieve customer contact operating session"
+      operationId: retrieveCustomerContactOperatingSession
+      produces: 
+      - application/json
+      parameters:
+      - in: path
+        name: cr-reference-id
+        description: "Contact Handling Service Session Reference"
+        type: string
+        required: true
+      responses:
+        200:
+          description: "Successfully retrieved contact handler operating session"
+          schema:
+            $ref: '#/definitions/ContactHandlerResponse'
+  
+  /contact-handler/customer-contact-operating-session/{cr-reference-id}/inbounds/{bq-reference-id}:
+    get:
+      tags: 
+      - retrieve
+      summary: "Retrieve customer contact operating session inbound"
+      operationId: retrieveCustomerContactOperatingSessionInbound
+      produces: 
+      - application/json
+      parameters:
+      - in: path
+        name: cr-reference-id
+        description: "Contact Handling Service Session Reference"
+        type: string
+        required: true
+      - name : bq-reference-id
+        in: path
+        description: "Inbound Contact Reference"
+        required: true
+        type: string
+      responses:
+        200:
+          description: "Successfully retrieved contact handler inbound"
+          schema:
+            $ref: '#/definitions/ContactHandlerInboundWithIdAndRootResponse'
+            
+  /contact-handler/customer-contact-operating-session/{cr-reference-id}/authentications/{bq-reference-id}:
+    get:
+      tags: 
+      - retrieve
+      summary: "Retrieve customer contact operating session authentication"
+      operationId: retrieveCustomerContactOperatingSessionAuthentication
+      produces: 
+      - application/json
+      parameters:
+      - in: path
+        name: cr-reference-id
+        description: "Contact Handling Service Session Reference"
+        type: string
+        required: true
+      - name : bq-reference-id
+        in: path
+        description: "Customer Contact Authentication Record Reference"
+        required: true
+        type: string
+      responses:
+        200:
+          description: "Successfully retrieved contact authentication"
+          schema:
+            $ref: '#/definitions/ContactHandlerAuthenticationWithIdAndRootResponse'
+            
+  /contact-handler/customer-contact-operating-session/{cr-reference-id}/routing/{bq-reference-id}:
+    get:
+      tags: 
+      - retrieve
+      summary: "Retrieve customer contact operating session routing"
+      operationId: retrieveCustomerContactOperatingSessionRouting
+      produces: 
+      - application/json
+      parameters:
+      - in: path
+        name: cr-reference-id
+        description: "Contact Handling Service Session Reference"
+        type: string
+        required: true
+      - name : bq-reference-id
+        in: path
+        description: "Customer Contact Routing Selection Reference"
+        required: true
+        type: string
+      responses:
+        200:
+          description: "Successfully retrieved contact routing"
+          schema:
+            $ref: '#/definitions/ContactHandlerRoutingWithIdAndRootResponse'
+            
+  /contact-handler/customer-contact-operating-session/{cr-reference-id}/sessions/{bq-reference-id}:
+    get:
+      tags: 
+      - retrieve
+      summary: "Retrieve customer contact operating session session"
+      operationId: retrieveCustomerContactOperatingSessionServicing
+      produces: 
+      - application/json
+      parameters:
+      - in: path
+        name: cr-reference-id
+        description: "Contact Handling Service Session Reference"
+        type: string
+        required: true
+      - name : bq-reference-id
+        in: path
+        description: "Servicing Session Reference"
+        required: true
+        type: string
+      responses:
+        200:
+          description: "Successfully retrieved contact servicing session"
+          schema:
+            $ref: '#/definitions/ContactHandlerSessionWithIdAndRootResponse'
+            
+  /contact-handler/customer-contact-operating-session/{cr-reference-id}/outbounds/{bq-reference-id}:
+    get:
+      tags: 
+      - retrieve
+      summary: "Retrieve customer contact operating session outbound"
+      operationId: retrieveCustomerContactOperatingSessionOutbound
+      produces: 
+      - application/json
+      parameters:
+      - in: path
+        name: cr-reference-id
+        description: "Contact Handling Service Session Reference"
+        type: string
+        required: true
+      - name : bq-reference-id
+        in: path
+        description: "Outbound Contact Reference"
+        required: true
+        type: string
+      responses:
+        200:
+          description: "Successfully retrieved contact outbound"
+          schema:
+            $ref: '#/definitions/ContactHandlerOutboundWithIdAndRootResponse'
+            
+  /contact-handler/customer-contact-operating-session/{cr-reference-id}/histories/{bq-reference-id}:
+    get:
+      tags: 
+      - retrieve
+      summary: "Retrieve customer contact operating session history"
+      operationId: retrieveCustomerContactOperatingSessionHistory
+      produces: 
+      - application/json
+      parameters:
+      - in: path
+        name: cr-reference-id
+        description: "Customer Contact History Recording Reference"
+        type: string
+        required: true
+      - name : bq-reference-id
+        in: path
+        description: "Customer Contact History Recording Reference"
+        required: true
+        type: string
+      responses:
+        200:
+          description: "Successfully retrieved contact history"
+          schema:
+            $ref: '#/definitions/ContactHandlerHistoryWithIdAndRootResponse'
+
+  /contact-handler/customer-contact-operating-session/{cr-reference-id}/authentications/{bq-reference-id}/requisition:
+    put:
+      tags: 
+      - request
+      summary: "Update contact session customer reauthentication record"
+      operationId: requestCustomerContactOperatingSessionauthenticationUpdate
+      consumes: 
+      - application/json
+      produces: 
+      - application/json
+      parameters:
+      - in: path
+        name: cr-reference-id
+        description: "Contact Handling Service Session Reference"
+        type: string
+        required: true
+      - in: path
+        name: bq-reference-id
+        description: "Customer Contact Authentication Record Reference"
+        type: string
+        required: true
+      - in: body
+        name: body
+        description: "Update contact session customer reauthentication request model"
+        required: true
+        schema:
+          $ref: "#/definitions/ContactHandlerAuthenticationRequest"
+      responses:
+        200:
+          description: "Successfully Updated contact session customer reauthentication record"
+          schema:
+            $ref: '#/definitions/ContactHandlerAuthenticationWithIdAndRootResponse'
+
+  /contact-handler/customer-contact-operating-session/{cr-reference-id}/authentications/requisition:
+    post:
+      tags: 
+      - request
+      summary: "Create contact session customer reauthentication record"
+      operationId: requestCustomerContactOperatingSessionauthenticationCreate
+      consumes: 
+      - application/json
+      produces: 
+      - application/json
+      parameters:
+      - in: path
+        name: cr-reference-id
+        description: "Contact Handling Service Session Reference"
+        type: string
+        required: true
+      - in: body
+        name: body
+        description: "Create contact session customer reauthentication request model"
+        required: true
+        schema:
+          $ref: "#/definitions/ContactHandlerAuthenticationRequest"
+      responses:
+        201:
+          description: "Successfully created contact session customer reauthentication record"
+          schema:
+            $ref: '#/definitions/ContactHandlerAuthenticationWithIdAndRootResponse'
+            
+  /contact-handler/customer-contact-operating-session/{cr-reference-id}/inbounds/execution:
+    post:
+      tags: 
+      - execute
+      summary: "Create a customer contact operating session inbound record"
+      operationId: executeCustomerContactOperatingSessionInboundUpdate
+      consumes: 
+      - application/json
+      produces: 
+      - application/json
+      parameters:
+      - in: path
+        name: cr-reference-id
+        description: "Contact Handling Service Session Reference"
+        type: string
+        required: true
+      - in: body
+        name: body
+        required: true
+        schema:
+          $ref: "#/definitions/ContactHandlerInboundRequest"
+      responses:
+        201:
+          description: "Successfully created customer contact operating session inbound record"
+          schema:
+            $ref: '#/definitions/ContactHandlerInboundWithIdAndRootResponse'
+
+  /contact-handler/customer-contact-operating-session/{cr-reference-id}/inbounds/{bq-reference-id}/execution:
+    put:
+      tags: 
+      - execute
+      summary: "Update customer contact operating session inbound"
+      operationId: executeCustomerContactOperatingSessionInboundCreate
+      consumes: 
+      - application/json
+      produces: 
+      - application/json
+      parameters:
+      - in: path
+        name: cr-reference-id
+        description: "Contact Handling Service Session Reference"
+        type: string
+        required: true
+      - in: path
+        name: bq-reference-id
+        description: "Inbound Contact Reference"
+        type: string
+        required: true
+      - in: body
+        name: body
+        required: true
+        schema:
+          $ref: "#/definitions/ContactHandlerInboundRequest"
+      responses:
+        200:
+          description: "Successfully Updated customer contact operating session inbound"
+          schema:
+            $ref: '#/definitions/ContactHandlerInboundWithIdAndRootResponse'
+            
+  /contact-handler/customer-contact-operating-session/{cr-reference-id}/outbounds/execution:
+    post:
+      tags: 
+      - execute
+      summary: "Create a customer contact operating session outbound record"
+      operationId: executeCustomerContactOperatingSessionOutboundSessionUpdate
+      consumes: 
+      - application/json
+      produces: 
+      - application/json
+      parameters:
+      - in: path
+        name: cr-reference-id
+        description: "Contact Handling Service Session Reference"
+        type: string
+        required: true
+      - in: body
+        name: body
+        required: true
+        schema:
+          $ref: "#/definitions/ContactHandlerOutboundRequest"
+      responses:
+        201:
+          description: "Successfully created customer contact operating session outbound"
+          schema:
+            $ref: '#/definitions/ContactHandlerOutboundWithIdAndRootResponse'
+
+  /contact-handler/customer-contact-operating-session/{cr-reference-id}/outbounds/{bq-reference-id}/execution:
+    put:
+      tags: 
+      - execute
+      summary: "Update customer contact operating session outbound"
+      operationId: executeCustomerContactOperatingSessionOutboundSessionCreate
+      consumes: 
+      - application/json
+      produces: 
+      - application/json
+      parameters:
+      - in: path
+        name: cr-reference-id
+        description: "Contact Handling Service Session Reference"
+        type: string
+        required: true
+      - in: path
+        name: bq-reference-id
+        description: "Outbound Contact Reference"
+        type: string
+        required: true
+      - in: body
+        name: body
+        required: true
+        schema:
+          $ref: "#/definitions/ContactHandlerOutboundRequest"
+      responses:
+        200:
+          description: "Successfully updated customer contact operating session outbound"
+          schema:
+            $ref: '#/definitions/ContactHandlerOutboundWithIdAndRootResponse'
+            
+  /contact-handler/customer-contact-operating-session/{cr-reference-id}/recording:
+    post:
+      tags:
+      - record
+      operationId: customerContactOperatingSessionRecord
+      summary: "Record customer contact operating session"
+      consumes: 
+      - application/json
+      produces: 
+      - application/json
+      parameters:
+      - name : cr-reference-id
+        in: path
+        description: "Contact Handling Service Session Reference"
+        required: true
+        type: string
+      - in: body
+        name: body
+        required: true
+        schema: 
+          $ref: '#/definitions/ContactHandlerRecordRequest'
+      responses:
+        201:
+          description: "Created customer contact operating session"
+          schema:
+            $ref: '#/definitions/ContactHandlerRecordResponse'
+
+definitions:
+
+  ContactHandlerResponse:
+    type: object
+    properties:
+      contactHandlingServiceSessionReference:
+        type: string
+        example: "CHSSR4568"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+          general-info: "refers to the active operational session"
+      contactHandlingServiceConfigurationSetup:
+        type: string
+        example: "Configuration 1"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+          general-info: "supports any dynamic configuration settings"
+      contactHandlingServiceReportType:
+        type: string
+        example: "Type 1"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+          general-info: "maintains session activity statistics"
+      contactHandlingServiceReport:
+        type: object
+        example: "Report content"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+      contactHandlingServiceStatus:
+        type: string
+        example: "Active"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      eBranchOperatingSessionReference:
+        type: string
+        example: "EBROSR88560020024"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+          general-info: "network operating session used to access customer"
+      advancedVoiceServiceOperatingSessionReference:
+        type: string
+        example: "EBVSR76025023045"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+          general-info: "voice network used to access customer"
+
+  ContactHandlerInboundWithIdAndRootResponse:
+    type: object
+    properties:
+      contactHandlingServiceSessionReference:
+        type: string
+        example: "CHSSR4567"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      inboundContactReference:
+        type: string
+        example: "ICR45789"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+          general-info: "reference to the inbound customer contact"
+      customerContactAuthenticationRecordReference:
+        type: string
+        example: "CCARR4785"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      customerContactRoutingSelectionReference:
+        type: string
+        example: "CCRSR4589"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      servicingSessionReference: 
+        type: string
+        example: "SSR78956"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+          general-info: "refers to the session within the contact"
+      eBranchOperatingSessionReference:
+        type: string
+        example: "EBOSR47856"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+          general-info: "network operating session source of customer contact"
+      advancedVoiceServiceOperatingSessionReference:
+        type: string
+        example: "AVSOSR45687"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+          general-info: "voice network source of contact"
+      contactDeviceDetails:
+        type: string
+        example: "URL/ANI-phone number"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+          general-info: "detected device properties"
+      customerReference:
+        type: string
+        example: "CR789654"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      customerMenuSelection:
+        type: string
+        example: "My profile"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      customerServicingRequestRecord:
+        type: object
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+          general-info: "details of servicing resource request if provided"
+      customerContactRecordReference:
+        type: string
+        example: "CCRR7896"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+          general-info: "refers to contact record assembled during contact"
+      customerContactRecord:
+        type: object
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+          general-info: "master record combines listed elements"
+      customerContactRecordCustomerReference:
+        type: string
+        example: "CCRCR8669"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+          general-info: "as provided by customer"
+      customerContactRecordMenuSelection:
+        type: string
+        example: "Profile"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+          general-info: "as indicated by customer when initiating contact"
+      customerContactRecordContactDevice:
+        type: string
+        example: "Mobile"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+          general-info: "as detected by voice or data network operations"
+      customerContactRecordAuthenticationLevel:
+        type: string
+        example: "Level 1"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+          general-info: "as obtained by SD-Contact Handler"
+      customerContactRecordServicingEventRecord:
+        type: object
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+          general-info: "refers to recent servicing activity check by SD-Contact Handler"
+      customerContactRecordContactDialogueRecord:
+        type: object
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+          general-info: "any session records created during the contact"
+      customerContactActivityRecord:
+        type: object
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+          general-info: "records actions performed during contact, including all sessions"
+      customerContactFromTo:
+        type: string
+        example: "2012-12-20 17:25:32 to 2012-12-20 18:01:32"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::DateTime
+          general-info: "start and duration of contact"
+      customerContactResult:
+        type: string
+        example: "Success"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+
+  ContactHandlerAuthenticationWithIdAndRootResponse:
+    type: object
+    properties:
+      contactHandlingServiceSessionReference:
+        type: string
+        example: "CHSSR4568"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      customerContactAuthenticationRecordReference:
+        type: string
+        example: "CCARR5896"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      inboundContactReference:
+        type: string
+        example: "IBCR7895"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+          general-info: "reference to the inbound customer contact"
+      outboundContactReference:
+        type: string
+        example: "OBCR7895"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+          general-info: "reference to the outbound customer contact"
+      customerContactAuthenticationRecord:
+        type: object
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+          general-info: "Record generated by authetication task"
+      contactReference:
+        type: string
+        example: "456987987"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+          general-info: "active contact log"
+      customerContactAuthenticationLevel:
+        type: string
+        example: "Level 1"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+          general-info: "increased authentication level requested - SD-Party Authentication will handle additional authentication dialogue with customer"
+      customerContactRecord:
+        type: object
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+          general-info: "contains consolidated contact details to support authentiction processing"
+
+  ContactHandlerRoutingWithIdAndRootResponse:
+    type: object
+    properties:
+      contactHandlingServiceSessionReference:
+        type: string
+        example: "CHSSR458"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      customerContactRoutingSelectionReference:
+        type: string
+        example: "CCRSR6985"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      customerContactRoutingRecord:
+        type: object
+        example: "Route 1"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+      customerContactRecord:
+        type: object
+        example: "Record 1"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+          general-info: "contains consolidated contact details to drive routing decision to best resource"
+      servicingPositionReference:
+        type: string
+        example: "SPR47856"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+          general-info: "Where to route the contact for servicing session"
+      servicingResourceReference:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+          general-info: "expected servicing resource that will handle the servicing session"
+        example: "SRR78562"
+
+  ContactHandlerSessionWithIdAndRootResponse:
+    type: object
+    properties:
+      contactHandlingServiceSessionReference:
+        type: string
+        example: "CHSSR7856"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+          general-info: "refers to the active operational session"
+      servicingSessionReference:
+        type: string
+        example: "SSR785465"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+          general-info: "refers to the session within the contact"
+      inboundContactReference:
+        type: string
+        example: "ICR47856"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+          general-info: "reference to the inbound customer contact that the session is contained within"
+      customerServicingRequestRecord:
+        type: object
+        example: "Record 1"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+          general-info: "details of servicing resource request if provided"
+      customerContactRecord:
+        type: object
+        example: "Record 1"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+          general-info: "contains consolidated contact details assembled during contact - used to generate servicing screen pop"
+      servicingPositionReference:
+        type: string
+        example: "SPR48582"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+          general-info: "assigned servicing position"
+      servicingResourceReference:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+          general-info: "assigned servicing resource if assisted"
+        example: "SRR589623"
+      customerContactDialogueRecordReference:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+          general-info: "points to record of the session"
+        example: "CCDRR5459"
+      customerContactDialogueRecord:
+        type: object
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+          general-info: "log of actions or information assembled during the session"
+      customerServicingSessionFromTo:
+        type: string
+        example: "2012-12-20 17:25:32 to 2012-12-20 18:01:32"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::DateTime
+          general-info: "duration of servicing session within the contact"
+      customerServicingSessionResult:
+        type: string
+        example: "Success"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+
+  ContactHandlerOutboundWithIdAndRootResponse:
+    type: object
+    properties:
+      contactHandlingServiceSessionReference:
+        type: string
+        example: "CHSSR8685"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+          general-info: "refers to the active operational session"
+      outboundContactReference:
+        type: string
+        example: "OCR58963"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+          general-info: "reference to the inbound customer contact that the session is contained within"
+      servicingPositionReference:
+        type: string
+        example: "SPR47856"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+          general-info: "Source of outbound contact request"
+      servicingResourceReference:
+        type: string
+        example: "SRR78142"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+          general-info: "servicing resource initiating contact"
+      eBranchOperatingSessionReference:
+        type: string
+        example: "EBOSR7854"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+          general-info: "network operating session used to access customer"
+      eBranchOperatingSessionConnectionRecord:
+        type: object
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+          general-info: "details of the connection provided"
+      advancedVoiceServiceOperatingSessionReference:
+        type: string
+        example: "AVSOSR485"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+          general-info: "voice network used to contact customer"
+      advancedVoiceServiceOperatingSessionConnectionRecord:
+        type: object
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+          general-info: "details of the connection provided"
+      customerContactRecordReference:
+        type: string
+        example: "CCRR4862"
+      customerContactRecord:
+        type: object
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+          general-info: "contact record created to cover outbound contact"
+      customerContactDialogueRecordReference:
+        type: string
+        example: "CCDRR4782"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+          general-info: "points to record of the outbound session"
+      customerContactDialogueRecord:
+        type: object
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+          general-info: "log of actions/information assembled during the session"
+      customerServicingSessionFromTo:
+        type: string
+        example: "2012-12-20 17:25:32 to 2012-12-20 18:01:32"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::DateTime
+          general-info: "duration of servicing session within the contact"
+      customerServicingSessionResult:
+        type: string
+        example: "Success"
+
+  ContactHandlerHistoryWithIdAndRootResponse:
+    type: object
+    properties:
+      contactHandlingServiceSessionReference:
+        type: string
+        example: "CHSSR7852"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+          general-info: "refers to the active operational session"
+      customerContactHistoryRecordingReference:
+        type: string
+        example: "CCHRR4785"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+          general-info: "refers to the history recording event"
+      inboundContactReference:
+        type: string
+        example: "IBCR47826"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+          general-info: "reference to the inbound customer contact"
+      outboundContactReference:
+        type: string
+        example: "OBCR475263"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+          general-info: "reference to the outbound customer contact"
+      customerReference:
+        type: string
+        example: "CR525824"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      customerContactRecordReference:
+        type: string
+        example: "CCRR75233"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      customerContactRecord:
+        type: object
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+          general-info: "Master record combines  all covered activities in the contact"
+      customerContactActivityRecord:
+        type: object
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+          general-info: "Records actions performed during contact, including all sessions"
+      customerContactStartEndDate:
+        type: string
+        example: "2012-12-20 17:25:32 47ms"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::DateTime
+          general-info: "start and duraction of the contact"
+      customerContactResult:
+        type: string
+        example: "Success"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      channelActivityHistoryRecordReference:
+        type: string
+        example: "CAHRR71136"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+          general-info: "Returned by the SD-Channel Activity History"
+  
+  ContactHandlerAuthenticationRequest:
+    type: object
+    properties:
+      inboundContactReference:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+          general-info: "reference to the inbound customer contact"
+      outboundContactReference:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+          general-info: "reference to the outbound customer contact"
+      customerContactAuthenticationRecord:
+        type: object
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+          general-info: "Record generated by authetication task"
+      contactReference:
+        type: string
+        example: "CCAR45896"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+          general-info: "active contact log"
+      customerContactAuthenticationLevel:
+        type: string
+        example: "Level 1"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+          general-info: "increased authentication level requested - SD-Party Authentication will handle additional authentication dialogue with customer"
+      customerContactRecord:
+        type: object
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+          general-info: "contains consolidated contact details to support authentiction processing"
+
+  ContactHandlerInboundRequest:
+    type: object
+    properties:
+      customerContactAuthenticationRecordReference:
+        type: string
+        example: "CCARR4785"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      customerContactRoutingSelectionReference:
+        type: string
+        example: "CCRSR4589"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      servicingSessionReference: 
+        type: string
+        example: "SSR78956"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+          general-info: "refers to the session within the contact"
+      eBranchOperatingSessionReference:
+        type: string
+        example: "EBOSR47856"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+          general-info: "network operating session source of customer contact"
+      advancedVoiceServiceOperatingSessionReference:
+        type: string
+        example: "AVSOSR45687"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+          general-info: "voice network source of contact"
+      contactDeviceDetails:
+        type: string
+        example: "URL/ANI-phone number"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+          general-info: "detected device properties"
+      customerReference:
+        type: string
+        example: "CR789654"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      customerMenuSelection:
+        type: string
+        example: "My profile"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      customerServicingRequestRecord:
+        type: object
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+          general-info: "details of servicing resource request if provided"
+      customerContactRecordReference:
+        type: string
+        example: "CCRR7896"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+          general-info: "refers to contact record assembled during contact"
+      customerContactRecord:
+        type: object
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+          general-info: "master record combines listed elements"
+      customerContactRecordCustomerReference:
+        type: string
+        example: "CCRCR8669"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+          general-info: "as provided by customer"
+      customerContactRecordMenuSelection:
+        type: string
+        example: "Profile"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+          general-info: "as indicated by customer when initiating contact"
+      customerContactRecordContactDevice:
+        type: string
+        example: "Mobile"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+          general-info: "as detected by voice or data network operations"
+      customerContactRecordAuthenticationLevel:
+        type: string
+        example: "Level 1"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+          general-info: "as obtained by SD-Contact Handler"
+      customerContactRecordServicingEventRecord:
+        type: object
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+          general-info: "refers to recent servicing activity check by SD-Contact Handler"
+      customerContactRecordContactDialogueRecord:
+        type: object
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+          general-info: "any session records created during the contact"
+      customerContactActivityRecord:
+        type: object
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+          general-info: "records actions performed during contact, including all sessions"
+      customerContactFromTo:
+        type: string
+        example: "2012-12-20 17:25:32 to 2012-12-20 18:01:32"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::DateTime
+          general-info: "start and duration of contact"
+      customerContactResult:
+        type: string
+        example: "Success"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+  
+  ContactHandlerOutboundRequest:
+    type: object
+    properties:
+      servicingPositionReference:
+        type: string
+        example: "SPR47856"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+          general-info: "Source of outbound contact request"
+      servicingResourceReference:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+          general-info: "servicing resource initiating contact"
+        example: "SRR78142"
+      eBranchOperatingSessionReference:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+          general-info: "network operating session used to access customer"
+        example: "EBOSR7854"
+      eBranchOperatingSessionConnectionRecord:
+        type: string
+        example: "Session 1"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+          general-info: "details of the connection provided"
+      advancedVoiceServiceOperatingSessionReference:
+        type: string
+        example: "AVSOSR485"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+          general-info: "voice network used to contact customer"
+      advancedVoiceServiceOperatingSessionConnectionRecord:
+        type: object
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+          general-info: "details of the connection provided"
+      customerContactRecordReference:
+        type: string
+        example: CCRR4862
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      customerContactRecord:
+        type: object
+        example: "Record 1"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+          general-info: "contact record created to cover outbound contact"
+      customerContactDialogueRecordReference:
+        type: string
+        example: "CCDRR4782"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+          general-info: "points to record of the outbound session"
+      customerContactDialogueRecord:
+        type: object
+        example: "send contact message"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+          general-info: "log of actions/information assembled during the session"
+      customerServicingSessionFromTo:
+        type: string
+        example: "2012-12-20 17:25:32 47ms"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::DateTime
+          general-info: "duration of servicing session within the contact"
+      customerServicingSessionResult:
+        type: string
+        example: "Success"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+
+  ContactHandlerRecordRequest:
+    type: object
+    properties:
+      recordingRecordType:
+        type: string
+        example: "Behavior model performance feedback"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      recordingRecord:
+        type: object
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+      recordingRecordDateTime:
+        type: string
+        example: "2012-12-20T17:25:32"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::DateTime
+      empolyeeBusinessUnitReference:
+        type: string
+        example: "456321987"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+          general-info: "Employee or unit assigned to the servicing position"
+
+  ContactHandlerRecordResponse:
+    type: object
+    properties:
+      recordingRecordReference:
+        type: string
+        example: "RR789456321"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      recordingRecordStatus:
+        type: string
+        example: "APPLIED"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text

@@ -1,0 +1,688 @@
+swagger: '2.0'
+info:
+  version: "4.0.0"
+  title: 'Service Domain - Contact Routing'
+  description: >
+        ## Description: 
+      
+        The Contact Routing service domain tracks servicing resource availability and uses any known details about the customer contact (e.g. identity, indicated purpose of call, status of the relationship) to make an optimal routing decision. The routing selection may include matching the required product knowledge/skills to the available servicing resources.
+
+        ## Example of use:
+        
+        A high value customer contacts the bank. They have been flagged as a sales prospect and so are routed to the next available rep that is registered as being skilled in the specific product of interest and also experienced in sales
+        
+        ## General comment:
+        
+        Contact Routing is called from Contact Management to identify the next available and most suited servicing resource to handle a servicing session within an active customer contact. Selection is optimized to leverage of specialized/qualified servicing resources based on any known details about the customer and the purpose of their contact with the bank.
+
+# Added by API Auto Mocking Plugin
+host: virtserver.swaggerhub.com
+basePath: /BIAN/sd-contact-routing/4.0.0
+schemes:
+ - https
+
+paths:
+
+  /contact-routing/customer-servicing-resource-allocation:
+    get:
+      tags: 
+      - retrieve
+      summary: "Retrieve customer Servicing Resource Allocation Reference Ids available within the service domain" 
+      operationId: retrieveCustomerServicingResourceAllocationIds
+      produces: 
+      - application/json
+      parameters:
+      - name : collection-filter
+        in: query
+        description: Filter to refine the result set. ex- "servicingSessionReference== 'SSR456124481'"
+        type: string
+      responses:
+        200:
+          description: "successful"
+          schema:
+            type: array
+            items:
+              type: string
+            example: ['SRAR123', 'SRAR345']
+  
+  /contact-routing/customer-servicing-resource-allocation/behavior-qualifiers:
+    get:
+      tags: 
+      - retrieve
+      summary: "Retrieve all behaviour qualifier names in the contact routing service domain"
+      operationId: retrieveCustomerServicingResourceAllocationBqNames
+      produces: 
+      - application/json
+      responses:
+        200:
+          description: "successful"
+          schema:
+            type: array
+            items:
+              type: string
+            example: ['roundrobin', 'qualification', 'reservation'] 
+
+  /contact-routing/customer-servicing-resource-allocation/{cr-reference-id}/{behavior-qualifier}:
+    get:
+      tags: 
+      - retrieve
+      summary: "Retrieve behaviour qualifier Reference Ids of the given Behavior Qualifier"
+      operationId: retrieveCustomerServicingResourceAllocationBqIds
+      produces: 
+      - application/json
+      parameters:
+      - in: path
+        name: cr-reference-id
+        description:  Servicing Resource Allocation Reference
+        type: string
+        required: true
+      - name : behavior-qualifier
+        in: path
+        description: "Behavior Qualifier Name. ex- 'qualification'"
+        required: true
+        type: string
+      - name : collection-filter
+        in: query
+        description: "Filter to refine the result set. ex- 'servicingSessionReference == 'SSR456124481'"
+        type: string
+      responses:
+        200:
+          description: "successful"
+          schema:
+            type: array
+            items:
+              type: string
+            example: ['QRAR345', 'QRAR789'] 
+
+  /contact-routing/customer-servicing-resource-allocation/{cr-reference-id}:
+    get:
+      tags: 
+      - retrieve
+      summary: "Retrieve customer servicing resource allocation master control record data"
+      operationId: retrieveCustomerServicingResourceAllocation
+      produces: 
+      - application/json
+      parameters:
+      - in: path
+        name: cr-reference-id
+        description:  Servicing Resource Allocation Reference 
+        type: string
+        required: true
+      responses:
+        200:
+          description: "Successfully retrieved customer servicing resource allocation"
+          schema:
+            $ref: '#/definitions/ContactRoutingResponse'
+
+  /contact-routing/customer-servicing-resource-allocation/{cr-reference-id}/rounds-robins/{bq-reference-id}:
+    get:
+      tags: 
+      - retrieve
+      summary: "Retrieve customer servicing resource round robin allocation record"
+      operationId: retrieveCustomerServicingResourceAllocationRoundRobin
+      produces: 
+      - application/json
+      parameters:
+      - in: path
+        name: cr-reference-id
+        description:  Servicing Resource Allocation Reference
+        type: string
+        required: true
+      - in: path
+        type: string
+        required: true
+        name: bq-reference-id
+        description: Round Robin Servicing Resource Assignment Request Reference
+      responses:
+        200:
+          description: "Successfully retrieved customer servicing resource round robin allocation record"
+          schema:
+            $ref: '#/definitions/ContactRoutingRoundRobinWithIdAndRootResponse'
+
+  /contact-routing/customer-servicing-resource-allocation/{cr-reference-id}/qualifications/{bq-reference-id}:
+    get:
+      tags: 
+      - retrieve
+      summary: "Retrieve customer servicing resource allocation qualifications"
+      operationId: retrieveCustomerServicingResourceAllocationQualification
+      produces: 
+      - application/json
+      parameters:
+      - in: path
+        name: cr-reference-id
+        description:  Servicing Resource Allocation Reference 
+        type: string
+        required: true
+      - in: path
+        type: string
+        required: true
+        name: bq-reference-id
+        description: Qualification Servicing Resource Assignment Request Reference
+      responses:
+        200:
+          description: "Successfully retrieved customer servicing resource allocation qualifications"
+          schema:
+            $ref: '#/definitions/ContactRoutingQualificationWithIdAndRootResponse'
+
+  /contact-routing/customer-servicing-resource-allocation/{cr-reference-id}/reservations/{bq-reference-id}:
+    get:
+      tags: 
+      - retrieve
+      summary: "Retrieve customer servicing resource allocation reservations"
+      operationId: retrieveCustomerServicingResourceAllocationReservation
+      produces: 
+      - application/json
+      parameters:
+      - in: path
+        name: cr-reference-id
+        description:  Servicing Resource Allocation Reference
+        type: string
+        required: true
+      - in: path
+        type: string
+        required: true
+        name: bq-reference-id
+        description: Servicing Resource Reservation Request Reference
+      responses:
+        200:
+          description: "Successfully retrieved customer servicing resource allocation reservations"
+          schema:
+            $ref: '#/definitions/ContactRoutingReservationWithIdAndRootResponse'
+
+  /contact-routing/customer-servicing-resource-allocation/{cr-reference-id}/rounds-robins/provision:
+    post:
+      tags: 
+      - provide
+      summary: "Create customer servicing resource round robin allocation record"
+      operationId: provideCustomerServicingResourceAllocationRoundRobin
+      consumes:
+      - application/json
+      produces: 
+      - application/json
+      parameters:
+      - in: path
+        name: cr-reference-id
+        description:  Servicing Resource Allocation Reference 
+        type: string
+        required: true
+      - in: body
+        name: body
+        description: "Contact Routing Round Robin Servicing Request Data"
+        required: true
+        schema:
+          $ref: "#/definitions/ContactRoutingRoundRobinProvideRequest"
+      responses:
+        201:
+          description: "Created customer servicing resource allocation round robin successfully"
+          schema:
+            $ref: '#/definitions/ContactRoutingRoundRobinProvideResponse'
+
+  /contact-routing/customer-servicing-resource-allocation/{cr-reference-id}/qualifications/provision:
+    post:
+      tags: 
+      - provide
+      summary: "Create customer servicing resource allocation qualifications record"
+      operationId: provideCustomerServicingResourceAllocationQualification
+      consumes:
+      - application/json
+      produces: 
+      - application/json
+      parameters:
+      - in: path
+        name: cr-reference-id
+        description:  Servicing Resource Allocation Reference
+        type: string
+        required: true
+      - in: body
+        name: body
+        description: "Contact routing resource allocation qualifications request data"
+        required: true
+        schema:
+          $ref: "#/definitions/ContactRoutingQualificationProvideRequest"
+      responses:
+        201:
+          description: "Created customer servicing resource allocation qualifications successfully"
+          schema:
+            $ref: '#/definitions/ContactRoutingQualificationProvideResponse'
+
+  /contact-routing/customer-servicing-resource-allocation/{cr-reference-id}/reservations/provision:
+    post:
+      tags: 
+      - provide
+      summary: "Create customer servicing resource allocation reservations record"
+      operationId: provideCustomerServicingResourceAllocationReservation
+      consumes:
+      - application/json
+      produces: 
+      - application/json
+      parameters:
+      - in: path
+        name: cr-reference-id
+        description:  Servicing Resource Allocation Reference
+        type: string
+        required: true
+      - in: body
+        name: body
+        description: "Contact routing resource allocation reservations data"
+        required: true
+        schema:
+          $ref: "#/definitions/ContactRoutingReservationProvideRequest"
+      responses:
+        201:
+          description: "Created customer servicing resource allocation reservations successfully"
+          schema:
+            $ref: '#/definitions/ContactRoutingReservationProvideResponse'
+
+  /contact-routing/customer-servicing-resource-allocation/{cr-reference-id}/recording:
+    post:
+      tags: 
+      - record
+      summary: "Record customer servicing resource allocation"
+      operationId: recordCustomerServicingResourceAllocation
+      produces: 
+      - application/json
+      parameters:
+      - in: path
+        name: cr-reference-id
+        description:  Servicing Resource Allocation Reference
+        type: string
+        required: true
+      - in: body
+        name: body
+        description: Contact routing record data
+        required: true
+        schema:
+          $ref: "#/definitions/ContactRoutingRecordRequest"
+      responses:
+        201:
+          description: "Created customer Servicing Resource Allocation Referenceing"
+          schema:
+            $ref: '#/definitions/ContactRoutingRecordResponse'
+
+definitions:
+
+  ContactRoutingResponse:
+    type: object
+    properties:
+      servicingResourceAllocationReference:
+        type: string
+        example: "SRAR5689"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      servicingResourceReference:
+        type: string
+        example: "SRR12456"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+          general-info: "refers to resource"
+      servicingResourceQualificationProfile:
+        type: string
+        example: "New document"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+          general-info: "details qualification or expertise of a resource"
+      servicingPositionReference:
+        type: string
+        example: "SPR78925"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+          general-info: "assigned servicing position for the resource"
+      servicingResourceSchedule:
+        type: string
+        example: "09:00:00 to 18:00:00"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+          general-info: "details the time resources are available from until"
+      servicingResourceStatus:
+        type: string
+        example: "Active"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+          general-info: "current status indicates availability for assignment"
+      servicingSessionReference:
+        type: string
+        example: "SSR47896"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+          general-info: "refers to a servicing session assignment made to a resource"
+
+  ContactRoutingRoundRobinWithIdAndRootResponse:
+    type: object
+    properties:
+      servicingResourceAllocationReference:
+        type: string
+        example: "SRAR47856"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      roundRobinServicingResourceAssignmentRequestReference:
+        type: string
+        example: "RSRA7412"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      customerRoundRobinServicingRequestRecord:
+        type: object
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+          general-info: "details of servicing resource request"
+      servicingPositionReference:
+        type: string
+        example: "SPR78562"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+          general-info: "assigned servicing position - next available resource"
+      servicingResourceReference:
+        type: string
+        example: "SRR47896"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+          general-info: "assigned servicing resource if assisted"
+      servicingSessionReference:
+        type: string
+        example: "SSR26547"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+          general-info: "refers to the session within the contact"
+
+  ContactRoutingQualificationWithIdAndRootResponse:
+    type: object
+    properties:
+      servicingResourceAllocationReference:
+        type: string
+        example: "SRAR7451"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      qualificationServicingResourceAssignmentRequestReference:
+        type: string
+        example: "QSRA3658"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      customerQuaificationServicingRequestRecord:
+        type: object
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+          general-info: "details of servicing resource request"
+      customerContactRecord:
+        type: object
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+          general-info: "contains consolidated contact details assembled during contact - used to select best qualified resource"
+      servicingPositionReference:
+        type: string
+        example: "SPR78456"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+          general-info: "assigned servicing position"
+      servicingResourceReference:
+        type: string
+        example: "SRR78456"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+          general-info: "assigned servicing resource if assisted"
+      servicingSessionReference:
+        type: string
+        example: "SSR7846"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+          general-info: "refers to the session within the contact" 
+
+  ContactRoutingReservationWithIdAndRootResponse:
+    type: object
+    properties:
+      servicingResourceAllocationReference:
+        type: string
+        example: "SRAR74568"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      servicingResourceReservationRequestReference:
+        type: string
+        example: "SRRR8762"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      servicingResourceReservationRecord:
+        type: object
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+          general-info: "details the reservation requirements"
+      servicingResourceAllocationServiceSchedule:
+        type: string
+        example: allocation schedule
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      servicingResourceReference:
+        type: string
+        example: "SRR78469"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+          general-info: "refers to resource"
+      servicingResourceQualificationProfile:
+        type: string
+        example: "Profile 1"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+          general-info: "details qualification or expertise of a resource"
+      servicingResourceSchedule:
+        type: string
+        example: "2012-12-20T17:25:32"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+          general-info: "details the time resources are available from until - updated to reflect booking"
+
+  ContactRoutingRoundRobinProvideRequest:
+    type: object
+    properties:
+      customerRoundRobinServicingRequestRecord:
+        type: object
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+          general-info: "details of servicing resource request"
+      servicingSessionReference:
+        type: string
+        example: "SSR69875"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+          general-info: "refers to the session within the contact"
+
+  ContactRoutingRoundRobinProvideResponse:
+    type: object
+    properties:
+      servicingResourceAllocationReference:
+        type: string
+        example: "SRAR47856"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      roundRobinServicingResourceAssignmentRequestReference:
+        type: string
+        example: "RSRA7412"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      servicingPositionReference:
+        type: string
+        example: "SPR78562"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+          general-info: "assigned servicing position - next available resource"
+      servicingResourceReference:
+        type: string
+        example: "SRR47896"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+          general-info: "assigned servicing resource if assisted"
+
+  ContactRoutingQualificationProvideRequest:
+    type: object
+    properties:
+      customerQualificationServicingRequestRecord:
+        type: object
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+          general-info: "details of servicing resource request"
+      servicingSessionReference:
+        type: string
+        example: "SSR36958"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+          general-info: "refers to the session within the contact" 
+
+  ContactRoutingQualificationProvideResponse:
+    type: object
+    properties:
+      servicingResourceAllocationReference:
+        type: string
+        example: "SRAR7451"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      qualificationServicingResourceAssignmentRequestReference:
+        type: string
+        example: "QSRA3658"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      customerContactRecord:
+        type: object
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+          general-info: "contains consolidated contact details assembled during contact - used to select best qualified resource"
+      servicingPositionReference:
+        type: string
+        example: "SPR78456"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+          general-info: "assigned servicing position"
+      servicingResourceReference:
+        type: string
+        example: "SRR78456"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+          general-info: "assigned servicing resource if assisted"
+        
+  ContactRoutingReservationProvideRequest:
+    type: object
+    properties:
+      servicingResourceReservationRecord:
+        type: object
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+          general-info: "details the reservation requirements"
+      servicingResourceAllocationServiceSchedule:
+        type: string
+        example: "Reservation service"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      servicingResourceReference:
+        type: string
+        example: "SRR98756"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+          general-info: "refers to resource"
+      servicingResourceQualificationProfile:
+        type: string
+        example: "Profile 1"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+          general-info: "details qualification or expertise of a resource"
+
+  ContactRoutingReservationProvideResponse:
+    type: object
+    properties:
+      servicingResourceAllocationReference:
+        type: string
+        example: "SRAR74568"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      servicingResourceReservationRequestReference:
+        type: string
+        example: "SRRR8762"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      servicingResourceSchedule:
+        type: string
+        example: "2012-12-20T17:25:32"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+          general-info: "details the time resources are available from until - updated to reflect booking"
+
+  ContactRoutingRecordRequest:
+    type: object
+    properties:
+      servicingResourceReference: 
+        type: string
+        example: "SRR4589"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+          general-info: "refers to resource"
+      servicingResourceStatus: 
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+          general-info: "details current availability for servicing"
+      servicingSessionReference: 
+        type: string
+        example: "SSR45689"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+          general-info: "refers to the last completed servicing session assignment"
+        
+  ContactRoutingRecordResponse:
+    type: object
+    properties:
+      recordingRecordReference:
+        type: string
+        example: "RRR39456"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      recordingRecordStatus:
+        type: string
+        example: "Applied"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text

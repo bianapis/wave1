@@ -1,0 +1,1031 @@
+swagger: '2.0'
+info:
+  version: "4.0.0"
+  title: 'Service Domain - Open Item Management'
+  description: >
+        ## Description: 
+      
+        This service domain provides a service for handling the resolution of open items against accounts (such as overdue loan payments).
+        
+        ## Example of use:
+        
+        Open items are cleared against an active loan facility.
+        
+        ## General comment:
+        
+        This service domain handles open item processing against accounts typically for loans. It enables a unit to handle resolution across multiple accounts as a specialized/centralized administrative activity.
+
+host: "virtserver.swaggerhub.com"
+basePath: "/BIAN/sd-open-item-management/4.0.0"
+schemes:
+- "https"
+paths: 
+  /open-item-management/open-item-procedure/{cr-reference-id}/updation:
+    put:
+      tags: 
+      - update
+      operationId: updateOpenItemProcedure
+      summary: Update an existing item
+      produces: 
+      - application/json
+      parameters: 
+      - name : cr-reference-id
+        in: path
+        description: Open Item Reference
+        required: true
+        type: string
+      - in: body
+        name: body
+        description: Update control record request payload
+        required: true
+        schema: 
+          $ref: '#/definitions/OpenItemProcedureUpdateBase'
+      responses:
+        200:
+          description: Successfully updated
+          schema: 
+            $ref: '#/definitions/OpenItemProcedureUpdateBaseWithIdAndRoot'
+  
+  /open-item-management/open-item-procedure/{cr-reference-id}/recording:
+    post:
+      tags: 
+      - record
+      operationId: recordOpenItemProcedure
+      summary: 'Record feedback'
+      produces: 
+      - application/json
+      parameters:
+      - name : cr-reference-id
+        in: path
+        description: Open Item Reference
+        required: true
+        type: string
+      - in: body
+        name: body
+        description: Record control record request payload
+        required: true
+        schema: 
+          $ref: '#/definitions/OpenItemRecordRequest'
+      responses:
+        201:
+          description: A new record is created
+          schema:
+            $ref: '#/definitions/OpenItemRecordResponse'
+    
+  /open-item-management/open-item-procedure/{cr-reference-id}/execution: 
+    put:
+      tags: 
+      - execute
+      operationId: executeOpenItemProcedureUpdate
+      summary: Executes an Open Item 
+      description: Update an existing Open Item
+      produces: 
+      - application/json
+      parameters:
+      - name : cr-reference-id
+        in: path
+        description: Open Item Reference
+        required: true
+        type: string
+      - in: body
+        name: body
+        description: Execute Open Item request payload
+        required: true
+        schema: 
+          $ref: '#/definitions/OpenItemProcedureBase'
+      
+      responses:
+        200:
+          description: Updated successfully
+          schema:
+            $ref: '#/definitions/OpenItemProcedureBaseWithIdAndRoot'
+  
+  /open-item-management/open-item-procedure/execution: 
+    post:
+      tags: 
+      - execute
+      operationId: executeOpenItemProcedureCreate
+      summary: Executes an Open Item
+      description: Create a new Open Item
+      produces: 
+      - application/json
+      parameters: 
+      - in: body  
+        name: body
+        description: Execute Open Item request payload
+        required: true
+        schema: 
+          $ref: '#/definitions/OpenItemProcedureBase'
+      responses:
+        201:
+          description: Created successfully
+          schema:
+            $ref: '#/definitions/OpenItemProcedureBaseWithIdAndRoot'
+
+  /open-item-management/open-item-procedure/{cr-reference-id}/requisition: 
+    put:
+      tags: 
+      - request
+      operationId: requestOpenItemProcedureUpdate 
+      summary: Requests an Open Item 
+      description: Update an existing Open Item
+      produces: 
+      - application/json
+      parameters:
+      - name : cr-reference-id
+        in: path
+        description: Open Item Reference
+        required: true
+        type: string
+      - in: body
+        name: body
+        description: Request Open Item request payload
+        required: true
+        schema: 
+          $ref: '#/definitions/OpenItemTrackingBase'
+      
+      responses:
+        200:
+          description: Updated successfully
+          schema:
+            $ref: '#/definitions/OpenItemTrackingBaseWIthIds'
+  
+  /open-item-management/open-item-procedure/requisition: 
+    post:
+      tags: 
+      - request
+      operationId: requestOpenItemProcedureCreate
+      summary: Requests an Open Item
+      description: Create a new Open Item
+      produces: 
+      - application/json
+      parameters: 
+      - in: body  
+        name: body
+        description: Request Open Item request payload
+        required: true
+        schema: 
+          $ref: '#/definitions/OpenItemTrackingBase' 
+      responses:
+        201:
+          description: Created successfully
+          schema:
+            $ref: '#/definitions/OpenItemTrackingBaseWIthIds'
+  
+  /open-item-management/open-item-procedure/:
+    get:
+      tags: 
+      - retrieve
+      summary: Retrieve Control Record Ids
+      operationId: retrieveOpenItemProcedureReferenceIds
+      produces: 
+      - application/json
+      parameters:
+      - name: collection-filter
+        in: query
+        description: Filter to refine the result set. ex- 'openItemType = type-1'
+        required: false
+        type: string
+      responses:
+        200:
+          description: Successfully retrieved control record Ids
+          schema:
+            type: array
+            items:
+              type: string
+            example:
+            - OIR878912
+            - OIR374832
+            
+  /open-item-management/open-item-procedure/behavior-qualifiers/:
+    get:
+      tags: 
+      - retrieve
+      operationId: retrieveOpenItemProcedureBehaviorQualifiers
+      summary: Retrieve all Behavior Qualifier. 
+      produces: 
+      - application/json
+      responses:
+        200:
+          description: Successfully retrieved all BQ names
+          schema:
+            type: array
+            items:
+              type: string
+            example:
+            - update
+            - tracking
+            - record
+            
+  /open-item-management/open-item-procedure/{cr-reference-id}/{behavior-qualifier}:
+    get:
+      tags: 
+      - retrieve
+      operationId: retrieveBehaviorQualifierReferenceIds
+      summary: Retrieve Behavior Qualifier Reference Ids
+      produces: 
+      - application/json
+      parameters:
+      - name: cr-reference-id
+        in: path
+        description: Open Item Reference
+        required: true
+        type: string
+      - name: behavior-qualifier
+        in: path
+        description: Behavior Qualifier Name. ex- tracking
+        required: true
+        type: string
+      - name: collection-filter
+        in: query
+        description: Filter to refine the result set. ex- 'Billing Amount = $500'
+        required: false
+        type: string
+      responses:
+        200:
+          description: Successfully retrieved BQ ref Ids.
+          schema:
+            type: array
+            items:
+              type: string
+            example:
+            - DEP345
+            - DEP789
+            - DEP456
+  
+  /open-item-management/open-item-procedure/{cr-reference-id}/:
+    get:
+      tags: 
+      - retrieve
+      operationId: retrieveOpenItemProcedure
+      summary: Retrieve Master Control Record
+      produces:
+      - application/json
+      parameters:
+      - name: cr-reference-id
+        in: path
+        description: Open Item Reference
+        required: true
+        type: string
+      responses:
+        200:
+          description: Successfully retrieved master control record.
+          schema:
+            $ref: '#/definitions/OpenItemProcedureBaseWithIdAndRoot'
+  
+  /open-item-management/open-item-procedure/{cr-reference-id}/updates/{bq-reference-id}:
+    get:
+      tags: 
+      - retrieve
+      operationId: retrieveOpenItemProcedureUpdate
+      summary: Retrieve Update Behaviour Qualifier.
+      produces:
+      - application/json
+      parameters:
+      - name: cr-reference-id
+        in: path
+        description: Open Item Reference
+        required: true
+        type: string
+      - name: bq-reference-id
+        in: path
+        description: Open Item Update Reference
+        required: true
+        type: string
+      responses:
+        200:
+          description: Successfully retrieved Update BQ attributes along with root attrinutes
+          schema:
+            $ref: '#/definitions/OpenItemProcedureUpdateBaseWithIdAndRoot'
+    
+  /open-item-management/open-item-procedure/{cr-reference-id}/trackings/{bq-reference-id}:
+    get:
+      tags: 
+      - retrieve
+      operationId: retrieveOpenItemProcedureTracking
+      summary: Retrieve Tracking Behaviour Qualifier
+      produces:
+      - application/json
+      parameters:
+      - name: cr-reference-id
+        in: path
+        description: Open Item Reference
+        required: true
+        type: string
+      - name: bq-reference-id
+        in: path
+        description: Open Item Tracking Reference
+        required: true
+        type: string
+      responses:
+        200:
+          description: Successfully retrieved track BQ attrinutes along with root attributes
+          schema:
+            $ref: '#/definitions/OpenItemTrackingBaseWIthIds'
+  
+  /open-item-management/open-item-procedure/{cr-reference-id}/records/{bq-reference-id}:
+    get:
+      tags: 
+      - retrieve
+      operationId: retrieveOpenItemRecordProcedure
+      summary: Retrieve Record Behaviour Qualifier attributes.
+      produces:
+      - application/json
+      parameters:
+      - name: cr-reference-id
+        in: path
+        description: Open Item Reference
+        required: true
+        type: string
+      - name: bq-reference-id
+        in: path
+        description: Open Item Record Reference
+        required: true
+        type: string
+      responses:
+        200:
+          description: Successful
+          schema:
+            $ref: '#/definitions/OpenItemRecordBaseWithIdAndRoot'
+
+definitions:
+  OpenItemProcedureBase: 
+    type: object
+    properties: 
+      openItemType: 
+        type: string
+        example: Accounts Receivables
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text    
+      openItemDescription: 
+        type: string
+        example: Bank Accounts
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text    
+      productInstanceReference: 
+        type: string
+        example: PRIR5859   
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier    
+      partyReference: 
+        type: string
+        example: PRRE9404    
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier    
+      loanRepaymentSchedule: 
+        type: string
+        example: 12Months
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::DateTime    
+      loanOutstandingBalance: 
+        type: string
+        example: $500000    
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Amount    
+      loanTerminationDate: 
+        type: string
+        example: "2023-08-05"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Date    
+      repaymentStatement: 
+        type: string
+        example: Expense Report
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text    
+      repaymentTransactionReference: 
+        type: string
+        example: RTTR0311    
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier    
+      transactionPayerReference: 
+        type: string
+        example: TPRE2221    
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier    
+      transactionPayerProductInstanceReference: 
+        type: string
+        example: TPIR3252
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier    
+      transactionPayerBankReference: 
+        type: string
+        example: TWOW3492    
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier    
+      transactionType: 
+        type: string
+        example: Debit  
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text    
+      transactionAmount: 
+        type: string
+        example: $2000  
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Amount    
+      transactionCurrency: 
+        type: string
+        example: USD
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text    
+      transactionValueDate: 
+        type: string
+        example: "2018-08-05"    
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Date    
+      billingTransactionReference: 
+        type: string
+        example: BTRE8920        
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier    
+      billingParty: 
+        type: string
+        example: Bank/ThirdParty        
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Name    
+      billingAddress: 
+        type: string
+        example: 412C Franklin Street Hudson NewYork United States  
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Name    
+      billingPeriod: 
+        type: string
+        example: "2018-07-01 To 2018-07-31" 
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Duration    
+      billingStatement: 
+        type: string
+        example: Purchases  
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text    
+      billingAmount: 
+        type: string
+        example: $1500    
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Amount    
+      paymentDueDate: 
+        type: string
+        example: "2018-08-05" 
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Date    
+      openItemStatus: 
+        type: string
+        example: Pending     
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text    
+
+  OpenItemProcedureBaseWithIdAndRoot: 
+    type: object
+    properties: 
+      openItemReference: 
+        type: string
+        example: OITR2700
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier    
+      openItemType: 
+        type: string
+        example: Accounts Payable    
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text    
+      openItemDescription: 
+        type: string
+        example: Bank Accounts
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text    
+      productInstanceReference: 
+        type: string
+        example: Loan Account Number   
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier    
+      partyReference: 
+        type: string
+        example: PRRE9404    
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier    
+      loanRepaymentSchedule: 
+        type: string
+        example: 12Months
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::DateTime    
+      loanOutstandingBalance: 
+        type: string
+        example: $500000    
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Amount    
+      loanTerminationDate: 
+        type: string
+        example: "2023-08-05"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Date    
+      repaymentStatement: 
+        type: string
+        example: CashAdvance
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text    
+      repaymentTransactionReference: 
+        type: string
+        example: RTTR0311    
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier    
+      transactionPayerReference: 
+        type: string
+        example: TPRE2221    
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier    
+      transactionPayerProductInstanceReference: 
+        type: string
+        example: TPIR3252
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier    
+      transactionPayerBankReference: 
+        type: string
+        example: TWOW3492    
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier    
+      transactionType: 
+        type: string
+        example: Debit   
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text    
+      transactionAmount: 
+        type: string
+        example: $2000  
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Amount    
+      transactionCurrency: 
+        type: string
+        example: USD
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text    
+      transactionValueDate: 
+        type: string
+        example: "2018-08-05"      
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Date    
+      billingTransactionReference: 
+        type: string
+        example: BTRE8920        
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier    
+      billingParty: 
+        type: string
+        example: ThirdParty 
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Name    
+      billingAddress: 
+        type: string
+        example: 412C Franklin Street Hudson NewYork United States  
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Name    
+      billingPeriod: 
+        type: string
+        example: "2018-07-01 To 2018-07-31"    
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Duration    
+      billingStatement: 
+        type: string
+        example: Debits or Credits     
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text    
+      billingAmount: 
+        type: string
+        example: $1500        
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Amount    
+      paymentDueDate: 
+        type: string
+        example: "2018-05-08"        
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Date    
+      openItemStatus: 
+        type: string
+        example: Issued
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text    
+  
+        
+  OpenItemProcedureUpdateBase: 
+    type: object
+    properties: 
+      openItemType: 
+        type: string
+        example: Accounts Receivables
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text    
+      openItemDescription: 
+        type: string
+        example: Bank Accounts
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text    
+      repaymentTransactionReference: 
+        type: string
+        example: RTTR0311    
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier    
+      transactionPayerReference: 
+        type: string
+        example: TPRE2221    
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier    
+      transactionPayerProductInstanceReference: 
+        type: string
+        example: TPIR3252 
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier    
+      transactionPayerBankReference: 
+        type: string
+        example: TWOW3492    
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier    
+      transactionType: 
+        type: string
+        example: Debit
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text    
+      transactionAmount: 
+        type: string
+        example: $2000    
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Amount    
+      transactionCurrency: 
+        type: string
+        example: USD
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text    
+      transactionValueDate: 
+        type: string
+        example: "2018-08-05"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Date    
+      openItemStatus: 
+        type: string
+        example: Issued
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text    
+
+  OpenItemProcedureUpdateBaseWithIdAndRoot: 
+    type: object
+    properties:
+      openItemUpdateReference: 
+        type: string
+        example: OIUR0005
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier    
+      openItemReference: 
+        type: string
+        example: OITR2700
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier    
+      openItemType: 
+        type: string
+        example: AccountsReceivables   
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text    
+      openItemDescription: 
+        type: string
+        example: Loan Accounts
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text    
+      repaymentTransactionReference: 
+        type: string
+        example: RTTR0311     
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier    
+      transactionPayerReference: 
+        type: string
+        example: TPRE2221    
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier    
+      transactionPayerProductInstanceReference: 
+        type: string
+        example: TPIR3252 
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier    
+      transactionPayerBankReference: 
+        type: string
+        example: TWOW3492    
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier    
+      transactionType: 
+        type: string
+        example: Debit    
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text    
+      transactionAmount: 
+        type: string
+        example: $2000    
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Amount    
+      transactionCurrency: 
+        type: string
+        example: USD
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text    
+      transactionValueDate: 
+        type: string
+        example: "2018-08-05"      
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Date    
+      openItemStatus: 
+        type: string
+        example: Issued
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text    
+
+  OpenItemRecordRequest: 
+    type: object
+    properties:
+      recordingRecordType: 
+        type: string
+        example: BehaviorModelPerformanceFeedback
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text    
+      recordingRecord:
+        type: object
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary    
+      recordingRecordDateTime:
+        type: string
+        example: "2018-08-28T09:00:00"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::DateTime    
+      empolyeeBusinessUnitReference:
+        type: string
+        example: EBUR6798
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier    
+  
+  OpenItemRecordResponse: 
+    type: object
+    properties:
+      openItemRecordReference: 
+        type: string
+        example: OIRR849320
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier    
+      recordingRecordStatus:
+        type: string
+        example: Applied
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text 
+      
+  OpenItemRecordBaseWithIdAndRoot:
+    type: object
+    properties:
+      openItemRecordReference:
+        type: string
+        example: OIRR483209
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier    
+      openItemReference:
+        type: string
+        example: OIREF74712
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier    
+      recordingRecordType: 
+        type: string
+        example: BehaviorModelPerformanceFeedback
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text    
+      recordingRecord:
+        type: object
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary    
+      recordingRecordDateTime:
+        type: string
+        example: "2018-09-25T09:00:00"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::DateTime    
+      recordingRecordStatus:
+        type: string
+        example: Applied
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text    
+      empolyeeBusinessUnitReference:
+        type: string
+        example: EBUR6798
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier    
+        
+  OpenItemTrackingBase:
+    type: object
+    properties:
+      openItemType:
+        type: string
+        example: tyepe-1
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text    
+      openItemDescription:
+        type: string
+        example: open item - 1
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text    
+      billingTransactionReference:
+        type: string
+        example: BTR123
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier    
+      billingParty:
+        type: string
+        example: billing party -1
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Name    
+      billingAddress:
+        type: string
+        example: 2 pnc plaza, Pittsburgh
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Name    
+      billingPeriod:
+        type: string
+        example: "2018-09-25 to 2018-09-30"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Duration    
+      billingStatement:
+        type: object
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary    
+      billingAmount:
+        type: string
+        example: 5000
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Amount    
+      paymentDueDate:
+        type: string
+        example: "2018-09-27"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Date    
+      openItemStatus:
+        type: string
+        example: Pending
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text    
+        
+  OpenItemTrackingBaseWIthIds: 
+    type: object
+    properties:
+      OpenItemTrackingReference:
+        type: string
+        example: OITR123
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier    
+      openItemReference:
+        type: string
+        example: OIR123
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier    
+      openItemType:
+        type: string
+        example: tyepe-1
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text    
+      openItemDescription:
+        type: string
+        example: open item - 1
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text    
+      billingTransactionReference:
+        type: string
+        example: BTR123
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier    
+      billingParty:
+        type: string
+        example: billing party -1
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Name    
+      billingAddress:
+        type: string
+        example: 2 pnc plaza, Pittsburgh
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Name    
+      billingPeriod:
+        type: string
+        example: "2018-09-25 to 2018-09-30"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Duration    
+      billingStatement:
+        type: object
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary    
+      billingAmount:
+        type: string
+        example: 5000
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Amount    
+      paymentDueDate:
+        type: string
+        example: "2018-09-27"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Date    
+      openItemStatus:
+        type: string
+        example: Pending
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text

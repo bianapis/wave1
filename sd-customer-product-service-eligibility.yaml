@@ -1,0 +1,619 @@
+---
+swagger: "2.0"
+info:
+  description: |
+    ## Description:
+    Maintain a profile of the product and services for which the customer is eligible and any specific terms or other applicable considerations (supports relationship development and sales activity)
+    ## Example of use:
+    A customer calls the contact center to find out about deposit investment products, their current product use and eligibility is referenced to identify candidate products for consideration
+    ## General comment:
+    This service domain support business development by maintaining a view of the target product/service coverage for customers, identifying undersold (and oversold) situations to focus sales efforts
+  version: "4.0.0"
+  title: Service Domain - Customer Product/Service Eligibility
+host: virtserver.swaggerhub.com
+basePath: /BIAN/sd-customer-product-service-eligibility/4.0.0
+schemes:
+- https
+paths:
+  /customer-product-service-eligibility/customer-eligibility-assessment/:
+    get:
+      tags:
+      - retrieve
+      summary: Retrieve available Customer Product/Service Eligibility Control Record Ids
+      operationId: retrieveCustomerEligibilityAssessmentRefernceIds
+      produces:
+      - application/json
+      parameters:
+      - name: collection-filter
+        in: query
+        description: Filter to refine the result set. ex- 'customerReference = CR123'
+        type: string
+      responses:
+        200:
+          description: successfully retrieved Customer Product/Service Eligibility Control Record Ids
+          schema:
+            type: array
+            items:
+              type: string
+            example: ['CPSPR123', 'CPSPR491']
+  /customer-product-service-eligibility/customer-eligibility-assessment/behavioral-qualifiers/:
+    get:
+      tags:
+      - retrieve
+      summary: Retrieve all Behavioral Qualifier names for Customer Product/Service Eligibility Service Domain.
+      operationId: retrieveCustomerEligibilityAssessmentBQNames
+      produces:
+      - application/json
+      responses:
+        200:
+          description: Successfully retrieved Customer Product/Service Eligibility Behavioral Qualifier names
+          schema:
+            type: array
+            items:
+              type: string
+            example: ['Check', 'NextBest']
+  /customer-product-service-eligibility/customer-eligibility-assessment/{cr-reference-id}/{behavioral-qualifier}/:
+    get:
+      tags:
+      - retrieve
+      summary: Retrieve Behavioral Qualifier Reference Ids of a given behavioral qualifier
+      operationId: retrieveCustomerEligibilityAssessmentBQIds
+      produces:
+      - application/json
+      parameters:
+      - name: cr-reference-id
+        in: path
+        description: Customer Product/Service Eligibility Profile reference
+        required: true
+        type: string
+      - name: behavioral-qualifier
+        in: path
+        description: Behavioral Qualifier name (ex. next-best)
+        required: true
+        type: string
+      - name: collection-filter
+        in: query
+        description: Filter to refine result set. ex- 'productServiceType = "savings account"'
+        required: false
+        type: string
+      responses:
+        200:
+          description: Successfully retrieved Behavioral Qualifier reference IDs
+          schema:
+            type: array
+            items:
+              type: string
+            example: ['NABR123', 'NBAR345']
+  /customer-product-service-eligibility/customer-eligibility-assessment/{cr-reference-id}:
+    get:
+      tags:
+      - retrieve
+      summary: Retrieve a Customer Product/Service Eligibility Profile
+      operationId: retrieveCustomerEligibilityAssessment
+      produces:
+      - application/json
+      parameters:
+      - name: cr-reference-id
+        in: path
+        description: Customer Product/Service Eligibility Profile reference
+        required: true
+        type: string
+      responses:
+        200:
+          description: Successfully retrieved Customer Product/Service Eligibility Profile
+          schema:
+            $ref: '#/definitions/RetrieveCustomerEligibilityAssessmentProfileResponse'
+  /customer-product-service-eligibility/customer-eligibility-assessment/{cr-reference-id}/checks/{bq-reference-id}:
+    get:
+      tags:
+      - retrieve
+      summary: Retrieve eligibility record for a Customer Product/Service Eligibility Profile
+      operationId: retrieveCustomerEligibilityAssessmentEligibility
+      produces:
+      - application/json
+      parameters:
+      - name: cr-reference-id
+        in: path
+        description: Customer Product/Service Profile Reference
+        required: true
+        type: string
+      - name: bq-reference-id
+        in: path
+        description: Customer Product/Service Eligibility Assessment Reference
+        required: true
+        type: string
+      responses:
+        200:
+          description: Successfully retrieved customer eligibility record
+          schema:
+            $ref: '#/definitions/CustomerProductServiceEligibilityCheckResponse'
+  /customer-product-service-eligibility/customer-eligibility-assessment/{cr-reference-id}/next-bests/{bq-reference-id}:
+    get:
+      tags:
+      - retrieve
+      summary: Retrieve NextBest record for a Customer Product/Service Eligibility
+      operationId: retrieveCustomerEligibilityAssessmentNextBest
+      produces:
+      - application/json
+      parameters:
+      - name: cr-reference-id
+        in: path
+        description: Customer Product/Service Profile Reference
+        required: true
+        type: string
+      - name: bq-reference-id
+        in: path
+        description: Customer Product/Service Next Best Assessment Reference
+        required: true
+        type: string
+      responses:
+        200:
+          description: Successfully retrieved Next Best record for Customer Product/Service Eligibility Profile
+          schema:
+            $ref: '#/definitions/CustomerProductServiceEligibilityNextBestResponse'
+  /customer-product-service-eligibility/customer-eligibility-assessment/{cr-reference-id}/recording:
+    post:
+      tags:
+      - record
+      summary: 'Record activity/feedback relating to Customer Product/Service Eligibility'
+      description: Record feedback/activity against the Customer Product/Service Eligibility process
+      operationId: recordCustomerEligibilityAssessment
+      produces:
+      - application/json
+      parameters:
+      - name: cr-reference-id
+        in: path
+        description: Customer Product/Service Profile Reference
+        required: true
+        type: string
+      - in: body
+        name: body
+        description: Record control record request payload
+        required: true
+        schema:
+          $ref: '#/definitions/CustomerProductServiceEligibilityRecordRequest'
+      responses:
+        201:
+          description: A new Record is created
+          schema:
+            $ref: '#/definitions/CustomerProductServiceEligibilityRecordResponse'
+            
+  /customer-product-service-eligibility/customer-eligibility-assessment/{cr-reference-id}/checks/evaluation:
+    post:
+      tags:
+      - evaluate
+      summary: Create a customer product/service eligibility assessment Check process
+      operationId: evaluateCustomerEligibilityAssessmentCheck
+      produces:
+      - application/json
+      parameters:
+      - name: cr-reference-id
+        in: path
+        description: Customer Product/Service Profile Reference
+        required: true
+        type: string
+      - in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/CustomerProductServiceEligibilityCheckBase'
+      responses:
+        201:
+          description: Customer product/service eligibility successfully evaluated.
+          schema:
+            $ref: '#/definitions/CustomerProductServiceEligibilityCheckResponse'
+            
+  /customer-product-service-eligibility/customer-eligibility-assessment/{cr-reference-id}/next-bests/evaluation:
+    post:
+      tags:
+      - evaluate
+      summary: Create a Customer Product/Service Eligibility Next Best process
+      operationId: evaluateCustomerEligibilityAssessmentNextBestProduct/Service
+      produces:
+      - application/json
+      parameters:
+      - name: cr-reference-id
+        in: path
+        description: Customer Product/Service Profile Reference
+        required: true
+        type: string
+      - in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/CustomerProductServiceEligibilityNextBestBase'
+      responses:
+        201:
+          description: Created successfully Next Best product/ eligibility. 
+          schema:
+            $ref: '#/definitions/CustomerProductServiceEligibilityNextBestResponse'
+
+  /customer-product-service-eligibility/customer-eligibility-assessment/{cr-reference-id}/checks/authorization:
+    post:
+      tags:
+      - authorize
+      summary: Obtain customer eligibility assessment guidelines
+      description: Update existing Customer Eligibility Assessment check
+      operationId: requestCustomerEligibilityAssessment
+      produces:
+      - application/json
+      parameters:
+      - name: cr-reference-id
+        in: path
+        description: Customer Product/Service Profile Reference
+        required: true
+        type: string
+      - in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/CustomerProductServiceEligibilityCheckBase'
+      responses:
+        201:
+          description: Customer eligibility assessment guidelines updated.
+          schema:
+            $ref: '#/definitions/CustomerProductServiceAuthorizeCheckResponse'
+
+definitions:
+  RetrieveCustomerEligibilityAssessmentProfileResponse:
+    type: object
+    properties:
+      customerProductServiceProfileReference:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+          general-info: 'Customer Product/Service Profile reference'
+        example: "CPPR7234642"
+      customerReference:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+          general-info: 'Customer Reference'
+        example: "CR67890"
+      customerProductServiceProfile:
+        type: object
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+          general-info: 'The customer's eligibility profile, including in-force product terms'
+        example: "eligibility profile content"
+      productServiceType:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+          general-info: 'Defines all available products/services'
+        example: "credit card"
+      customerProductServiceTypeEligibility:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+          general-info: 'defines if and under what terms a product/service is available to a customer'
+      customerProductServiceTypeUsage:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+          general-info: 'The sold/in-force status of a product/service with the customer'
+
+  CustomerProductServiceEligibilityCheckBase:
+    type: object
+    properties:
+      customerReference:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+          general-info: 'Customer Reference'
+        example: "CR67890"
+      customerProductServiceProfile:
+        type: object
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+          general-info: 'The customer's eligibility profile, including in-force product terms'
+        example: "eligibility profile content"
+      productServiceType:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+          general-info: 'Defines all available products/services'
+        example: "credit card"
+      customerProductServiceTypeEligibility:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+          general-info: 'defines if and under what terms a product/service is available to a customer'
+      customerProductServiceTypeUsage:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+          general-info: 'The sold/in-force status of a product/service with the customer'
+      dateTime:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::DateTime
+          general-info: 'The time of the eligibility assessment request'
+        example: "2018-08-28T09:00:00"
+
+  CustomerProductServiceEligibilityCheckResponse:
+    type: object
+    properties:
+      customerReference:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+          general-info: 'Customer Reference'
+        example: "CR67890"
+      customerProductServiceEligibilityAssessmentReference:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+          general-info: 'Customer Product/Service Eligibility Assessment Reference'
+        example: "CPSEAR432424"
+      customerProductServiceProfileReference:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+          general-info: 'Customer Product/Service Profile reference'
+        example: "CPPR7234642"
+      customerProductServiceProfile:
+        type: object
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+          general-info: 'The customer's eligibility profile, including in-force product terms'
+        example: "eligibility profile content"
+      productServiceType:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+          general-info: 'The product/service for which eligibility is being checked'
+        example: "credit card"
+      customerProductServiceTypeEligibility:
+        type: object
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+          general-info: 'Defines if and under what terms a product/service is available to the customer'
+        example: "eligibility terms"
+      customerProductServiceTypeUsage:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+          general-info: 'Records the sold/in-force status of a product/service with the customer'
+        example: "product status"
+      dateTime:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::DateTime
+          general-info: 'The time of the eligibility assessment request'
+        example: "2018-08-28T09:00:00"
+      customerProductServiceEligibilityAssessmentResult:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+          general-info: 'The eligibility for requested product/service'
+        example: "products list"
+
+  CustomerProductServiceAuthorizeCheckResponse:
+    type: object
+    properties:
+      customerReference:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+          general-info: 'Customer Reference'
+        example: "CR67890"
+      customerProductServiceEligibilityAssessmentReference:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+          general-info: 'Customer Product/Service Eligibility Assessment Reference'
+        example: "CPSEAR432424"
+      customerProductServiceProfileReference:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+          general-info: 'Customer Product/Service Profile reference'
+        example: "CPPR7234642"
+      customerProductServiceProfile:
+        type: object
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+          general-info: 'The customer's eligibility profile, including in-force product terms'
+        example: "eligibility profile content"
+      productServiceType:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+          general-info: 'The product/service for which eligibility is being checked'
+        example: "credit card"
+      customerProductServiceTypeEligibility:
+        type: object
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+          general-info: 'Defines if and under what terms a product/service is available to the customer'
+        example: "eligibility terms"
+      customerProductServiceTypeUsage:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+          general-info: 'Records the sold/in-force status of a product/service with the customer'
+        example: "product status"
+      dateTime:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::DateTime
+          general-info: 'The time of the eligibility assessment request'
+        example: "2018-08-28T09:00:00"
+      customerProductServiceAuthorizeAssessmentResult:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+          general-info: 'The eligibility for requested product/service'
+        example: "products list"
+
+  CustomerProductServiceEligibilityNextBestResponse:
+    type: object
+    properties:
+      customerReference:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+          general-info: 'Customer Reference'
+        example: "CR67890"
+      customerProductServiceProfileReference:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+          general-info: 'Customer Product/Service Profile reference'
+        example: "CPPR7234642"
+      customerProductServiceProfile:
+        type: object
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+          general-info: 'The customer's eligibility profile, including in-force product terms'
+        example: "eligibility profile content"
+      customerProductServiceNextBestAssessmentReference:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+          general-info: 'Customer product/service next best assessment reference'
+        example: "NBAR723646"
+      requestedProductServiceProperties:
+        type: object
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+          general-info: 'The features used to select the next best product/service'
+        example: "product properties"
+      productServiceType:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+          general-info: 'The type of product/service for which the best eligible product match is requested'
+        example: "cards"
+      customerProductServiceNextBestAssessmentResult:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Indicator
+          general-info: 'The terms for the selected product/service or a descending list of matched products that is available to the customer'
+        example: products list
+
+  CustomerProductServiceEligibilityNextBestBase:
+    type: object
+    properties:
+      customerReference:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+          general-info: 'Customer Reference'
+        example: "CR67890"
+      requestedProductServiceProperties:
+        type: object
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+          general-info: 'The features used to select the next best product/service'
+        example: "product properties"
+      productServiceType:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+          general-info: 'The type of product/service for which the best eligible product match is requested'
+        example: "cards"
+
+  CustomerProductServiceEligibilityRecordRequest:
+    type: object
+    properties:
+      customerReference:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+          general-info: 'Customer Reference'
+        example: "CR67890"
+      productServiceType:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+          general-info: 'Defines all available products/services'
+        example: "New account"
+      productInstanceReference:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+        example: "PIF123"
+      recordingRecordType:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+        example: "New product use"
+      recordingRecord:
+        type: object
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+        properties: {}
+      recordingRecordDateTime:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::DateTime
+        example: "2018-08-28T09:00:00"
+      employeeBusinessUnitReference:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+        example: "EBU4652123"
+  CustomerProductServiceEligibilityRecordResponse:
+    type: object
+    properties:
+      recordingRecordReference:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+        example: "RRR2342"
+      recordingRecordStatus:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+        example: "Applied"

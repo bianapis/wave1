@@ -1,0 +1,794 @@
+swagger: '2.0'
+info:
+  version: "4.0.0"
+  title: 'Service Domain - Dunning'
+  description: >
+        ## Description: 
+      
+        This service domain handles the account chasing/dunning cycle for a loan account that is behind on scheduled payments.
+
+        ## Example of use:
+        
+        An overdue loan account is passed to the dunning/account chasing process where the customer is encouraged to catch up with payments.
+        
+        ## General comment:
+        
+        The dunning/payment chasing process is provided to handle the initial response for loan accounts where one or more scheduled payments has been missed. The intent is to encourage the customer to make up missed payments so the loan facility can be restored to good standing. Failure can lead to restructuring and eventually recovery against the loan.
+
+host: "virtserver.swaggerhub.com"
+basePath: "/BIAN/sd-dunning/4.0.0/"
+schemes:
+- "https"
+paths:
+  /dunning/dunning-procedure/{cr-reference-id}/updation:
+    put:
+      tags:
+      - update
+      operationId: updateDunningProcedure
+      summary: Updates Dunning Control Record.
+      produces: 
+      - application/json
+      parameters:
+      - name : cr-reference-id
+        in: path
+        description: Dunning Reference
+        required: true
+        type: string
+      - in: body
+        name: body
+        description: Update control record request payload
+        required: true
+        schema: 
+          $ref: '#/definitions/DunningProcedure'
+      responses:
+        200:
+          description: successful
+          schema:
+            $ref: '#/definitions/DunningProcedureWithIds'
+
+  /dunning/dunning-procedure/{cr-reference-id}/recording:
+    post:
+      tags:
+      - record
+      operationId: recordDunningProcedure
+      summary: Records a Dunning
+      produces: 
+      - application/json
+      parameters:
+      - name : cr-reference-id
+        in: path
+        description: Dunning Reference
+        required: true
+        type: string
+      - in: body
+        name: body
+        description: Record control record request payload
+        required: true
+        schema: 
+          $ref: '#/definitions/RecordRequest'
+      responses:
+        201:
+          description: A new Record is created
+          schema:
+            $ref: '#/definitions/RecordResponse'
+            
+  /dunning/dunning-procedure/{cr-reference-id}/execution:
+    put:
+      tags:
+      - execute
+      operationId: executeDunningProcedureUpdate
+      description: Update an exising Dunning 
+      summary: Executes a Dunning
+      produces: 
+      - application/json
+      parameters:
+      - name : cr-reference-id
+        in: path
+        description: Dunning Reference
+        required: true
+        type: string
+      - in: body
+        name: body
+        description: Execute Dunning request payload
+        required: true
+        schema: 
+          $ref: '#/definitions/Contact'
+      responses:
+        200:
+          description: Updated successfully
+          schema:
+            $ref: '#/definitions/ContactWithIds'
+
+  /dunning/dunning-procedure/execution:
+      post:
+        tags:
+        - execute
+        operationId: executeDunningProcedureCreate
+        description: Create a new Dunning
+        summary: Executes a Dunning 
+        produces: 
+        - application/json
+        parameters:
+        - in: body
+          name: body
+          description: Execute Dunning request payload
+          required: true
+          schema: 
+            $ref: '#/definitions/Contact'
+        responses:
+          201:
+            description: Created successfully
+            schema:
+              $ref: '#/definitions/ContactWithIds'
+
+  /dunning/dunning-procedure/{cr-reference-id}/requisition:
+    put:
+      tags: 
+      - request
+      operationId: requestDunningProcedureUpdate
+      description: Update an exising Dunning
+      summary: Requests a Dunning 
+      produces: 
+      - application/json
+      parameters: 
+      - name : cr-reference-id
+        in: path
+        description: Dunning Reference
+        required: true
+        type: string
+      - in: body
+        name: body
+        description: Request Dunning request payload
+        required: true
+        schema: 
+          $ref: '#/definitions/Contact'
+      responses:
+        200:
+          description: Updated successfully
+          schema:
+            $ref: '#/definitions/ContactWithIds' 
+
+  /dunning/dunning-procedure/requisition:
+    post:
+      tags: 
+      - request
+      operationId: requestDunningProcedureCreate
+      description: Create a new Dunning
+      summary: Requests a Dunning 
+      produces: 
+      - application/json
+      parameters: 
+      - in: body
+        name: body
+        description: Request Dunning request payload
+        required: true
+        schema: 
+          $ref: '#/definitions/Contact'
+      responses:
+        201:
+          description: Created successfully
+          schema:
+            $ref: '#/definitions/ContactWithIds' 
+
+  /dunning/dunning-procedure/:
+    get:
+      tags: 
+      - retrieve
+      operationId: RetrieveDunningReferenceIds
+      summary: Retrieve CR Ids
+      produces: 
+      - application/json
+      parameters: 
+      - name : collection-filter
+        in: query
+        description: Filter to refine the result set. ex- 'customerReference = 43563'
+        type: string 
+      responses:
+        200:
+          description: successful
+          schema:
+            type: array
+            items:
+              type: string
+            example: [CRR4533, CRR5323]
+            
+  /dunning/dunning-procedure/behavior-qualifiers/:
+    get:
+      tags: 
+      - retrieve
+      operationId: RetrieveDunningBehaviorQualifiers
+      summary: Retrieve BQ names.
+      produces: 
+      - application/json
+      responses:
+        200:
+          description: successful
+          schema:
+            type: array
+            items:
+              type: string
+            example: [analysis, contacts, records] 
+
+  /dunning/dunning-procedure/{cr-reference-id}/{behavior-qualifier}:
+    get:
+      tags: 
+      - retrieve
+      operationId: RetrieveBehaviorQualifierReferenceIds
+      summary: Retrieve BQ Ids.
+      produces: 
+      - application/json
+      parameters: 
+      - name : cr-reference-id
+        in: path
+        description: Dunning Reference
+        required: true
+        type: string
+      - name : behavior-qualifier
+        in: path
+        description: Behavior Qualifier Name. ex- analysis
+        required: true
+        type: string
+      - name : collection-filter
+        in: query
+        description: Filter to refine the result set
+        type: string
+      responses:
+        200:
+          description: successful
+          schema:
+            type: array
+            items:
+              type: string
+            example: [BQR34252, BQR346234, BQR43633]
+            
+  /dunning/dunning-procedure/{cr-reference-id}:
+    get:
+      tags: 
+      - retrieve
+      operationId: RetrieveDunning
+      summary: Retrieve Master Control Records
+      produces: 
+      - application/json
+      parameters: 
+      - name : cr-reference-id
+        in: path
+        description: Dunning Reference
+        required: true
+        type: string
+      responses:
+        200:
+          description: successful
+          schema:
+            $ref: '#/definitions/DunningProcedureWithIds'
+            
+  /dunning/dunning-procedure/{cr-reference-id}/analysis/{bq-reference-id}:
+    get:
+      tags: 
+      - retrieve
+      operationId: RetrieveDunningAnalysis
+      summary: Retrieve Analysis attributes.
+      produces: 
+      - application/json
+      parameters: 
+      - name : cr-reference-id
+        in: path
+        description: Dunning Reference
+        required: true
+        type: string
+      - name : bq-reference-id
+        in: path
+        description: Dunning Analysis Reference
+        required: true
+        type: string
+      responses:
+        200:
+          description: Successfully retrieved
+          schema:
+            $ref: '#/definitions/Analysis'
+            
+  /dunning/dunning-procedure/{cr-reference-id}/contacts/{bq-reference-id}:
+    get:
+      tags: 
+      - retrieve
+      operationId: RetrieveDunningContacts
+      summary: Retrieve Contacts BQ attributes.
+      produces: 
+      - application/json
+      parameters: 
+      - name : cr-reference-id
+        in: path
+        description: Dunning Reference
+        required: true
+        type: string
+      - name : bq-reference-id
+        in: path
+        description: Dunning Contact Reference
+        required: true
+        type: string
+      responses:
+        200:
+          description: Successfully retrieved
+          schema:
+            $ref: '#/definitions/ContactWithIds'
+            
+  /dunning/dunning-procedure/{cr-reference-id}/records/{bq-reference-id}:
+    get:
+      tags: 
+      - retrieve
+      operationId: RetrieveDunningRecords
+      summary: Retrieve Records attributes.
+      produces: 
+      - application/json
+      parameters: 
+      - name : cr-reference-id
+        in: path
+        description: Dunning Reference
+        required: true
+        type: string
+      - name : bq-reference-id
+        in: path
+        description: Dunning Recording Record Reference
+        required: true
+        type: string
+      responses:
+        200:
+          description: Successfully retrieved
+          schema:
+            $ref: '#/definitions/Record'
+
+definitions:
+
+  DunningProcedure:
+    type: object
+    properties:
+      productInstanceReference:
+        type: string
+        example: 456544
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier  
+      customerReference:
+        type: string
+        example: 236677
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier   
+
+  DunningProcedureWithIds:
+    type: object
+    properties:
+      dunningReference:
+        type: string
+        example: 76439839
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier    
+      productInstanceReference:
+        type: string
+        example: 456544
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier    
+      customerReference:
+        type: string
+        example: 236677
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier    
+
+  Analysis:
+    type: object
+    properties:
+      dunningReference:
+        type: string
+        example: 76439839
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier    
+      dunningAnalysisReference:
+        type: string
+        example: 87645
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier   
+      productInstanceReference:
+        type: string
+        example: 78533
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier    
+      customerReference:
+        type: string
+        example: 45777
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier   
+      bankBranchlocationReference:
+        type: string
+        example: 77542
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier    
+      involvedPartyReference:
+        type: string
+        example: "guarantor"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier    
+      involvedPartyObligationentitlement:
+        type: string
+        example: 435677
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text    
+      partyReference:
+        type: string
+        example: 78653
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier    
+      loanType:
+        type: string
+        example: personal
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Indicator    
+      loanAmount:
+        type: string
+        example: $500000
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Amount    
+      loanCurrency:
+        type: string
+        example: AUD
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text    
+      loanRepaymentSchedule:
+        type: string
+        example: RS55
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::DateTime    
+      stagedRepaymentStatement:
+        type: string
+        example: 5733
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text    
+      loanOutstandingBalance:
+        type: string
+        example: $400000
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Amount    
+      loanTerminationDate:
+        type: string
+        example: "20/01/2025"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Date    
+      collateralReference:
+        type: string
+        example: 46555
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier    
+      collateralAllocation:
+        type: string
+        example: 86644
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Name   
+      configurationoptions:
+        type: string
+        example: 234662
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Name    
+      taxReference:
+        type: string
+        example: TR343
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier    
+      loanAccessTerms:
+        type: string
+        example: 3666
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text    
+      loanStatus:
+        type: string
+        example: active
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Indicator    
+      stagedRepaymentTransactionReference:
+        type: string
+        example: 65332
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier    
+      transactionPayerReference:
+        type: string
+        example: 7653
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier    
+      transactionPayerProductInstanceReference:
+        type: string
+        example: 23466
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier    
+      transactionPayerBankReference:
+        type: string
+        example: 64532
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier    
+      transactionAmount:
+        type: string
+        example: $2000
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Amount    
+      transactionCurrency:
+        type: string
+        example: AUD
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text    
+      transactionValueDate:
+        type: string
+        example: "09/09/2018"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Date    
+      dunningAnalysisRecord:
+        type: object
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary    
+
+  Contact:
+    type: object
+    properties:
+      dunningAnalysisReference:
+        type: string
+        example: 4657
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier    
+      productInstanceReference:
+        type: string
+        example: 84656
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier    
+      customerReference:
+        type: string
+        example: 567
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier   
+      dunningContactSchedule:
+        type: string
+        example: 5687
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::DateTime    
+      dunningMessagescript:
+        type: string
+        example: 567
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text    
+      dunningContactLog:
+        type: string
+        example: 5684
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text    
+      dunningContactResult:
+        type: string
+        example: success
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Indicator    
+      paymentTransactionReference:
+        type: string
+        example: 7553
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier    
+      transactionAmount:
+        type: string
+        example: $1000
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Amount    
+      transactionValueDate:
+        type: string
+        example: "09/09/2018"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Date    
+      loanStatus:
+        type: string
+        example: active
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Indicator    
+
+  ContactWithIds:
+    type: object
+    properties:
+      dunningReference:
+        type: string
+        example: 76439839
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier    
+      dunningContactReference:
+        type: string
+        example: 87567
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier    
+      dunningAnalysisReference:
+        type: string
+        example: 4657
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier    
+      productInstanceReference:
+        type: string
+        example: 84656
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier    
+      customerReference:
+        type: string
+        example: 567
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier   
+      dunningContactSchedule:
+        type: string
+        example: 5687
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Duration    
+      dunningMessagescript:
+        type: string
+        example: 567
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text    
+      dunningContactLog:
+        type: string
+        example: 5684
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text    
+      dunningContactResult:
+        type: string
+        example: success
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Indicator    
+      paymentTransactionReference:
+        type: string
+        example: 7553
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier    
+      transactionAmount:
+        type: string
+        example: $1000
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Amount    
+      transactionValueDate:
+        type: string
+        example: "09/09/2018"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Date    
+      loanStatus:
+        type: string
+        example: active
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Indicator    
+
+  RecordRequest:
+    type: object
+    properties:
+      recordingRecordType:
+        type: string
+        example: 7733
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Indicator    
+      recordingRecord:
+        type: object
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary    
+      recordingRecordDatetime:
+        type: string
+        example: "2018-09-14T07:24:33+00:00"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::DateTime    
+      employeebusinessUnitReference:
+        type: string
+        example: 567843
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier    
+
+  RecordResponse:
+    type: object
+    properties:
+      dunningRecordingRecordReference:
+        type: string
+        example: 76439839
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier  
+      recordingRecordStatus:
+        type: string
+        example: success
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Indicator    
+
+  Record:
+    type: object
+    properties:
+      dunningReference:
+        type: string
+        example: 76439839
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier    
+      dunningRecordingRecordReference:
+        type: string
+        example: 7533
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier    
+      recordingRecordType:
+        type: string
+        example: 7733
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Indicator    
+      recordingRecord:
+        type: object
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary    
+      recordingRecordDatetime:
+        type: string
+        example: "2018-09-14T07:24:33+00:00"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::DateTime    
+      recordingRecordStatus:
+        type: string
+        example: success
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Indicator    
+      employeebusinessUnitReference:
+        type: string
+        example: 567843
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier

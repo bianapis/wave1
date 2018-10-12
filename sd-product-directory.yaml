@@ -1,0 +1,1098 @@
+swagger: '2.0'
+info:
+  version: "4.0.0"
+  title: 'Service Domain - Product Directory'
+  description: >
+        ## Description: 
+      
+        Keep information about the basic product building blocks, represented as Product Components with Functions and Features, as well as the completed product specification from SD Product Design.
+
+        ## Example of use:
+        
+        Available product components, functions and features are registered and stored in SD Product Directory, ready to be used by SD Product Design.
+        New product specifications from Q&E SDs will be registered in SD Product Directory, with all its functions, features, price models etc. available in the O&E SDs as operational products, and with the sales product, which includes terms and conditions, in SD Sales Product.
+        
+        ## General comment:
+
+# Added by API Auto Mocking Plugin
+host: virtserver.swaggerhub.com
+basePath: /BIAN/sd-product-directory/4.0.0
+schemes:
+ - https
+paths:
+  /product-directory/product-directory-entry/{cr-reference-id}/records/{bq-reference-id}/updation:
+    put:
+      tags:
+      - update
+      operationId: updateProductDirectory
+      summary: Update an existing product directory record entry
+      produces:
+      - application/json
+      parameters:
+      - name: cr-reference-id
+        in: path
+        description: Product/Service Directory Entry Reference
+        required: true
+        type: string
+      - name : bq-reference-id
+        in: path
+        description: Recording Record Reference
+        required: true
+        type: string
+      - in: body
+        name: body
+        description: Update request payload which extracts all the attributes from Behavior Qualifier
+        required: true
+        schema:
+          $ref: '#/definitions/ProductDirectoryRecordBase'
+      responses:
+        200:
+          description: Successfully Updated
+          schema:
+            $ref: '#/definitions/ProductDirectoryRecordBaseWithIds'
+            
+  /product-directory/product-directory-entry/{cr-reference-id}/operations/{bq-reference-id}/updation:
+    put:
+      tags:
+      - update
+      operationId: updateProductDirectoryOperation
+      summary: Update an existing product directory operation entry
+      produces:
+      - application/json
+      parameters:
+      - name: cr-reference-id
+        in: path
+        description: Product/Service Directory Entry Reference
+        required: true
+        type: string
+      - name : bq-reference-id
+        in: path
+        description: Product/Service Operations Directory Entry Reference
+        required: true
+        type: string
+      - in: body
+        name: body
+        description: Update request payload which extracts all the attributes from Behavior Qualifier
+        required: true
+        schema:
+          $ref: '#/definitions/ProductDirectoryOperationBase'
+      responses:
+        200:
+          description: Successfully Updated
+          schema:
+            $ref: '#/definitions/ProductDirectoryOperationBaseWithIds'
+            
+  /product-directory/product-directory-entry/{cr-reference-id}/sales-marketings/{bq-reference-id}/updation:
+    put:
+      tags:
+      - update
+      operationId: updateProductDirectorySales
+      summary: Update an existing product directory sales entry
+      produces:
+      - application/json
+      parameters:
+      - name: cr-reference-id
+        in: path
+        description: Product/Service Directory Entry Reference
+        required: true
+        type: string
+      - name : bq-reference-id
+        in: path
+        description: Product/Service Sales/Marketing Directory Entry Reference
+        required: true
+        type: string
+      - in: body
+        name: body
+        description: Update request payload which extracts all the attributes from Behavior Qualifier
+        required: true
+        schema:
+          $ref: '#/definitions/ProductDirectorySalesMarketingBase'
+      responses:
+        200:
+          description: Successfully Updated
+          schema:
+            $ref: '#/definitions/ProductDirectorySalesMarketingBaseWithIds'
+            
+  /product-directory/product-directory-entry/{cr-reference-id}/suitabilities/{bq-reference-id}/updation:
+    put:
+      tags:
+      - update
+      operationId: updateProductDirectorySuitability
+      summary: Update an existing product directory suitability entry
+      produces:
+      - application/json
+      parameters:
+      - name: cr-reference-id
+        in: path
+        description: Product/Service Directory Entry Reference
+        required: true
+        type: string
+      - name : bq-reference-id
+        in: path
+        description: Product/Service Eligibilty Directory Entry Reference
+        required: true
+        type: string
+      - in: body
+        name: body
+        description: Update request payload which extracts all the attributes from Behavior Qualifier
+        required: true
+        schema:
+          $ref: '#/definitions/ProductDirectorySuitabilityBase'
+      responses:
+        200:
+          description: Successfully Updated
+          schema:
+            $ref: '#/definitions/ProductDirectorySuitabilityBaseWithIds'
+  
+  /product-directory/product-directory-entry/{cr-reference-id}/servicings/{bq-reference-id}/updation:
+    put:
+      tags:
+      - update
+      operationId: updateProductDirectoryServicing
+      summary: Update an existing product directory servicing entry
+      produces:
+      - application/json
+      parameters:
+      - name: cr-reference-id
+        in: path
+        description: Product/Service Directory Entry Reference
+        required: true
+        type: string
+      - name : bq-reference-id
+        in: path
+        description: Product/Service Servicing Directory Entry Reference
+        required: true
+        type: string
+      - in: body
+        name: body
+        description: Update request payload which extracts all the attributes from Behavior Qualifier
+        required: true
+        schema:
+          $ref: '#/definitions/ProductDirectoryServicingBase'
+      responses:
+        200:
+          description: Successfully Updated
+          schema:
+            $ref: '#/definitions/ProductDirectoryServicingBaseWithIds'
+            
+  /product-directory/product-directory-entry/{cr-reference-id}/productions/{bq-reference-id}/updation:
+    put:
+      tags:
+      - update
+      operationId: updateProductDirectoryProduction
+      summary: Update an existing product directory production entry
+      produces:
+      - application/json
+      parameters:
+      - name: cr-reference-id
+        in: path
+        description: Product/Service Directory Entry Reference
+        required: true
+        type: string
+      - name : bq-reference-id
+        in: path
+        description: Product/Service Production Directory Entry Reference
+        required: true
+        type: string
+      - in: body
+        name: body
+        description: Update request payload which extracts all the attributes from Behavior Qualifier
+        required: true
+        schema:
+          $ref: '#/definitions/ProductDirectoryProductionBase'
+      responses:
+        200:
+          description: Successfully Updated
+          schema:
+            $ref: '#/definitions/ProductDirectoryProductionBaseWithIds'
+
+  /product-directory/product-directory-entry/{cr-reference-id}/operations/registration:
+    post:
+      tags:
+      - register
+      operationId: registerProductDirectoryProductSpecifications
+      summary: Register a new product's specification in the directory
+      produces:
+        - application/json
+      parameters:
+      - name: cr-reference-id
+        in: path
+        description: Product/Service Directory Entry Reference
+        required: true
+        type: string
+      - in: body
+        name: body
+        description: Register product directory request payload
+        required: true
+        schema:
+          $ref: '#/definitions/ProductDirectoryOperationBase'
+      responses:
+        201:
+          description: Product specification successfully registered
+          schema:
+            $ref: '#/definitions/ProductDirectoryOperationBaseWithIds'
+
+  /product-directory/product-directory-entry/{cr-reference-id}/sales-marketings/registration:
+    post:
+      tags:
+      - register
+      operationId: registerProductDirectorySalesMarketingMaterials
+      summary: Register a new product's marketing materials in the directory
+      produces:
+      - application/json
+      parameters:
+      - name: cr-reference-id
+        in: path
+        description: Product/Service Directory Entry Reference
+        required: true
+        type: string
+      - in: body
+        name: body
+        description: Register Product/Service sale payload
+        required: true
+        schema:
+          $ref: '#/definitions/ProductDirectorySalesMarketingBase'
+      responses:
+        201:
+          description: successful
+          schema:
+            $ref: '#/definitions/ProductDirectorySalesMarketingBaseWithIds'
+
+  /product-directory/product-directory-entry/{cr-reference-id}/suitabilities/registration:
+    post:
+      tags:
+      - register
+      operationId: registerProductDirectorySuitabilityRules
+      summary: Register a new Suitability features in Product Directory
+      produces:
+      - application/json
+      parameters:
+      - name: cr-reference-id
+        in: path
+        description: Product/Service Directory Entry Reference
+        required: true
+        type: string
+      - in: body
+        name: body
+        description: Register Product/Service eligibility payload
+        required: true
+        schema:
+          $ref: '#/definitions/ProductDirectorySuitabilityBase'
+      responses:
+        201:
+          description: successful
+          schema:
+            $ref: '#/definitions/ProductDirectorySuitabilityBaseWithIds'
+
+  /product-directory/product-directory-entry/{cr-reference-id}/servicings/registration:
+    post:
+      tags:
+      - register
+      operationId: registerProductDirectoryServicingInstructions
+      summary: Register a new product's servicing instructions in the directory
+      produces:
+      - application/json
+      parameters:
+      - name: cr-reference-id
+        in: path
+        description: Product/Service Directory Entry reference
+        required: true
+        type: string
+      - in: body
+        name: body
+        description: Register Product/Service servicing payload
+        required: true
+        schema:
+          $ref: '#/definitions/ProductDirectoryServicingBase'
+      responses:
+        201:
+          description: successful
+          schema:
+            $ref: '#/definitions/ProductDirectoryServicingBaseWithIds'
+
+  /product-directory/product-directory-entry/{cr-reference-id}/productions/registration:
+    post:
+      tags:
+      - register
+      operationId: registerProductDirectoryProductionInstructions
+      summary: Register a new product's servicing instructions in the directory
+      produces:
+      - application/json
+      parameters:
+      - name: cr-reference-id
+        in: path
+        description: Product/Service Directory Entry Reference
+        required: true
+        type: string
+      - in: body
+        name: body
+        description: Register Product/Service production payload
+        required: true
+        schema:
+          $ref: '#/definitions/ProductDirectoryProductionBase'
+      responses:
+        201:
+          description: successful
+          schema:
+            $ref: '#/definitions/ProductDirectoryProductionBaseWithIds'
+            
+  /product-directory/product-directory-entry/{cr-reference-id}/requisition:
+    put:
+      tags:
+      - request
+      operationId: requestProductDirectoryRefresh
+      summary: Request a check/refresh of a product directory entry
+      produces:
+      - application/json
+      parameters:
+      - name: cr-reference-id
+        in: path
+        description: Product/Service Directory Entry Reference
+        required: true
+        type: string 
+      responses:
+       200:
+         description: Successfully Refresed the Directory Entry
+         schema:
+           $ref: '#/definitions/ProductDirectoryEntryRefreshResponse'
+
+  /product-directory/product-directory-entry/{cr-reference-id}/recording:
+    post:
+      tags:
+      - record
+      summary: 'Record activity/feedback relating to Product Directory activity'
+      description: Record feedback/activity against the product directory process
+      operationId: recordProductDirectoryEntry
+      produces:
+      - application/json
+      parameters:
+      - name: cr-reference-id
+        in: path
+        description: Product/Service Directory Entry Reference
+        required: true
+        type: string
+      - in: body
+        name: body
+        description: Record Control record payload
+        required: true
+        schema:
+          $ref: '#/definitions/ProductDirectoryRecordRequest'
+      responses:
+        201:
+          description: A new record is created
+          schema:
+            $ref: '#/definitions/ProductDirectoryRecordResponse'
+
+  /product-directory/product-directory-entry/:
+    get:
+      tags:
+      - retrieve
+      summary: Retrieve Product Directory Control Record Ids available within the Service Domain.
+      operationId: retrieveProductDirectoryReferenceIds
+      produces:
+      - application/json
+      parameters:
+      - name : collection-filter
+        in: query
+        description: Filter to refine the result set 
+        type: string 
+      responses:
+        200:
+          description: Successfully retrieved
+          schema:
+            type: array
+            items:
+              type: string
+            example: [PSDER2345, PSDER6743]
+            
+  /product-directory/product-directory-entry/behavior-qualifiers/:
+    get:
+      tags:
+      - retrieve
+      operationId: retrievedProductDirectoryBehaviorQualifiers
+      summary: Retrieve all Behaviour Qualifier names in the Product Directory Service Domain.
+      produces: 
+      - application/json
+      responses:
+        200:
+          description: Successfully retrieved Behavior Qualifier names
+          schema:
+            type: array
+            items:
+              type: string
+            example: [Record, Operations, Sales/Marketing, Suitability, Servicing, Production]
+            
+  /product-directory/product-directory-entry/{cr-reference-id}/{behavior-qualifier}/:
+    get:
+      tags: 
+      - retrieve
+      operationId: RetrieveBehaviorQualifierReferenceIds
+      summary: Retrieve Behaviour Qualifier Reference Ids of the given Behavior Qualifier.
+      produces: 
+      - application/json
+      parameters: 
+      - name : cr-reference-id
+        in: path
+        description: Product/Service Directory Entry Reference
+        required: true
+        type: string
+      - name : behavior-qualifier
+        in: path
+        description: Behavior Qualifier Name ex- production
+        required: true
+        type: string
+      - name : collection-filter
+        in: query
+        description: Filter to refine the result set. ex- 'Product/Service Feature = loyalty'
+        type: string
+      responses:
+        200:
+          description: Successful retrieved Qualifier Ref Ids
+          schema:
+            type: array
+            items:
+              type: string
+            example: [BQID346, BQID346346, BQID3456746, BQID434]
+
+  /product-directory/product-directory-entry/{cr-reference-id}/records/{bq-reference-id}:
+    get:
+      tags:
+      - retrieve
+      summary: Retrieve Product Directory Record
+      description: Retrieve Product Directory record details
+      operationId: retrieveProductDirectoryRecord
+      
+      produces:
+      - application/json
+      parameters:
+      - name : cr-reference-id
+        in: path
+        description: Product/Service Directory Entry Reference
+        required: true
+        type: string
+      - name : bq-reference-id
+        in: path
+        description: Recording Record Reference
+        required: true
+        type: string
+      responses:
+        200:
+          description: Successfully Retrieved
+          schema:
+            $ref: '#/definitions/ProductDirectoryRecordBaseWithIds'
+
+  /product-directory/product-directory-entry/{cr-reference-id}/operations/{bq-reference-id}:
+    get:
+      tags:
+      - retrieve
+      operationId: RetrieveProductDirectoryOperation
+      summary: Retrieve ProductOperation Behaviour Qualifier with all its attributes
+      produces:
+      - application/json
+      parameters:
+      - name : cr-reference-id
+        in: path
+        description: Product/Service Directory Entry Reference
+        required: true
+        type: string
+      - name : bq-reference-id
+        in: path
+        description: Product/Service Operations Directory Entry Reference
+        required: true
+        type: string
+      responses:
+        200:
+          description: Successfully retrieved product directory operation
+          schema:
+            $ref: '#/definitions/ProductDirectoryOperationBaseWithIds'
+
+  /product-directory/product-directory-entry/{cr-reference-id}/sales-marketings/{bq-reference-id}:
+    get:
+      tags:
+      - retrieve
+      operationId: RetrieveProductDirecorySales
+      summary: Retrieve ProductSales Behaviour Qualifier with all its attributes
+      produces:
+      - application/json
+      parameters:
+      - name : cr-reference-id
+        in: path
+        description: Product/Service Directory Entry Reference
+        required: true
+        type: string
+      - name : bq-reference-id
+        in: path
+        description: Product/Service Sales/Marketing Directory Entry Reference
+        required: true
+        type: string
+      responses:
+        200:
+          description: Successfully retrieved sales marketing
+          schema:
+            $ref: '#/definitions/ProductDirectorySalesMarketingBaseWithIds'
+
+  /product-directory/product-directory-entry/{cr-reference-id}/suitabilities/{bq-reference-id}:
+    get:
+      tags:
+      - retrieve
+      operationId: RetrieveProductDirectorySuitabilities
+      summary: Retrieve ProductEligibility Behaviour Qualifier with all its attributes
+      produces:
+      - application/json
+      parameters:
+      - name : cr-reference-id
+        in: path
+        description: Product/Service Directory Entry Reference
+        required: true
+        type: string
+      - name : bq-reference-id
+        in: path
+        description: Product/Service Eligibilty Directory Entry Reference
+        required: true
+        type: string
+      responses:
+        200:
+          description: Successfully retrieved suitabilities
+          schema:
+            $ref: '#/definitions/ProductDirectorySuitabilityBaseWithIds'
+            
+  /product-directory/product-directory-entry/{cr-reference-id}/servicings/{bq-reference-id}:
+    get:
+      tags:
+      - retrieve
+      operationId: RetrieveProductDirectoryServicing
+      summary: Retrieve product directory servicing Behaviour Qualifier with all its attributes
+      produces:
+      - application/json
+      parameters:
+      - name : cr-reference-id
+        in: path
+        description: Product/Service Directory Entry Reference  
+        required: true
+        type: string
+      - name : bq-reference-id
+        in: path
+        description: Product/Service Servicing Directory Entry Reference
+        required: true
+        type: string
+      responses:
+        200:
+          description: Successfully retrieved servicing
+          schema:
+            $ref: '#/definitions/ProductDirectoryServicingBaseWithIds'
+            
+  /product-directory/product-directory-entry/{cr-reference-id}/productions/{bq-reference-id}:
+    get:
+      tags:
+      - retrieve
+      operationId: RetrieveProductDirectoryProductions
+      summary: Retrieve Product Directory Production Behaviour Qualifier with all its attributes
+      produces:
+      - application/json
+      parameters:
+      - name : cr-reference-id
+        in: path
+        description: Product/Service Directory Entry Reference
+        required: true
+        type: string
+      - name : bq-reference-id
+        in: path
+        description: Product/Service Production Directory Entry Reference
+        required: true
+        type: string
+      responses:
+        200:
+          description: Successfully retrieved production
+          schema:
+            $ref: '#/definitions/ProductDirectoryProductionBaseWithIds'
+
+  
+definitions:
+        
+  ProductDirectoryRecordRequest:
+    type: object
+    properties:
+      recordingRecordType:
+        type: string
+        example: BehaviorModelPerformanceFeedback
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      recordingRecord:
+        type: object
+        properties: {}
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+      recordingRecordDateTime:
+        type: string
+        example: "2018-08-28T09:00:00"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::DateTime
+      employeeBusinessUnitReference:
+        type: string
+        example: EBUR6798
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+        
+  ProductDirectoryRecordResponse:
+    type: object
+    properties:
+      recordingRecordReference:
+        type: string
+        example: CRRR3456
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      recordingRecordStatus:
+        type: string
+        example: Applied
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+
+  ProductDirectoryOperationBase:
+    type: object
+    properties:
+      productServiceOperatingSchedule:
+        type: string
+        example: "tasks"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Duration
+      productServiceConfigurationParameterType:
+        type: string
+        example: "configuration type name"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      productServiceConfigurationParameterDescription:
+        type: string
+        example: "configuration description"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      productServiceConfigurationParameterSetting:
+        type: string
+        example: "default and possible value range"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Value
+        
+  ProductDirectoryOperationBaseWithIds:
+    type: object
+    properties:
+      productServiceDirectoryEntryReference:
+        type: string
+        example: "PDSER2112"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      productServiceOperationsDirectoryEntryReference:
+        type: string
+        example: "PSODER555564"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      productServiceOperatingSchedule:
+        type: string
+        example: "tasks"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Duration
+      productServiceConfigurationParameterType:
+        type: string
+        example: "configuration type name"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      productServiceConfigurationParameterDescription:
+        type: string
+        example: "configuration description"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      productServiceConfigurationParameterSetting:
+        type: string
+        example: "default and possible value range"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Value
+        
+  ProductDirectorySalesMarketingBaseWithIds:
+    type: object
+    properties:
+      productServiceDirectoryEntryReference:
+        type: string
+        example: "PSDER2112"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      productServiceSalesMarketingDirectoryEntryReference:
+        type: string
+        example: PSSMDER6760
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      productServiceSalesMaterial:
+        type: string
+        example: "Description of sales material"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      productServicesFeaturesAndOptions:
+        type: string
+        example: "Description of product features and options"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      productServicePricingTable:
+        type: string
+        example: "Allowed price ranges by credit grade/customer type"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      productServiceFeesPenaltiesTable:
+        type: string
+        example: "Applicable fees"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+        
+  ProductDirectorySuitabilityBaseWithIds:
+    type: object
+    properties:
+      productServiceDirectoryEntryReference:
+        type: string
+        example: PSDER2374823
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      productServiceEligibiltyDirectoryEntryReference:
+        type: string
+        example: PSEDER42384932
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      productSuitabilityGuide:
+        type: string
+        example: "Savings account and not have a bad credit history"
+        description:  |
+          general-info: Lists properties of matched customer types - bank defined
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      productServiceEligibilityType:
+        type: string
+        example: "Salaried or self-employed"
+        description: |
+          general-info: Legal or regulatory requirement governing eligibility
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      productServiceEligibilityDescription:
+        type: string
+        example: "Purpose of card, city of residing, salaried, self-employed professional"
+        description: |
+          general-info: Description of eligibility requirements
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+        
+  ProductDirectoryServicingBaseWithIds:
+    type: object
+    properties:
+      productServiceDirectoryEntryReference:
+        type: string
+        example: PSDER787738798
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      productServiceServicingDirectoryEntryReference:
+        type: string
+        example: PSSDER783723
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      productServiceFeature:
+        type: string
+        example: "Insurance and Wealth Management"
+        description: |
+          general-info: Collection of features making up product/service
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      producServicetFeatureGuideline:
+        type: string
+        example: "Analyze terminologies used in the product line to identify features"
+        description: |
+          general-info: Explanation of guidelines for use of product feature
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      productServiceFeatureProblemDiagnosis:
+        type: string
+        example: "Consulting with clients on appropriate products for specific purposes"
+        description: | 
+          general-info: Servicing guide for addressing reported issues
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      productServiceFeatureProblemResolution:
+        type: string
+        example: "Strategy and Objective then move to decision"
+        description: |
+          general-info: Servicing guide for resolving reported issue
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+        
+  ProductDirectoryRecordBaseWithIds:
+    type: object
+    properties:
+      productServiceDirectoryEntryReference:
+        type: string
+        example: PSDER2235425
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      recordingRecordReference:
+        type: string
+        example: RRR89254
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      recordingRecordType:
+        type: string
+        example: BehaviorModelPerformanceFeedback
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      recordingRecord:
+        type: object
+        properties: {}
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+      recordingRecordDateTime:
+        type: string
+        example: "2018-08-28T09:00:00"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::DateTime
+      recordingRecordStatus:
+        type: string
+        example: Applied
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      empolyeeBusinessUnitReference:
+        type: string
+        example: EBUR6798
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+        
+  ProductDirectoryProductionBaseWithIds:
+    type: object
+    properties:
+      productServiceDirectoryEntryReference:
+        type: string
+        example: PSDER25324542
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      productServiceProductionDirectoryEntryReference:
+        type: string
+        example: PSSDER809773
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      productServiceFeature:
+        type: string
+        example: "Cash Back Offer and Bonus Points"
+        description: |
+          general-info: Collection of features making up product/service
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      productServiceLocationAvailability:
+        type: string
+        example: "US"
+        description: |
+          general-info: Locations where product/service supported
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      productServiceTimeAvailability:
+        type: string
+        example: "2018-09-19T09:00:00"
+        description: |
+          general-info: Dates and times product/service is available
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::DateTime
+      productServiceAccessAvailability:
+        type: string
+        example: "Online banking system or Mobile Banking system"
+        description: |
+          general-info: Access channels/devices supported by the product/service
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+        
+  ProductDirectoryRecordBase:
+    type: object
+    properties:
+      recordingRecordType:
+        type: string
+        example: BehaviorModelPerformanceFeedback
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      recordingRecord:
+        type: object
+        properties: {}
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+      recordingRecordDateTime:
+        type: string
+        example: "2018-08-28T09:00:00"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::DateTime
+      recordingRecordStatus:
+        type: string
+        example: Applied
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      empolyeeBusinessUnitReference:
+        type: string
+        example: EBUR6798
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+        
+  ProductDirectorySalesMarketingBase:
+    type: object
+    properties:
+      productServiceSalesMaterial:
+        type: string
+        example: "User manual"
+        description: |
+          general-info: Description of sales material
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      productServicesFeaturesAndOptions:
+        type: string
+        example: "Lower Interest Rate, Encash, Utility bill payments"
+        description: |
+          general-info: Description of product features and options
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      productServicePricingTable:
+        type: string
+        example: "No Annual fees and Processing fees"
+        description: |
+          general-info: Allowed price ranges by credit grade/customer type
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      productServiceFeesPenaltiesTable:
+        type: string
+        example: "Late Payment Fees or Return Check"
+        description: |
+          general-info: Applicable fees/penalties
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+        
+  ProductDirectorySuitabilityBase:
+    type: object
+    properties:
+      productSuitabilityGuide:
+        type: string
+        example: "Savings account in his name and not have bad credit history"
+        description: |
+          general-info: Lists properties of matched customer types - bank defined
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      productServiceEligibilityType:
+        type: string
+        example: "Salaried or self-employed"
+        description: |
+          general-info: Legal or regulatory requirement governing eligibility
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      productServiceEligibilityDescription:
+        type: string
+        example: "Purpose of card, city of residing, salaried, self-employed professional"
+        description: |
+          general-info: Description of eligibility requirements
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+        
+  ProductDirectoryServicingBase:
+    type: object
+    properties:
+      productServiceFeature:
+        type: string
+        example: "Insurance and Wealth Management"
+        description: |
+          general-info: Collection of features making up product/service
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      producServicetFeatureGuideline:
+        type: string
+        example: "Analyze terminologies used in the product line to identify features"
+        description: |
+          general-info: Explanation of guidelines for use of product feature
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      productServiceFeatureProblemDiagnosis:
+        type: string
+        example: "Consulting with clients on appropriate products for specific purposes"
+        description: |
+          general-info: Servicing guide for addressing reported issues
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      productServiceFeatureProblemResolution:
+        type: string
+        example: "Strategy and Objective then move to decision"
+        description: |
+          general-info: Servicing guide for resolving reported issue
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+        
+  ProductDirectoryProductionBase:
+    type: object
+    properties:
+      productServiceFeature:
+        type: string
+        example: "Cash Back Offer and Bonus Points"
+        description: |
+          general-info: Collection of features making up product/service
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      productServiceLocationAvailability:
+        type: string
+        example: "US"
+        description: |
+          general=info: Locations where product/service supported
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      productServiceTimeAvailability:
+        type: string
+        example: "2018-09-19T09:00:00"
+        description: |
+          general-info: Dates and times product/service is available
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::DateTime
+      productServiceAccessAvailability:
+        type: string
+        example: "By ATM or Online banking or Mobile Banking"
+        description: |
+          general-info: Access channels/devices supported by the product/service
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+  
+  ProductDirectoryEntryRefreshResponse:
+    type: object
+    properties:
+      refreshStatus:
+        type: string
+        example: Refreshed
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text

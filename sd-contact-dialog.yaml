@@ -1,0 +1,1777 @@
+swagger: '2.0'
+info:
+  version: "4.0.0"
+  title: 'Service Domain - Contact Dialog'
+  description: >
+      ## Description: 
+      
+      This service domain handles/structures the customer narrative during an interactive session. It consolidates and presents pertinent customer information and provides servicing guidelines with standard dialogue/scripting as appropriate. It can include the capability to provoke questions to capture key relationship and sales triggers. It also ensures the correct sequencing, dialogue content and actions are performed/initiated during the customer interaction. It may further leverage the session by passing on customer notifications, status updates and triggering sales/marketing efforts.
+      
+      ## Example of use:
+      
+      A customer dials into the contact center with a current account balance request. The customer identity is checked by the servicing representative (using a Party Profile Service Domain call). After the customer initial query has been addressed the dialogue is structured to attempt a sales pitch for an internal campaign that the customer has been pre-approved for as flagged in their Party Profile record
+
+      ## General comment:
+      
+      The customer contact dialogue handling capability can provide highly structured orchestration to streamline a customer interaction by consolidating and presenting customer related data in context. It can also use the session to gather additional customer intelligence. In a more advance implementation the customer interaction capabilities can be integrated into an automated self/service context in addition to the more conventional assisted service model. The structured customer dialogue can include tasks to check for other business activities that can be built into the exchange for example, delivering pending communications, sales/marketing attempts, capturing intelligence/triggers, updating relationship status/details, product fulfillment (such as synchronizing customer-side data). The facility can be designed to support multi-channel/multi-device deployments
+
+# Added by API Auto Mocking Plugin
+host: virtserver.swaggerhub.com
+basePath: /BIAN/sd-contact-dialog/4.0.0
+schemes:
+ - https
+
+paths:
+
+  /contact-dialogue/customer-contact-session-procedure:
+    get:
+      tags: 
+      - retrieve
+      summary: "Retrieve customer contact session procedure record Ids available within the service domain"
+      operationId: retrieveCustomerContactSessionProcedureIds
+      produces: 
+      - application/json
+      parameters:
+      - name : collection-filter
+        in: query
+        description: "Filter to refine the result set. ex- 'contactReference=456124481'"
+        type: string
+      responses:
+        200:
+          description: "Successfully retrieved customer contact session procedure record Ids available within the service domain"
+          schema:
+            type: array
+            items:
+              type: string
+            example: ["CR485526","CR7654321","CR9852147"]
+
+  /contact-dialogue/customer-contact-session-procedure/behavior-qualifiers:
+    get:
+      tags: 
+      - retrieve
+      summary: "Retrieve all behaviour qualifier names in the customer contact session procedure service domain"
+      operationId: retrieveCustomerContactSessionProcedureBqNames
+      produces: 
+      - application/json
+      responses:
+        200:
+          description: "Retrieve behaviour qualifier names in the customer contact session procedure service domain"
+          schema:
+            type: array
+            items:
+              type: string
+            example: ["query","authentication","sales","offer","productService","case","order","intelligence","history"]
+
+  /contact-dialogue/customer-contact-session-procedure/{cr-reference-id}/{behavior-qualifier}:
+    get:
+      tags: 
+      - retrieve
+      summary: "Retrieve behaviour qualifier reference Ids of the given behavior qualifier"
+      operationId: retrieveCustomerContactSessionProcedureBqIds
+      produces: 
+      - application/json
+      parameters:
+      - in: path
+        name: cr-reference-id
+        description: "Contact Dialogue Record Reference"
+        type: string
+        required: true
+      - name : behavior-qualifier
+        in: path
+        description: "Behavior Qualifier Name. ex- 'query'"
+        required: true
+        type: string
+      - name : collection-filter
+        in: query
+        description: "Filter to refine the result set. ex- queryType = type 1"
+        type: string
+      responses:
+        200:
+          description: "Successfully retrieved customer contact session procedure record Ids available within the service domain"
+          schema:
+            type: array
+            items:
+              type: string
+            example: ["CDQTR4589","CDATR4568","CDSTR4785","CDOTR47856","CDPSATR4589"]
+
+  /contact-dialogue/customer-contact-session-procedure/{cr-reference-id}:
+    get:
+      tags: 
+      - retrieve
+      summary: "Retrieve customer contact session procedure"
+      operationId: retrieveCustomerContactSessionProcedure
+      produces: 
+      - application/json
+      parameters:
+      - in: path
+        name: cr-reference-id
+        description: "Contact Dialogue Record Reference"
+        type: string
+        required: true
+      responses:
+        200:
+          description: "Successfully retrieved customer contact session procedure"
+          schema:
+            $ref: '#/definitions/ContactDialogueBaseWithIds'
+
+  /contact-dialogue/customer-contact-session-procedure/{cr-reference-id}/queries/{bq-reference-id}:
+    get:
+      tags: 
+      - retrieve
+      summary: "Retrieve customer contact session procedure query"
+      operationId: retrieveCustomerContactSessionProcedureQuery
+      produces: 
+      - application/json
+      parameters:
+      - in: path
+        name: cr-reference-id
+        description: "Contact Dialogue Record Reference"
+        type: string
+        required: true
+      - name : bq-reference-id
+        in: path
+        description: "Contact Dialogue Query Task Reference"
+        required: true
+        type: string
+      responses:
+        200:
+          description: "Successfully retrieved customer contact session procedure query"
+          schema:
+            $ref: '#/definitions/ContactDialogueQueryBaseWithIds'
+
+  /contact-dialogue/customer-contact-session-procedure/{cr-reference-id}/authentications/{bq-reference-id}:
+    get:
+      tags: 
+      - retrieve
+      summary: "Retrieve customer contact session procedure authentication"
+      operationId: retrieveCustomerContactSessionProcedureAuthentication
+      produces: 
+      - application/json
+      parameters:
+      - in: path
+        name: cr-reference-id
+        description: "Contact Dialogue Record Reference"
+        type: string
+        required: true
+      - name : bq-reference-id
+        in: path
+        description: "Contact Dialogue Authentication Task Reference"
+        required: true
+        type: string
+      responses:
+        200:
+          description: "Successfully retrieved customer contact session procedure authentication"
+          schema:
+            $ref: '#/definitions/ContactDialogueAuthenticationBaseWithIds'
+
+  /contact-dialogue/customer-contact-session-procedure/{cr-reference-id}/sales/{bq-reference-id}:
+    get:
+      tags: 
+      - retrieve
+      summary: "Retrieve customer contact session procedure sale"
+      operationId: retrieveCustomerContactSessionProcedureSales
+      produces: 
+      - application/json
+      parameters:
+      - in: path
+        name: cr-reference-id
+        description: "Contact Dialogue Record Reference"
+        type: string
+        required: true
+      - name : bq-reference-id
+        in: path
+        description: "Contact Dialogue Sales Task Reference"
+        required: true
+        type: string
+      responses:
+        200:
+          description: "Successfully retrieved customer contact session procedure sale"
+          schema:
+            $ref: '#/definitions/ContactDialogueSalesBaseWithIds'
+
+  /contact-dialogue/customer-contact-session-procedure/{cr-reference-id}/offers/{bq-reference-id}:
+    get:
+      tags: 
+      - retrieve
+      summary: "Retrieve customer contact session procedure offer"
+      operationId: retrieveCustomerContactSessionProcedureOffer
+      produces: 
+      - application/json
+      parameters:
+      - in: path
+        name: cr-reference-id
+        description: "Contact Dialogue Record Reference"
+        type: string
+        required: true
+      - name : bq-reference-id
+        in: path
+        description: "Contact Dialogue Offer Task Reference"
+        required: true
+        type: string
+      responses:
+        200:
+          description: "Successfully retrieved customer contact session procedure offer"
+          schema:
+            $ref: '#/definitions/ContactDialogueOfferBaseWithIds'
+
+  /contact-dialogue/customer-contact-session-procedure/{cr-reference-id}/products-services/{bq-reference-id}:
+    get:
+      tags: 
+      - retrieve
+      summary: "Retrieve customer contact session procedure product or service"
+      operationId: retrieveCustomerContactSessionProcedureProductOrSrevice
+      produces: 
+      - application/json
+      parameters:
+      - in: path
+        name: cr-reference-id
+        description: "Contact Dialogue Record Reference"
+        type: string
+        required: true
+      - name : bq-reference-id
+        in: path
+        description: "Contact Dialogue Product/Service Access Task Reference"
+        required: true
+        type: string
+      responses:
+        200:
+          description: "Successfully retrieved customer contact session procedure product or service"
+          schema:
+            $ref: '#/definitions/ContactDialogueProductServiceBaseWithIds'
+
+  /contact-dialogue/customer-contact-session-procedure/{cr-reference-id}/cases/{bq-reference-id}:
+    get:
+      tags: 
+      - retrieve
+      summary: "Retrieve customer contact session procedure case"
+      operationId: retrieveCustomerContactSessionProcedureCase
+      produces: 
+      - application/json
+      parameters:
+      - in: path
+        name: cr-reference-id
+        description: "Contact Dialogue Record Reference"
+        type: string
+        required: true
+      - name : bq-reference-id
+        in: path
+        description: "Contact Dialogue Case Task Reference"
+        required: true
+        type: string
+      responses:
+        200:
+          description: "Successfully retrieved customer contact session procedure case"
+          schema:
+            $ref: '#/definitions/ContactDialogueCaseBaseWithIds'
+
+  /contact-dialogue/customer-contact-session-procedure/{cr-reference-id}/orders/{bq-reference-id}:
+    get:
+      tags: 
+      - retrieve
+      summary: "Retrieve customer contact session procedure order"
+      operationId: retrieveCustomerContactSessionProcedureOrder
+      produces: 
+      - application/json
+      parameters:
+      - in: path
+        name: cr-reference-id
+        description: "Contact Dialogue Record Reference"
+        type: string
+        required: true
+      - name : bq-reference-id
+        in: path
+        description: "Contact Dialogue Order Task Reference"
+        required: true
+        type: string
+      responses:
+        200:
+          description: "Successfully retrieved customer contact session procedure order"
+          schema:
+            $ref: '#/definitions/ContactDialogueOrderBaseWithIds'
+
+  /contact-dialogue/customer-contact-session-procedure/{cr-reference-id}/intelligences/{bq-reference-id}:
+    get:
+      tags: 
+      - retrieve
+      summary: "Retrieve customer contact session procedure intelligence"
+      operationId: retrieveCustomerContactSessionProcedureIntelligence
+      produces: 
+      - application/json
+      parameters:
+      - in: path
+        name: cr-reference-id
+        description: "Contact Dialogue Record Reference"
+        type: string
+        required: true
+      - name : bq-reference-id
+        in: path
+        description: "Contact Dialogue Intelligence Task Reference"
+        required: true
+        type: string
+      responses:
+        200:
+          description: "Successfully retrieved customer contact session procedure intelligence"
+          schema:
+            $ref: '#/definitions/ContactDialogueIntelligenceBaseWithIds'
+            
+  /contact-dialogue/customer-contact-session-procedure/{cr-reference-id}/histories/{bq-reference-id}:
+    get:
+      tags: 
+      - retrieve
+      summary: "Retrieve customer contact session procedure history"
+      operationId: retrieveCustomerContactSessionProcedureHistory
+      produces: 
+      - application/json
+      parameters:
+      - in: path
+        name: cr-reference-id
+        description: "Contact Dialogue Record Reference"
+        type: string
+        required: true
+      - name : bq-reference-id
+        in: path
+        description: "Contact Dialogue History Task Reference"
+        required: true
+        type: string
+      responses:
+        200:
+          description: "Successfully retrieved customer contact session procedure history"
+          schema:
+            $ref: '#/definitions/ContactDialogueHistoryBaseWithIds'
+
+  /contact-dialogue/customer-contact-session-procedure/{cr-reference-id}/recording:
+    post:
+      tags: 
+      - record
+      summary: "Create customer contact session procedure"
+      operationId: recordCustomerContactSessionProcedure 
+      consumes:
+      - application/json
+      produces: 
+      - application/json
+      parameters:
+      - in: path
+        name: cr-reference-id
+        description: "Contact Dialogue Record Reference"
+        type: string
+        required: true
+      - in: body
+        name: body
+        required: true
+        schema:
+          $ref: "#/definitions/ContactDialogueRecordRequest"
+      responses:
+        201:
+          description: "Created customer contact session procedure"
+          schema:
+            $ref: '#/definitions/ContactDialogueRecordResponse'
+
+  /contact-dialogue/customer-contact-session-procedure/{cr-reference-id}/updation:
+    put:
+      tags: 
+      - update
+      summary: "Update customer contact session procedure dialogue"
+      operationId: updateCustomerContactSessionProcedure 
+      consumes:
+      - application/json
+      produces: 
+      - application/json
+      parameters:
+      - in: path
+        name: cr-reference-id
+        description: "Contact Dialogue Record Reference"
+        type: string
+        required: true
+      - in: body
+        name: body
+        required: true
+        schema:
+          $ref: "#/definitions/ContactDialogueBase"
+      responses:
+        200:
+          description: "Successfully updated customer contact session procedure dialogue"
+          schema:
+            $ref: '#/definitions/ContactDialogueBaseWithIds'
+
+  /contact-dialogue/customer-contact-session-procedure/{cr-reference-id}/execution:
+    put:
+      tags: 
+      - execute
+      summary: "Update customer contact session procedure"
+      operationId: executeCustomerContactSessionProcedureDialogueSelectionUpdate 
+      consumes:
+      - application/json
+      produces: 
+      - application/json
+      parameters:
+      - in: path
+        name: cr-reference-id
+        description: "Contact Dialogue Record Reference"
+        type: string
+        required: true
+      - in: body
+        name: body
+        required: true
+        schema:
+          $ref: "#/definitions/ContactDialogueBase"
+      responses:
+        200:
+          description: "Successfully Updated customer contact session procedure"
+          schema:
+            $ref: '#/definitions/ContactDialogueBaseWithIds'
+
+    post:
+      tags: 
+      - execute
+      summary: "Create customer contact session procedure"
+      operationId: executeCustomerContactSessionProcedureDialogueSelectionCreate 
+      consumes:
+      - application/json
+      produces: 
+      - application/json
+      parameters:
+      - in: path
+        name: cr-reference-id
+        description: "Contact Dialogue Record Reference"
+        type: string
+        required: true
+      - in: body
+        name: body
+        required: true
+        schema:
+          $ref: "#/definitions/ContactDialogueBase"
+      responses:
+        201:
+          description: "Successfully created customer contact session procedure"
+          schema:
+            $ref: '#/definitions/ContactDialogueBaseWithIds'
+
+  /contact-dialogue/customer-contact-session-procedure/{cr-reference-id}/queries/{bq-reference-id}/requisition:
+    put:
+      tags: 
+      - request
+      summary: "Update customer contact session procedure query"
+      operationId: requestCustomerContactSessionProcedureQueryUpdate
+      consumes:
+      - application/json
+      produces: 
+      - application/json
+      parameters:
+      - in: path
+        name: cr-reference-id
+        description: "Contact Dialogue Record Reference"
+        type: string
+        required: true
+      - name : bq-reference-id
+        in: path
+        description: "Contact Dialogue Query Task Reference"
+        required: true
+        type: string
+      - in: body
+        name: body
+        required: true
+        schema:
+          $ref: "#/definitions/ContactDialogueQueryBase"
+      responses:
+        200:
+          description: "Successfully updated customer contact session procedure query"
+          schema:
+            $ref: '#/definitions/ContactDialogueQueryBaseWithIds'
+
+  /contact-dialogue/customer-contact-session-procedure/{cr-reference-id}/queries/requisition:
+    post:
+      tags: 
+      - request
+      summary: "Create customer contact session procedure query"
+      operationId: requestCustomerContactSessionProcedureQueryCreate
+      consumes:
+      - application/json
+      produces: 
+      - application/json
+      parameters:
+      - in: path
+        name: cr-reference-id
+        description: "Contact Dialogue Record Reference"
+        type: string
+        required: true
+      - in: body
+        name: body
+        required: true
+        schema:
+          $ref: "#/definitions/ContactDialogueQueryBase"
+      responses:
+        201:
+          description: "Successfully created customer contact session procedure query"
+          schema:
+            $ref: '#/definitions/ContactDialogueQueryBaseWithIds'
+            
+  /contact-dialogue/customer-contact-session-procedure/{cr-reference-id}/authentications/{bq-reference-id}/requisition:
+    put:
+      tags: 
+      - request
+      summary: "Update customer contact session procedure authentication"
+      operationId: requestCustomerContactSessionProcedureAuthenticationUpdate
+      consumes:
+      - application/json
+      produces: 
+      - application/json
+      parameters:
+      - in: path
+        name: cr-reference-id
+        description: "Contact Dialogue Record Reference"
+        type: string
+        required: true
+      - name : bq-reference-id
+        in: path
+        description: "Contact Dialogue Authentication Task Reference"
+        required: true
+        type: string
+      - in: body
+        name: body
+        required: true
+        schema:
+          $ref: "#/definitions/ContactDialogueAuthenticationBase"
+      responses:
+        200:
+          description: "Successfully updated customer contact session procedure authentication"
+          schema:
+            $ref: '#/definitions/ContactDialogueAuthenticationBaseWithIds'
+
+  /contact-dialogue/customer-contact-session-procedure/{cr-reference-id}/authentications/requisition:
+    post:
+      tags: 
+      - request
+      summary: "Create customer contact session procedure authentication"
+      operationId: requestCustomerContactSessionProcedureAuthenticationCreate
+      consumes:
+      - application/json
+      produces: 
+      - application/json
+      parameters:
+      - in: path
+        name: cr-reference-id
+        description: "Contact Dialogue Record Reference"
+        type: string
+        required: true
+      - in: body
+        name: body
+        required: true
+        schema:
+          $ref: "#/definitions/ContactDialogueAuthenticationBase"
+      responses:
+        201:
+          description: "Successfully created customer contact session procedure authentication"
+          schema:
+            $ref: '#/definitions/ContactDialogueAuthenticationBaseWithIds'
+
+  /contact-dialogue/customer-contact-session-procedure/{cr-reference-id}/sales/{bq-reference-id}/requisition:
+    put:
+      tags: 
+      - request
+      summary: "Update customer contact session procedure sale"
+      operationId: requestCustomerContactSessionProcedureDialogueSalesUpdate 
+      consumes:
+      - application/json
+      produces: 
+      - application/json
+      parameters:
+      - in: path
+        name: cr-reference-id
+        description: "Contact Dialogue Record Reference"
+        type: string
+        required: true
+      - in: path
+        name: bq-reference-id
+        description: "Contact Dialogue Sales Task Reference"
+        type: string
+        required: true
+      - in: body
+        name: body
+        required: true
+        schema:
+          $ref: "#/definitions/ContactDialogueSalesRequest"
+      responses:
+        200:
+          description: "Successfully updated customer contact session procedure sale"
+          schema:
+            $ref: '#/definitions/ContactDialogueSalesBaseWithIds'
+
+  /contact-dialogue/customer-contact-session-procedure/{cr-reference-id}/sales/requisition:
+    post:
+      tags: 
+      - request
+      summary: "Create customer contact session procedure sale"
+      operationId: requestCustomerContactSessionProcedureDialogueSalesCreate 
+      consumes:
+      - application/json
+      produces: 
+      - application/json
+      parameters:
+      - in: path
+        name: cr-reference-id
+        description: "Contact Dialogue Record Reference"
+        type: string
+        required: true
+      - in: body
+        name: body
+        required: true
+        schema:
+          $ref: "#/definitions/ContactDialogueSalesRequest"
+      responses:
+        201:
+          description: "Successfully created customer contact session procedure sale"
+          schema:
+            $ref: '#/definitions/ContactDialogueSalesBaseWithIds'
+
+  /contact-dialogue/customer-contact-session-procedure/{cr-reference-id}/offers/{bq-reference-id}/requisition:
+    put:
+      tags: 
+      - request
+      summary: "Update customer contact session procedure offer"
+      operationId: requestCustomerContactSessionProcedureOfferUpdate
+      consumes:
+      - application/json
+      produces: 
+      - application/json
+      parameters:
+      - in: path
+        name: cr-reference-id
+        description: "Contact Dialogue Record Reference"
+        type: string
+        required: true
+      - in: path
+        name: bq-reference-id
+        description: "Contact Dialogue Offer Task Reference"
+        type: string
+        required: true
+      - in: body
+        name: body
+        required: true
+        schema:
+          $ref: "#/definitions/ContactDialogueOfferBase"
+      responses:
+        200:
+          description: "Successfully updated customer contact session procedure offer" 
+          schema:
+            $ref: '#/definitions/ContactDialogueOfferBaseWithIds'
+
+  /contact-dialogue/customer-contact-session-procedure/{cr-reference-id}/offers/requisition:
+    post:
+      tags: 
+      - request
+      summary: "Create customer contact session procedure offer"
+      operationId: requestCustomerContactSessionProcedureOfferCreate
+      consumes:
+      - application/json
+      produces: 
+      - application/json
+      parameters:
+      - in: path
+        name: cr-reference-id
+        description: "Contact Dialogue Record Reference"
+        type: string
+        required: true
+      - in: body
+        name: body
+        required: true
+        schema:
+          $ref: "#/definitions/ContactDialogueOfferBase"
+      responses:
+        201:
+          description: "Successfully created customer contact session procedure offer" 
+          schema:
+            $ref: '#/definitions/ContactDialogueOfferBaseWithIds'
+
+  /contact-dialogue/customer-contact-session-procedure/{cr-reference-id}/products-services/{bq-reference-id}/requisition:
+    put:
+      tags: 
+      - request
+      summary: "Update customer contact session procedure product or service" 
+      operationId: requestCustomerContactSessionProcedureProductServiceUpdate
+      consumes:
+      - application/json
+      produces: 
+      - application/json
+      parameters:
+      - in: path
+        name: cr-reference-id
+        description: "Contact Dialogue Record Reference"
+        type: string
+        required: true
+      - in: path
+        name: bq-reference-id
+        description: "Contact Dialogue Product/Service Access Task Reference"
+        type: string
+        required: true
+      - in: body
+        name: body
+        required: true
+        schema:
+          $ref: "#/definitions/ContactDialogueProductServiceBase"
+      responses:
+        200:
+          description: "Successfully updated customer contact session procedure product or service"
+          schema:
+            $ref: '#/definitions/ContactDialogueProductServiceBaseWithIds'
+  
+  /contact-dialogue/customer-contact-session-procedure/{cr-reference-id}/products-services/requisition:
+    post:
+      tags: 
+      - request
+      summary: "Create customer contact session procedure product or service" 
+      operationId: requestCustomerContactSessionProcedureProductServiceCreate
+      consumes:
+      - application/json
+      produces: 
+      - application/json
+      parameters:
+      - in: path
+        name: cr-reference-id
+        description: "Contact Dialogue Record Reference"
+        type: string
+        required: true
+      - in: body
+        name: body
+        required: true
+        schema:
+          $ref: "#/definitions/ContactDialogueProductServiceBase"
+      responses:
+        201:
+          description: "Successfully created customer contact session procedure product or service"
+          schema:
+            $ref: '#/definitions/ContactDialogueProductServiceBaseWithIds'
+
+  /contact-dialogue/customer-contact-session-procedure/{cr-reference-id}/cases/{bq-reference-id}/requisition:
+    put:
+      tags: 
+      - request
+      summary: "Update customer contact session procedure case"
+      operationId: requestCustomerContactSessionProcedureCaseUpdate
+      consumes:
+      - application/json
+      produces: 
+      - application/json
+      parameters:
+      - in: path
+        name: cr-reference-id
+        description: "Contact Dialogue Record Reference"
+        type: string
+        required: true
+      - in: path
+        name: bq-reference-id
+        description: "Contact Dialogue Case Task Reference"
+        type: string
+        required: true
+      - in: body
+        name: body
+        required: true
+        schema:
+          $ref: "#/definitions/ContactDialogueCaseBase"
+      responses:
+        200:
+          description: "Successfully updated customer contact session procedure case"
+          schema:
+            $ref: '#/definitions/ContactDialogueCaseBaseWithIds'
+
+  /contact-dialogue/customer-contact-session-procedure/{cr-reference-id}/cases/requisition:
+    post:
+      tags: 
+      - request
+      summary: "Create customer contact session procedure case"
+      operationId: requestCustomerContactSessionProcedureCaseCreate
+      consumes:
+      - application/json
+      produces: 
+      - application/json
+      parameters:
+      - in: path
+        name: cr-reference-id
+        description: "Contact Dialogue Record Reference"
+        type: string
+        required: true
+      - in: body
+        name: body
+        required: true
+        schema:
+          $ref: "#/definitions/ContactDialogueCaseBase"
+      responses:
+        201:
+          description: "Successfully created customer contact session procedure case"
+          schema:
+            $ref: '#/definitions/ContactDialogueCaseBaseWithIds'
+
+  /contact-dialogue/customer-contact-session-procedure/{cr-reference-id}/orders/{bq-reference-id}/requisition:
+    put:
+      tags: 
+      - request
+      summary: "Update customer contact session procedure order"
+      operationId: requestCustomerContactSessionProcedureOrderUpdate
+      consumes:
+      - application/json
+      produces: 
+      - application/json
+      parameters:
+      - in: path
+        name: cr-reference-id
+        description: "Contact Dialogue Record Reference"
+        type: string
+        required: true
+      - in: path
+        name: bq-reference-id
+        description: "Contact Dialogue Order Task Reference"
+        type: string
+        required: true
+      - in: body
+        name: body
+        required: true
+        schema:
+          $ref: "#/definitions/ContactDialogueOrderBase"
+      responses:
+        200:
+          description: "Successfully updated customer contact session procedure order"
+          schema:
+            $ref: '#/definitions/ContactDialogueOrderBaseWithIds'
+
+  /contact-dialogue/customer-contact-session-procedure/{cr-reference-id}/orders/requisition:
+    post:
+      tags: 
+      - request
+      summary: "Create customer contact session procedure order"
+      operationId: requestCustomerContactSessionProcedureOrderCreate
+      consumes:
+      - application/json
+      produces: 
+      - application/json
+      parameters:
+      - in: path
+        name: cr-reference-id
+        description: "Contact Dialogue Record Reference"
+        type: string
+        required: true
+      - in: body
+        name: body
+        required: true
+        schema:
+          $ref: "#/definitions/ContactDialogueOrderBase"
+      responses:
+        201:
+          description: "Successfully created customer contact session procedure order"
+          schema:
+            $ref: '#/definitions/ContactDialogueOrderBaseWithIds'
+
+definitions:
+
+  ContactDialogueBaseWithIds:
+    type: object
+    properties:
+      contactDialogueRecordReference:
+        type: string
+        example: "CDRR78546"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      contactReference:
+        type: string
+        example: "CR78546"
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: RepresentativeOfCustomer
+          general-info:  "the overarching customer contact that includes this dialogue"
+      contactRecord:
+        type: object
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: CustomerDialogueSystem.CustomerContactSession
+          general-info:  "contact details including authentication level provided by SD-Contact Handler"
+      customerReference:
+        type: string
+        example: "CR47856"
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: RepresentativeOfCustomer.RepresentedCustomer
+          general-info:  "extracted from Contact Record or provided by customer"
+      employeeReference:
+        type: string
+        example: "ER78456"
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: CustomerServiceAgent
+          general-info:  "the servicing resource for assisted customer exchanges"
+      servicingPositionReference:
+        type: string
+        example: "SPR78456"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+          general-info:  "the servicing location/desk for assisted customer exchanges"
+      sessionMechanism:
+        type: string
+        example: "web"
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: CustomerDialogueSystem.CustomerContactSession(as Session).CommunicationChannel
+      sessionStartEndTime:
+        $ref: 'https://api.swaggerhub.com/domains/BIAN/Common-Model/1.0.0#/definitions/ISODateTime'
+      contactDialogueRecord:
+        type: object
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: CustomerDialogueSystem.CustomerContactSession.ExecutedInteraction.ExecutedAction
+          general-info:  "session dialogue log of actions returned to SD-Contact Handler"
+      contactDialogueType:
+        type: string
+        example: "VERIFIED_CUSTOMER"
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: CustomerDialogueSystem.CustomerContactSession.ContactType
+          general-info:  "contact dialogue type"
+      contactDialogueScript:
+        type: string
+        example: "verification script"
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: CustomerDialogueSystem.CustomerContactSession.ExecutedInteraction.Type.ScriptedAction
+          general-info:  "a prompt provided to structure the interaction for self-service and assisted interactions"
+      contactDialogueLogReference:
+        type: string
+        example: "CDLR78569"
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: CustomerDialogueSystem.CustomerContactSession.ExecutedInteraction
+      contactDialogueLog:
+        type: string
+        example: "click-stream, video/audio recording used for training/root cause analysis"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+
+  ContactDialogueQueryBaseWithIds:
+    type: object
+    properties:
+      contactDialogueRecordReference:
+        type: string
+        example: "CDRR45668"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      contactDialogueQueryTaskReference:
+        type: string
+        example: "CDQTR78965"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      contactRecord:
+        type: object
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: CustomerDialogueSystem.CustomerContactSession
+          general-info:  "contact details including authentication level provided by SD-Contact Handler"
+      contactDialogueRecord:
+        type: object
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: CustomerDialogueSystem.CustomerContactSession.ExecutedInteraction.ExecutedAction
+          general-info:  "session dialogue log of actions returned to SD-Contact Handler"
+      queryType:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+          general-info:  "the type of question or answer addressed in the session"
+        example: "BRANCH_LOCATION"
+      queryStartEndTime:
+        $ref: 'https://api.swaggerhub.com/domains/BIAN/Common-Model/1.0.0#/definitions/ISODateTime'
+      queryResult:
+        type: string
+        example: "Lemmon Ave"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+          general-info:  query result
+
+  ContactDialogueAuthenticationBaseWithIds:
+    type: object
+    properties:
+      contactDialogueRecordReference:
+        type: string
+        example: "CDRR78568"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      contactDialogueAuthenticationTaskReference:
+        type: string
+        example: "CDATS78546"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      contactRecord:
+        type: object
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: CustomerDialogueSystem.CustomerContactSession
+          general-info:  "contact details including authentication level provided by SD-Contact Handler"
+      requestedAuthenticationLevel:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+          general-info:  "orchestrates increased authentication on request"
+        example: "LEVEL_1"
+
+  ContactDialogueSalesBaseWithIds:
+    type: object
+    properties:
+      contactDialogueRecordReference:
+        type: string
+        example: "CDRR47856"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      contactDialogueSalesTaskReference:
+        type: string
+        example: "CDSTR47556"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      contactRecord:
+        type: object
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: CustomerDialogueSystem.CustomerContactSession
+          general-info:  "contact details including authentication level provided by SD-Contact Handler"
+      contactDialogueRecord:
+        type: object
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: CustomerDialogueSystem.CustomerContactSession.ExecutedInteraction.ExecutedAction
+          general-info:  "session dialogue log of actions returned to SD-Contact Handler"
+      productServiceReference:
+        type: string
+        example: "PSR78456"
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: CustomerDialogueSystem.CustomerContactSession.ExecutedInteraction.SalesLead.ProductToSell
+          general-info:  "type of product or service being offered"
+      productServiceSalesMaterial:
+        type: string
+        example: "New brochures"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+          general-info:  "descriptive materials or brochures"
+      leadOpportunityReference:
+        type: string
+        example: "LOR78456"
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: CustomerDialogueSystem.CustomerContactSession.ExecutedInteraction.SalesLead
+      customerReference:
+        type: string
+        example: "CR78456"
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: RepresentativeOfCustomer.RepresentedCustomer
+      employeeBusinessUnitReference:
+        type: string
+        example: "EBUR78456"
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: CustomerDialogueSystem.CustomerContactSession.CustomerServiceAgent(as RepresentativeOfficer).BusinessUnit
+          general-info:  "used for commissions if applicable"
+      leadOpportunityDescription:
+        type: string
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: CustomerDialogueSystem.CustomerContactSession.ExecutedInteraction.SalesLead.Description
+          general-info:  "narrative or description of opportunity"
+      dateTime:
+        $ref: 'https://api.swaggerhub.com/domains/BIAN/Common-Model/1.0.0#/definitions/ISODateTime'
+
+  ContactDialogueOfferBaseWithIds:
+    type: object
+    properties:
+      contactDialogueRecordReference:
+        type: string
+        example: "CDRR78456"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      contactDialogueOfferTaskReference:
+        type: string
+        example: "CDOTR47856"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      contactRecord:
+        type: object
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: CustomerDialogueSystem.CustomerContactSession
+          general-info:  "contact details including authentication level provided by SD-Contact Handler"
+      contactDialogueRecord:
+        type: object
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: CustomerDialogueSystem.CustomerContactSession.ExecutedInteraction.ExecutedAction
+          general-info:  "session dialogue log of actions returned to SD-Contact Handler"
+      customerReference:
+        type: string
+        example: "CR74586"
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: RepresentativeOfCustomer.RepresentedCustomer
+      productServiceReference:
+        type: string
+        example: "PSR78456"
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: CustomerDialogueSystem.CustomerContactSession.ExecutedInteraction.CustomerOffer.OfferedAgreement(as MasterAgreement).GovernedContract(as Agreement).Product
+          general-info:  "type of product or service being offered"
+      customerOfferReference:
+        type: string
+        example: "COR78456"
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: CustomerDialogueSystem.CustomerContactSession.ExecutedInteraction.CustomerOffer
+          general-info:  "Reference to the customer offer"
+      customerOfferAccessStartEndTime:
+        $ref: 'https://api.swaggerhub.com/domains/BIAN/Common-Model/1.0.0#/definitions/ISODateTime'
+      customerOfferAccessResult:
+        type: string
+        example: "Success"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+          general-info:  "customer offer access result"
+
+  ContactDialogueProductServiceBaseWithIds:
+    type: object
+    properties:
+      contactDialogueRecordReference:
+        type: string
+        example: "CDRR47856"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      contactDialogueProductServiceAccessTaskReference:
+        type: string
+        example: "CDPSATS7485"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      contactRecord:
+        type: object
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: CustomerDialogueSystem.CustomerContactSession
+          general-info:  "contact details including authentication level provided by SD-Contact Handler"
+      contactDialogueRecord:
+        type: object
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: CustomerDialogueSystem.CustomerContactSession.ExecutedInteraction.ExecutedAction
+          general-info:  "session dialogue log of actions returned to SD-Contact Handler"
+      customerReference:
+        type: string
+        example: "CR78654"
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: RepresentativeOfCustomer.RepresentedCustomer
+      productServiceReference:
+        type: string
+        example: "PSR78456"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+          general-info:  "type of product or service being accessed"
+      productInstanceReference:
+        type: string
+        example: "PIR78654"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+          general-info:  "account number"
+      productServiceAccessStartEndTime:
+        $ref: 'https://api.swaggerhub.com/domains/BIAN/Common-Model/1.0.0#/definitions/ISODateTime'
+      productServiceAccessResult:
+        type: string
+        example: "Success"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+          general-info:  "product or service access result"
+
+  ContactDialogueCaseBaseWithIds:
+    type: object
+    properties:
+      contactDialogueRecordReference:
+        type: string
+        example: "CDRR74586"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      contactDialogueCaseTaskReference:
+        type: string
+        example: "CDCTR786635"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      contactRecord:
+        type: object
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: CustomerDialogueSystem.CustomerContactSession
+          general-info:  "contact details including authentication level provided by SD-Contact Handler"
+      contactDialogueRecord:
+        type: object
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: CustomerDialogueSystem.CustomerContactSession.ExecutedInteraction.ExecutedAction
+          general-info:  "session dialogue log of actions returned to SD-Contact Handler"
+      customerReference:
+        type: string
+        example: "CR78456"
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: RepresentativeOfCustomer.RepresentedCustomer
+      customerCaseReference:
+        type: string
+        example: "CCR78456"
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: CustomerDialogueSystem.CustomerContactSession.ExecutedInteraction.InvestigationCase
+          general-info:  "Reference to the customer case"
+      customerCaseAccessStartEndTime:
+        $ref: 'https://api.swaggerhub.com/domains/BIAN/Common-Model/1.0.0#/definitions/ISODateTime'
+      customerCaseAccessResult:
+        type: string
+        example: "Success"
+        description: |
+          `status: Registered`
+          iso-link: [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_E_Wn-cTGEeChad0JzLk7QA_-453837105/elements/_E_gY9MTGEeChad0JzLk7QA_1381201850)
+          bian-reference: CustomerDialogueSystem.CustomerContactSession.ExecutedInteraction.InvestigationCase.InvestigationResolution
+          general-info:  "customer access result"
+
+  ContactDialogueOrderBaseWithIds:
+    type: object
+    properties:
+      contactDialogueRecordReference:
+        type: string
+        example: "CDRR78456"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      contactDialogueOrderTaskReference:
+        type: string
+        example: "CDOTR78456"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      contactRecord:
+        type: object
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: CustomerDialogueSystem.CustomerContactSession
+          general-info:  "contact details including authentication level provided by SD-Contact Handler"
+      contactDialogueRecord:
+        type: object
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: CustomerDialogueSystem.CustomerContactSession.ExecutedInteraction.ExecutedAction
+          general-info:  "session dialogue log of actions returned to SD-Contact Handler"
+      customerReference:
+        type: string
+        example: "CR78456"
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: RepresentativeOfCustomer.RepresentedCustomer
+      servicingOrderReference:
+        type: string
+        example: "SOR78965"
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: CustomerDialogueSystem.CustomerContactSession.ExecutedInteraction.ServicingOrder
+          general-info:  "Reference to the servicing order"
+      servicingOrderAccessStartEndTime:
+        $ref: 'https://api.swaggerhub.com/domains/BIAN/Common-Model/1.0.0#/definitions/ISODateTime'
+      servicingOrderAccessResult:
+        type: string
+        example: "Success"
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: CustomerDialogueSystem.CustomerContactSession.ExecutedInteraction.ServicingOrder.ServicingOrderResolution
+          general-info:  "servicing order access result"
+
+  ContactDialogueIntelligenceBaseWithIds:
+    type: object
+    properties:
+      contactDialogueRecordReference:
+        type: string
+        example: "CDRR78965"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      contactDialogueIntelligenceTaskReference:
+        type: string
+        example: "CDITR78456"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      customerReference:
+        type: string
+        example: "CR78456"
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: RepresentativeOfCustomer.RepresentedCustomer
+      contactReference:
+        type: string
+        example: "4569879875500"
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: RepresentativeOfCustomer
+          general-info:  "all details relating to the contact where the insight obtained"
+      contactDialogueRecord:
+        type: object
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: CustomerDialogueSystem.CustomerContactSession.ExecutedInteraction.ExecutedAction
+          general-info:  "session dialogue log of actions returned to SD-Contact Handler"
+      contactDialogueLogReference:
+        type: string
+        example: "CDLR78569"
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: CustomerDialogueSystem.CustomerContactSession.ExecutedInteraction
+      customerInsightType:
+        type: string
+        example: "detected life event"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      customerInsight:
+        type: string
+        example: "Customer description"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+          general-info:  "description of insight"
+
+  ContactDialogueHistoryBaseWithIds:
+    type: object
+    properties:
+      contactDialogueRecordReference:
+        type: string
+        example: "CDRR78456"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      contactDialogueHistoryTaskReference:
+        type: string
+        example: "CDHTR78456"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      customerReference:
+        type: string
+        example: "CR78452"
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: RepresentativeOfCustomer.RepresentedCustomer
+          general-info:  "used to update customer history"
+      contactDialogueRecord:
+        type: object
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: CustomerDialogueSystem.CustomerContactSession.ExecutedInteraction.ExecutedAction
+          general-info:  "extracted information provided to capture session event"
+
+  ContactDialogueRecordRequest:
+    type: object
+    properties:
+      recordingRecordType:
+        type: string
+        example: "Behavior model performance feedback"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      recordingRecord:
+        type: object
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+      recordingRecordDateTime:
+        $ref: 'https://api.swaggerhub.com/domains/BIAN/Common-Model/1.0.0#/definitions/ISODateTime'
+      empolyeeBusinessUnitReference:
+        type: string
+        example: "456321987"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+          general-info:  "Employee or unit assigned to the servicing position"
+
+  ContactDialogueRecordResponse:
+    type: object
+    properties:
+      recordingRecordReference:
+        type: string
+        example: "789456321"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      recordingRecordStatus:
+        type: string
+        example: "APPLIED"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+
+  ContactDialogueBase:
+    type: object
+    properties:
+      contactReference:
+        type: string
+        example: "CR78546"
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: RepresentativeOfCustomer
+          general-info:  "the overarching customer contact that includes this dialogue"
+      contactRecord:
+        type: object
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: CustomerDialogueSystem.CustomerContactSession
+          general-info:  "contact details including authentication level provided by SD-Contact Handler"
+      customerReference:
+        type: string
+        example: "CR47856"
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: RepresentativeOfCustomer.RepresentedCustomer
+          general-info:  "extracted from Contact Record or provided by customer"
+      employeeReference:
+        type: string
+        example: "ER78456"
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: CustomerServiceAgent
+          general-info:  "the servicing resource for assisted customer exchanges"
+      servicingPositionReference:
+        type: string
+        example: "SPR78456"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+          general-info:  "the servicing location/desk for assisted customer exchanges"
+      sessionMechanism:
+        type: string
+        example: "web"
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: CustomerDialogueSystem.CustomerContactSession(as Session).CommunicationChannel
+      sessionStartEndTime:
+        $ref: 'https://api.swaggerhub.com/domains/BIAN/Common-Model/1.0.0#/definitions/ISODateTime'
+      contactDialogueRecord:
+        type: object
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: CustomerDialogueSystem.CustomerContactSession.ExecutedInteraction.ExecutedAction
+          general-info:  "session dialogue log of actions returned to SD-Contact Handler"
+      contactDialogueType:
+        type: string
+        example: "VERIFIED_CUSTOMER"
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: CustomerDialogueSystem.CustomerContactSession.ContactType
+          general-info:  "contact dialogue type"
+      contactDialogueScript:
+        type: string
+        example: "verification script"
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: CustomerDialogueSystem.CustomerContactSession.ExecutedInteraction.Type.ScriptedAction
+          general-info:  "a prompt provided to structure the interaction for self-service and assisted interactions"
+      contactDialogueLogReference:
+        type: string
+        example: "CDLR78569"
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: CustomerDialogueSystem.CustomerContactSession.ExecutedInteraction
+      contactDialogueLog:
+        type: string
+        example: "click-stream, video/audio recording used for training/root cause analysis"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+
+  ContactDialogueQueryBase:
+    type: object
+    properties:
+      contactRecord:
+        type: object
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: CustomerDialogueSystem.CustomerContactSession
+          general-info:  "contact details including authentication level provided by SD-Contact Handler"
+      contactDialogueRecord:
+        type: object
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: CustomerDialogueSystem.CustomerContactSession.ExecutedInteraction.ExecutedAction
+          general-info:  "session dialogue log of actions returned to SD-Contact Handler"
+      queryType:
+        type: string
+        example: "BRANCH_LOCATION"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+          general-info:  "the type of question or answer addressed in the session"
+      queryStartEndTime:
+        $ref: 'https://api.swaggerhub.com/domains/BIAN/Common-Model/1.0.0#/definitions/ISODateTime'
+      queryResult:
+        type: string
+        example: "Lemmon Ave"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+          general-info:  query result
+
+  ContactDialogueAuthenticationBase:
+    type: object
+    properties:
+      contactRecord:
+        type: object
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: CustomerDialogueSystem.CustomerContactSession
+          general-info:  "contact details including authentication level provided by SD-Contact Handler"
+      requestedAuthenticationLevel:
+        type: string
+        example: "LEVEL_1"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+          general-info:  "orchestrates increased authentication on request"
+  
+  ContactDialogueOfferBase:
+    type: object
+    properties:
+      contactRecord:
+        type: object
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: CustomerDialogueSystem.CustomerContactSession
+          general-info:  "contact details including authentication level provided by SD-Contact Handler"
+      contactDialogueRecord:
+        type: object
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: CustomerDialogueSystem.CustomerContactSession.ExecutedInteraction.ExecutedAction
+          general-info:  "session dialogue log of actions returned to SD-Contact Handler"
+      customerReference:
+        type: string
+        example: "CR74586"
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: RepresentativeOfCustomer.RepresentedCustomer
+      productServiceReference:
+        type: string
+        example: "PSR78456"
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: CustomerDialogueSystem.CustomerContactSession.ExecutedInteraction.CustomerOffer.OfferedAgreement(as MasterAgreement).GovernedContract(as Agreement).Product
+          general-info:  "type of product or service being offered"
+      customerOfferReference:
+        type: string
+        example: "COR78456"
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: CustomerDialogueSystem.CustomerContactSession.ExecutedInteraction.CustomerOffer
+          general-info:  "Reference to the customer offer"
+      customerOfferAccessStartEndTime:
+        $ref: 'https://api.swaggerhub.com/domains/BIAN/Common-Model/1.0.0#/definitions/ISODateTime'
+      customerOfferAccessResult:
+        type: string
+        example: "Success"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+          general-info:  "customer offer access result"
+
+  ContactDialogueProductServiceBase:
+    type: object
+    properties:
+      contactRecord:
+        type: object
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: CustomerDialogueSystem.CustomerContactSession
+          general-info:  "contact details including authentication level provided by SD-Contact Handler"
+      contactDialogueRecord:
+        type: object
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: CustomerDialogueSystem.CustomerContactSession.ExecutedInteraction.ExecutedAction
+          general-info:  "session dialogue log of actions returned to SD-Contact Handler"
+      customerReference:
+        type: string
+        example: "CR78654"
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: RepresentativeOfCustomer.RepresentedCustomer
+      productServiceReference:
+        type: string
+        example: "PSR78456"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+          general-info:  "type of product or service being accessed"
+      productInstanceReference:
+        type: string
+        example: "PIR78654"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+          general-info:  "account number"
+      productServiceAccessStartEndTime:
+        $ref: 'https://api.swaggerhub.com/domains/BIAN/Common-Model/1.0.0#/definitions/ISODateTime'
+      productServiceAccessResult:
+        type: string
+        example: "Success"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+          general-info:  "product or service access result"
+
+  ContactDialogueOrderBase:
+    type: object
+    properties:
+      contactRecord:
+        type: object
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: CustomerDialogueSystem.CustomerContactSession
+          general-info:  "contact details including authentication level provided by SD-Contact Handler"
+      contactDialogueRecord:
+        type: object
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: CustomerDialogueSystem.CustomerContactSession.ExecutedInteraction.ExecutedAction
+          general-info:  "session dialogue log of actions returned to SD-Contact Handler"
+      customerReference:
+        type: string
+        example: "CR78456"
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: RepresentativeOfCustomer.RepresentedCustomer
+      servicingOrderReference:
+        type: string
+        example: "SOR78965"
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: CustomerDialogueSystem.CustomerContactSession.ExecutedInteraction.ServicingOrder
+          general-info:  "Reference to the servicing order"
+      servicingOrderAccessStartEndTime:
+        $ref: 'https://api.swaggerhub.com/domains/BIAN/Common-Model/1.0.0#/definitions/ISODateTime'
+      servicingOrderAccessResult:
+        type: string
+        example: "Success"
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: CustomerDialogueSystem.CustomerContactSession.ExecutedInteraction.ServicingOrder.ServicingOrderResolution
+          general-info:  "servicing order access result"
+
+  ContactDialogueCaseBase:
+    type: object
+    properties:
+      contactRecord:
+        type: object
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: CustomerDialogueSystem.CustomerContactSession
+          general-info:  "contact details including authentication level provided by SD-Contact Handler"
+      contactDialogueRecord:
+        type: object
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: CustomerDialogueSystem.CustomerContactSession.ExecutedInteraction.ExecutedAction
+          general-info:  "session dialogue log of actions returned to SD-Contact Handler"
+      customerReference:
+        type: string
+        example: "CR78456"
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: RepresentativeOfCustomer.RepresentedCustomer
+      customerCaseReference:
+        type: string
+        example: "CCR78456"
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: CustomerDialogueSystem.CustomerContactSession.ExecutedInteraction.InvestigationCase
+          general-info:  "Reference to the customer case"
+      customerCaseAccessStartEndTime:
+        $ref: 'https://api.swaggerhub.com/domains/BIAN/Common-Model/1.0.0#/definitions/ISODateTime'
+      customerCaseAccessResult:
+        type: string
+        example: "Success"
+        description: |
+          `status: Registered`
+          iso-link: [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_E_Wn-cTGEeChad0JzLk7QA_-453837105/elements/_E_gY9MTGEeChad0JzLk7QA_1381201850)
+          bian-reference: CustomerDialogueSystem.CustomerContactSession.ExecutedInteraction.InvestigationCase.InvestigationResolution
+          general-info:  "customer access result"
+
+  ContactDialogueSalesRequest:
+    type: object
+    properties:
+      contactRecord:
+        type: object
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: CustomerDialogueSystem.CustomerContactSession
+          general-info:  "contact details including authentication level provided by SD-Contact Handler"
+      contactDialogueRecord:
+        type: object
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: CustomerDialogueSystem.CustomerContactSession.ExecutedInteraction.ExecutedAction
+          general-info:  "session dialogue log of actions returned to SD-Contact Handler"
+      productServiceReference:
+        type: string
+        example: "PSR78456"
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: CustomerDialogueSystem.CustomerContactSession.ExecutedInteraction.SalesLead.ProductToSell
+          general-info:  "type of product or service being offered"
+      productServiceSalesMaterial:
+        type: string
+        example: "New brochures"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+          general-info:  "descriptive materials or brochures"
+      leadOpportunityReference:
+        type: string
+        example: "LOR78456"
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: CustomerDialogueSystem.CustomerContactSession.ExecutedInteraction.SalesLead
+      customerReference:
+        type: string
+        example: "CR78456"
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: RepresentativeOfCustomer.RepresentedCustomer
+      employeeBusinessUnitReference:
+        type: string
+        example: "EBUR78456"
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: CustomerDialogueSystem.CustomerContactSession.CustomerServiceAgent(as RepresentativeOfficer).BusinessUnit
+          general-info:  "used for commissions if applicable"
+      leadOpportunityDescription:
+        type: string
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: CustomerDialogueSystem.CustomerContactSession.ExecutedInteraction.SalesLead.Description
+          general-info:  "narrative or description of opportunity"
+      dateTime:
+        $ref: 'https://api.swaggerhub.com/domains/BIAN/Common-Model/1.0.0#/definitions/ISODateTime'

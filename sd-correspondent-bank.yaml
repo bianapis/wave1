@@ -1,0 +1,1227 @@
+swagger: '2.0'
+info:
+  version: "4.0.0"
+  title: 'Service Domain - Correspondent Bank'
+  description: >
+        ## Service Domain Role: 
+      
+        This service domain fulfils correspondent banking arrangements between the bank and its correspondent banking partners.  This includes handling the clearing and settlement of payments to/from the correspondent banks, typically using the SWIFT payment network.
+
+
+        ## Example of Use:
+        
+        Transfer funds from a customer account with the bank to an account with another bank.
+        
+        ## General Comments:
+        
+        This Service Domain handles incoming and outgoing payment clearing and settlement messages to the bank's correspondent banking partners. The actual message transmission is delegated to the Financial Message Gateway service domain. Correspondent Bank administers the mirror accounting for interbank payments undertaking the underlying account reconciliation tasks.
+
+# Added by API Auto Mocking Plugin
+host: virtserver.swaggerhub.com
+basePath: /BIAN/sd-correspondent-bank/2.0.1
+schemes:
+ - https
+consumes: 
+- application/json
+produces: 
+- application/json 
+
+paths: 
+  /correspondent-bank/correspondent-bank-fulfillment-arrangement/initiation:
+    post:
+      tags:
+      - initiate
+      operationId: initiateCorrespondentBankFulfillmentArrangement
+      summary: Initiate a new correspondent bank arrangement
+      produces: 
+      - application/json
+      parameters:
+      - in: body
+        name: body
+        description: Initiate control record request payload
+        required: true
+        schema: 
+          $ref: '#/definitions/ArrangementBase'
+      responses:
+        201:
+          description: Created a Correspondent Bank Arrangement record successfully
+          schema:
+            $ref: '#/definitions/ArrangementBaseWithIds'
+
+  /correspondent-bank/correspondent-bank-fulfillment-arrangement/{cr-reference-id}/updation:
+    put:
+      tags:
+      - update
+      summary: Update an Active Correspondent Bank arrangement
+      operationId: updateCorrespondentBankFulfillmentArrangement
+      parameters:
+      - name: cr-reference-id
+        in: path
+        description: Correspondent Bank Arrangement Reference
+        required: true
+        type: string
+      - in: body
+        name: body
+        required: true
+        schema:
+           $ref: '#/definitions/UpdateBase'
+      responses:
+        200:
+          description: Updated a Repair Transaction record successfully
+          schema:
+            $ref: '#/definitions/UpdateBaseWIthId'
+
+  /correspondent-bank/correspondent-bank-fulfillment-arrangement/{cr-reference-id}/recording:
+    post:
+      tags:
+      - record
+      summary: Record a Correspondent Bank arrangement
+      operationId: recordCorrespondentBankFulfillmentArrangement
+      parameters:
+      - name: cr-reference-id
+        in: path
+        description: Correspondent Bank Arrangement Reference
+        required: true
+        type: string
+      - in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/CorrespondentBankRecordRequest'
+      responses:
+        201:
+          description: Created a Correspondent Bank Arrangement record successfully
+          schema:
+            $ref: '#/definitions/CorrespondentBankRecordResponse'
+            
+  /correspondent-bank/correspondent-bank-fulfillment-arrangement/{cr-reference-id}/inbounds/{bq-reference-id}/execution:
+    put:
+      tags:
+      - execute
+      summary: Execute an Inbound Update
+      description: Update an existing inbound correspondent bank payment processing
+      operationId: executeCorrespondentBankFulfillmentArrangementInboundUpdate
+      parameters:
+      - name: cr-reference-id
+        in: path
+        description: Correspondent Bank Arrangement Reference
+        required: true
+        type: string
+      - name: bq-reference-id
+        in: path
+        description: Correspondent Transaction Reference
+        required: true
+        type: string
+      - in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/InboundBase'
+      responses:
+        200:
+          description: Updated a Inbound Transaction record successfully
+          schema:
+            $ref: '#/definitions/InboundBaseWithId'
+            
+  /correspondent-bank/correspondent-bank-fulfillment-arrangement/{cr-reference-id}/inbounds/execution:
+    post:
+      tags:
+      - execute
+      summary: Execute an Inbound Creation
+      description: Create a new inbound correspondent bank payment processing
+      operationId: executeCorrespondentBankFulfillmentArrangementInboundCreate
+      parameters:
+      - name: cr-reference-id
+        in: path
+        description: Correspondent Bank Arrangement Reference
+        required: true
+        type: string
+      - in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/InboundBase'
+      responses:
+        201:
+          description: Created a Inbound Transaction record successfully
+          schema:
+            $ref: '#/definitions/InboundBaseWithId' 
+            
+  /correspondent-bank/correspondent-bank-fulfillment-arrangement/{cr-reference-id}/outbounds/{bq-reference-id}/execution:
+    put:
+      tags:
+      - execute
+      summary: Execute an Outbound Update
+      description: Update an existing outbound correspondent bank payment processing
+      operationId: executeCorrespondentBankFulfillmentArrangementOutboundUpdate
+      parameters:
+      - name: cr-reference-id
+        in: path
+        description: Correspondent Bank Arrangement Reference
+        required: true
+        type: string
+      - name: bq-reference-id
+        in: path
+        description: Correspondent Transaction Reference
+        required: true
+        type: string
+      - in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/OutboundBase'
+      responses:
+        200:
+          description: Updated a Outbound Transaction record successfully
+          schema:
+            $ref: '#/definitions/OutboundBaseWithId'
+            
+  /correspondent-bank/correspondent-bank-fulfillment-arrangement/{cr-reference-id}/outbounds/execution:
+    post:
+      tags:
+      - execute
+      summary: Execute an Outbound Creation
+      operationId: executeCorrespondentBankFulfillmentArrangementOutboundCreate
+      parameters:
+      - name: cr-reference-id
+        in: path
+        description: Correspondent Bank Arrangement Reference
+        required: true
+        type: string
+      - in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/OutboundBase'
+      responses:
+        201:
+          description: Created a Outbound Transaction record successfully
+          schema:
+            $ref: '#/definitions/OutboundBaseWithId'  
+
+  /correspondent-bank/correspondent-bank-fulfillment-arrangement:
+    get:
+      tags: 
+      - retrieve
+      operationId: retrieveCorrespondentBankFulfillmentArrangementReferenceIds
+      summary: Retrieve Correspondent Bank Arrangement Control Record Ids.
+      parameters: 
+      - name: collection-filter
+        in: query
+        description: Filter to refine the result set. ex- 'correspondent-bank-arrangement = CBA123'
+        type: string 
+      responses:
+        200:
+          description: successful
+          schema:
+            type: array
+            items:
+              type: string
+            example: [CBAR4388, CBAR3246243]
+            
+  /correspondent-bank/correspondent-bank-fulfillment-arrangement/behavior-qualifiers:
+    get:
+      tags: 
+      - retrieve
+      operationId: retrieveCorrespondentBankFulfillmentArrangementBehaviorQualifiers
+      summary: Retrieve all Behaviour Qualifier names in Correspondent Bank Service Domain.
+      responses:
+        200:
+          description: Retrieved all Behaviour Qualifier names successfully
+          schema:
+            type: array
+            items:
+              type: string
+            example: [Inbound, Outbound, ClearingAndSettlement, Reconciliation, Update, Reporting] 
+            
+  /correspondent-bank/correspondent-bank-fulfillment-arrangement/{cr-reference-id}/{behavior-qualifier}:
+    get:
+      tags: 
+      - retrieve
+      operationId: RetrieveBehaviorQualifierReferenceIds
+      summary: Retrieve Behaviour Qualifier Reference Ids for a given Behavior Qulifier.
+      parameters: 
+      - name: cr-reference-id
+        in: path
+        description: Correspondent Bank Arrangement Reference
+        required: true
+        type: string
+      - name: behavior-qualifier
+        in: path
+        description: Behavior Qualifier Name. ex- Reconciliation
+        required: true
+        type: string
+      - name: collection-filter
+        in: query
+        description: Filter to refine the result set. ex- 'correspondent-bank-agreement = fees'
+        type: string
+      responses:
+        200:
+          description: successful
+          schema:
+            type: array
+            items:
+              type: string
+            example: [CBRTR3465346, CBRTR4563, CBRTR45687] 
+  
+  /correspondent-bank/correspondent-bank-fulfillment-arrangement/{cr-reference-id}:
+    get: 
+      tags: 
+      - retrieve
+      operationId: retrieveCorrespondentBankFulfillmentArrangement
+      summary:  Retrieve Correspondent Bank Master Control Record
+      parameters: 
+      - name : cr-reference-id
+        in: path
+        description: Correspondent Bank Arrangement Reference
+        required: true
+        type: string
+      responses: 
+        200: 
+          description: Retrieved Correspondent Bank Arrangement record successfully
+          schema: 
+            $ref: '#/definitions/ArrangementBaseWithIds'
+    delete: 
+      tags: 
+      - terminate
+      operationId: terminateCorrespondentBankFulfillmentArrangement
+      summary:  Terminate a Correspondent Bank Arrangement
+      parameters: 
+      - name: cr-reference-id
+        in: path
+        description: Correspondent Bank Arrangement Reference
+        required: true
+        type: string
+      responses: 
+        204: 
+          description: successful
+  
+  /correspondent-bank/correspondent-bank-fulfillment-arrangement/{cr-reference-id}/inbounds/{bq-reference-id}:
+    get:
+      tags: 
+      - retrieve
+      operationId: retrieveInbound
+      summary: Retrieve an Inbound
+      parameters: 
+      - name: cr-reference-id
+        in: path
+        description: Correspondent Bank Arrangement Reference
+        required: true
+        type: string
+      - name: bq-reference-id
+        in: path
+        description: Correspondent Transaction Reference Ex:-inbound payments only covered
+        required: true
+        type: string
+      responses:
+        200:
+          description: Retrieved a Inbound Transaction record successfully
+          schema:
+            $ref: '#/definitions/InboundBaseWithId'
+            
+  /correspondent-bank/correspondent-bank-fulfillment-arrangement/{cr-reference-id}/outbounds/{bq-reference-id}:
+    get:
+      tags: 
+      - retrieve
+      operationId: retrieveOutbound
+      summary: Retrieve an Outbound
+      parameters: 
+      - name: cr-reference-id
+        in: path
+        description: Correspondent Bank Arrangement Reference
+        required: true
+        type: string
+      - name: bq-reference-id
+        in: path
+        description: Correspondent Transaction Reference Ex:-outbound payments only covered
+        required: true
+        type: string
+      responses:
+        200:
+          description: Retrieved a Outbound Transaction record successfully
+          schema:
+            $ref: '#/definitions/OutboundBaseWithId'
+            
+  /correspondent-bank/correspondent-bank-fulfillment-arrangement/{cr-reference-id}/clearing-and-settlement/{bq-reference-id}:
+    get:
+      tags: 
+      - retrieve
+      operationId: retrieveclearingAndSettlementt
+      summary: Retrieve a Clearing and Settlement
+      parameters: 
+      - name: cr-reference-id
+        in: path
+        description: Correspondent Bank Arrangement Reference
+        required: true
+        type: string
+      - name: bq-reference-id
+        in: path
+        description: Correspondent Bank Clearing Agreement Reference
+        required: true
+        type: string
+      responses:
+        200:
+          description: Retrieved a Clearing record successfully
+          schema:
+            $ref: '#/definitions/ClearingAndSettlementBaseWithId'
+    
+  /correspondent-bank/correspondent-bank-fulfillment-arrangement/{cr-reference-id}/reconciliations/{bq-reference-id}:
+    get:
+      tags: 
+      - retrieve
+      operationId: retrieveReconciliations
+      summary: Retrieve a Reconciliation
+      parameters: 
+      - name: cr-reference-id
+        in: path
+        description: Correspondent Bank Arrangement Reference
+        required: true
+        type: string
+      - name: bq-reference-id
+        in: path
+        description: Correspondent Bank Reconciliation Task Reference
+        required: true
+        type: string
+      responses:
+        200:
+          description: Retrieved a Reconciliation record successfully
+          schema:
+            $ref: '#/definitions/ReconciliationsBaseWithId'
+            
+  /correspondent-bank/correspondent-bank-fulfillment-arrangement/{cr-reference-id}/updates/{bq-reference-id}:
+    get:
+      tags: 
+      - retrieve
+      operationId: retrieveUpdate
+      summary: Retrieve Correspondent Bank Arrangement updates
+      parameters: 
+      - name: cr-reference-id
+        in: path
+        description: Correspondent Bank Arrangement Reference
+        required: true
+        type: string
+      - name: bq-reference-id
+        in: path
+        description: Correspondent Bank Payment Transaction Update Reference
+        required: true
+        type: string
+      responses:
+        200:
+          description: Retrieved an Update/Repair record successfully
+          schema:
+            $ref: '#/definitions/UpdateBaseWIthId'
+            
+  /correspondent-bank/correspondent-bank-fulfillment-arrangement/{cr-reference-id}/reportings/{bq-reference-id}:
+    get:
+      tags: 
+      - retrieve
+      operationId: retrieveReporting
+      summary: Retrieve Correspondent Bank reporting
+      parameters: 
+      - name: cr-reference-id
+        in: path
+        description: Correspondent Bank Arrangement Reference
+        required: true
+        type: string
+      - name: bq-reference-id
+        in: path
+        description: Correspondent Bank Reporting Service Reference
+        required: true
+        type: string
+      responses:
+        200:
+          description: Retrieved a Reporting record successfully
+          schema:
+            $ref: '#/definitions/ReportingBaseWithId'
+
+definitions:
+  ArrangementBase:
+    type: object
+    properties:
+      correspondentBankArrangement:
+        type: string
+        example: CBA123
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+  ArrangementBaseWithIds:
+    type: object
+    properties:
+      correspondentBankArrangementReference:
+        type: string
+        example: CBAR436
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      correspondentBankArrangement:
+        type: string
+        example: CBA123
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+  UpdateBase:
+    type: object
+    properties:
+      correspondentBankPaymentTransactionUpdateDescription:
+        type: string
+        example: Payment Transaction Update Description
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      correspondentBankTransactionReference:
+        type: string
+        example: CBTR454
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      paymentTransactionInitiatorReference:
+        type: string
+        example: PTIR546
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      payerReference:
+        type: string
+        example: PR234
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      payerBankReference:
+        type: string
+        example: PBR321
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      payerProductInstanceReference:
+        type: string
+        example: PPIR456
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      payeeReference:
+        type: string
+        example: PR765
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      payeeProductInstanceReference:
+        type: string
+        example: PPIR555
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      payeeBankReference:
+        type: string
+        example: PBR542
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      specialInstructions:
+        type: string
+        example: Transaction specific clearing and settlement instructions
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      amount:
+        $ref: 'https://api.swaggerhub.com/domains/BIAN/Common-Model/1.0.0#/definitions/CurrencyAndAmount'
+        
+      currency:
+        $ref: 'https://api.swaggerhub.com/domains/BIAN/Common-Model/1.0.0#/definitions/CurrencyCode'
+      dateType:
+        type: string
+        example: value date
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text | BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Code
+      date:
+        $ref: 'https://api.swaggerhub.com/domains/BIAN/Common-Model/1.0.0#/definitions/ISODate'
+  UpdateBaseWIthId:
+    type: object
+    properties:
+      correspondentBankArrangementReference:
+        type: string
+        example: CBAR436
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      correspondentBankPaymentTransactionUpdateReference:
+        type: string
+        example: CBPTU112
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      correspondentBankPaymentTransactionUpdateDescription:
+        type: string
+        example: Payment Transaction Update Description
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      correspondentBankTransactionReference:
+        type: string
+        example: CBTR3434
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      paymentTransactionInitiatorReference:
+        type: string
+        example: CTIR1212
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      payerReference:
+        type: string
+        example: PR234
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      payerBankReference:
+        type: string
+        example: PBR321
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      payerProductInstanceReference:
+        type: string
+        example: PPIR456
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      payeeReference:
+        type: string
+        example: PR765
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      payeeProductInstanceReference:
+        type: string
+        example: PPIR555
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      payeeBankReference:
+        type: string
+        example: PBR542
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      specialInstructions:
+        type: string
+        example: Transaction specific clearing and settlement instructions
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      amount:
+        $ref: 'https://api.swaggerhub.com/domains/BIAN/Common-Model/1.0.0#/definitions/CurrencyAndAmount'
+      currency:
+        $ref: 'https://api.swaggerhub.com/domains/BIAN/Common-Model/1.0.0#/definitions/CurrencyCode'
+      dateType:
+        type: string
+        example: value date
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text | BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Code
+      date:
+        $ref: 'https://api.swaggerhub.com/domains/BIAN/Common-Model/1.0.0#/definitions/ISODate'
+      paymentTransactionUpdateResult:
+        type: string
+        example: Success
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+  CorrespondentBankRecordRequest:
+    type: object
+    properties:
+      recordingRecordType:
+        type: string
+        example: Behavior model performance feedback
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      recordingRecord:
+        type: object
+        properties: {}
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+      recordingRecordDateTime:
+        type: string
+        example: '2018-09-06T09:00:00'
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::DateTime
+      employeeBusinessUnitReference:
+        type: string
+        example: REF456
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+  CorrespondentBankRecordResponse:
+    type: object
+    properties:
+      recordingRecordReference:
+        type: string
+        example: RRR4678
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      recordingRecordStatus:
+        type: string
+        example: Applied
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+  InboundBase:
+    type: object
+    properties:
+      correspondentBankAccessServiceSessionReference:
+        type: string
+        example: CBASSR467
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      correspondentBankAccessSchedule:
+        type: string
+        example: Service Availability
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      swiftTransactionReference:
+        type: string
+        example: STR123
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      payerBankReference:
+        type: string
+        example: PBR321
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      payerReference:
+        type: string
+        example: PR234
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      correspondedBankReference:
+        type: string
+        example: intermediate
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      payerProductInstanceReference:
+        type: string
+        example: PPIR456
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      payeeReference:
+        type: string
+        example: PR765
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      payeeProductInstanceReference:
+        type: string
+        example: PPIR555
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      payeeBankReference:
+        type: string
+        example: PBR542
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      specialInstructions:
+        type: string
+        example: Transaction specific clearing and settlement instructions
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      amount:
+        $ref: 'https://api.swaggerhub.com/domains/BIAN/Common-Model/1.0.0#/definitions/CurrencyAndAmount'
+      currency:
+        $ref: 'https://api.swaggerhub.com/domains/BIAN/Common-Model/1.0.0#/definitions/CurrencyCode'
+      dateType:
+        type: string
+        example: value date
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text | BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Code
+      date:
+        $ref: 'https://api.swaggerhub.com/domains/BIAN/Common-Model/1.0.0#/definitions/ISODate'
+  InboundBaseWithId:
+    type: object
+    properties:
+      correspondentBankArrangementReference:
+        type: string
+        example: CBAR436
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      correspondentTransactionReference:
+        type: string
+        example: CTR332
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      correspondentBankAccessServiceSessionReference:
+        type: string
+        example: CBASSR467
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      correspondentBankAccessSchedule:
+        type: string
+        example: Service Availability
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      swiftTransactionReference:
+        type: string
+        example: STR123
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      payerBankReference:
+        type: string
+        example: PBR321
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      payerReference:
+        type: string
+        example: PR234
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      correspondedBankReference:
+        type: string
+        example: intermediate
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      payerProductInstanceReference:
+        type: string
+        example: PPIR456
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      payeeReference:
+        type: string
+        example: PR765
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      payeeProductInstanceReference:
+        type: string
+        example: PPIR555
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      payeeBankReference:
+        type: string
+        example: PBR542
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      specialInstructions:
+        type: string
+        example: Transaction specific clearing and settlement instructions
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      amount:
+        $ref: 'https://api.swaggerhub.com/domains/BIAN/Common-Model/1.0.0#/definitions/CurrencyAndAmount'
+      currency:
+        $ref: 'https://api.swaggerhub.com/domains/BIAN/Common-Model/1.0.0#/definitions/CurrencyCode'
+      dateType:
+        type: string
+        example: value date
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text | BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Code
+      date:
+        $ref: 'https://api.swaggerhub.com/domains/BIAN/Common-Model/1.0.0#/definitions/ISODate'
+  OutboundBase:
+    type: object
+    properties:
+      correspondentBankAccessServiceSessionReference:
+        type: string
+        example: CBASSR467
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      correspondentBankAccessSchedule:
+        type: string
+        example: Service Availability
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      swiftTransactionReference:
+        type: string
+        example: STR123
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      payerReference:
+        type: string
+        example: PR234
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      payerBankReference:
+        type: string
+        example: PBR321
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      payerProductInstanceReference:
+        type: string
+        example: PPIR456
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      payeeReference:
+        type: string
+        example: PR765
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      correspondedBankReference:
+        type: string
+        example: intermediate
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      payeeProductInstanceReference:
+        type: string
+        example: PPIR555
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      payeeBankReference:
+        type: string
+        example: PBR542
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      specialInstructions:
+        type: string
+        example: Transaction specific clearing and settlement instructions
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      amount:
+        $ref: 'https://api.swaggerhub.com/domains/BIAN/Common-Model/1.0.0#/definitions/CurrencyAndAmount'
+      currency:
+        $ref: 'https://api.swaggerhub.com/domains/BIAN/Common-Model/1.0.0#/definitions/CurrencyCode'
+      dateType:
+        type: string
+        example: value date
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text | BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Code
+      date:
+        $ref: 'https://api.swaggerhub.com/domains/BIAN/Common-Model/1.0.0#/definitions/ISODate'
+  OutboundBaseWithId:
+    type: object
+    properties:
+      correspondentBankArrangementReference:
+        type: string
+        example: CBAR436
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      correspondentTransactionReference:
+        type: string
+        example: CTR332
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      correspondentBankAccessServiceSessionReference:
+        type: string
+        example: CBASSR467
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      correspondentBankAccessSchedule:
+        type: string
+        example: Service Availability
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      swiftTransactionReference:
+        type: string
+        example: STR123
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      payerReference:
+        type: string
+        example: PR234
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      payerBankReference:
+        type: string
+        example: PBR321
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      payerProductInstanceReference:
+        type: string
+        example: PPIR456
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      payeeReference:
+        type: string
+        example: PR765
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      correspondedBankReference:
+        type: string
+        example: intermediate
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      payeeProductInstanceReference:
+        type: string
+        example: PPIR555
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      payeeBankReference:
+        type: string
+        example: PBR542
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      specialInstructions:
+        type: string
+        example: Transaction specific clearing and settlement instructions
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      amount:
+        $ref: 'https://api.swaggerhub.com/domains/BIAN/Common-Model/1.0.0#/definitions/CurrencyAndAmount'
+      currency:
+        $ref: 'https://api.swaggerhub.com/domains/BIAN/Common-Model/1.0.0#/definitions/CurrencyCode'
+      dateType:
+        type: string
+        example: value date
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text | BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Code
+      date:
+        $ref: 'https://api.swaggerhub.com/domains/BIAN/Common-Model/1.0.0#/definitions/ISODate'
+  ClearingAndSettlementBaseWithId:
+    type: object
+    properties:
+      correspondentBankArrangementReference:
+        type: string
+        example: CBAR436
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      correspondentBankClearingAgreementReference:
+        type: string
+        example: CBCAR445
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      correspondentBankClearingAgreementClearingInstructions:
+        type: string
+        example: customer specific default instructions
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      correspondentBankClearingAgreementSettlementInstructions:
+        type: string
+        example: customer specific default
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      mirrorNostroAccountReference:
+        type: string
+        example: MNAR112
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+  ReconciliationsBaseWithId:
+    type: object
+    properties:
+      correspondentBankArrangementReference:
+        type: string
+        example: CBAR436
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      correspondentBankReconciliationTaskReference:
+        type: string
+        example: CBRTR437
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      correspondentBankAccessServiceSessionReference:
+        type: string
+        example: CBASSR467
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      swiftTransactionReference:
+        type: string
+        example: STR123
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      correspondentBankAgreementReference:
+        type: string
+        example: CBAR590
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      correspondentBankAgreement:
+        type: string
+        example: Processing Rules
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      correspondentBankVostroAccountReference:
+        type: string
+        example: CBVAR411
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      correspondentBankMirrorNostroAccountReference:
+        type: string
+        example: CBMAR444
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      correspondentTransactionReference:
+        type: string
+        example: CTR332
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      correspondentBankTransactionReconciliationTaskReference:
+        type: string
+        example: CBTRTR22
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      correspondentBankReconciliationTaskResult:
+        type: string
+        example: CBRTR66
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+  ReportingBaseWithId:
+    type: object
+    properties:
+      correspondentBankArrangementReference:
+        type: string
+        example: CBAR436
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      correspondentBankReportingServiceReference:
+        type: string
+        example: CBRSR99
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      correspondentBankAccessServiceSessionReference:
+        type: string
+        example: CBASSR467
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      correspondentBankPaymentTransactionReference:
+        type: string
+        example: CBPTR23
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      paymentTransactionInitiatorReference:
+        type: string
+        example: PTIR876
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      payerReference:
+        type: string
+        example: PR234
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      payerBankReference:
+        type: string
+        example: PBR321
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      payerProductInstanceReference:
+        type: string
+        example: PPIR456
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      payeeReference:
+        type: string
+        example: PR765
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      payeeProductInstanceReference:
+        type: string
+        example: PPIR555
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      payeeBankReference:
+        type: string
+        example: PBR542
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      correspondentBankReference:
+        type: string
+        example: intermediate
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      specialInstructions:
+        type: string
+        example: Transaction specific clearing and settlement instructions
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      amount:
+        $ref: 'https://api.swaggerhub.com/domains/BIAN/Common-Model/1.0.0#/definitions/CurrencyAndAmount'
+      currency:
+        $ref: 'https://api.swaggerhub.com/domains/BIAN/Common-Model/1.0.0#/definitions/CurrencyCode'
+      dateType:
+        type: string
+        example: value date
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text | BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Code
+      date:
+        $ref: 'https://api.swaggerhub.com/domains/BIAN/Common-Model/1.0.0#/definitions/ISODate'
+      paymentOrderStatus:
+        type: string
+        example: Active
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      correspondentBankReportingServiceResult:
+        type: string
+        example: CBRSR222
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text

@@ -1,0 +1,1098 @@
+swagger: '2.0'
+info:
+  version: "4.0.0"
+  title: 'Service Domain - Customer Workbench'
+  description: >
+        ## Service Domain Role: 
+      
+        This service domain represents customer side devices. Most commonly providing a customer access portal to the banks products and services through any suitable channel and device.
+
+        ## Example of use:
+        
+        A customer downloads an end-user financial management application offered by the bank.
+        
+        ## General comment:
+        
+        This service domain handles the distribution and operation of a client device based/resident facility to support local working and access to the banks different products and services. It allows for the customer to maintain information and configuration settings remotely to govern their own access environment as necessary. The service domain operates outside the bank but is included in the landscape as it may run application capabilities that are either provided by or certified for use by the bank.
+        
+# Added by API Auto Mocking Plugin
+host: virtserver.swaggerhub.com
+basePath: /BIAN/sd-customer-workbench/1.0.0
+schemes:
+ - https
+
+paths:
+
+  /customer-workbench/customer-workbench-operating-session/{cr-reference-id}/recording:
+    post:
+      tags:
+      - record
+      summary: "Record activity/feedback back to the workbench"
+      operationId: recordCustomerWorkbenchOperatingSession
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - in: path
+        name: cr-reference-id
+        type: string
+        description: "Customer Workbench Operating Session Reference"
+        required: true
+      - in: body
+        name: body
+        description: Record control record request payload
+        required: true
+        schema:
+          $ref: "#/definitions/CustomerWorkbenchRecordRequest"
+      responses:
+        201:
+          description: "A new Record is created"
+          schema:
+            $ref: '#/definitions/CustomerWorkbenchRecordResponse'
+
+  /customer-workbench/customer-workbench-operating-session/{cr-reference-id}/execution:
+    put:
+      tags:
+      - execute
+      summary: "Updates customer workbench operating session browsing"
+      operationId: executeCustomerWorkbenchOperatingSessionUpdate
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - in: path
+        name: cr-reference-id
+        description: "Customer Workbench Operating Session Reference"
+        type: string
+        required: true
+      - in: body
+        name: body
+        description: "Execute access to the bank 'portal'"
+        required: true
+        schema:
+          $ref: "#/definitions/CustomerWorkbenchBrowsingBasic"
+      responses:
+        200:
+          description: "Successfully Updated customer workbench operating session browsing"
+          schema:
+            $ref: '#/definitions/CustomerWorkbenchBrowsingComplete'
+
+  /customer-workbench/customer-workbench-operating-session/execution:
+    post:
+      tags:
+      - execute
+      summary: "Create customer workbench operating session browsing"
+      operationId: executeCustomerWorkbenchOperatingSessionCreate
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - in: body
+        name: body
+        description: "Execute access to the bank 'portal'"
+        required: true
+        schema:
+          $ref: "#/definitions/CustomerWorkbenchBrowsingBasic"
+      responses:
+        201:
+          description: "Successfully created customer workbench operating session browsing"
+          schema:
+            $ref: '#/definitions/CustomerWorkbenchBrowsingComplete'
+
+  /customer-workbench/customer-workbench-operating-session/{cr-reference-id}/sw-updates/{bq-reference-id}/requisition:
+    put:
+      tags:
+      - request
+      summary: "Request SWUpdate updation"
+      operationId: requestCustomerWorkbenchOperatingSessionSWUpdateUpdate
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - in: path
+        name: cr-reference-id
+        description: "Customer Workbench Operating Session Reference"
+        type: string
+        required: true
+      - in: path
+        name: bq-reference-id
+        description: "Customer Workbench SWUpdate Record Reference"
+        type: string
+        required: true
+      - in: body
+        name: body
+        required: true
+        schema:
+          $ref: "#/definitions/CustomerWorkbenchSWUpdateBasic"
+      responses:
+        200:
+          description: "SWUpdate request updated successfully"
+          schema:
+            $ref: '#/definitions/CustomerWorkbenchSWUpdateComplete'
+
+  /customer-workbench/customer-workbench-operating-session/{cr-reference-id}/sw-updates/requisition:
+    post:
+      tags:
+      - request
+      summary: "Request SWUpdate creation"
+      operationId: requestCustomerWorkbenchOperatingSessionSWUpdateCreate
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - in: path
+        name: cr-reference-id
+        description: "Customer Workbench Operating Session Reference"
+        type: string
+        required: true
+      - in: body
+        name: body
+        required: true
+        schema:
+          $ref: "#/definitions/CustomerWorkbenchSWUpdateBasic"
+      responses:
+        201:
+          description: "Created a SWUpdate request successfully"
+          schema:
+            $ref: '#/definitions/CustomerWorkbenchSWUpdateComplete'
+
+  /customer-workbench/customer-workbench-operating-session/{cr-reference-id}/contacts/{bq-reference-id}/requisition:
+    put:
+      tags:
+      - request
+      summary: "Request customer log-on handling to initiate bank session updation"
+      operationId: requestCustomerWorkbenchOperatingSessionContactUpdate
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - in: path
+        name: cr-reference-id
+        description: "Customer Workbench Operating Session Reference"
+        type: string
+        required: true
+      - in: path
+        name: bq-reference-id
+        description: "Customer Workbench Contact Reference"
+        type: string
+        required: true
+      - in: body
+        name: body
+        required: true
+        schema:
+          $ref: "#/definitions/CustomerWorkbenchContactBasic"
+      responses:
+        200:
+          description: "Customer Workbench Contact updated successfully"
+          schema:
+            $ref: '#/definitions/CustomerWorkbenchContactComplete'
+
+  /customer-workbench/customer-workbench-operating-session/{cr-reference-id}/contacts/requisition:
+    post:
+      tags:
+      - request
+      summary: "Request customer log-on handling to initiate bank session creation"
+      operationId: requestCustomerWorkbenchOperatingSessionContactCreate
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - in: path
+        name: cr-reference-id
+        description: "Customer Workbench Operating Session Reference"
+        type: string
+        required: true
+      - in: body
+        name: body
+        required: true
+        schema:
+          $ref: "#/definitions/CustomerWorkbenchContactBasic"
+      responses:
+        201:
+          description: "Created a Customer Workbench Contact successfully"
+          schema:
+            $ref: '#/definitions/CustomerWorkbenchContactComplete'
+
+  /customer-workbench/customer-workbench-operating-session/{cr-reference-id}/product-service-access/{bq-reference-id}/requisition:
+    put:
+      tags:
+      - request
+      summary: "Request product/service access through the bank portal updation"
+      operationId: requestCustomerWorkbenchOperatingSessionProductServiceAccessUpdate
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - in: path
+        name: cr-reference-id
+        description: "Customer Workbench Operating Session Reference"
+        type: string
+        required: true
+      - in: path
+        name: bq-reference-id
+        description: "Customer Workbench Product/Service Access Reference"
+        type: string
+        required: true
+      - in: body
+        name: body
+        required: true
+        schema:
+          $ref: "#/definitions/CustomerWorkbenchProductServiceAccessBasic"
+      responses:
+        200:
+          description: "Product/Service Access updated successfully"
+          schema:
+            $ref: '#/definitions/CustomerWorkbenchProductServiceAccessComplete'
+
+  /customer-workbench/customer-workbench-operating-session/{cr-reference-id}/product-service-access/requisition:
+    post:
+      tags:
+      - request
+      summary: "Request product/service access through the bank portal creation"
+      operationId: requestCustomerWorkbenchOperatingSessionProductServiceAccessCreate
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - in: path
+        name: cr-reference-id
+        description: "Customer Workbench Operating Session Reference"
+        type: string
+        required: true
+      - in: body
+        name: body
+        required: true
+        schema:
+          $ref: "#/definitions/CustomerWorkbenchProductServiceAccessBasic"
+      responses:
+        201:
+          description: "Created a Product/Service Access successfully"
+          schema:
+            $ref: '#/definitions/CustomerWorkbenchProductServiceAccessComplete'
+
+  /customer-workbench/customer-workbench-operating-session:
+    get:
+      tags:
+      - retrieve
+      operationId: retrieveCustomerWorkbenchOperatingSessionReferenceIds
+      summary: "Retrieve Customer Workbench Operating Session Control Record Ids"
+      produces:
+      - application/json
+      parameters:
+      - name: collection-filter
+        in: query
+        description: "Filter to refine the result set"
+        type: string
+      responses:
+        200:
+          description: "Retrieved Customer Workbench Operating Session ids"
+          schema:
+            type: array
+            items:
+             type: string
+            example: ["CWBDR4596","CWBDR4321","CWBDR2147"]
+  
+  /customer-workbench/customer-workbench-operating-session/behavior-qualifiers:
+    get:
+      tags:
+      - retrieve
+      operationId: retrieveCustomerWorkbenchOperatingSessionReferenceNames
+      summary: "Retrieve all Behaviour Qualifier names"
+      produces:
+      - application/json
+      responses:
+        200:
+          description: "Retrieved Customer Workbench Operating Session BQ names"
+          schema:
+            type: array
+            items:
+              type: string
+            example: ["configuration","swUpdate","receive","browsing","contact","product-service-access"]
+        
+  /customer-workbench/customer-workbench-operating-session/{cr-reference-id}/{behavior-qualifier}:
+    get:
+      tags:
+      - retrieve
+      operationId: retrieveCustomerWorkbenchOperatingSessionBehaviorQualifierReferenceIds
+      summary: "Retrieve Behaviour Qualifier Reference Ids of the given Behavior Qualifier."
+      produces:
+      - application/json
+      parameters:
+      - name: cr-reference-id
+        in: path
+        description: "Customer Workbench Operating Session Reference"
+        required: true
+        type: string
+      - name: behavior-qualifier
+        in: path
+        description: "Behavior Qualifier Name. ex - 'browsing'"
+        required: true
+        type: string
+      - name: "collection-filter"
+        in: "query"
+        description: "Filter to refine the result set. ex- 'customerUrl = www.pnc.com'"
+        required: false
+        type: "string"
+      responses:
+        200:
+          description: "Retrieved Customer Workbench Operating Session BQ IDs"
+          schema:
+            type: array
+            items:
+              type: string
+            example: ["CWCR45893","CWCR54321","CWCR2147"]
+            
+  /customer-workbench/customer-workbench-operating-session/{cr-reference-id}/browsings/{bq-reference-id}:
+    get:
+      tags:
+      - retrieve
+      summary: "Retrieve an customer workbench maintained report of Browsing"
+      operationId: retrieveCustomerWorkbenchOperatingSessionBrowsing
+      produces:
+      - application/json
+      parameters:
+      - in: path
+        type: string
+        required: true
+        name: cr-reference-id
+        description: "Customer Workbench Operating Session Reference"
+      - name: bq-reference-id
+        in: path
+        description: "Customer Workbench Browsing Session Reference"
+        required: true
+        type: string
+      responses:
+        200:
+          description: " Successfully retrieved an customer workbench maintained report of Browsing"
+          schema:
+            $ref: '#/definitions/CustomerWorkbenchBrowsingComplete'
+
+  /customer-workbench/customer-workbench-operating-session/{cr-reference-id}/contacts/{bq-reference-id}:
+    get:
+      tags:
+      - retrieve
+      summary: "Retrieve an customer workbench maintained report of contacts"
+      operationId: retrieveCustomerWorkbenchOperatingSessionContact
+      produces:
+      - application/json
+      parameters:
+      - in: path
+        type: string
+        required: true
+        name: cr-reference-id
+        description: "Customer Workbench Operating Session Reference"
+      - name: bq-reference-id
+        in: path
+        description: "Customer Workbench Contact Reference"
+        required: true
+        type: string
+      responses:
+        200:
+          description: " Successfully retrieved an customer workbench maintained report of contacts"
+          schema:
+            $ref: '#/definitions/CustomerWorkbenchContactComplete'
+            
+  /customer-workbench/customer-workbench-operating-session/{cr-reference-id}/configurations/{bq-reference-id}:
+    get:
+      tags:
+      - retrieve
+      summary: "Retrieve an customer workbench maintained report of configurations"
+      operationId: retrieveCustomerWorkbenchOperatingSessionConfiguration
+      produces:
+      - application/json
+      parameters:
+      - in: path
+        type: string
+        required: true
+        name: cr-reference-id
+        description: "Customer Workbench Operating Session Reference"
+      - name: bq-reference-id
+        in: path
+        description: "Customer Workbench Configuration Record Reference"
+        required: true
+        type: string
+      responses:
+        200:
+          description: "Successfully retrieved an customer workbench maintained report of configurations"
+          schema:
+            $ref: '#/definitions/CustomerWorkbenchConfigurationComplete'
+      
+      
+  /customer-workbench/customer-workbench-operating-session/{cr-reference-id}/swUpdates/{bq-reference-id}:
+    get:
+      tags:
+      - retrieve
+      summary: "Retrieve an customer workbench maintained report of SwUpdate"
+      operationId: retrieveCustomerWorkbenchOperatingSessionSwUpdate
+      produces:
+      - application/json
+      parameters:
+      - in: path
+        type: string
+        required: true
+        name: cr-reference-id
+        description: "Customer Workbench Operating Session Reference"
+      - name: bq-reference-id
+        in: path
+        description: "Customer Workbench SWUpdate Record Reference"
+        required: true
+        type: string
+      responses:
+        200:
+          description: "Successfully retrieved an customer workbench maintained report of SwUpdates"
+          schema:
+            $ref: '#/definitions/CustomerWorkbenchSWUpdateComplete'
+      
+  /customer-workbench/customer-workbench-operating-session/{cr-reference-id}/receives/{bq-reference-id}:
+    get:
+      tags:
+      - retrieve
+      summary: "Retrieve an customer workbench maintained report of receives"
+      operationId: retrieveCustomerWorkbenchOperatingSessionReceive
+      produces:
+      - application/json
+      parameters:
+      - in: path
+        type: string
+        required: true
+        name: cr-reference-id
+        description: "Customer Workbench Operating Session Reference"
+      - name: bq-reference-id
+        in: path
+        description: "Customer Workbench Configuration Record Reference"
+        required: true
+        type: string
+      responses:
+        200:
+          description: "Successfully retrieved an customer workbench maintained report of receives"
+          schema:
+            $ref: '#/definitions/CustomerWorkbenchReceiveComplete'
+      
+      
+  /customer-workbench/customer-workbench-operating-session/{cr-reference-id}/product-service-access/{bq-reference-id}:
+    get:
+      tags:
+      - retrieve
+      summary: "Retrieve an customer workbench maintained report of product service access"
+      operationId: retrieveCustomerWorkbenchOperatingSessionProductServiceAccess
+      produces:
+      - application/json
+      parameters:
+      - in: path
+        type: string
+        required: true
+        name: cr-reference-id
+        description: "Customer Workbench Operating Session Reference"
+      - name: bq-reference-id
+        in: path
+        description: "Customer Workbench Product/Service Access Reference"
+        required: true
+        type: string
+      responses:
+        200:
+          description: "Successfully retrieved an customer workbench maintained report of product service access"
+          schema:
+            $ref: '#/definitions/CustomerWorkbenchProductServiceAccessComplete'
+            
+definitions:
+  CustomerWorkbenchConfigurationComplete:
+    description: To access/update the customer workbench configuration
+    type: object
+    properties:
+      customerWorkbenchOperatingSessionReference:
+        type: string
+        example: CWBOSR1245
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      customerWorkbenchConfigurationRecordReference:
+        type: string
+        example: CWBCRR1245
+        description: |
+          general-info: used to access/update the configuration
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      customerWorkbenchDeviceConfigurationRecord:
+        type: object
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+      customerReference:
+        type: string
+        example: CR453585
+        description: |
+          `status: Provisionally Registered`
+          bian-reference:  WorkbenchUser.Customer
+      customerWorkbenchDeviceRegistration:
+        type: string
+        example: URL, ANI, serial number
+        description: |
+          `status: Provisionally Registered`
+          bian-reference:  (asSession).UserDevice(asResource).ResourceIdentification
+      customerWorkbenchDeviceType:
+        type: string
+        example: MOBILE
+        description: |
+          general-info: mobile, laptop, workstation
+          `status: Provisionally Registered`
+          bian-reference:  (asSession).UserDevice(asResource).Type
+      customerWorkbenchDeviceManufacturer:
+        type: string
+        example: PHILLIPS
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      customerWorkbenchDeviceOperatingSystemVersionNumber:
+        type: string
+        example: V-2.0.0
+        description: |
+          `status: Provisionally Registered`
+          bian-reference:  (asSession).UserDevice.Version
+      customerWorkbenchDeviceAccessPermissions:
+        type: string
+        example: www.xyzbank.com
+        description: |
+          general-info: Bank allowed to access/update local storage/configuration
+          `status: Provisionally Registered`
+          bian-reference:  (asSession).UserDevice(asResource).ResourceRestriction.AllowedRoleInstance
+          `status: Provisionally Registered`
+          bian-reference:  (asSession).UserDevice(asResource).ResourceRestriction.AllowedRoleType
+          `status: Provisionally Registered`
+          bian-reference:  (asSession).UserDevice(asResource).ResourceRestriction.ProhibitedRoleInstance
+          `status: Provisionally Registered`
+          bian-reference:  (asSession).UserDevice(asResource).ResourceRestriction.ProhibitedRoleType
+      installedBankApplicationType:
+        type: string
+        example: ANDROID
+        description: |
+          general-info: Known device resident bank software
+          `status: Registered`
+          bian-reference:  CustomerWorkbench(asSystem).SystemIdentification.SystemName
+          iso-link:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_EkpDkA05EeKTRanIvvfSTQ_1398040998/elements/_EkpDkQ05EeKTRanIvvfSTQ_416826332)
+      installedBankApplicationVersionNumber:
+        type: string
+        example: V-2.0.0
+        description: |
+          general-info: Release/version of installed software
+          `status: Registered`
+          bian-reference:  CustomerWorkbench(asSystem).SystemIdentification.SystemVersion
+          iso-link:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_EkpDkA05EeKTRanIvvfSTQ_1398040998/elements/_ExytFMTGEeChad0JzLk7QA_669806374)
+      lastUpdateDateTime:
+        $ref: 'https://api.swaggerhub.com/domains/BIAN/Common-Model/1.0.0#/definitions/ISODateTime'
+      amount:
+        $ref: 'https://api.swaggerhub.com/domains/BIAN/Common-Model/1.0.0#/definitions/CurrencyAndAmount'
+      currency:
+        $ref: 'https://api.swaggerhub.com/domains/BIAN/Common-Model/1.0.0#/definitions/CurrencyCode'
+  CustomerWorkbenchReceiveComplete:
+    description: supports broadcast messages sent by the bank to the customer workbench
+    type: object
+    properties:
+      customerWorkbenchOperatingSessionReference:
+        type: string
+        example: CWBOSR45896
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      customerWorkbenchBroadcastReference:
+        type: string
+        example: CWBR45856
+        description: |
+          general-info: used to track bank broadcast messages
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      customerWorkbenchBroadcastRecord:
+        type: object
+        example: message
+        description: |
+          general-info: text of the broadcast message
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+      customerWorkbenchBroadcastRecordDateTime:
+        $ref: 'https://api.swaggerhub.com/domains/BIAN/Common-Model/1.0.0#/definitions/ISODateTime'
+  CustomerWorkbenchSWUpdateBasic:
+    description: To support the download of updated bank SW
+    type: object
+    properties:
+      customerWorkbenchDeviceConfigurationRecord:
+        type: object
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+      customerReference:
+        type: string
+        example: '378163745142'
+        description: |
+          `status: Provisionally Registered`
+          bian-reference:  WorkbenchUser.Customer
+      customerWorkbenchDeviceType:
+        type: string
+        example: MOBILE
+        description: |
+          general-info: mobile, laptop, workstation
+          `status: Provisionally Registered`
+          bian-reference: (asSession).UserDevice(asResource).Type
+      customerWorkbenchDeviceManufacturer:
+        type: string
+        example: PHILLIPS
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      customerWorkbenchDeviceOperatingSystemVersionNumber:
+        type: string
+        example: V-2.0.0
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: (asSession).UserDevice.Version
+      customerWorkbenchDeviceAccessPermissions:
+        type: string
+        example: www.xyzbank.com
+        description: |
+          general-info: Bank allowed to access/update local storage/configuration
+          `status: Provisionally Registered`
+          bian-reference:  (asSession).UserDevice(asResource).ResourceRestriction.AllowedRoleInstance
+          `status: Provisionally Registered`
+          bian-reference:  (asSession).UserDevice(asResource).ResourceRestriction.AllowedRoleType
+          `status: Provisionally Registered`
+          bian-reference:  (asSession).UserDevice(asResource).ResourceRestriction.ProhibitedRoleInstance
+          `status: Provisionally Registered`
+          bian-reference:  (asSession).UserDevice(asResource).ResourceRestriction.ProhibitedRoleType
+      installedBankApplicationType:
+        type: string
+        example: ANDROID
+        description: |
+          general-info: Known device resident bank software
+          `status: Registered`
+          bian-reference:  CustomerWorkbench(asSystem).SystemIdentification.SystemName
+          iso-link:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_EkpDkA05EeKTRanIvvfSTQ_1398040998/elements/_EkpDkQ05EeKTRanIvvfSTQ_416826332)
+      installedBankApplicationVersionNumber:
+        type: string
+        example: V-2.0.0
+        description: |
+          general-info: Release/version of installed software
+          `status: Registered`
+          bian-reference:  CustomerWorkbench(asSystem).SystemIdentification.SystemVersion
+          iso-link:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_EkpDkA05EeKTRanIvvfSTQ_1398040998/elements/_ExytFMTGEeChad0JzLk7QA_669806374)
+      lastUpdateDateTime:
+        $ref: 'https://api.swaggerhub.com/domains/BIAN/Common-Model/1.0.0#/definitions/ISODateTime'
+  CustomerWorkbenchSWUpdateComplete:
+    description: To support the download of updated bank SW
+    type: object
+    properties:
+      customerWorkbenchOperatingSessionReference:
+        type: string
+        example: CWOSR45389
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      customerWorkbenchSWUpdateRecordReference:
+        type: string
+        example: CWSURR47856
+        description: |
+          general-info: Used to track SW Update activity
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      customerWorkbenchDeviceReference:
+        type: string
+        example: CWDR47855
+        description: |
+          general-info: Refers to the customer workbench/device
+          `status: Provisionally Registered`
+          bian-reference: (asSession).UserDevice
+      customerWorkbenchDeviceConfigurationRecordReference:
+        type: string
+        example: CWDCEE78956
+        description: |
+          general-info: Refers to the customer workbench/device set-up
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      customerWorkbenchDeviceConfigurationRecord:
+        type: object
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+      customerReference:
+        type: string
+        example: CR75566
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: WorkbenchUser.Customer
+      customerWorkbenchDeviceType:
+        type: string
+        example: MOBILE
+        description: |
+          general-info: mobile, laptop, workstation
+          `status: Provisionally Registered`
+          bian-reference: (asSession).UserDevice(asResource).Type
+      customerWorkbenchDeviceManufacturer:
+        type: string
+        example: PHILLIPS
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      customerWorkbenchDeviceOperatingSystemVersionNumber:
+        type: string
+        example: V-2.0.0
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: (asSession).UserDevice.Version
+      customerWorkbenchDeviceAccessPermissions:
+        type: string
+        example: www.xyzbank.com
+        description: |
+          general-info: Bank allowed to access/update local storage/configuration
+          `status: Provisionally Registered`
+          bian-reference: (asSession).UserDevice(asResource).ResourceRestriction.AllowedRoleInstance
+          `status: Provisionally Registered`
+          bian-reference: (asSession).UserDevice(asResource).ResourceRestriction.AllowedRoleType
+          `status: Provisionally Registered`
+          bian-reference: (asSession).UserDevice(asResource).ResourceRestriction.ProhibitedRoleInstance
+          `status: Provisionally Registered`
+          bian-reference: (asSession).UserDevice(asResource).ResourceRestriction.ProhibitedRoleType
+      installedBankApplicationType:
+        type: string
+        example: ANDROID
+        description: |
+          general-info: Known device resident bank software
+          `status: Registered`
+          bian-reference:  CustomerWorkbench(asSystem).SystemIdentification.SystemName
+          iso-link:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_EkpDkA05EeKTRanIvvfSTQ_1398040998/elements/_EkpDkQ05EeKTRanIvvfSTQ_416826332)
+      installedBankApplicationVersionNumber:
+        type: string
+        example: V-2.0.0
+        description: |
+          general-info: Release/version of installed software
+          `status: Registered`
+          bian-reference:  CustomerWorkbench(asSystem).SystemIdentification.SystemVersion
+          iso-link:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_EkpDkA05EeKTRanIvvfSTQ_1398040998/elements/_ExytFMTGEeChad0JzLk7QA_669806374)
+      lastUpdateDateTime:
+        $ref: 'https://api.swaggerhub.com/domains/BIAN/Common-Model/1.0.0#/definitions/ISODateTime'
+  CustomerWorkbenchContactBasic:
+    description: Supports a customer log-in/access session with the bank from the workbench
+      via the bank's website
+    type: object
+    properties:
+      customerReference:
+        type: string
+        example: CR7545625
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: WorkbenchUser.Customer
+      contactReference:
+        type: string
+        example: CR78545
+        description: |
+          general-info: Contact details are captured in access log
+          `status: Provisionally Registered`
+          bian-reference: WorkbenchUser
+      contactStartEndTime:
+        type: string
+        example: 01-01-1970 00:00:00
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: (asSession).TimeBracket
+      contactActivityLog:
+        type: object
+        description: |
+          general-info: Locally records page/service access as appropriate
+          `status: Provisionally Registered`
+          bian-reference:  (asSession).FailureEvent
+          `status: Provisionally Registered`
+          bian-reference:  (asSession).NormalEvent
+  CustomerWorkbenchContactComplete:
+    description: Supports a customer log-in/access session with the bank from the workbench
+      via the bank's website
+    type: object
+    properties:
+      customerWorkbenchOperatingSessionReference:
+        type: string
+        example: CWOSR78563
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      customerWorkbenchContactReference:
+        type: string
+        example: CWCR78545
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+          general-info: used to track bank log-in
+      customerReference:
+        type: string
+        example: CR75993
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: WorkbenchUser.Customer
+      contactReference:
+        type: string
+        example: CR86456
+        description: |
+          general-info: Contact details are captured in access log
+          `status: Provisionally Registered`
+          bian-reference: WorkbenchUser
+      contactStartEndTime:
+        type: string
+        example: 01-01-1970 00:00:00
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: (asSession).TimeBracket
+      contactActivityLog:
+        type: object
+        description: |
+          general-info: Locally records page/service access as appropriate
+          `status: Provisionally Registered`
+          bian-reference:  (asSession).FailureEvent
+          `status: Provisionally Registered`
+          bian-reference:  (asSession).NormalEvent
+  CustomerWorkbenchProductServiceAccessBasic:
+    type: object
+    properties:
+      customerWorkbenchProductServiceAccessRecord:
+        type: object
+        description: |
+          general-info: Used to track product/service access activity from the workbench
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+      customerReference:
+        type: string
+        example: CR844756
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: WorkbenchUser.Customer
+      customerWorkbenchDeviceAccessPermissions:
+        type: string
+        example: www.xyzbank.com
+        description: |
+          general-info: Bank allowed to access/update local storage/configuration
+          `status: Provisionally Registered`
+          bian-reference: (asSession).UserDevice(asResource).ResourceRestriction.AllowedRoleInstance
+          `status: Provisionally Registered`
+          bian-reference: (asSession).UserDevice(asResource).ResourceRestriction.AllowedRoleType
+          `status: Provisionally Registered`
+          bian-reference: (asSession).UserDevice(asResource).ResourceRestriction.ProhibitedRoleInstance
+          `status: Provisionally Registered`
+          bian-reference: (asSession).UserDevice(asResource).ResourceRestriction.ProhibitedRoleType
+      customerDetailsPreferences:
+        type: string
+        description: |
+          general-info: Values use for auto-fill and local validation
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      productServiceMenu:
+        type: object
+        description: |
+          general-info: Structured dialogue to access bank services as appropriate
+          `status: Provisionally Registered`
+          bian-reference: (asSession).FailureEvent
+          `status: Provisionally Registered`
+          bian-reference: (asSession).NormalEvent
+          `status: Provisionally Registered`
+          bian-reference: CustomerWorkbench(asSystem).Feature
+      productServiceMenuAccessLog:
+        type: object
+        description: |
+          general-info: Record of product/service screen access
+          `status: Provisionally Registered`
+          bian-reference: (asSession).FailureEvent
+          `status: Provisionally Registered`
+          bian-reference: (asSession).NormalEvent
+      accessStartEndTime:
+        type: string
+        example: 01-01-1970 00:00:00
+        description: |
+          general-info: Time and duration spent on product/service screens
+          `status: Provisionally Registered`
+          bian-reference: (asSession).NormalEvent(asEvent).TimeBracket
+      customerResidentFiles:
+        type: object
+        description: |
+          general-info: Local copies of requested information, application forms etc.
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+  CustomerWorkbenchProductServiceAccessComplete:
+    type: object
+    properties:
+      customerWorkbenchOperatingSessionReference:
+        type: string
+        example: CWOSR78546
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      customerWorkbenchProductServiceAccessReference:
+        type: string
+        example: CWPSAR75893
+        description: |
+          general-info: Used to track product/service access within a log-in contact
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      customerWorkbenchProductServiceAccessRecord:
+        type: object
+        description: |
+          general-info: Used to track product/service access activity from the workbench
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+      customerWorkbenchContactReference:
+        type: string
+        example: CWCR7458
+        description: |
+          general-info: used to track bank log-in
+           `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      customerReference:
+        type: string
+        example: CR844756
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: WorkbenchUser.Customer
+      customerWorkbenchDeviceReference:
+        type: string
+        example: CWDR78546
+        description: |
+          general-info: Product/Service access is made during the contact
+          `status: Provisionally Registered`
+          bian-reference:  (asSession).UserDevice
+      customerWorkbenchDeviceAccessPermissions:
+        type: string
+        example: www.xyzbank.com
+        description: |
+          general-info: Bank allowed to access/update local storage/configuration
+          `status: Provisionally Registered`
+          bian-reference:  (asSession).UserDevice(asResource).ResourceRestriction.AllowedRoleInstance
+          `status: Provisionally Registered`
+          bian-reference:  (asSession).UserDevice(asResource).ResourceRestriction.AllowedRoleType
+          `status: Provisionally Registered`
+          bian-reference:  (asSession).UserDevice(asResource).ResourceRestriction.ProhibitedRoleInstance
+          `status: Provisionally Registered`
+          bian-reference:  (asSession).UserDevice(asResource).ResourceRestriction.ProhibitedRoleType
+      customerDetailsPreferences:
+        type: object
+        description: |
+          general-info: Values use for auto-fill and local validation
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      productServiceMenu:
+        type: object
+        description: |
+          general-info: Structured dialogue to access bank services as appropriate
+          `status: Provisionally Registered`
+          bian-reference:  (asSession).FailureEvent
+          `status: Provisionally Registered`
+          bian-reference:  (asSession).NormalEvent
+          `status: Provisionally Registered`
+          bian-reference:  CustomerWorkbench(asSystem).Feature
+      productServiceMenuAccessLog:
+        type: object
+        description: |
+          general-info: Record of product/service screen access
+          `status: Provisionally Registered`
+          bian-reference:  (asSession).FailureEvent
+          `status: Provisionally Registered`
+          bian-reference:  (asSession).NormalEvent
+      accessStartEndTime:
+        type: string
+        example: 01-01-1970 00:00:00
+        description: |
+          general-info: Time and duration spent on product/service screens
+          `status: Provisionally Registered`
+          bian-reference: (asSession).NormalEvent(asEvent).TimeBracket
+      customerResidentFiles:
+        type: object
+        description: |
+          general-info: Local copies of requested information, application forms etc.
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+  CustomerWorkbenchBrowsingBasic:
+    type: object
+    properties:
+      customerWorkbenchBrowsingSessionRecord:
+        type: object
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+      customerURL:
+        type: string
+        example: www.xyzbank.com
+        description: |
+          general-info: Used to detect known customer access
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      bankWebsiteURL:
+        type: string
+        example: www.xyzbank.com
+        description: |
+          `status: Registered`
+          bian-reference:  WorkbenchUser.Customer.RelationshipManager.Organisation(asParty).ContactPoint(asElectronicAddress).URLAddress
+          iso-link:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_FQ8HM8TGEeChad0JzLk7QA_1582936206/elements/_FQ8HNcTGEeChad0JzLk7QA_-256929078)
+          general-info: Access to public bank web based information
+  CustomerWorkbenchBrowsingComplete:
+    description: Supports browsing the public bank website from the workbench
+    type: object
+    properties:
+      customerWorkbenchOperatingSessionReference:
+        type: string
+        example: CWOSR78965
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      customerWorkbenchBrowsingSessionReference:
+        type: string
+        example: CWBSR78456
+        description: |
+          general-info: Used to track bank website access
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      customerWorkbenchBrowsingSessionRecord:
+        type: object
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+      customerURL:
+        type: string
+        example: www.xyzbank.com
+        description: |
+          general-info: Used to detect known customer access
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      bankWebsiteURL:
+        type: string
+        example: www.xyzbank.com
+        description: |
+          `status: Registered`
+          bian-reference:  WorkbenchUser.Customer.RelationshipManager.Organisation(asParty).ContactPoint(asElectronicAddress).URLAddress
+          iso-link:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_FQ8HM8TGEeChad0JzLk7QA_1582936206/elements/_FQ8HNcTGEeChad0JzLk7QA_-256929078)
+          general-info: Access to public bank web based information
+  CustomerWorkbenchRecordRequest:
+    type: object
+    properties:
+      customerWorkbenchBroadcastRecord:
+        type: object
+        description: |
+          general-info: text of the broadcast message
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+      customerWorkbenchBroadcastRecordDateTime:
+        $ref: 'https://api.swaggerhub.com/domains/BIAN/Common-Model/1.0.0#/definitions/ISODateTime'
+  CustomerWorkbenchRecordResponse:
+    type: object
+    properties:
+      customerWorkbenchBroadcastReference:
+        type: string
+        example: CWBR78546
+        description: |
+          general-info: Used to track bank broadcast messages
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      recordingRecordStatus:
+        type: string
+        example: APPLIED
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text

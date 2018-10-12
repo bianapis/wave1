@@ -1,0 +1,594 @@
+swagger: '2.0'
+info:
+  version: "4.0.0"
+  title: 'Service Domain - Customer Access Entitlement'
+  description: >
+    ## Description: 
+
+    This service domain maintains the details of the allowed channel/device based access to products and services that the customer has in place.  This profile is referenced in servicing and fulfillment activity and may include customer preferences and access limits/constraints that span multiple products.
+
+    ## Example of use:
+
+    A consumer customer contacts the call center and her access profile is used to determine what products and services can be accessed through this channel
+    
+    ## General comment:
+    
+    This profile is used for servicing and fulfillment controls covering products, services and channel/device usage entitlements. It is referenced for channel access control and utilization limits that may span multiple products. For example there can be a limit on total ATM withdrawals for a customer for all active products over a 24 hour period.
+        
+# Added by API Auto Mocking Plugin
+host: virtserver.swaggerhub.com
+basePath: /BIAN/customer-access-entitlement/4.0.0
+schemes:
+ - https
+
+paths:
+
+  /customer-access-entitlement/customer-access-profile-agreement/{cr-reference-id}/restrictions/initiation:
+    post:
+      tags:
+      - initiate
+      operationId: initiateCustomerAccessProfileAgreementRestrictions
+      summary: Initiates a new Customer Access Profile Agreement Restriction
+      produces: 
+      - application/json
+      parameters:
+      - name : cr-reference-id
+        in: path
+        description: Channel Access Profile Reference
+        required: true
+        type: string
+      - in: body
+        name: body
+        description: Initiate request payload
+        required: true
+        schema: 
+          $ref: '#/definitions/RestrictionsBase'
+      responses:
+        201:
+          description: A new Customer Access Profile Agreement Restriction is created
+          schema:
+            $ref: '#/definitions/RestrictionsBaseWIthIds'
+            
+  /customer-access-entitlement/customer-access-profile-agreement/{cr-reference-id}/preferences/initiation:
+    post:
+      tags:
+      - initiate
+      operationId: initiateCustomerAccessProfileAgreementPreferences
+      summary: Initiates a new Customer Access Profile Agreement Preference
+      produces: 
+      - application/json
+      parameters:
+      - name : cr-reference-id
+        in: path
+        description: Channel Access Profile Reference
+        required: true
+        type: string
+      - in: body
+        name: body
+        description: Initiate request payload
+        required: true
+        schema: 
+          $ref: '#/definitions/PreferenceBase'
+      responses:
+        201:
+          description: A new Customer Access Profile Agreement Preference is created
+          schema:
+            $ref: '#/definitions/PreferenceBaseWithIds'
+    
+  /customer-access-entitlement/customer-access-profile-agreement/{cr-reference-id}/updation:
+    put:
+      tags:
+      - update
+      operationId: updateCustomerAccessProfileAgreement
+      summary: Updates the given Customer Access Profile Agreement Control Record. It requires only the root level attributes. This cannot be used to update Behaviour Qualifiers
+      produces: 
+      - application/json
+      parameters:
+      - name : cr-reference-id
+        in: path
+        description: Channel Access Profile Reference
+        required: true
+        type: string
+      - in: body
+        name: body
+        description: Update control record request payload
+        required: true
+        schema: 
+          $ref: '#/definitions/AccessEntitlement'
+      responses:
+        200:
+          description: successful
+          schema:
+            $ref: '#/definitions/AccessEntitlementWithIds'
+            
+  /customer-access-entitlement/customer-access-profile-agreement/{cr-reference-id}/evaluation:
+    put:
+      tags:
+      - evaluate
+      operationId: evaluateCustomerAccessProfileAgreement
+      summary: Evaluate the given Customer Access Profile Agreement Control Record. It requires only the root level attributes.
+      produces: 
+      - application/json
+      parameters:
+      - name : cr-reference-id
+        in: path
+        description: Channel Access Profile Reference
+        required: true
+        type: string
+      - in: body
+        name: body
+        description: Evaluate control record request payload
+        required: true
+        schema: 
+          $ref: '#/definitions/AccessEntitlement'
+      responses:
+        200:
+          description: successful
+          schema:
+            $ref: '#/definitions/AccessEntitlementEvaluationResponse'
+            
+  /customer-access-entitlement/customer-access-profile-agreement/{cr-reference-id}/requisition:
+    put:
+      tags: 
+      - request
+      operationId: requestCustomerAccessProfileAgreementUpdate
+      description: Update an exising Customer Access Profile Agreement
+      summary: Requests Customer Access Profile Agreement
+      produces: 
+      - application/json
+      parameters: 
+      - name : cr-reference-id
+        in: path
+        description: Channel Access Profile Reference
+        required: true
+        type: string
+      - in: body
+        name: body
+        description: Request Customer Access Profile Agreement request payload
+        required: true
+        schema: 
+          $ref: '#/definitions/AccessEntitlement'
+      responses:
+        200:
+          description: successful
+          schema:
+            $ref: '#/definitions/AccessEntitlementRefreshResponse'
+            
+  /customer-access-entitlement/customer-access-profile-agreement/:
+    get:
+      tags: 
+      - retrieve
+      operationId: RetrieveCustomerAccessProfileAgreementReferenceIds
+      summary: Retrieve Customer Access Profile Agreement Control Record Ids available within the Service Domain.
+      produces: 
+      - application/json
+      parameters: 
+      - name : collection-filter
+        in: query
+        description: Filter to refine the result set. ex- 'customerReference = 436435'
+        type: string 
+      responses:
+        200:
+          description: successful
+          schema:
+            type: array
+            items:
+              type: string
+            example: [CRR2522, CRR432532]
+            
+  /customer-access-entitlement/customer-access-profile-agreement/behavior-qualifiers/:
+    get:
+      tags: 
+      - retrieve
+      operationId: RetrieveCustomerAccessProfileAgreementBehaviorQualifiers
+      summary: Retrieve all Behaviour Qualifier names in the Customer Access Entitlement Service Domain.
+      produces: 
+      - application/json
+      responses:
+        200:
+          description: successful
+          schema:
+            type: array
+            items:
+              type: string
+            example: [restrictions, preferences]
+
+  /customer-access-entitlement/customer-access-profile-agreement/{cr-reference-id}/{behavior-qualifier}:
+    get:
+      tags: 
+      - retrieve
+      operationId: RetrieveBehaviorQualifierReferenceIds
+      summary: Retrieve Behaviour Qualifier Reference Ids of the given Behavior Qulifier.
+      produces: 
+      - application/json
+      parameters: 
+      - name : cr-reference-id
+        in: path
+        description: Channel Access Profile Reference
+        required: true
+        type: string
+      - name : behavior-qualifier
+        in: path
+        description: Behavior Qualifier Name. ex- preference
+        required: true
+        type: string
+      - name : collection-filter
+        in: query
+        description: Filter to refine the result set. ex- 'channelAccessPreferenceReference = 2300'
+        type: string
+      responses:
+        200:
+          description: successful
+          schema:
+            type: array
+            items:
+              type: string
+            example: [BQR2352, BQR56587] 
+
+  /customer-access-entitlement/customer-access-profile-agreement/{cr-reference-id}:
+    get:
+      tags: 
+      - retrieve
+      operationId: RetrieveCustomerAccessProfileAgreement
+      summary: Retrieve Customer Access Profile Agreement Master Control Record data
+      produces: 
+      - application/json
+      parameters: 
+      - name : cr-reference-id
+        in: path
+        description: Channel Access Profile Reference
+        required: true
+        type: string
+      responses:
+        200:
+          description: successful
+          schema:
+            $ref: '#/definitions/AccessEntitlementWithIds'
+            
+    delete:
+      tags:
+      - terminate
+      operationId: terminateCustomerAccessProfileAgreement
+      summary: Deletes the given Customer Access Profile Agreement by id. It deletes all the attached Behaviour Qualifiers as well.
+      produces: 
+      - application/json
+      parameters:
+      - name : cr-reference-id
+        in: path
+        description: Channel Access Profile Reference
+        required: true
+        type: string
+      responses:
+        204:
+          description: successful
+            
+  /customer-access-entitlement/customer-access-profile-agreement/{cr-reference-id}/restrictions/{bq-reference-id}:
+    get:
+      tags: 
+      - retrieve
+      operationId: RetrieveRestrictions
+      summary: Retrieve Restrictions Behaviour Qualifier with all its' attributes. This may contain some attributes from root control record
+      produces: 
+      - application/json
+      parameters: 
+      - name : cr-reference-id
+        in: path
+        description: Channel Access Profile Reference
+        required: true
+        type: string
+      - name : bq-reference-id
+        in: path
+        description: Channel Access Restrictions Record Reference
+        required: true
+        type: string
+      responses:
+        200:
+          description: successful
+          schema:
+            $ref: '#/definitions/RestrictionsBaseWIthIds'
+            
+  /customer-access-entitlement/customer-access-profile-agreement/{cr-reference-id}/preferences/{bq-reference-id}:
+    get:
+      tags: 
+      - retrieve
+      operationId: RetrievePreference
+      summary: Retrieve Preference Behaviour Qualifier with all its' attributes. This may contain some attributes from root control record
+      produces: 
+      - application/json
+      parameters: 
+      - name : cr-reference-id
+        in: path
+        description: Channel Access Profile Reference
+        required: true
+        type: string
+      - name : bq-reference-id
+        in: path
+        description: Channel Access Preferences Record Reference
+        required: true
+        type: string
+      responses:
+        200:
+          description: successful
+          schema:
+            $ref: '#/definitions/PreferenceBaseWithIds'
+
+definitions:
+
+  AccessEntitlement:
+    type: object
+    properties:
+      channelAccessProfileRecord:
+        type: object
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+      channelAccessRestrictionsRecord:
+        type: object
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+      channelAccessPreferencesRecord:
+        type: object
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+      customerReference:
+        type: string
+        example: 2346
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+        
+  AccessEntitlementWithIds:
+    type: object
+    properties:
+      channelAccessProfileReference:
+        type: string
+        example: 76439839
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      channelAccessProfileRecord:
+        type: object
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+      channelAccessRestrictionsRecord:
+        type: object
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+      channelAccessPreferencesRecord:
+        type: object
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+      customerReference:
+        type: string
+        example: 2346
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+
+  AccessEntitlementEvaluationResponse:
+    type: object
+    properties:
+      channelAccessProfileReference:
+        type: string
+        example: 76439839
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      channelAccessProfileRecord:
+        type: object
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+      channelAccessRestrictionsRecord:
+        type: object
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+      channelAccessPreferencesRecord:
+        type: object
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+      customerReference:
+        type: string
+        example: 2346
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      evaluationResult:
+        type: object
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+        
+  RestrictionsBase:
+    type: object
+    properties:
+      channelAccessRestrictionsRecord:
+        type: object
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+      channelAccessProductServiceTypeUsage:
+        type: string
+        example: 1345
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      channelAccessProductServiceChannelDeviceRestrictions:
+        type: string
+        example: 7964
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      channelAccessProductServiceLocationRestrictions:
+        type: string
+        example: 2436
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      channelAccessProductServiceFrequencyLimitRestrictions:
+        type: string
+        example: 7653
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      channelAccessProductServiceTimeDurationRestrictions:
+        type: string
+        example: 23465
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+
+  RestrictionsBaseWIthIds:
+    type: object
+    properties:
+      channelAccessProfileReference:
+        type: string
+        example: 76439839
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      channelAccessRestrictionsRecordReference:
+        type: string
+        example: 76439839
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      channelAccessRestrictionsRecord:
+        type: object
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+      channelAccessProductServiceTypeUsage:
+        type: string
+        example: 1345
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      channelAccessProductServiceChannelDeviceRestrictions:
+        type: string
+        example: 7964
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      channelAccessProductServiceLocationRestrictions:
+        type: string
+        example: 2436
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      channelAccessProductServiceFrequencyLimitRestrictions:
+        type: string
+        example: 7653
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      channelAccessProductServiceTimeDurationRestrictions:
+        type: string
+        example: 23465
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+
+  PreferenceBase:
+    type: object
+    properties:
+      channelAccessPreferencesRecord:
+        type: object
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+      customerReference:
+        type: string
+        example: 3246
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      channelAccessPreferenceReference:
+        type: string
+        example: 6542
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      channelAccessPreferenceProfile:
+        type: string
+        example: 2346
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      channelAccessChannelDeviceType:
+        type: string
+        example: email
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      channelAccessChannelDeviceTypePreference:
+        type: string
+        example: no paper correspondence
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+
+  PreferenceBaseWithIds:
+    type: object
+    properties:
+      channelAccessProfileReference:
+        type: string
+        example: 76439839
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      channelAccessPreferencesRecordReference:
+        type: string
+        example: 76439839
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      channelAccessPreferencesRecord:
+        type: object
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+      customerReference:
+        type: string
+        example: 3246
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      channelAccessPreferenceReference:
+        type: string
+        example: 6542
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      channelAccessPreferenceProfile:
+        type: string
+        example: 2346
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      channelAccessChannelDeviceType:
+        type: string
+        example: email
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      channelAccessChannelDeviceTypePreference:
+        type: string
+        example: no paper correspondence
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+
+  AccessEntitlementRefreshResponse:
+   type: object
+   properties:
+     refreshStatus:
+       type: string
+       example: Refreshed

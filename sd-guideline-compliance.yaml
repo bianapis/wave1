@@ -1,0 +1,474 @@
+swagger: '2.0'
+info:
+  version: "4.0.0"
+  title: 'Service Domain - Guideline Compliance'
+  description: >
+        ## Description: 
+      
+        This service domain develops and applies a portfolio of guideline compliance tests to confirm adherence to bank and regulator imposed internal procedures. Tests may be made on complete transaction data or a meaningful samples as appropriate to mitigate exposure to non-compliant behaviors. Compliance checks may be in response to a schedule, a specific request as part of normal processing or may be initiated randomly as an oversight activity.
+
+        ## Example of use:
+        
+        A loan origination process is submitted for guideline compliance checks prior to completing the origination/loan closure process.
+        
+        ## General comment:
+        
+        This service center administers the activity of a specialists tasked with testing and confirming guideline compliance. Compliance tests may include document reviews, more detailed transaction analysis and may involve interactions with the unit under test to obtain additional detail/explanation. Guideline compliance is typically focused on larger value investment and loan activities, confirming transactions are executed in alignment with management guidelines and prudential policies.
+
+host: "virtserver.swaggerhub.com"
+basePath: "/BIAN/sd-guideline-compliance/4.0.0"
+schemes:
+- "https"
+paths: 
+  /guideline-compliance/guideline-compliance-assessment/{cr-reference-id}/recording: 
+    post:
+      tags: 
+      - record
+      operationId: recordGuidelineComplianceAssessment
+      summary: 'Record feedback'
+      produces: 
+      - application/json
+      parameters: 
+      - name : cr-reference-id
+        in: path
+        description: Compliance Audit Guideline Assessment Reference
+        required: true
+        type: string
+      - in: body
+        name: body
+        description: Record control record request payload
+        required: true
+        schema: 
+          $ref: '#/definitions/GuidelineComplianceAssessmentBase'
+      
+      responses:
+        201:
+          description: A new record is created
+          schema:
+            $ref: '#/definitions/GuidelineComplianceRecordResponse'
+
+  /guideline-compliance/guideline-compliance-assessment/evaluation:
+    post:
+      tags:
+      - evaluate
+      summary: Request assessment
+      operationId: evaluateGuidelineComplianceAssessment
+      produces:
+      - application/json
+      parameters:
+      - in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/GuidelineComplianceAssessmentBase'
+      responses:
+        201:
+          description: Successfully created guideline compliance assessment report
+          schema:
+            $ref: '#/definitions/GuidelineComplianceAssessmentBaseWithIdAndRoot'
+
+
+# request
+  /guideline-compliance/guideline-compliance-assessment/{cr-reference-id}/advices/{bq-reference-id}/requisition: 
+    put:
+      tags: 
+      - request
+      summary: Update advisory service
+      operationId: requestGuidelineComplianceAssessmentUpdate
+      produces: 
+      - application/json
+      parameters:
+      - name: cr-reference-id
+        in: path
+        required: true
+        description: Compliance Audit Guideline Assessment Reference
+        type: string
+      - name: bq-reference-id
+        in: path
+        required: true
+        description: Compliance/Audit Advisory Task Reference
+        type: string        
+      - in: body
+        name: body
+        required: true
+        description: Request Guideline Compliance request payload
+        schema:
+          $ref: '#/definitions/AdviceBase'
+      responses:
+        200:
+          description: Updated Advice successfully 
+          schema:
+            $ref: '#/definitions/AdviceBaseWithIds'
+  
+  /guideline-compliance/guideline-compliance-assessment/{cr-reference-id}/advices/requisition: 
+    post:
+      tags: 
+      - request
+      summary: Create advisory service
+      operationId: requestGuidelineComplianceAssessmentCreate
+      produces: 
+      - application/json
+      parameters:
+      - name: cr-reference-id
+        in: path
+        required: true
+        description: Compliance Audit Guideline Assessment Reference
+        type: string
+      - in: body
+        name: body
+        required: true
+        description: Request Guideline Compliance request payload
+        schema:
+          $ref: '#/definitions/AdviceBase'
+      responses:
+        201:
+          description: Created successfully 
+          schema:
+            $ref: '#/definitions/AdviceBaseWithIds'
+
+
+# retrieve
+  /guideline-compliance/guideline-compliance-assessment/:
+    get:
+      tags: 
+      - retrieve
+      operationId: retrieveGuidelineComplianceReferenceIds
+      summary: Retrieve Control Record Ids.
+      produces: 
+      - application/json
+      parameters: 
+      - name : collection-filter
+        in: query
+        description: Filter to refine the result set. ex- 'complianceAuditGuidelineAssessmentReference = CAGAR43563'
+        type: string 
+      responses:
+        200:
+          description: Successfully retrieved guideline compliance control record
+          schema:
+            type: array
+            items:
+              type: string
+            example: [CAGAR43563, CAGAR42374]
+
+  /guideline-compliance/guideline-compliance-assessment/behavior-qualifiers:
+    get:
+      tags: 
+      - retrieve
+      operationId: retrieveGuidelineComplianceBahaviorQualifiers
+      summary: Retrieve all Behaviour Qualifier.
+      produces: 
+      - application/json
+      responses:
+        200:
+          description: successful
+          schema:
+            type: array
+            items:
+              type: string
+            example: [advice] 
+
+  /guideline-compliance/guideline-compliance-assessment/{cr-reference-id}/{behavior-qualifier}:
+    get:
+      tags: 
+      - retrieve
+      operationId: RetrieveBehaviorQualifierReferenceIds
+      summary: Retrieve Reference Ids.
+      produces: 
+      - application/json
+      parameters: 
+      - name: cr-reference-id
+        in: path
+        required: true
+        description: Compliance Audit Guideline Assessment Reference
+        type: string
+      - name : behavior-qualifier
+        in: path
+        description: Behavior Qualifier Name. ex- advice
+        required: true
+        type: string
+      - name : collection-filter
+        in: query
+        description: Filter to refine the result set. ex- customerReference = CR123
+        type: string
+      responses:
+        200:
+          description: successful
+          schema:
+            type: array
+            items:
+              type: string
+            example: [ADR345, ADR234] 
+            
+  /guideline-compliance/guideline-compliance-assessment/{cr-reference-id}:
+    get:
+      tags: 
+      - retrieve
+      operationId: RetrieveGuidelineCompliance
+      summary: Retrieve Master Control Record
+      produces: 
+      - application/json
+      parameters: 
+      - name : cr-reference-id
+        in: path
+        description: Compliance Audit Guideline Assessment Reference
+        required: true
+        type: string
+      responses:
+        200:
+          description: Successfully retrieved master control record data
+          schema:
+            $ref: '#/definitions/GuidelineComplianceAssessmentBaseWithIdAndRoot'
+            
+  /guideline-compliance/guideline-compliance-assessment/{cr-reference-id}/advices/{bq-reference-id}:
+    get:
+      tags: 
+      - retrieve
+      operationId: RetrieveAdvice
+      summary: Retrieve Advice
+      produces: 
+      - application/json
+      parameters: 
+      - name : cr-reference-id
+        in: path
+        description: Compliance Audit Guideline Assessment Reference
+        required: true
+        type: string
+      - name: bq-reference-id
+        in: path
+        required: true
+        description: Compliance/Audit Advisory Task Reference
+        type: string 
+      responses:
+        200:
+          description: successful
+          schema:
+            $ref: '#/definitions/AdviceBaseWithIds' 
+            
+definitions:
+  GuidelineComplianceAssessmentBase: 
+    type: object
+    properties: 
+      businessUnitReference: 
+        type: string
+        example: BURE4534 
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      productServiceReference: 
+        type: string
+        example: PRSRF9000
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      customerReference: 
+        type: string
+        example: CSRE3456
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      complianceAuditGuidelineReference:
+        type: string
+        example: CAGR123
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      complianceAuditGuidelineAssessmentTaskRecord: 
+        type: object
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+      documentReference: 
+        type: string
+        example: DR123
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+  
+  GuidelineComplianceAssessmentBaseWithIdAndRoot: 
+    type: object
+    properties: 
+      complianceAuditGuidelineAssessmentReference: 
+        type: string
+        example: CAGAR1222
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier    
+      businessUnitReference: 
+        type: string
+        example: BURE4534
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      productServiceReference: 
+        type: string
+        example: PRRF9000
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      customerReference: 
+        type: string
+        example: CSRE3456
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      complianceAuditGuidelineReference: 
+        type: string
+        example: CAGR123
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      complianceAuditGuidelineAssessmentTaskRecord: 
+        type: object
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+      complianceAuditGuidelineAssessmentResult: 
+        type: string
+        example: Success 
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      documentReference: 
+        type: string
+        example: DR123
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+  GuidelineComplianceRecordResponse: 
+    type: object
+    properties:
+      recordingRecordReference:
+        type: string
+        example: CRRR3456
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      complianceAuditGuidelineAssessmentResult:
+        type: string
+        example: Applied
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+  AdviceBase:
+    type: object
+    properties:
+      businessUnitEmployeeReference:
+        type: string
+        example: BUER123
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      customerReference:
+        type: string
+        example: CR123
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      complianceAuditGuidelineReference:
+        type: string
+        example: CAGR123
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      complianceAuditAdvisoryTaskRecord:
+        type: object
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+      documentReference:
+        type: string
+        example: DR123
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      complianceAuditGuidelineDefinition:
+        type: string
+        example: CAGD123
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      complianceAuditGuidelineComplianceReporting:
+        type: object
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+      complianceAuditGuidelineAccountability:
+        type: string
+        example: CAGA1
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      ComplianceAuditGuidelinePenalties:
+        type: string
+        example: penalty-1
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+  
+  AdviceBaseWithIds:
+    type: object
+    properties:
+      complianceAuditGuidelineAssessmentReference:
+        type: string
+        example: CAGAR123
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      complianceAuditAdvisoryTaskReference:
+        type: string
+        example: CAATR123
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      businessUnitEmployeeReference:
+        type: string
+        example: BUER123
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      customerReference:
+        type: string
+        example: CR123
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      complianceAuditGuidelineReference:
+        type: string
+        example: CAGR123
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      complianceAuditAdvisoryTaskRecord:
+        type: object
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+      documentReference:
+        type: string
+        example: DR123
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      complianceAuditGuidelineDefinition:
+        type: string
+        example: CAGD123
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      complianceAuditGuidelineComplianceReporting:
+        type: object
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+      complianceAuditGuidelineAccountability:
+        type: string
+        example: CAGA1
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      ComplianceAuditGuidelinePenalties:
+        type: string
+        example: penalty-1
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text

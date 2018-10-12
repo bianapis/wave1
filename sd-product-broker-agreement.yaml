@@ -1,0 +1,790 @@
+swagger: '2.0'
+info:
+  version: "4.0.0"
+  title: 'Service Domain - product broker agreement'
+  description: >
+        ## Description: 
+      
+        This service domain maintains product broker contractual and service level agreements and tracks and confirms compliance and service related activity/volume goals when necessary
+      
+        ## Example of use:
+        
+        A monthly assessment is made of the performance of a broker against service levels and projected business volumes
+
+        ## General comment:
+        
+        This service domain administers the contractual, operational and financial aspects of the relationship with a 3rd party product or service provider. Note that other service domains handle different aspects of broker relations such as relationship management, commissions, billing and payments and operational support
+        
+# Added by API Auto Mocking Plugin
+host: virtserver.swaggerhub.com
+basePath: /BIAN/sd-product-broker-agreement/4.0.0
+schemes:
+ - https
+paths:
+
+  /product-broker-agreement/broker-agreement/initiation:
+    post:
+      tags: 
+      - initiate
+      summary: "Initiates a new Product Broker Agreement Control Record. Only the root level attributes are provided."
+      operationId: InitiateBrokerAgreement
+      consumes:
+      - application/json
+      produces: 
+      - application/json
+      parameters:
+      - in: body
+        name: body
+        required: true
+        description: Initiate control record request payload
+        schema:
+          $ref: "#/definitions/ProductBrokerAgreementBase"
+      responses:
+        201:
+          description: A new broker agrrement is created
+          schema:
+            $ref: "#/definitions/ProductBrokerAgreementWithIdAndRoot"
+            
+  /product-broker-agreement/broker-agreement/{cr-reference-id}/legal-terms/initiation:
+    post:
+      tags: 
+      - initiate
+      summary: "Initiates a new Product Broker Agreement Control Record. Only BQ(Legal Terms) level attributes are provided."
+      operationId: InitiateBrokerAgreementLegalTerms
+      consumes:
+      - application/json
+      produces: 
+      - application/json
+      parameters:
+      - in: path
+        name: cr-reference-id
+        description: "Broker Agreement Reference"
+        type: string
+        required: true
+      - in: body
+        name: body
+        required: true
+        description: "Initiate product broker agreement legal terms data"
+        schema:
+          $ref: "#/definitions/ProductBrokerAgreementLegalTerms"
+      responses:
+        201:
+          description: "Created broker agreement legal terms"
+          schema:
+            $ref: "#/definitions/ProductBrokerAgreementLegalTermsWithIdAndRoot"
+            
+  /product-broker-agreement/broker-agreement/{cr-reference-id}/regulatory-terms/initiation:
+    post:
+      tags: 
+      - initiate
+      summary: "Initiates a new Product Broker Agreement Control Record. Only BQ(Regulatory Terms) level attributes are provided."
+      operationId: InitiateBrokerAgreementRegulatoryTerms
+      consumes:
+      - application/json
+      produces: 
+      - application/json
+      parameters:
+      - in: path
+        name: cr-reference-id
+        description: "Broker Agreement Reference"
+        type: string
+        required: true
+      - in: body
+        name: body
+        required: true
+        description: "Initiate product broker policy regulatory terms data"
+        schema:
+          $ref: "#/definitions/ProductBrokerAgreementRegulatoryTerms"
+      responses:
+        201:
+          description: "Created broker agreement regulatory terms"
+          schema:
+            $ref: "#/definitions/ProductBrokerAgreementRegulatoryTermsWithIdAndRoot"
+            
+  /product-broker-agreement/broker-agreement/{cr-reference-id}/policy-terms/initiation:
+    post:
+      tags: 
+      - initiate
+      summary: "Initiates a new Product Broker Agreement Control Record. Only BQ(Policy Terms) level attributes are provided."
+      operationId: InitiateBrokerAgreementPolicyTerms
+      consumes:
+      - application/json
+      produces: 
+      - application/json
+      parameters:
+      - in: path
+        name: cr-reference-id
+        description: "Broker Agreement Reference"
+        type: string
+        required: true
+      - in: body
+        name: body
+        required: true
+        description: "Initiate product broker policy terms data"
+        schema:
+          $ref: "#/definitions/ProductBrokerAgreementPolicyTerms"
+      responses:
+        201:
+          description: "Created broker agreement policy terms initiated"
+          schema:
+            $ref: "#/definitions/ProductBrokerAgreementPolicyTermsWithIdAndRoot"
+
+  /product-broker-agreement/broker-agreement:
+    get:
+      tags: 
+      - retrieve
+      summary: Retrieve product broker agreement control record Ids available within the service domain"
+      operationId: retrieveBrokerAgreementIds
+      produces: 
+      - application/json
+      parameters:
+      - name : collection-filter
+        in: query
+        description: "Filter to refine the result set. ex - 'agreementType = 12302544651'"
+        type: string
+      responses:
+        200:
+          description:  "Successfully retrieved product broker agreement ids"
+          schema:
+            type: array
+            items:
+              type: string
+            example: 
+            - BAR123
+            - BAR345
+
+  /product-broker-agreement/broker-agreement/behavior-qualifiers:
+    get:
+      tags: 
+      - retrieve
+      summary: "Retrieve all behaviour qualifier names in the product broker agreement service domain"
+      operationId: retrieveBrokerAgreementBQNames
+      produces: 
+      - application/json
+      responses:
+        200:
+          description:  Successfully retrieved all behavior qualifiers
+          schema:
+            type: array
+            items:
+              type: string
+            example: 
+            - legalTerms
+            - regulatoryTerms
+            - policyTerms
+
+  /product-broker-agreement/broker-agreement/{cr-reference-id}/{behavior-qualifier}:
+    get:
+      tags: 
+      - retrieve
+      summary: "Retrieve behaviour qualifier reference Ids of the given behavior qualifier"
+      operationId: retrieveBrokerAgreementBQIds
+      produces: 
+      - application/json
+      parameters:
+      - in: path
+        name: cr-reference-id
+        description: "Broker Agreement Reference"
+        type: string
+        required: true
+      - name : behavior-qualifier
+        in: path
+        description: "Behavior Qualifier Name. ex- 'legalTerms'"
+        required: true
+        type: string
+      - name : collection-filter
+        in: query
+        description: "Filter to refine the result set. ex 'jurisdiction=jurisdiction1'"
+        type: string
+      responses:
+        200:
+          description:  "Successfully retrieved BQ ids"
+          schema:
+            type: array
+            items:
+              type: string
+            example: 
+            - 123456789
+            - 987654321
+            - 369852147
+            
+  /product-broker-agreement/broker-agreement/{cr-reference-id}:
+    get:
+      tags: 
+      - retrieve
+      summary: "Retrieve product broker agreement"
+      operationId: retrieveBrokerAgreement
+      produces: 
+      - application/json
+      parameters:
+      - in: path
+        name: cr-reference-id
+        description: Broker Agreement Reference
+        type: string
+        required: true 
+      responses:
+        200:
+          description:  "Successfully retrieved product broker agreement"
+          schema:
+            $ref: "#/definitions/ProductBrokerAgreementWithIdAndRoot"
+            
+    delete:
+      tags: 
+      - terminate
+      summary: " Deletes the given Product Broker Agreement by id. It deletes all the attached Behaviour Qualifiers as well."
+      operationId: terminateBrokerAgreement
+      parameters:
+      - in: path
+        name: cr-reference-id
+        description: Broker Agreement Reference
+        type: string
+        required: true
+      responses:
+        204:
+          description: Deleted product broker agreement
+
+  /product-broker-agreement/broker-agreement/{cr-reference-id}/legal-terms/{bq-reference-id}:
+    get:
+      tags: 
+      - retrieve
+      summary: "Retrieve Legal Terms Behaviour Qualifier with all its' attributes. This will contain some attributes from root control record like Broker Agreement Reference as well."
+      operationId: retrieveBrokerAgreementLegalTerms
+      produces: 
+      - application/json
+      parameters:
+      - in: path
+        name: cr-reference-id
+        description: Broker Agreement Reference
+        type: string
+        required: true
+      - in: path
+        name: bq-reference-id
+        description: Broker Agreement Legal Term Reference
+        type: string
+        required: true
+      responses:
+        200:
+          description: "Successfully retrieved product broker legal terms"
+          schema:
+            $ref: "#/definitions/ProductBrokerAgreementLegalTermsWithIdAndRoot"
+
+  /product-broker-agreement/broker-agreement/{cr-reference-id}/regulatory-terms/{bq-reference-id}:
+    get:
+      tags: 
+      - retrieve
+      summary: "Retrieve Regulatory Terms Behaviour Qualifier with all its' attributes. This will contain some attributes from root control record like Broker Agreement Reference as well."
+      operationId: retrieveBrokerAgreementRegulatoryTerms
+      produces: 
+      - application/json
+      parameters:
+      - in: path
+        name: cr-reference-id
+        description: Broker Agreement Reference
+        type: string
+        required: true
+      - in: path
+        name: bq-reference-id
+        description: Broker Agreement Regulatory Term Reference
+        type: string
+        required: true 
+      responses:
+        200:
+          description: "Successfully retrieved product broker regulatory terms"
+          schema:
+            $ref: "#/definitions/ProductBrokerAgreementRegulatoryTermsWithIdAndRoot"
+
+  /product-broker-agreement/broker-agreement/{cr-reference-id}/policy-terms/{bq-reference-id}:
+    get:
+      tags: 
+      - retrieve
+      summary: "Retrieve Policy Terms Behaviour Qualifier with all its' attributes. This will contain some attributes from root control record like Broker Agreement Reference as well."
+      operationId: retrieveBrokerAgreementPolicyTerms
+      produces: 
+      - application/json
+      parameters:
+      - in: path
+        name: cr-reference-id
+        description: Broker Agreement Reference
+        type: string
+        required: true
+      - in: path
+        name: bq-reference-id
+        description: Broker Agreement Policy Term Reference
+        type: string
+        required: true 
+      responses:
+        200:
+          description: "Successfully retrieved product broker policy terms"
+          schema:
+            $ref: "#/definitions/ProductBrokerAgreementPolicyTermsWithIdAndRoot"
+            
+  /product-broker-agreement/broker-agreement/{cr-reference-id}/updation:
+    put:
+      tags: 
+      - update
+      summary: "Updates the given Product Broker Agreement Control Record. It requires only the root level attributes."
+      operationId: updateBrokerAgreement
+      consumes:
+      - application/json
+      produces: 
+      - application/json
+      parameters:
+      - in: path
+        name: cr-reference-id
+        description: Broker Agreement Reference
+        type: string
+        required: true
+      - in: body
+        name: body
+        required: true
+        description: Update control record request payload
+        schema:
+          $ref: "#/definitions/ProductBrokerAgreementBase"
+      responses:
+        200:
+          description: Updated product broker agreement
+          schema:
+            $ref: "#/definitions/ProductBrokerAgreementWithIdAndRoot"
+
+  /product-broker-agreement/broker-agreement/{cr-reference-id}/evaluation:
+    post:
+      tags: 
+      - evaluate
+      summary: "Evaluate product broker agreement with control record attributes"
+      operationId: evaluateBrokerAgreement
+      consumes:
+      - application/json
+      produces: 
+      - application/json
+      parameters:
+      - in: path
+        name: cr-reference-id
+        description: Broker Agreement Reference
+        type: string
+        required: true
+      - in: body
+        name: body
+        required: true
+        description: Evaluate control record paylaod
+        schema:
+          $ref: "#/definitions/ProductBrokerAgreementBase"
+      responses:
+        201:
+          description: "Created product broker agreement"
+          schema:
+            $ref: "#/definitions/ProductBrokerAgreementEvaluationResponse"
+            
+  /product-broker-agreement/broker-agreement/{cr-reference-id}/requisition:
+    put:
+      tags: 
+      - request
+      summary: "Requests a Broker Agreement root level attributes"
+      operationId: RequestBrokerAgreementUpdate
+      consumes:
+      - application/json
+      produces: 
+      - application/json
+      parameters:
+      - in: path
+        name: cr-reference-id
+        description: Broker Agreement Reference
+        type: string
+        required: true
+      - in: body
+        name: body
+        required: true
+        description: Request broker agreement request payload"
+        schema:
+          $ref: "#/definitions/ProductBrokerAgreementBase"
+      responses:
+        200:
+          description: Updated product broker agreement
+          schema:
+            $ref: "#/definitions/ProductBrokerAgreementRefreshResponse"
+
+definitions:
+
+  ProductBrokerAgreementBase:
+    type: object
+    properties:
+      brokerAgreemenRecord:
+        type: object
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+          general-info:  Terms combined for the complete agreement
+      partyReference:
+        type: string
+        example: "4815972631451"
+        description: |
+          `status: Registered`
+          iso-link: [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_FNqJt8TGEeChad0JzLk7QA_-1317971633)
+          bian-reference: ProductBrokerMasterAgreement.ProductBrokerRelationship.ProductBroker(as Role).Player(as Party)
+      agreementType:
+        type: string
+        example: "TYPE1"
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: ProductBrokerMasterAgreement.ProductBrokerRelationship.EngagementModel
+      agreementJurisdiction:
+        type: string
+        example: jurisdiction1
+        description: |
+          `status: Registered`
+          iso-link: [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_E2tpUMTGEeChad0JzLk7QA_1799405832/elements/_lVDYAWZaEeOd7pBdBqENMg)
+          bian-reference: ProductBrokerMasterAgreement(as Agreement).Jurisdiction
+      agreementValidFromToDate:
+        type: string
+        example: "[10-12-2018, 31-12-2022]"
+        description: |
+          `status: Registered`
+          iso-link: [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_E2tpUMTGEeChad0JzLk7QA_1799405832/elements/_llDYQIiZEeGjuoi-J4XM2Q_2033941627)
+          bian-reference: ProductBrokerMasterAgreement(as Agreement).ValidityPeriod 
+      agreementSignaturiesResponsibleParties:
+        type: string
+        example: "partiesSing"
+        description: |
+          `status: Registered`
+          iso-link: [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_FNqJt8TGEeChad0JzLk7QA_-1317971633)
+          bian-reference: ProductBrokerMasterAgreement(as Agreement).RoleInAgreement.Player(as Party) 
+      documentReference:
+        type: string
+        example: "1g54g8fds964d54g8d61df5"
+        description: |
+          `status: Registered`
+          iso-link: [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_E2tpUMTGEeChad0JzLk7QA_1799405832/elements/_K5uxMMRaEeGGj8mSL0xBEQ_-912494530)
+          bian-reference: ProductBrokerMasterAgreement(as Agreement).MaterialisingDocument 
+          `status: Provisionally Registered`
+          bian-reference: ProductBrokerMasterAgreement(as Agreement).Attachment
+
+  ProductBrokerAgreementWithIdAndRoot:
+    type: object
+    properties:
+      brokerAgreementReference:
+        type: string
+        example: "123456025789"
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: ProductBrokerMasterAgreement
+      brokerAgreemenRecord:
+        type: object
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+          general-info:  Terms combined for the complete agreement
+      partyReference:
+        type: string
+        example: "4815972631451"
+        description: |
+          `status: Registered`
+          iso-link: [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_FNqJt8TGEeChad0JzLk7QA_-1317971633)
+          bian-reference: ProductBrokerMasterAgreement.ProductBrokerRelationship.ProductBroker(as Role).Player(as Party)
+      agreementType:
+        type: string
+        example: "TYPE1"
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: ProductBrokerMasterAgreement.ProductBrokerRelationship.EngagementModel
+      agreementJurisdiction:
+        type: string
+        example: jurisdiction1
+        description: |
+          `status: Registered`
+          iso-link: [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_E2tpUMTGEeChad0JzLk7QA_1799405832/elements/_lVDYAWZaEeOd7pBdBqENMg)
+          bian-reference: ProductBrokerMasterAgreement(as Agreement).Jurisdiction 
+      agreementValidFromToDate:
+        type: string
+        example: "[10-12-2018, 31-12-2022]"
+        description: |
+          `status: Registered`
+          iso-link: [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_E2tpUMTGEeChad0JzLk7QA_1799405832/elements/_llDYQIiZEeGjuoi-J4XM2Q_2033941627)
+          bian-reference: ProductBrokerMasterAgreement(as Agreement).ValidityPeriod
+      agreementSignaturesResponsibleParties:
+        type: string
+        example: "partiesSing"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      documentReference:
+        type: string
+        example: "1g54g8fds964d54g8d61df5"
+        description: |
+          `status: Registered`
+          iso-link: [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_E2tpUMTGEeChad0JzLk7QA_1799405832/elements/_K5uxMMRaEeGGj8mSL0xBEQ_-912494530)
+          bian-reference: ProductBrokerMasterAgreement(as Agreement).MaterialisingDocument 
+          `status: Provisionally Registered`
+          bian-reference: ProductBrokerMasterAgreement(as Agreement).Attachment
+
+  ProductBrokerAgreementEvaluationResponse:
+    type: object
+    properties:
+      brokerAgreementReference:
+        type: string
+        example: "123456025789"
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: ProductBrokerMasterAgreement
+      brokerAgreemenRecord:
+        type: object
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+          general-info:  Terms combined for the complete agreement
+      partyReference:
+        type: string
+        example: "4815972631451"
+        description: |
+          `status: Registered`
+          iso-link: [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_FNqJt8TGEeChad0JzLk7QA_-1317971633)
+          bian-reference: ProductBrokerMasterAgreement.ProductBrokerRelationship.ProductBroker(as Role).Player(as Party) 
+      agreementType:
+        type: string
+        example: "TYPE1"
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: ProductBrokerMasterAgreement.ProductBrokerRelationship.EngagementModel
+      agreementJurisdiction:
+        type: string
+        example: jurisdiction1
+        description: |
+          `status: Registered`
+          iso-link: [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_E2tpUMTGEeChad0JzLk7QA_1799405832/elements/_lVDYAWZaEeOd7pBdBqENMg)
+          bian-reference: ProductBrokerMasterAgreement(as Agreement).Jurisdiction
+      agreementValidFromToDate:
+        type: string
+        example: "[10-12-2018, 31-12-2022]"
+        description: |
+          `status: Registered`
+          iso-link: [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_E2tpUMTGEeChad0JzLk7QA_1799405832/elements/_llDYQIiZEeGjuoi-J4XM2Q_2033941627)
+          bian-reference: ProductBrokerMasterAgreement(as Agreement).ValidityPeriod 
+      agreementSignaturesResponsibleParties:
+        type: string
+        example: "partiesSing"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      documentReference:
+        type: string
+        example: "1g54g8fds964d54g8d61df5"
+        description: |
+          `status: Registered`
+          iso-link: [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_E2tpUMTGEeChad0JzLk7QA_1799405832/elements/_K5uxMMRaEeGGj8mSL0xBEQ_-912494530)
+          bian-reference: ProductBrokerMasterAgreement(as Agreement).MaterialisingDocument 
+          `status: Provisionally Registered`
+          bian-reference: ProductBrokerMasterAgreement(as Agreement).Attachment
+      evaluationResult:
+        type: object
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+        
+  ProductBrokerAgreementLegalTerms:
+    type: object
+    properties:
+      brokerAgreementLegalTermRecord:
+        type: object
+        description: |
+         `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+      jurisdiction:
+        type: string
+        example: "jurisdiction 1"
+        description: |
+          `status: Registered`
+          iso-link: [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_E2tpUMTGEeChad0JzLk7QA_1799405832/elements/_lVDYAWZaEeOd7pBdBqENMg)
+          bian-reference: ProductBrokerMasterAgreementt(as Agreement).Jurisdiction
+      applicableLawReference:
+        type: string
+        example: "78945613000"
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: ProductBrokerMasterAgreement(as Agreement).TermsAndConditions.ApplicableGovernanceRule(as Law)
+      applicableLawInterpretation:
+        type: string
+        example: "interpretation 1"
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: ProductBrokerMasterAgreementt(as Agreement).TermsAndConditions.ApplicableGovernanceRule(as Law)(as GovernanceRule).Description 
+        
+  ProductBrokerAgreementLegalTermsWithIdAndRoot:
+    type: object
+    properties:
+      brokerAgreementReference:
+        type: string
+        example: "123456025789"
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: ProductBrokerMasterAgreement
+      brokerAgreementLegalTermReference:
+        type: string
+        example: "258030145"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      brokerAgreementLegalTermRecord:
+        type: object
+        description: |
+         `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+          general-info:  Terms and legal conditions
+      jurisdiction:
+        type: string
+        example: "jurisdiction 1"
+        description: |
+          `status: Registered`
+          iso-link: [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_E2tpUMTGEeChad0JzLk7QA_1799405832/elements/_lVDYAWZaEeOd7pBdBqENMg)
+          bian-reference: ProductBrokerMasterAgreementt(as Agreement).Jurisdiction 
+      applicableLawReference:
+        type: string
+        example: "78945613000"
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: ProductBrokerMasterAgreement(as Agreement).TermsAndConditions.ApplicableGovernanceRule(as Law)
+      applicableLawInterpretation:
+        type: string
+        example: "interpretation 1"
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: ProductBrokerMasterAgreementt(as Agreement).TermsAndConditions.ApplicableGovernanceRule(as Law)(as GovernanceRule).Description
+  
+  ProductBrokerAgreementRegulatoryTerms:
+    type: object
+    properties:
+      brokerAgreementRegulatoryTermRecord:
+        type: object
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      regulatoryAuthority:
+        type: string
+        example: "regulatory authority 1"
+        description: |
+          `status: Registered`
+          iso-link: [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_9jSw8nltEeG7BsjMvd1mEw_1652971177/elements/_9jSw9HltEeG7BsjMvd1mEw_769737890)
+          bian-reference: ProductBrokerMasterAgreement(as Agreement).TermsAndConditions.ApplicableGovernanceRule.PublicationAgency
+      applicableRegulationReference:
+        type: string
+        example: "321654987002"
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: ProductBrokerMasterAgreement(as Agreement).TermsAndConditions.ApplicableGovernanceRule(as Regulation)
+      applicableRegulationInterpretation:
+        type: string
+        example: "interpretation 1"
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: ProductBrokerMasterAgreement(as Agreement).TermsAndConditions.ApplicableGovernanceRule(as Regulation)(as GovernanceRule).Description
+        
+  ProductBrokerAgreementRegulatoryTermsWithIdAndRoot:
+    type: object
+    properties:
+      brokerAgreementReference:
+        type: string
+        example: "123456025789"
+        description: |
+         `status: Provisionally Registered` 
+         bian-reference: ProductBrokerMasterAgreement
+      brokerAgreementRegulatoryTermReference:
+        type: string
+        example: "258030145002"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier 
+      brokerAgreementRegulatoryTermRecord:
+        type: object
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+          general-info:  Terms and Legal conditions
+      regulatoryAuthority:
+        type: string
+        example: "regulatory authority 1"
+        description: |
+          `status: Registered`
+          iso-link: [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_9jSw8nltEeG7BsjMvd1mEw_1652971177/elements/_9jSw9HltEeG7BsjMvd1mEw_769737890)
+          bian-reference: ProductBrokerMasterAgreement(as Agreement).TermsAndConditions.ApplicableGovernanceRule.PublicationAgency 
+      applicableRegulationReference:
+        type: string
+        example: "321654987002"
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: ProductBrokerMasterAgreement(as Agreement).TermsAndConditions.ApplicableGovernanceRule(as Regulation) 
+      applicableRegulationInterpretation:
+        type: string
+        example: "interpretation 1"
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: ProductBrokerMasterAgreement(as Agreement).TermsAndConditions.ApplicableGovernanceRule(as Regulation)(as GovernanceRule).Description
+  
+  ProductBrokerAgreementPolicyTerms:
+    type: object
+    properties:
+      brokerAgreementPolicyTermRecord:
+        type: object
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+      bankPolicyGuidelineType:
+        type: string
+        example: "Type 1"
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: ProductBrokerMasterAgreement(as Agreement).TermsAndConditions.ApplicableGovernanceRule(as Policy)(as GovernanceRule).Type
+      applicableBankPolicyRuleReference:
+        type: string
+        example: "654321989997"
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: ProductBrokerMasterAgreement(as Agreement).TermsAndConditions.ApplicableGovernanceRule(as Policy)(as GovernanceRule)
+      applicableBankPolicyRuleInterpretation:
+        type: string
+        example: "interpretation 1"
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: ProductBrokerMasterAgreement(as Agreement).TermsAndConditions.ApplicableGovernanceRule(as Policy)(as GovernanceRule).Description
+        
+  ProductBrokerAgreementPolicyTermsWithIdAndRoot:
+    type: object
+    properties:
+      brokerAgreementReference:
+        type: string
+        example: "123456025789"
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: ProductBrokerMasterAgreement
+      brokerAgreementPolicyTermReference:
+        type: string
+        example: "12300005789"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier 
+      brokerAgreementPolicyTermRecord:
+        type: object
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+      bankPolicyGuidelineType:
+        type: string
+        example: "Type 1"
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: ProductBrokerMasterAgreement(as Agreement).TermsAndConditions.ApplicableGovernanceRule(as Policy)(as GovernanceRule).Type
+      applicableBankPolicyRuleReference:
+        type: string
+        example: "654321989997"
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: ProductBrokerMasterAgreement(as Agreement).TermsAndConditions.ApplicableGovernanceRule(as Policy)(as GovernanceRule)
+      applicableBankPolicyRuleInterpretation:
+        type: string
+        example: "interpretation 1"
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: ProductBrokerMasterAgreement(as Agreement).TermsAndConditions.ApplicableGovernanceRule(as Policy)(as GovernanceRule).Description
+
+  ProductBrokerAgreementRefreshResponse:
+   type: object
+   properties:
+     refreshStatus:
+       type: string
+       example: Refreshed

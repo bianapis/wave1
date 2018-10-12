@@ -1,0 +1,1552 @@
+swagger: "2.0"
+info:
+  version: "4.0.0"
+  title: 'Service Domain - Credit/Charge Card'
+  description: >
+        ## Service Domain Role:
+        
+        This service domain orchestrate the scheduled maintenance and transactional activities associated with credit/charge card product fulfillment.
+        
+        ## Example of Use:
+        
+        An established card customer uses their card for a purchase and settles the balance at the monthly payment cycle.
+        
+        ## General Comments:
+        
+        This service domain handles both credit and charge card fulfillment. The main functional difference being the different re-payment and credit handling structures of the two types of card product. Note that unlike a current account, card products are typically fulfilled through a specialist card network that links issuing banks and merchant acquiring banks for authorization, clearing and settlement activities.
+
+host: "virtserver.swaggerhub.com"
+basePath: "/BIAN/sd-credit-charge-card/4.0.0"
+schemes:
+- "https"
+paths:
+  /credit-charge-card/credit-charge-card-fulfillment-arrangement/initiation:
+    post:
+      tags:
+      - initiate
+      summary: Initiate new credit card facility
+      operationId: initiateCreditChargeCardFulfillmentArrangement
+      produces:
+      - application/json
+      parameters:
+      - in: body
+        name: body
+        description: Initiate control record request payload
+        required: true
+        schema:
+          $ref: '#/definitions/CreditChargeCardSetUpBase'
+      responses:
+        201:
+          description: Initiated credit/charge card fulfillment arrangement.
+          schema:
+            $ref: '#/definitions/CreditChargeCardSetUpBaseWithIdAndStatus'
+  /credit-charge-card/credit-charge-card-fulfillment-arrangement/{cr-reference-id}/updation:
+    put:
+      tags:
+      - update
+      summary: Update credit card details.
+      operationId: updateCreditChargeCardFulfillmentArrangement
+      produces:
+      - application/json
+      parameters:
+      - name: cr-reference-id
+        in: path
+        description: Product Instance Reference (product number)
+        required: true
+        type: string
+      - in: body
+        name: body
+        description: Update control record request payload
+        required: true
+        schema:
+          $ref: '#/definitions/CreditChargeCardUpdateRequest'
+      responses:
+        200:
+          description: Updated credit/charge card account successfully
+          schema:
+            $ref: '#/definitions/CreditChargeCardSetUpBaseWithIdAndStatus'
+  /credit-charge-card/credit-charge-card-fulfillment-arrangement/{cr-reference-id}/recording:
+    post:
+      tags:
+      - record
+      summary: Record account feedback
+      operationId: recordCreditChargeCardFulfillmentArrangement
+      produces:
+      - application/json
+      parameters:
+      - name: cr-reference-id
+        in: path
+        description: Product Instance Reference (product number)
+        required: true
+        type: string
+      - in: body
+        name: body
+        description: Record control record request payload
+        required: true
+        schema:
+          $ref: '#/definitions/CreditChargeCardRecordRequest'
+      responses:
+        201:
+          description: New credit/charge card record created.
+          schema:
+            $ref: '#/definitions/CreditChargeCardRecordResponse'
+  /credit-charge-card/credit-charge-card-fulfillment-arrangement/{cr-reference-id}/requisition:
+    put:
+      tags:
+      - request
+      summary: Update credit card service.
+      operationId: requestCreditChargeCardFulfillmentArrangementUpdate
+      produces:
+      - application/json
+      parameters:
+      - name: cr-reference-id
+        in: path
+        description: Product Instance Reference (product number)
+        required: true
+        type: string
+      - in: body
+        name: body
+        description: Request Credit/Charge Card Account Request payload
+        required: true
+        schema:
+          $ref: '#/definitions/CreditChargeCardUpdateRequest'
+      responses:
+        200:
+          description: Successfully requested a credit/charge card account service update.
+          schema:
+            $ref: '#/definitions/CreditChargeCardSetUpBaseWithIdAndStatus'
+  /credit-charge-card/credit-charge-card-fulfillment-arrangement/requisition:
+    post:
+      tags:
+      - request
+      summary: Create new credit card service.
+      operationId: requestCreditChargeCardFulfillmentArrangementCreate
+      produces:
+      - application/json
+      parameters:
+      - in: body
+        name: body
+        description: Request Credit/Charge Card Account Create Request Payload
+        required: true
+        schema:
+          $ref: '#/definitions/CreditChargeCardSetUpBase'
+      responses:
+        201:
+          description: Successfully requested a credit/charge card account service create.
+          schema:
+            $ref: '#/definitions/CreditChargeCardSetUpBaseWithIdAndStatus'
+  /credit-charge-card/credit-charge-card-fulfillment-arrangement/:
+    get:
+      tags: 
+      - retrieve
+      operationId: RetrieveCreditChargeCardReferenceIds
+      summary: Retrieve CR Ids
+      produces: 
+      - application/json
+      parameters: 
+      - name : collection-filter
+        in: query
+        description: Filter to refine the result set.
+        type: string 
+      responses:
+        200:
+          description: successful
+          schema:
+            type: array
+            items:
+              type: string
+            example: [CCRR123, CCRR345]
+  /credit-charge-card/credit-charge-card-fulfillment-arrangement/behavior-qualifiers/:
+    get:
+      tags: 
+      - retrieve
+      operationId: RetrieveCreditChargeCardBehaviorQualifiers
+      summary: Retrieve BQ names
+      produces: 
+      - application/json
+      responses:
+        200:
+          description: successful
+          schema:
+            type: array
+            items:
+              type: string
+            example: [billing,transaction,statements,interest,fees,creditPlan] 
+  /credit-charge-card/credit-charge-card-fulfillment-arrangement/{cr-reference-id}/{behavior-qualifier}/:
+    get:
+      tags: 
+      - retrieve
+      operationId: RetrieveBehaviorQualifierReferenceIds
+      summary: Retrieve BQ Ids
+      produces: 
+      - application/json
+      parameters: 
+      - name : cr-reference-id
+        in: path
+        description: Product Instance Reference
+        required: true
+        type: string
+      - name : behavior-qualifier
+        in: path
+        description: Behavior Qualifier Name. ex- transaction
+        required: true
+        type: string
+      - name : collection-filter
+        in: query
+        description: Filter to refine the result set.
+        type: string
+      responses:
+        200:
+          description: successful
+          schema:
+            type: array
+            items:
+              type: string
+            example: [TR345, TR789, TR456]
+  /credit-charge-card/credit-charge-card-fulfillment-arrangement/{cr-reference-id}:
+    get:
+      tags:
+      - retrieve
+      summary: Retrieve all root attributes
+      operationId: RetrieveCreditChargeCard
+      produces:
+      - application/json
+      parameters:
+      - name: cr-reference-id
+        in: path
+        description: Product Instance Reference (product number)
+        required: true
+        type: string
+      responses:
+        200:
+          description: Successfully retrieved credit/charge card account information.
+          schema:
+            $ref: '#/definitions/CreditChargeCardSetUpBaseWithIdAndStatus'
+    delete:
+      tags:
+      - terminate
+      summary: Deletes Credit Card
+      operationId: deleteCreditChargeCardFulfillmentArrangement
+      produces:
+      - application/json
+      parameters:
+      - name: cr-reference-id
+        in: path
+        description: Product Instance Reference (product number)
+        required: true
+        type: string
+      responses:
+        204:
+          description: Credit/charge card account terminated.
+  /credit-charge-card/credit-charge-card-fulfillment-arrangement/{cr-reference-id}/billings/{bq-reference-id}:
+    get:
+      tags:
+      - retrieve
+      summary: Retrieve Billing attributes.
+      operationId: RetrieveBilling
+      produces:
+      - application/json
+      parameters:
+      - name: cr-reference-id
+        in: path
+        description: Product Instance Reference (product number)
+        required: true
+        type: string
+      - name: bq-reference-id
+        in: path
+        description: Billing Transaction Reference
+        required: true
+        type: string
+      responses:
+        200:
+          description: Retrieved credit/charge card billing information.
+          schema:
+            $ref: '#/definitions/BillingBaseWithIdAndRoot'
+  /credit-charge-card/credit-charge-card-fulfillment-arrangement/{cr-reference-id}/transactions/{bq-reference-id}:
+    get:
+      tags:
+      - retrieve
+      summary: Retrieve Card Transaction attributes.
+      description: Unbilled Transaction
+      operationId: RetrieveCardTransaction
+      produces:
+      - application/json
+      parameters:
+      - name: cr-reference-id
+        in: path
+        description: Product Instance Reference (product number)
+        required: true
+        type: string
+      - name: bq-reference-id
+        in: path
+        description: bq reference id
+        required: true
+        type: string
+      responses:
+        200:
+          description: Retrieved credit/charge card transaction information.
+          schema:
+            $ref: '#/definitions/CardTransactionBaseWithIdAndRoot'
+  /credit-charge-card/credit-charge-card-fulfillment-arrangement/{cr-reference-id}/statements/{bq-reference-id}:
+    get:
+      tags:
+      - retrieve
+      summary: Retrieve Statement attributes.
+      operationId: RetrieveStatement
+      produces:
+      - application/json
+      parameters:
+      - name: cr-reference-id
+        in: path
+        description: Product Instance Reference (product number)
+        required: true
+        type: string
+      - name: bq-reference-id
+        in: path
+        description: Statement Instance Reference
+        required: true
+        type: string
+      responses:
+        200:
+          description: Retrieved credit/charge card statements history.
+          schema:
+            $ref: '#/definitions/StatementsBaseWithIdAndRoot'
+  /credit-charge-card/credit-charge-card-fulfillment-arrangement/{cr-reference-id}/interests/{bq-reference-id}:
+    get:
+      tags:
+      - retrieve
+      summary: Retrieve Interest attributes.
+      operationId: RetrieveInterest
+      produces:
+      - application/json
+      parameters:
+      - name: cr-reference-id
+        in: path
+        description: Product Instance Reference (product number)
+        required: true
+        type: string
+      - name: bq-reference-id
+        in: path
+        description: Instance Rate Reference
+        required: true
+        type: string
+      responses:
+        200:
+          description: Retrieved credit/charge card interest information.
+          schema:
+            $ref: '#/definitions/CreditChargeCardInterestBaseWithId'
+  /credit-charge-card/credit-charge-card-fulfillment-arrangement/{cr-reference-id}/fees/{bq-reference-id}:
+    get:
+      tags:
+      - retrieve
+      summary: Retrieve Fees and Penalties attributes.
+      operationId: RetrieveFeesAndPenalties
+      produces:
+      - application/json
+      parameters:
+      - name: cr-reference-id
+        in: path
+        description: Product Instance Reference (product number)
+        required: true
+        type: string
+      - name: bq-reference-id
+        in: path
+        description: Fee Reference
+        required: true
+        type: string
+      responses:
+        200:
+          description: Retrieved credit/charge card fees and penalties information.
+          schema:
+            $ref: '#/definitions/FeesAndPenaltiesBaseWithId'
+  /credit-charge-card/credit-charge-card-fulfillment-arrangement/{cr-reference-id}/creditplans/{bq-reference-id}:
+    get:
+      tags:
+      - retrieve
+      summary: Retrieve Credit Plan attributes.
+      operationId: RetrieveCreditPlan
+      produces:
+      - application/json
+      parameters:
+      - name: cr-reference-id
+        in: path
+        description: Product Instance Reference (product number)
+        required: true
+        type: string
+      - name: bq-reference-id
+        in: path
+        description: Credit Plan Reference
+        required: true
+        type: string
+      responses:
+        200:
+          description: Retrieved credit/charge card credit plan information.
+          schema:
+            $ref: '#/definitions/CreditPlanBaseWithIdAndRoot'
+  /credit-charge-card/credit-charge-card-fulfillment-arrangement/{cr-reference-id}/billings/{bq-reference-id}/execution:
+    put:
+      tags:
+      - execute
+      summary: Executes a Billing action
+      description: Update an exising Billing
+      operationId: ExecuteBillingUpdate
+      produces:
+      - application/json
+      parameters:
+      - name: cr-reference-id
+        in: path
+        description: Product Instance Reference (product number)
+        required: true
+        type: string
+      - name: bq-reference-id
+        in: path
+        description: Billing Transaction Reference
+        required: true
+        type: string
+      - in: body
+        name: body
+        description: Execute billings reuest payload
+        required: true
+        schema:
+          $ref: '#/definitions/BillingBase'
+      responses:
+        200:
+          description: Successfully executed billing action update.
+          schema:
+            $ref: '#/definitions/BillingBaseWithIdAndRoot'
+  /credit-charge-card/credit-charge-card-fulfillment-arrangement/{cr-reference-id}/billings/execution:
+    post:
+      tags:
+      - execute
+      summary: Executes a Billing action
+      description: Create a new Billing
+      operationId: ExecuteBillingCreate
+      produces:
+      - application/json
+      parameters:
+      - name: cr-reference-id
+        in: path
+        description: Product Instance Reference (product number)
+        required: true
+        type: string
+      - in: body
+        name: body
+        description: Execute billings request payload
+        required: true
+        schema:
+          $ref: '#/definitions/BillingBase'
+      responses:
+        201:
+          description: Successfully executed billing action crate.
+          schema:
+            $ref: '#/definitions/BillingBaseWithIdAndRoot'
+  /credit-charge-card/credit-charge-card-fulfillment-arrangement/{cr-reference-id}/transactions/{bq-reference-id}/execution:
+    put:
+      tags:
+      - execute
+      summary: Executes a Card Transaction
+      description: Update an exising Card Trasaction
+      operationId: ExecuteCardTrasnactionUpdate
+      produces:
+      - application/json
+      parameters:
+      - name: cr-reference-id
+        in: path
+        description: Product Instance Reference (product number)
+        required: true
+        type: string
+      - name: bq-reference-id
+        in: path
+        description: Transaction Record Reference
+        required: true
+        type: string
+      - in: body
+        name: body
+        description: Execute card transaction request payload
+        required: true
+        schema:
+          $ref: '#/definitions/CardTransactionBase'
+      responses:
+        200:
+          description: Successfully executed card transaction update.
+          schema:
+            $ref: '#/definitions/CardTransactionBaseWithIdAndRoot'
+  /credit-charge-card/credit-charge-card-fulfillment-arrangement/{cr-reference-id}/transactions/execution:
+    post:
+      tags:
+      - execute
+      summary: Executes a Card Transaction
+      description: Create a new Card Trasaction
+      operationId: ExecuteCardTrasnactionCreate
+      produces:
+      - application/json
+      parameters:
+      - name: cr-reference-id
+        in: path
+        description: Product Instance Reference (product number)
+        required: true
+        type: string
+      - in: body
+        name: body
+        description: Execute card transaction request payload
+        required: true
+        schema:
+          $ref: '#/definitions/CardTransactionBase'
+      responses:
+        201:
+          description: Successfully executed card transaction create.
+          schema:
+            $ref: '#/definitions/CardTransactionBaseWithIdAndRoot'
+definitions:
+  CreditChargeCardSetUpBase:
+    type: object
+    properties:
+      productServiceReference:
+        type: string
+        example: PSRE4577
+        description: |
+          `status: Registered`
+          bian-reference: PaymentCardService(as Product)
+          iso-link: [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_FY1e9cTGEeChad0JzLk7QA_-1288627304)    
+      customerReference:
+        type: string
+        example: CSRE3456
+        description: |
+          `status: Registered`
+          bian-reference: PaymentCardService.PaymentCardAgreement.PaymentCard.Payment.CardPaymentPartyRole(as CardholderRole)
+          iso-link: [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_Esum6MTGEeChad0JzLk7QA_-1553787351)
+          `status: Registered`
+          bian-reference: PaymentCardService.PaymentCardAgreement.PaymentCard.RelatedAccount(as Account).AccountPartyRole(as AccountOwnerRole)
+          iso-link: [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_EysE9cTGEeChad0JzLk7QA_-200588046)      
+      bankBranchLocationReference:
+        type: string
+        example: BBLR4940
+        description: |
+          `status: Registered`
+          bian-reference: PaymentCardService.PaymentCardAgreement.PaymentCard.RelatedAccount(as Account).AccountPartyRole(as AccountServicerRole)(as Role).Player(as Party).Location
+          iso-link: [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_FNqJt8TGEeChad0JzLk7QA_-1317971633/elements/_z2I6YGx5EeKmZJ0Ago--9g_239738909)    
+      involvedPartyReference:
+        type: string
+        example: INPR8394
+        description: |
+          `status: Registered`
+          bian-reference: PaymentCardService.PaymentCardAgreement(as Agreement).RoleInAgreement(as GuaranteePartyRole)
+          iso-link: [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_G7hIgGcwEeOYlMxMjJVrrQ)    
+      involvedPartyObligationEntitlement:
+        type: string
+        example: Restitution
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: PaymentCardService.PaymentCardAgreement(as Agreement).Obligation    
+      partyReference:
+        type: string
+        example: PRRE9404
+        description: |
+          `status: Registered`
+          bian-reference: PaymentCardService.PaymentCardAgreement.PaymentCard.RelatedAccount(as Account).AccountPartyRole(as AccountOwnerRole).Player(as Party).Identification.LEI
+          iso-link: [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_FEHzNMTGEeChad0JzLk7QA_-1382123937/elements/_yagFILl5EeOpCN0IL2Swqw)
+          `status: Registered`
+          bian-reference: PaymentCardService.PaymentCardAgreement.PaymentCard.RelatedAccount(as Account).AccountPartyRole(as AccountOwnerRole).Player(as Party).Identification.LEI
+          iso-link: [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_FEHzNMTGEeChad0JzLk7QA_-1382123937/elements/_yagFILl5EeOpCN0IL2Swqw)      
+      issuedDeviceType:
+        type: string
+        example: Physical
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: PaymentCardService.PaymentCardAgreement.PaymentCard(as Resource).Type       
+      issuedDeviceReference:
+        type: string
+        example: IDRE4940
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: PaymentCardService.PaymentCardAgreement.PaymentCard(as Resource).ResourceIdentification       
+      cardType:
+        type: string
+        example: Credit/Charge
+        description: |
+          `status: Registered`
+          bian-reference: PaymentCardService.PaymentCardAgreement.PaymentCard.Type
+          iso-link: [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_FColdMTGEeChad0JzLk7QA_-190433744/elements/_FC7gYsTGEeChad0JzLk7QA_-190433737)        
+      cardAccountCurrency:
+        type: string
+        example: USD
+        description: |
+          `status: Registered`
+          bian-reference: PaymentCardService.PaymentCardAgreement.PaymentCard.RelatedAccount(as Account).ReportingCurrency
+          iso-link: [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_E1rHgsTGEeChad0JzLk7QA_-1068889728/elements/_E4gZEsTGEeChad0JzLk7QA_-985441548)        
+          `status: Registered`
+          bian-reference: PaymentCardService.PaymentCardAgreement.PaymentCard.CardCurrencyCode
+          iso-link: [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_FColdMTGEeChad0JzLk7QA_-190433744/elements/_DMqO0NaGEeODvZST7nrYEw)
+      secondaryBillingCurrency:
+        type: string
+        example: CAD
+        description: |
+          `status: Registered`
+          bian-reference: PaymentCardService.PaymentCardAgreement.PaymentCard.RelatedAccount(as Account).BaseCurrency
+          iso-link: [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_E1rHgsTGEeChad0JzLk7QA_-1068889728/elements/_-69C4IDWEeKn8fN1QdMTXQ_-1456663445)        
+      cardAccountLimits:
+        type: string
+        example: $1000
+        description: |
+          `status: Registered`
+          bian-reference: PaymentCardService.PaymentCardAgreement.PaymentCard.Limit
+          iso-link: [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_FColdMTGEeChad0JzLk7QA_-190433744/elements/_XBWyQMmoEeGME5XqzhtJIg_1180664615)
+          `status: Registered`
+          bian-reference: PaymentCardService.PaymentCardAgreement.PaymentCard.CreditAvailableAmount
+          iso-link: [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_FColdMTGEeChad0JzLk7QA_-190433744/elements/_weaDYQ93EeGeV5vP7Mvdig_69336733)      
+      allowedAccess:
+        type: string
+        example: Admin
+        description: |
+          `status: Registered`
+          iso-link: [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_E10RdcTGEeChad0JzLk7QA_-917313471/elements/_E10RdsTGEeChad0JzLk7QA_-1031152537)
+          bian-reference: PaymentCardService.PaymentCardAgreement.PaymentCard.RelatedAccount(as Account).AccountRestriction.RestrictionType
+          `status: Provisionally Registered`
+          bian-reference: (PaymentCardService.PaymentCardAgreement.PaymentCard.RelatedAccount(as Account).AccountRestriction.RestrictionDescription)      
+      configurationOptions:
+        type: string
+        example: CardScheme
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: PaymentCardService(as Product).AvailableOption
+          `status: Provisionally Registered`
+          bian-reference: PaymentCardService(as Product).ProductUsage.SelectedOption 
+      taxReference:
+        type: string
+        example: TXRE8490
+        description: |
+          `status: Registered`
+          bian-reference: PaymentCardService.PaymentCardAgreement.PaymentCard.RelatedAccount.Tax
+          iso-link: [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_E4gZEcTGEeChad0JzLk7QA_2010102987/elements/__-5BiGIiEeGD28DQaMef-g)    
+      
+  CreditChargeCardSetUpBaseWithIdAndStatus:
+    type: object
+    properties:
+      productInstanceReference:
+        type: string
+        example: PRIR5859
+        description: |
+          `status: Registered`
+          bian-reference: PaymentCardService(as Product).ProductIdentification
+          iso-link: [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_FY1e9cTGEeChad0JzLk7QA_-1288627304/elements/_FY1e-MTGEeChad0JzLk7QA_2020447002)    
+      productServiceReference:
+        type: string
+        example: PSRE4577
+        description: |
+          `status: Registered`
+          bian-reference: PaymentCardService(as Product)
+          iso-link: [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_FY1e9cTGEeChad0JzLk7QA_-1288627304)    
+      customerReference:
+        type: string
+        example: CSRE3456
+        description: |
+          `status: Registered`
+          bian-reference: PaymentCardService.PaymentCardAgreement.PaymentCard.Payment.CardPaymentPartyRole(as CardholderRole)
+          iso-link: [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_Esum6MTGEeChad0JzLk7QA_-1553787351)
+          `status: Registered`
+          bian-reference: PaymentCardService.PaymentCardAgreement.PaymentCard.RelatedAccount(as Account).AccountPartyRole(as AccountOwnerRole)
+          iso-link: [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_EysE9cTGEeChad0JzLk7QA_-200588046)      
+      bankBranchLocationReference:
+        type: string
+        example: BBLR4940
+        description: |
+          `status: Registered`
+          iso-link: [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_FNqJt8TGEeChad0JzLk7QA_-1317971633/elements/_z2I6YGx5EeKmZJ0Ago--9g_239738909)    
+      involvedPartyReference:
+        type: string
+        example: INPR8394
+        description: |
+          `status: Registered`
+          bian-reference: PaymentCardService.PaymentCardAgreement(as Agreement).RoleInAgreement(as GuaranteePartyRole)
+          iso-link: [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_G7hIgGcwEeOYlMxMjJVrrQ)    
+      involvedPartyObligationEntitlement:
+        type: string
+        example: Restitution
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: PaymentCardService.PaymentCardAgreement(as Agreement).Obligation    
+      partyReference:
+        type: string
+        example: PRRE9404
+        description: |
+          `status: Registered`
+          bian-reference: PaymentCardService.PaymentCardAgreement.PaymentCard.RelatedAccount(as Account).AccountPartyRole(as AccountOwnerRole).Player(as Party).Identification.LEI
+          iso-link: [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_FEHzNMTGEeChad0JzLk7QA_-1382123937/elements/_yagFILl5EeOpCN0IL2Swqw)
+          `status: Registered`
+          bian-reference: PaymentCardService.PaymentCardAgreement.PaymentCard.RelatedAccount(as Account).AccountPartyRole(as AccountOwnerRole).Player(as Party).Identification.LEI
+          iso-link: [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_FEHzNMTGEeChad0JzLk7QA_-1382123937/elements/_yagFILl5EeOpCN0IL2Swqw)      
+      issuedDeviceType:
+        type: string
+        example: Physical
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: PaymentCardService.PaymentCardAgreement.PaymentCard(as Resource).Type       
+      issuedDeviceReference:
+        type: string
+        example: IDRE4940
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: PaymentCardService.PaymentCardAgreement.PaymentCard(as Resource).ResourceIdentification        
+      cardType:
+        type: string
+        example: Credit/Charge
+        description: |
+          `status: Registered`
+          bian-reference: PaymentCardService.PaymentCardAgreement.PaymentCard.Type
+          iso-link: [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_FColdMTGEeChad0JzLk7QA_-190433744/elements/_FC7gYsTGEeChad0JzLk7QA_-190433737)        
+      cardAccountCurrency:
+        type: string
+        example: USD
+        description: |
+          `status: Registered`
+          bian-reference: PaymentCardService.PaymentCardAgreement.PaymentCard.RelatedAccount(as Account).ReportingCurrency
+          iso-link: [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_E1rHgsTGEeChad0JzLk7QA_-1068889728/elements/_E4gZEsTGEeChad0JzLk7QA_-985441548)        
+          `status: Registered`
+          bian-reference: PaymentCardService.PaymentCardAgreement.PaymentCard.CardCurrencyCode
+          iso-link: [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_FColdMTGEeChad0JzLk7QA_-190433744/elements/_DMqO0NaGEeODvZST7nrYEw)
+      secondaryBillingCurrency:
+        type: string
+        example: CAD
+        description: |
+          `status: Registered`
+          bian-reference: PaymentCardService.PaymentCardAgreement.PaymentCard.RelatedAccount(as Account).BaseCurrency
+          iso-link: [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_E1rHgsTGEeChad0JzLk7QA_-1068889728/elements/_-69C4IDWEeKn8fN1QdMTXQ_-1456663445)
+      cardAccountStatus:
+        type: string
+        example: Active
+        description: |
+          `status: Registered`
+          bian-reference: PaymentCardService.PaymentCardAgreement.PaymentCard.RelatedAccount(as Account).Status
+          iso-link: [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_E1rHgsTGEeChad0JzLk7QA_-1068889728/elements/_E1rHg8TGEeChad0JzLk7QA_-766897527)    
+      cardAccountLimits:
+        type: string
+        example: $1000
+        description: |
+          `status: Registered`
+          bian-reference: PaymentCardService.PaymentCardAgreement.PaymentCard.Limit
+          iso-link: [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_FColdMTGEeChad0JzLk7QA_-190433744/elements/_XBWyQMmoEeGME5XqzhtJIg_1180664615)
+          `status: Registered`
+          bian-reference: PaymentCardService.PaymentCardAgreement.PaymentCard.CreditAvailableAmount
+          iso-link: [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_FColdMTGEeChad0JzLk7QA_-190433744/elements/_weaDYQ93EeGeV5vP7Mvdig_69336733)      
+      allowedAccess:
+        type: string
+        example: Admin
+        description: |
+          `status: Registered`
+          iso-link: [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_E10RdcTGEeChad0JzLk7QA_-917313471/elements/_E10RdsTGEeChad0JzLk7QA_-1031152537)
+          bian-reference: PaymentCardService.PaymentCardAgreement.PaymentCard.RelatedAccount(as Account).AccountRestriction.RestrictionType
+          `status: Provisionally Registered`
+          bian-reference: (PaymentCardService.PaymentCardAgreement.PaymentCard.RelatedAccount(as Account).AccountRestriction.RestrictionDescription)      
+      configurationOptions:
+        type: string
+        example: CardScheme
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: PaymentCardService(as Product).AvailableOption
+          `status: Provisionally Registered`
+          bian-reference: PaymentCardService(as Product).ProductUsage.SelectedOption
+      taxReference:
+        type: string
+        example: TXRE8490
+        description: |
+          `status: Registered`
+          bian-reference: PaymentCardService.PaymentCardAgreement.PaymentCard.RelatedAccount.Tax
+          iso-link: [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_E4gZEcTGEeChad0JzLk7QA_2010102987/elements/__-5BiGIiEeGD28DQaMef-g) 
+      
+  CreditChargeCardUpdateRequest:
+    type: object
+    properties:
+      productServiceReference:
+        type: string
+        example: PSRE4577
+        description: |
+          `status: Registered`
+          bian-reference: PaymentCardService(as Product)
+          iso-link: [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_FY1e9cTGEeChad0JzLk7QA_-1288627304)    
+      customerReference:
+        type: string
+        example: CSRE3456
+        description: |
+          `status: Registered`
+          bian-reference: PaymentCardService.PaymentCardAgreement.PaymentCard.Payment.CardPaymentPartyRole(as CardholderRole)
+          iso-link: [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_Esum6MTGEeChad0JzLk7QA_-1553787351)
+          `status: Registered`
+          bian-reference: PaymentCardService.PaymentCardAgreement.PaymentCard.RelatedAccount(as Account).AccountPartyRole(as AccountOwnerRole)
+          iso-link: [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_EysE9cTGEeChad0JzLk7QA_-200588046)      
+      bankBranchLocationReference:
+        type: string
+        example: BBLR4940
+        description: |
+          `status: Registered`
+          iso-link: [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_FNqJt8TGEeChad0JzLk7QA_-1317971633/elements/_z2I6YGx5EeKmZJ0Ago--9g_239738909)    
+      involvedPartyReference:
+        type: string
+        example: INPR8394
+        description: |
+          `status: Registered`
+          bian-reference: PaymentCardService.PaymentCardAgreement(as Agreement).RoleInAgreement(as GuaranteePartyRole)
+          iso-link: [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_G7hIgGcwEeOYlMxMjJVrrQ)    
+      involvedPartyObligationEntitlement:
+        type: string
+        example: Restitution
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: PaymentCardService.PaymentCardAgreement(as Agreement).Obligation    
+      partyReference:
+        type: string
+        example: PRRE9404
+        description: |
+          `status: Registered`
+          bian-reference: PaymentCardService.PaymentCardAgreement.PaymentCard.RelatedAccount(as Account).AccountPartyRole(as AccountOwnerRole).Player(as Party).Identification.LEI
+          iso-link: [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_FEHzNMTGEeChad0JzLk7QA_-1382123937/elements/_yagFILl5EeOpCN0IL2Swqw)
+          `status: Registered`
+          bian-reference: PaymentCardService.PaymentCardAgreement.PaymentCard.RelatedAccount(as Account).AccountPartyRole(as AccountOwnerRole).Player(as Party).Identification.LEI
+          iso-link: [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_FEHzNMTGEeChad0JzLk7QA_-1382123937/elements/_yagFILl5EeOpCN0IL2Swqw)      
+      issuedDeviceType:
+        type: string
+        example: Physical
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: PaymentCardService.PaymentCardAgreement.PaymentCard(as Resource).Type       
+      issuedDeviceReference:
+        type: string
+        example: IDRE4940
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: PaymentCardService.PaymentCardAgreement.PaymentCard(as Resource).ResourceIdentification       
+      cardType:
+        type: string
+        example: Credit/Charge
+        description: |
+          `status: Registered`
+          bian-reference: PaymentCardService.PaymentCardAgreement.PaymentCard.Type
+          iso-link: [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_FColdMTGEeChad0JzLk7QA_-190433744/elements/_FC7gYsTGEeChad0JzLk7QA_-190433737)        
+      cardAccountCurrency:
+        type: string
+        example: USD
+        description: |
+          `status: Registered`
+          bian-reference: PaymentCardService.PaymentCardAgreement.PaymentCard.RelatedAccount(as Account).ReportingCurrency
+          iso-link: [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_E1rHgsTGEeChad0JzLk7QA_-1068889728/elements/_E4gZEsTGEeChad0JzLk7QA_-985441548)        
+          `status: Registered`
+          bian-reference: PaymentCardService.PaymentCardAgreement.PaymentCard.CardCurrencyCode
+          iso-link: [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_FColdMTGEeChad0JzLk7QA_-190433744/elements/_DMqO0NaGEeODvZST7nrYEw)
+      secondaryBillingCurrency:
+        type: string
+        example: CAD
+        description: |
+          `status: Registered`
+          bian-reference: PaymentCardService.PaymentCardAgreement.PaymentCard.RelatedAccount(as Account).BaseCurrency
+          iso-link: [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_E1rHgsTGEeChad0JzLk7QA_-1068889728/elements/_-69C4IDWEeKn8fN1QdMTXQ_-1456663445)
+      cardAccountStatus:
+        type: string
+        example: Active
+        description: |
+          `status: Registered`
+          bian-reference: PaymentCardService.PaymentCardAgreement.PaymentCard.RelatedAccount(as Account).Status
+          iso-link: [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_E1rHgsTGEeChad0JzLk7QA_-1068889728/elements/_E1rHg8TGEeChad0JzLk7QA_-766897527)    
+      cardAccountLimits:
+        type: string
+        example: $1000
+        description: |
+          `status: Registered`
+          bian-reference: PaymentCardService.PaymentCardAgreement.PaymentCard.Limit
+          iso-link: [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_FColdMTGEeChad0JzLk7QA_-190433744/elements/_XBWyQMmoEeGME5XqzhtJIg_1180664615)
+          `status: Registered`
+          bian-reference: PaymentCardService.PaymentCardAgreement.PaymentCard.CreditAvailableAmount
+          iso-link: [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_FColdMTGEeChad0JzLk7QA_-190433744/elements/_weaDYQ93EeGeV5vP7Mvdig_69336733)      
+      allowedAccess:
+        type: string
+        example: Admin
+        description: |
+          `status: Registered`
+          iso-link: [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_E10RdcTGEeChad0JzLk7QA_-917313471/elements/_E10RdsTGEeChad0JzLk7QA_-1031152537)
+          bian-reference: PaymentCardService.PaymentCardAgreement.PaymentCard.RelatedAccount(as Account).AccountRestriction.RestrictionType
+          `status: Provisionally Registered`
+      configurationOptions:
+        type: string
+        example: CardScheme
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: PaymentCardService(as Product).AvailableOption
+          `status: Provisionally Registered`
+          bian-reference:  PaymentCardService(as Product).ProductUsage.SelectedOption
+      taxReference:
+        type: string
+        example: TXRE8490
+        description: |
+          `status: Registered`
+          bian-reference: PaymentCardService.PaymentCardAgreement.PaymentCard.RelatedAccount.Tax
+          iso-link: [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_E4gZEcTGEeChad0JzLk7QA_2010102987/elements/__-5BiGIiEeGD28DQaMef-g) 
+      
+  CreditChargeCardRecordRequest:
+    type: object
+    properties:
+      recordingRecordType:
+        type: string
+        example: BehaviorModelPerformanceFeedback
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text    
+      recordingRecord:
+        type: object
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary    
+      recordingRecordDateTime:
+        type: string
+        example: "2018-08-28T09:00:00.000"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::DateTime    
+      empolyeeBusinessUnitReference:
+        type: string
+        example: EBUR6798
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier      
+  CreditChargeCardRecordResponse:
+    type: object
+    properties:
+      recordingRecordReference:
+        type: string
+        example: CRRR3456
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      recordingRecordStatus:
+        type: string
+        example: Applied
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text  
+      
+  CreditChargeCardInterestBaseWithId:
+    type: object
+    properties:
+      productInstanceReference:
+        type: string
+        example: CRRE2763
+        description: |
+          `status: Registered`
+          bian-reference: PaymentCardService(as Product).ProductIdentification
+          iso-link: [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_FY1e9cTGEeChad0JzLk7QA_-1288627304/elements/_FY1e-MTGEeChad0JzLk7QA_2020447002)      
+      interestRateReference:
+        type: string
+        example: IRRE7291    
+        description: |
+          `status: Registered`
+          bian-reference: PaymentCardService.PaymentCardAgreement.PaymentCard.Interest.Rate
+          iso-link: [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_E5P_9MTGEeChad0JzLk7QA_218224835/elements/_E5P_9cTGEeChad0JzLk7QA_-447375958)      
+      interestRateConfiguration:
+        type: string
+        example: InterestCaluculation
+        description: |
+          `status: Registered`
+          bian-reference: PaymentCardService.PaymentCardAgreement.PaymentCard.Interest.InterestCalculation
+          iso-link: [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_E5P_9MTGEeChad0JzLk7QA_218224835/elements/_E5P_-sTGEeChad0JzLk7QA_-1579176164)
+          `status: Registered`          
+          bian-reference: PaymentCardService.PaymentCardAgreement.PaymentCard.Interest.TypeOfInterest
+          iso-link: [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_E5P_9MTGEeChad0JzLk7QA_218224835/elements/_2b6L4A4hEeO3g-FNSwkb-g_-1305263591)        
+      applicableInterestRates:
+        type: string
+        example: 5%
+        description: |
+          `status: Registered`
+          bian-reference: PaymentCardService.PaymentCardAgreement.PaymentCard.Interest.InterestCalculation.Rate
+          iso-link: [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_FXWRMsTGEeChad0JzLk7QA_-398781879/elements/_FXgCMMTGEeChad0JzLk7QA_-398781619)  
+          `status: Registered`          
+          bian-reference: PaymentCardService.PaymentCardAgreement.PaymentCard.Interest.InterestCalculation.RateType  
+          iso-link: [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_FXWRMsTGEeChad0JzLk7QA_-398781879/elements/_Fb9rccTGEeChad0JzLk7QA_1124003257)        
+      rateApplicationSchedule:
+        type: string
+        example: Weekly
+        description: |
+          `status: Registered`
+          bian-reference: PaymentCardService.PaymentCardAgreement.PaymentCard.Interest.InterestCalculation.CalculationDate
+          iso-link: [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_FXWRMsTGEeChad0JzLk7QA_-398781879/elements/_wfdMQw93EeGeV5vP7Mvdig_-121041167)
+          `status: Registered`          
+          bian-reference: PaymentCardService.PaymentCardAgreement.PaymentCard.Interest.InterestCalculation.CalculationFrequency
+          iso-link: [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_FXWRMsTGEeChad0JzLk7QA_-398781879/elements/_FXWRM8TGEeChad0JzLk7QA_2089104514)  
+          `status: Registered`          
+          bian-reference: PaymentCardService.PaymentCardAgreement.PaymentCard.Interest.InterestCalculation.InterestAccrualDate  
+          iso-link: [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_FY1e9cTGEeChad0JzLk7QA_-1288627304/elements/_FY1e-MTGEeChad0JzLk7QA_2020447002)  
+          `status: Registered`          
+          bian-reference: PaymentCardService.PaymentCardAgreement.PaymentCard.Interest.InterestCalculation.PaymentFrequency     
+          iso-link: [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_FCL5hcTGEeChad0JzLk7QA_1746210980/elements/_uwRncGnpEeG7Npk4oYag0A_1876689712)        
+      
+  FeesAndPenaltiesBaseWithId:
+    type: object
+    properties:
+      productInstanceReference:
+        type: string
+        example: CCRE2763
+        description: |
+          `status: Registered`
+          bian-reference: PaymentCardService(as Product).ProductIdentification
+          iso-link: [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_FY1e9cTGEeChad0JzLk7QA_-1288627304/elements/_FY1e-MTGEeChad0JzLk7QA_2020447002)    
+      feeReference:
+        type: string
+        example: FERE4440
+        description: |
+          `status: Registered`
+          bian-reference: PaymentCardService.PaymentCardAgreement.PaymentCard.CardPayment(as Payment).Adjustment      
+          iso-link: [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_FCL5hcTGEeChad0JzLk7QA_1746210980/elements/_uwRncGnpEeG7Npk4oYag0A_1876689712)
+          `status: Provisionally Registered`
+      feeConfiguration:
+        type: string
+        example: Fees
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: PaymentCardService.PaymentCardAgreement.PaymentCard.CardSpecificAdjustment    
+      feeType:
+        type: string
+        example: Late
+        description: |
+          `status: Registered`
+          bian-reference: PaymentCardService.PaymentCardAgreement.PaymentCard.CardPayment(as Payment).Adjustment.Type
+          iso-link: [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_Fbg_gMTGEeChad0JzLk7QA_-330542668/elements/_Fbg_gcTGEeChad0JzLk7QA_-70110816)
+          `status: Registered`
+          bian-reference: PaymentCardService.PaymentCardAgreement.PaymentCard.RelatedAccount.Adjustment.Type
+          iso-link: [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_Fbg_gMTGEeChad0JzLk7QA_-330542668/elements/_Fbg_gcTGEeChad0JzLk7QA_-70110816)
+          `status: Registered`
+          bian-reference: PaymentCardService.PaymentCardAgreement.PaymentCard.RelatedAccount.Charges.ChargeType
+          iso-link: [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_FMBK9sTGEeChad0JzLk7QA_-398781908/elements/_FMK79cTGEeChad0JzLk7QA_-398781898)      
+      feeCharge:
+        type: string
+        example: $100
+        description: |
+          `status: Registered`
+          bian-reference: PaymentCardService.PaymentCardAgreement.PaymentCard.CardPayment(as Payment).Adjustment
+          iso-link: [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_FCL5hcTGEeChad0JzLk7QA_1746210980/elements/_uwRncGnpEeG7Npk4oYag0A_1876689712)
+          `status: Registered`
+          bian-reference: PaymentCardService.PaymentCardAgreement.PaymentCard.RelatedAccount.Charges
+          iso-link: [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_FCL5hcTGEeChad0JzLk7QA_1746210980/elements/_uwRncGnpEeG7Npk4oYag0A_1876689712)      
+      feeProjectionsCommitments:
+        type: string
+        example: Offers
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      
+  BillingBaseWithIdAndRoot:
+    type: object
+    properties:
+      billingParameters:
+        type: string
+        example: Ceiling
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text    
+      productInstanceReference:
+        type: string
+        example: PRIR5859
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier  
+      billingParty:
+        type: string
+        example: Bank
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text  
+      billingAddress:
+        type: string
+        example: 412C Franklin Street Hudson NewYork United States
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text  
+      billingPeriod:
+        type: string
+        example: "2018-07-01 To 2018-07-31"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Duration  
+      billingStatementReference:
+        type: string
+        example: BSRE08920
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier    
+      billingAmount:
+        type: string
+        example: $100
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Amount    
+      minimumRequiredPayment:
+        type: string
+        example: $20
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text  
+      paymentDueDate:
+        type: string
+        example: "2018-08-05"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Date    
+      billingTransactionReference:
+        type: string
+        example: BTRE8920
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier  
+      transactionRecordReference:
+        type: string
+        example: TRRE3902
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      transactionType:
+        type: string
+        example: Debit
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text  
+      transactionPrincipleAmount:
+        type: string
+        example: $50
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Amount  
+      transactionCounterparty:
+        type: string
+        example: Payee
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text  
+      transactionObligation:
+        type: string
+        example: PurchasedService
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text    
+      transactionDateTime:
+        type: string
+        example: "2018-08-28T09:00:00"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::DateTime
+      paymentTransactionReference:
+        type: string
+        example: PTRE4545
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      paymentTransaction:
+        type: string
+        example: CreditTransfer
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text    
+      paymentInstallment:
+        type: string
+        example: $10
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text    
+    
+  CardTransactionBaseWithIdAndRoot:
+    type: object
+    properties:
+      productInstanceReference:
+        type: string
+        example: PRIR5859
+        description: |
+          `status: Registered`
+          bian-reference: PaymentCardService(as Product).ProductIdentification      
+          iso-link: [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_FY1e9cTGEeChad0JzLk7QA_-1288627304/elements/_FY1e-MTGEeChad0JzLk7QA_2020447002)    
+      transactionRecordReference:
+        type: string
+        example: TRRE3902
+        description: |
+          `status: Registered`
+          bian-reference: PaymentCardService.PaymentCardAgreement.PaymentCard.CardPayment.CardPaymentAcquiring.TransactionIdentification      
+          iso-link: [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_E3wLJ8TGEeChad0JzLk7QA_939531259/elements/_wd0NgQ93EeGeV5vP7Mvdig_1709618989)    
+      accountInstanceReference:
+        type: string
+        example: AIR345
+        description: |
+          `status: Registered`
+          bian-reference: PaymentCardService.PaymentCardAgreement.PaymentCard.RelatedAccount(as Account).Identification      
+          iso-link: [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_E1rHgsTGEeChad0JzLk7QA_-1068889728/elements/_E1rHhcTGEeChad0JzLk7QA_-755813725)    
+      cardIssuingBankReference:
+        type: string
+        example: CIBR3009
+        description: |
+          `status: Registered`
+          bian-reference: PaymentCardService.PaymentCardAgreement.PaymentCard.CardPayment.CardPaymentPartyRole(as CardIssuer)      
+          iso-link: [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_Esum6cTGEeChad0JzLk7QA_3977948)      
+      merchantAcquiringBankReference:
+        type: string
+        example: MABR2312
+        description: |
+          `status: Registered`
+          bian-reference: PaymentCardService.PaymentCardAgreement.PaymentCard.CardPayment.CardPaymentPartyRole(as AquirerRole)      
+          iso-link: [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_Ey118cTGEeChad0JzLk7QA_1005284217)      
+      transactionType:
+        type: string
+        example: DIRECT
+        description: |
+          `status: Registered`
+          bian-reference: PaymentCardService.PaymentCardAgreement.PaymentCard.CardPayment(as Payment).Type 
+          iso-link: [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_FCL5hcTGEeChad0JzLk7QA_1746210980/elements/_FColc8TGEeChad0JzLk7QA_1437769975)      
+      transactionCurrency:
+        type: string
+        example: USD
+        description: |
+          `status: Registered`
+          bian-reference: PaymentCardService.PaymentCardAgreement.PaymentCard.CardPayment(as Payment).CurrencyExchange      
+          iso-link: [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_FCL5hcTGEeChad0JzLk7QA_1746210980/elements/_X-mzAAYUEeKm2eoJiW4A2w_-1671012262)
+          `status: Registered`
+          bian-reference: PaymentCardService.PaymentCardAgreement.PaymentCard.CardPayment(as Payment).CurrencyOfTransfer
+          iso-link: [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_FCL5hcTGEeChad0JzLk7QA_1746210980/elements/_FCVqg8TGEeChad0JzLk7QA_258572872)      
+      transactionAmountType:
+        type: string
+        example: Original
+        description: |
+          `status: Registered`
+          bian-reference: PaymentCardService.PaymentCardAgreement.PaymentCard.CardPayment.AmountQualifier
+          iso-link: [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_FBmDosTGEeChad0JzLk7QA_-1338623778/elements/_FBmDpcTGEeChad0JzLk7QA_-1697461645)      
+      transactionAmount:
+        type: string
+        example: $50
+        description: |
+          `status: Registered`
+          bian-reference: PaymentCardService.PaymentCardAgreement.PaymentCard.CardPayment.DetailedAmount      
+          iso-link: [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_FBmDosTGEeChad0JzLk7QA_-1338623778/elements/_FBmDo8TGEeChad0JzLk7QA_-2067053593)  
+          `status: Registered`
+          bian-reference: PaymentCardService.PaymentCardAgreement.PaymentCard.CardPayment.CashBackAmount
+          iso-link: [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_FBmDosTGEeChad0JzLk7QA_-1338623778/elements/_3ptQwLmAEeOpCN0IL2Swqw)      
+      transactionMerchantReference:
+        type: string
+        example: TMRE4880
+        description: |
+          `status: Registered`
+          bian-reference: PaymentCardService.PaymentCardAgreement.PaymentCard.CardPayment.CardPaymentPartyRole(as MerchantRole)       
+          iso-link: [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_EvQ9hsTGEeChad0JzLk7QA_-1599811159)      
+      transactionLocationReference:
+        type: string
+        example: TLRE1000
+        description: |
+          `status: Registered`
+          bian-reference: PaymentCardService.PaymentCardAgreement.PaymentCard.CardPayment.CardPaymentAcquiring.Location      
+          iso-link: [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_E3wLJ8TGEeChad0JzLk7QA_939531259/elements/_I3GDcE20EeKnlYfGtmXcCw_-1822644744)      
+      transactionProductServiceReference:
+        type: string
+        example: TPSR3045
+        description: |
+          `status: Registered`
+          bian-reference: PaymentCardService.PaymentCardAgreement.PaymentCard.CardPayment(as Payment).PaymentObligation.CommercialTrade.ProductDeliveryObligation.ProductDeliveryOffset.Product
+          iso-link: [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_E23aUsTGEeChad0JzLk7QA_482851588/elements/_E23aV8TGEeChad0JzLk7QA_253240170)      
+      transactionDateTime:
+        type: string
+        example : "2018-09-07:T09:00:00"
+        description: |
+          `status: Registered`
+          bian-reference: PaymentCardService.PaymentCardAgreement.PaymentCard.CardPayment.CardPaymentAcquiring.TransactionDateTime
+          iso-link: [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_E3wLJ8TGEeChad0JzLk7QA_939531259/elements/_oRrlkE21EeKnlYfGtmXcCw_602726172)      
+
+  StatementsBaseWithIdAndRoot:
+    type: object
+    properties:
+      statementType:
+        type: string
+        example: Balance
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text    
+      statementTransactionType:
+        type: string
+        example: Deposit
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text    
+      statementPeriod:
+        type: string
+        example: "2018-07-01 To 2018-07-31"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Duration    
+      productInstanceReference:
+        type: string
+        example: SIRE2763
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier    
+      statementInstanceReference:
+        type: string
+        example: SIRE2763
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier    
+      transactionRecordReference:
+        type: string
+        example: TRRE3902
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier    
+      transactionType:
+        type: string
+        example: Debit
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text    
+      transactionPrincipleAmount:
+        type: string
+        example: $50
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Amount    
+      transactionCounterparty:
+        type: string
+        example: Payee
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text    
+      transactionObligation:
+        type: string
+        example: PurchasedService
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text    
+      transactionDateTime:
+        type: string
+        example: "2018-08-28T09:00:00"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::DateTime    
+    
+  CreditPlanBaseWithIdAndRoot:
+    type: object
+    properties:
+      productInstanceReference:
+        type: string
+        example: PRIR5859
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier    
+      creditPlanReference:
+        type: string
+        example: CPRE5005
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier    
+      creditPlanType:
+        type: string
+        example: Cash
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text    
+      creditPlanTerms:
+        type: string
+        example: MinPayment
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text    
+      creditPlanAccount:
+        type: string
+        example: CPAC1002
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text    
+    
+  BillingBase:
+    type: object
+    properties:
+      billingParameters:
+        type: string
+        example: Ceiling
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text    
+      accountInstanceReference:
+        type: string
+        example: AIR234
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier    
+      billingParty:
+        type: string
+        example: Bank
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text    
+      billingAddress:
+        type: string
+        example: 412C Franklin Street Hudson NewYork United States
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text    
+      billingPeriod:
+        type: string
+        example: "2018-07-01 To 2018-07-31"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Duration    
+      billingStatementReference:
+        type: string
+        example: BSRE08920
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier    
+      billingAmount:
+        type: string
+        example: $100
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Amount    
+      minimumRequiredPayment:
+        type: string
+        example: $20
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text    
+      paymentDueDate:
+        type: string
+        example: "2018-05-08"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Date    
+      transactionRecordReference:
+        type: string
+        example: TRR1234
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Identifier    
+      transactionType:
+        type: string
+        example: DIRECT
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text    
+      transactionPrincipleAmount:
+        type: string
+        example: $50        
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Amount    
+      transactionCounterparty:
+        type: string
+        example: Payee
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text    
+      transactionObligation:
+        type: string
+        example: PurchasedService       
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text    
+      transactionDateTime:
+        type: string
+        example: "2018-08-28T09:00:00"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::DateTime    
+      paymentTransactionReference:
+        type: string
+        example: PTRE4545
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier    
+      paymentTransaction:
+        type: string
+        example: CreditTransfer
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text    
+      paymentInstallment:
+        type: string
+        example: $10
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text    
+    
+  CardTransactionBase:
+    type: object
+    properties:
+      accountInstanceReference:
+        type: string
+        example: AIR345
+        description: |
+          `status: Registered`
+          bian-reference: PaymentCardService.PaymentCardAgreement.PaymentCard.RelatedAccount(as Account).Identification      
+          iso-link: [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_E1rHgsTGEeChad0JzLk7QA_-1068889728/elements/_E1rHhcTGEeChad0JzLk7QA_-755813725)    
+      cardIssuingBankReference:
+        type: string
+        example: CIBR3009
+        description: |
+          `status: Registered`
+          bian-reference: PaymentCardService.PaymentCardAgreement.PaymentCard.CardPayment.CardPaymentPartyRole(as CardIssuer)      
+          iso-link: [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_Esum6cTGEeChad0JzLk7QA_3977948)      
+      merchantAcquiringBankReference:
+        type: string
+        example: MABR2312
+        description: |
+          `status: Registered`
+          bian-reference: PaymentCardService.PaymentCardAgreement.PaymentCard.CardPayment.CardPaymentPartyRole(as AquirerRole)      
+          iso-link: [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_Ey118cTGEeChad0JzLk7QA_1005284217)      
+      transactionType:
+        type: string
+        example: DIRECT
+        description: |
+          `status: Registered`
+          bian-reference: PaymentCardService.PaymentCardAgreement.PaymentCard.CardPayment(as Payment).Type 
+          iso-link: [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_FCL5hcTGEeChad0JzLk7QA_1746210980/elements/_FColc8TGEeChad0JzLk7QA_1437769975)      
+      transactionCurrency:
+        type: string
+        example: USD
+        description: |
+          `status: Registered`
+          bian-reference: PaymentCardService.PaymentCardAgreement.PaymentCard.CardPayment(as Payment).CurrencyExchange      
+          iso-link: [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_FCL5hcTGEeChad0JzLk7QA_1746210980/elements/_X-mzAAYUEeKm2eoJiW4A2w_-1671012262)
+          `status: Registered`
+          bian-reference: PaymentCardService.PaymentCardAgreement.PaymentCard.CardPayment(as Payment).CurrencyOfTransfer
+          iso-link: [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_FCL5hcTGEeChad0JzLk7QA_1746210980/elements/_FCVqg8TGEeChad0JzLk7QA_258572872)      
+      transactionAmountType:
+        type: string
+        example: Original
+        description: |
+          `status: Registered`
+          bian-reference: PaymentCardService.PaymentCardAgreement.PaymentCard.CardPayment.AmountQualifier
+          iso-link: [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_FBmDosTGEeChad0JzLk7QA_-1338623778/elements/_FBmDpcTGEeChad0JzLk7QA_-1697461645)      
+      transactionAmount:
+        type: string
+        example: $50
+        description: |
+          `status: Registered`
+          bian-reference: PaymentCardService.PaymentCardAgreement.PaymentCard.CardPayment.DetailedAmount      
+          iso-link: [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_FBmDosTGEeChad0JzLk7QA_-1338623778/elements/_FBmDo8TGEeChad0JzLk7QA_-2067053593)  
+          `status: Registered`
+          bian-reference: PaymentCardService.PaymentCardAgreement.PaymentCard.CardPayment.CashBackAmount
+          iso-link: [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_FBmDosTGEeChad0JzLk7QA_-1338623778/elements/_3ptQwLmAEeOpCN0IL2Swqw)      
+      transactionMerchantReference:
+        type: string
+        example: TMRE4880
+        description: |
+          `status: Registered`
+          bian-reference: PaymentCardService.PaymentCardAgreement.PaymentCard.CardPayment.CardPaymentPartyRole(as MerchantRole)       
+          iso-link: [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_EvQ9hsTGEeChad0JzLk7QA_-1599811159)      
+      transactionLocationReference:
+        type: string
+        example: TLRE1000
+        description: |
+          `status: Registered`
+          bian-reference: PaymentCardService.PaymentCardAgreement.PaymentCard.CardPayment.CardPaymentAcquiring.Location      
+          iso-link: [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_E3wLJ8TGEeChad0JzLk7QA_939531259/elements/_I3GDcE20EeKnlYfGtmXcCw_-1822644744)      
+      transactionProductServiceReference:
+        type: string
+        example: TPSR3045
+        description: |
+          `status: Registered`
+          bian-reference: PaymentCardService.PaymentCardAgreement.PaymentCard.CardPayment(as Payment).PaymentObligation.CommercialTrade.ProductDeliveryObligation.ProductDeliveryOffset.Product
+          iso-link: [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_E23aUsTGEeChad0JzLk7QA_482851588/elements/_E23aV8TGEeChad0JzLk7QA_253240170)      
+      transactionDateTime:
+        type: string
+        example : "2018-09-07:T09:00:00"
+        description: |
+          `status: Registered`
+          bian-reference: PaymentCardService.PaymentCardAgreement.PaymentCard.CardPayment.CardPaymentAcquiring.TransactionDateTime
+          iso-link: [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_E3wLJ8TGEeChad0JzLk7QA_939531259/elements/_oRrlkE21EeKnlYfGtmXcCw_602726172)

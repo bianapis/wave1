@@ -1,0 +1,779 @@
+swagger: '2.0'
+info:
+  version: "4.0.0"
+  title: 'Service Domain - Location Data Management'
+  description: >
+        ## Description: 
+      
+        This service domain maintain details of the use and state of locations of interest to the bank. This can include both physical and virtual addresses. It is used to check for valid use and for sales/marketing activities.
+      
+        ## Example of use:
+      
+        A new prospect provides an address as their place of residence. It is checked to be a valid/known location for residential use.
+
+        ## General comment:
+      
+        The maintenance of location details is used to check the validity, allowed use and occupancy of locations - both physical and virtual. This information can be augmented using external directory services when appropriate. The information is used for authentication and security purposes, and can also be used for interactive location based sales and marketing when combined with location tracking services/capabilities.
+        
+host: "virtserver.swaggerhub.com"
+basePath: "/BIAN/sd-location-data-management/4.0.0"
+schemes:
+ - "https"        
+paths:
+  /location-data-management/location-directory/:
+    get:
+      tags: 
+      - retrieve
+      operationId: RetrieveLocationDataManagementReferenceIds
+      summary: Retrieve CR Ids
+      produces: 
+      - application/json
+      parameters: 
+      - name : collection-filter
+        in: query
+        description: Filter to refine the result set. ex- "locationType == 'building'"
+        type: string 
+      responses:
+        200:
+          description: successful
+          schema:
+            type: array
+            items:
+              type: string
+            example: [LDR123, LDR345]
+            
+  /location-data-management/location-directory/behavior-qualifiers/:
+    get:
+      tags: 
+      - retrieve
+      operationId: RetrieveLocationDataManagementBehaviorQualifiers
+      summary: Retrieve BQ names
+      produces: 
+      - application/json
+      responses:
+        200:
+          description: successful
+          schema:
+            type: array
+            items:
+              type: string
+            example: [location, use, occupancy] 
+            
+  /location-data-management/location-directory/{cr-reference-id}/{behavior-qualifier}/:
+    get:
+      tags: 
+      - retrieve
+      operationId: RetrieveBehaviorQualifierReferenceIds
+      summary: Retrieve BQ Ids
+      produces: 
+      - application/json
+      parameters: 
+      - name : cr-reference-id
+        in: path
+        description: Location Data Directory Entry Reference
+        required: true
+        type: string
+      - name : behavior-qualifier
+        in: path
+        description: Behavior Qualifier Name. ex- occupancy
+        required: true
+        type: string
+      - name : collection-filter
+        in: query
+        description: Filter to refine the result set. ex- 'locationOccupierType == business'
+        type: string
+      responses:
+        200:
+          description: successful
+          schema:
+            type: array
+            items:
+              type: string
+            example: [ODER345, ODER789, ODER456] 
+            
+  /location-data-management/location-directory/{cr-reference-id}/locations/{bq-reference-id}:
+    get:
+      tags: 
+       - retrieve
+      summary: Retrieve a location report
+      operationId: retrieveLocationDirectoryLocations
+      produces:
+      - application/json
+      parameters:
+        - in: path
+          name: cr-reference-id
+          required: true
+          type: string
+          description: Location Data Directory Entry Reference
+        - in: path
+          name: bq-reference-id
+          required: true
+          type: string
+          description: Location Directory Entry Reference
+      responses:
+        200:
+          description: Successfully Retrieved Location Data Directory Locations Record
+          schema:
+            $ref: '#/definitions/LocationBaseWithIdAndRoot'
+            
+  /location-data-management/location-directory/{cr-reference-id}/uses/{bq-reference-id}:
+    get:
+      tags: 
+       - retrieve
+      summary: Retrieve Location Uses report
+      operationId: retrieveLocationDirectoryUses
+      produces:
+      - application/json
+      parameters:
+        - in: path
+          name: cr-reference-id
+          required: true
+          type: string
+          description: Location Data Directory Entry Reference
+        - in: path
+          name: bq-reference-id
+          required: true
+          type: string
+          description: Uses Directory Entry Reference
+      responses:
+        200:
+          description: Successfully Retrieved Location Uses Record
+          schema:
+            $ref: '#/definitions/UsesBaseWithIdAndRoot'
+            
+            
+  /location-data-management/location-directory/{cr-reference-id}/occupancies/{bq-reference-id}:
+    get:
+      tags: 
+       - retrieve
+      summary: Retrieve Occupancy report
+      operationId: retrieveLocationDirectoryOccupancy
+      produces:
+      - application/json
+      parameters:
+        - in: path
+          name: cr-reference-id
+          required: true
+          type: string
+          description: Location Data Directory Entry Reference
+        - in: path
+          name: bq-reference-id
+          required: true
+          type: string
+          description: Occupancy Directory Entry Reference
+      responses:
+        200:
+          description: Successfully retrieved Location Occupancy report
+          schema:
+            $ref: '#/definitions/OccupancyBaseWithIdAndRoot'
+
+  /location-data-management/location-directory/{cr-reference-id}/recording: 
+    post:
+      tags: 
+      - record
+      operationId: recordLocationDirectory
+      summary: Record feedback
+      produces:
+      - application/json
+      parameters: 
+      - name: cr-reference-id
+        in: path
+        description: Location Directory Entry Reference
+        required: true
+        type: string
+      - in: body
+        name: body
+        description: Location Record Control Record Request Payload
+        required: true
+        schema:
+          $ref: '#/definitions/LocationDataRecordRequest'
+      responses:
+        201:
+          description: Successfully Recorded Usage Against A Location Directory Entry. 
+          schema: 
+            $ref: '#/definitions/LocationDataRecordResponse'
+  
+  /location-data-management/location-directory/{cr-reference-id}/requisition: 
+    put:
+      tags: 
+      - request
+      operationId: requestLocationDirectoryUpdate
+      summary: Request location directory entry
+      produces:
+      - application/json
+      parameters: 
+      - name: cr-reference-id
+        in: path
+        description: Location Directory Entry Reference
+        required: true
+        type: string
+      responses:
+        200:
+          description: Successfully Refresed the Directory Entry
+          schema: 
+            $ref: '#/definitions/DirectoryEntryRefreshResponse'
+  
+  /location-data-management/location-directory/registration: 
+    post:
+      tags: 
+      - register
+      operationId: registerLocationDirectory
+      summary: Register location directory entry
+      produces:
+      - application/json
+      responses:
+        201:
+          description: Successfully Registered a new Directory Entry
+          schema: 
+            $ref: '#/definitions/DirectoryEntry'
+  
+  /location-data-management/location-directory/{cr-reference-id}/locations/registration: 
+    post:
+      tags: 
+      - register
+      operationId: registerLocationDirectoryLocation
+      summary: Register location entry
+      produces:
+      - application/json
+      parameters: 
+      - name: cr-reference-id
+        in: path
+        description: Location Data Directory Entry Reference
+        required: true
+        type: string
+      - in: body
+        name: body
+        required: true
+        description: Register New Location Data Directory Location Request Payload
+        schema:
+          $ref: '#/definitions/LocationBase'
+      responses:
+        201:
+          description: Successfully Registered a New Location Directory Location Entry 
+          schema: 
+            $ref: '#/definitions/LocationBaseWithIdAndRoot'
+  
+  /location-data-management/location-directory/{cr-reference-id}/uses/registration: 
+    post:
+      tags: 
+      - register
+      operationId: registerLocationDirectoryUse
+      summary: Register uses entry
+      produces:
+      - application/json
+      parameters: 
+      - name: cr-reference-id
+        in: path
+        description: Location Data Directory Entry Reference
+        required: true
+        type: string
+      - in: body
+        name: body
+        required: true
+        description: Register New Location Use Request Payload
+        schema:
+          $ref: '#/definitions/UsesBase'
+      responses:
+        201:
+          description: Successfully Registered a New Location Use
+          schema: 
+            $ref: '#/definitions/UsesBaseWithIdAndRoot'
+  
+  /location-data-management/location-directory/{cr-reference-id}/occupancies/registration: 
+    post:
+      tags: 
+      - register
+      operationId: registerLocationDirectoryOccupancy
+      summary: Register occupancy entry
+      produces:
+      - application/json
+      parameters: 
+      - name: cr-reference-id
+        in: path
+        description: Location Data Directory Entry Reference
+        required: true
+        type: string
+      - in: body
+        name: body
+        required: true
+        description: Register New Location Data Occupancy Details Entry Request
+        schema:
+          $ref: '#/definitions/OccupancyBase'
+      responses:
+        201:
+          description: Successfully Registered a New Location Occupancy 
+          schema: 
+            $ref: '#/definitions/OccupancyBaseWithIdAndRoot'
+
+  /location-data-management/location-directory/{cr-reference-id}/locations/{bq-reference-id}/updation:
+    put:
+      tags:
+      - update
+      operationId: updateLocationDirectory
+      summary: Update Location
+      produces:
+      - application/json
+      parameters: 
+      - name: cr-reference-id
+        in: path
+        description: Location Data Directory Entry Reference
+        required: true
+        type: string
+      - name: bq-reference-id
+        in: path
+        description: Location Directory Entry Reference
+        required: true
+        type: string
+      - in: body
+        name: body
+        required: true
+        description: Update Location Request Payload
+        schema:
+          $ref: '#/definitions/LocationBase'
+      responses:
+        200:
+          description: Successfully Updated Location.
+          schema: 
+            $ref: '#/definitions/LocationBaseWithIdAndRoot'
+
+  /location-data-management/location-directory/{cr-reference-id}/uses/{bq-reference-id}/updation:
+    put:
+      tags:
+      - update
+      operationId: updateUse
+      summary: Update exiting Use
+      produces:
+      - application/json
+      parameters: 
+      - name: cr-reference-id
+        in: path
+        description: Location Data Directory Entry Reference
+        required: true
+        type: string
+      - name: bq-reference-id
+        in: path
+        description: Use Directory Entry Reference
+        required: true
+        type: string
+      - in: body
+        name: body
+        required: true
+        description: Update Use Request Payload
+        schema:
+          $ref: '#/definitions/UsesBase'
+      responses:
+        200:
+          description: Successfully Updated Use.
+          schema: 
+            $ref: '#/definitions/UsesBaseWithIdAndRoot'
+            
+  /location-data-management/location-directory/{cr-reference-id}/occupancies/{bq-reference-id}/updation:
+    put:
+      tags:
+      - update
+      operationId: updateOccupancy
+      summary: Update Occupancy
+      produces:
+      - application/json
+      parameters: 
+      - name: cr-reference-id
+        in: path
+        description: Location Data Directory Entry Reference
+        required: true
+        type: string
+      - name: bq-reference-id
+        in: path
+        description: Occupancy Directory Entry Reference
+        required: true
+        type: string
+      - in: body
+        name: body
+        required: true
+        description: Update Occupancy Request Payload
+        schema:
+          $ref: '#/definitions/OccupancyBase'
+      responses:
+        200:
+          description: Successfully Updated Occupancy.
+          schema: 
+            $ref: '#/definitions/OccupancyBaseWithIdAndRoot'
+
+definitions:
+  LocationBase:
+    type: object
+    properties:
+      locationReference:
+        type: string
+        example: LR56
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: LocationRegistryEntry.Location
+      locationType:
+       type: string
+       example: PointOfInterest
+       description: |
+          `status: Provisionally Registered`
+          bian-reference: LocationRegistryEntry.Location.RealPropertyAsset.RealPropertyHolding(as BuiltStructure)
+          bian-reference: LocationRegistryEntry.Location.RealPropertyAsset.RealPropertyHolding(as Land)
+          bian-reference: LocationRegistryEntry.Location.RealPropertyAsset.RealPropertyHolding(as AirRight)
+          bian-reference: LocationRegistryEntry.Location.RealPropertyAsset.RealPropertyHolding(as NaturalResource)
+      locationAddress:
+       type: string
+       example: 15A Lincon Street Hudson NewYork United States
+       description: |
+          `status: Registered`
+          iso-link: [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_FNg_w8TGEeChad0JzLk7QA_1650940768/elements/_FNg_xcTGEeChad0JzLk7QA_1331688362)   
+          bian-reference: LocationRegistryEntry.Location.Address
+      locationCoordinates:
+       type: string
+       example: 42.2529° N 73.7910° W
+       description: |
+          `status: Provisionally Registered`
+          bian-reference: LocationRegistryEntry.Location.Coordinates
+      landmarkDescription:
+       type: string
+       example: Henry Hudson Riverfront Park
+       description: |
+          `status: Provisionally Registered`
+          bian-reference: LocationRegistryEntry.Location.Description
+      locationConstructionType:
+       type: string
+       example: Modern
+       description: |
+          `status: Provisionally Registered`
+          bian-reference: LocationRegistryEntry.Location.RealPropertyAsset.RealPropertyHolding(as Building).ConstructionType
+      locationCapacity:
+       type: string
+       example: 2 MillionSquareFeet
+       description: |
+          `status: Provisionally Registered`
+          bian-reference: LocationRegistryEntry.Location.RealPropertyAsset.RealPropertyHolding.HoldingCapacity
+      locationStatus:
+       type: string
+       example: inhabited
+       description: |
+          `status: Provisionally Registered`
+          bian-reference: LocationRegistryEntry.Location.Status 
+      locationNeighborhoodType:
+       type: string
+       example: Retail
+       description: |
+          `status: Provisionally Registered`
+          bian-reference: LocationRegistryEntry.Location.NeighborhoodType
+      
+  LocationBaseWithIdAndRoot:
+    type: object
+    properties:
+      locationDataDirectoryEntryReference:
+       type: string
+       example: LDR7234653254
+       description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier     
+      locationDirectoryEntryReference:
+       type: string
+       example: LDE7234624
+       description: |
+          `status: Provisionally Registered`
+          bian-reference: LocationRegistryEntry.LocationRegistry
+      locationReference:
+        type: string
+        example: LR56
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: LocationRegistryEntry.Location
+      locationType:
+       type: string
+       example: PointOfInterest
+       description: |
+          `status: Provisionally Registered`
+          bian-reference: LocationRegistryEntry.Location.RealPropertyAsset.RealPropertyHolding(as BuiltStructure)
+          bian-reference: LocationRegistryEntry.Location.RealPropertyAsset.RealPropertyHolding(as Land)
+          bian-reference: LocationRegistryEntry.Location.RealPropertyAsset.RealPropertyHolding(as AirRight)
+          bian-reference: LocationRegistryEntry.Location.RealPropertyAsset.RealPropertyHolding(as NaturalResource)
+      locationAddress:
+       type: string
+       example: 15A Lincon Street Hudson NewYork United States
+       description: |
+          `status: Registered`
+          iso-link: [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_FNg_w8TGEeChad0JzLk7QA_1650940768/elements/_FNg_xcTGEeChad0JzLk7QA_1331688362)   
+          bian-reference: LocationRegistryEntry.Location.Address
+      locationCoordinates:
+       type: string
+       example: 42.2529° N 73.7910° W
+       description: |
+          `status: Provisionally Registered`
+          bian-reference: LocationRegistryEntry.Location.Coordinates
+      landmarkDescription:
+       type: string
+       example: Henry Hudson Riverfront Park
+       description: |
+          `status: Provisionally Registered`
+          bian-reference: LocationRegistryEntry.Location.Description
+      locationConstructionType:
+       type: string
+       example: Modern
+       description: |
+          `status: Provisionally Registered`
+          bian-reference: LocationRegistryEntry.Location.RealPropertyAsset.RealPropertyHolding(as Building).ConstructionType
+      locationCapacity:
+       type: string
+       example: 2 MillionSquareFeet
+       description: |
+          `status: Provisionally Registered`
+          bian-reference: LocationRegistryEntry.Location.RealPropertyAsset.RealPropertyHolding.HoldingCapacity
+      locationStatus:
+       type: string
+       example: inhabited
+       description: |
+          `status: Provisionally Registered`
+          bian-reference: LocationRegistryEntry.Location.Status 
+      locationNeighborhoodType:
+       type: string
+       example: Retail
+       description: |
+          `status: Provisionally Registered`
+          bian-reference: LocationRegistryEntry.Location.NeighborhoodType
+      
+  UsesBase:
+    type: object
+    properties:
+      locationReference:
+       type: string
+       example: LC7237
+       description: |
+          `status: Provisionally Registered`
+          bian-reference: LocationRegistryEntry.Location
+      locationZoningType:
+       type: string
+       example: residential
+       description: |
+          `status: Provisionally Registered`
+          bian-reference: LocationRegistryEntry.Location.ZoningType
+      locationUsage:
+       type: string
+       example: domestic residence
+       description: |
+          `status: Provisionally Registered`
+          bian-reference: LocationRegistryEntry.Location.RealPropertyAsset.RealPropertyHolding.CurrentUsage
+
+  UsesBaseWithIdAndRoot:
+    type: object
+    properties:
+      locationDataDirectoryEntryReference:
+       type: string
+       example: LDR7234653254
+       description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier     
+      useDirectoryEntryReference:
+       type: string
+       example: UR723454
+       description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier     
+      locationReference:
+       type: string
+       example: LC7237
+       description: |
+          `status: Provisionally Registered`
+          bian-reference: LocationRegistryEntry.Location
+      locationZoningType:
+       type: string
+       example: residential
+       description: |
+          `status: Provisionally Registered`
+          bian-reference: LocationRegistryEntry.Location.ZoningType
+      locationUsage:
+       type: string
+       example: domestic residence
+       description: |
+          `status: Provisionally Registered`
+          bian-reference: LocationRegistryEntry.Location.RealPropertyAsset.RealPropertyHolding.CurrentUsage
+  OccupancyBase: 
+    type: object
+    properties: 
+      locationReference:
+       type: string
+       example: LC7237
+       description: |
+          `status: Provisionally Registered`
+          bian-reference: LocationRegistryEntry.Location     
+      customerReference:
+       type: string
+       example: CR765234624
+       description: |
+          `status: Provisionally Registered`
+          bian-reference: LocationRegistryEntry.Location.RealPropertyAsset.CurrentOwner
+          bian-reference: LocationRegistryEntry.Location.RealPropertyAsset.CurrentOccupier
+          bian-reference: LocationRegistryEntry.Location.RealPropertyAsset.RealPropertyHolding.CurrentOccupier
+      locationOwnerTitle:
+       type: string
+       example: John/Peter
+       description: |
+          `status: Provisionally Registered`
+          bian-reference: LocationRegistryEntry.Location.RealPropertyAsset.CurrentOwner
+      locationValue:
+       type: string
+       example: Estimated $100,000
+       description: |
+          `status: Provisionally Registered`
+          bian-reference: LocationRegistryEntry.Location.RealPropertyAsset.RealPropertyHolding(as AssetHolding).MarketValue
+          bian-reference: LocationRegistryEntry.Location.RealPropertyAsset.RealPropertyHolding(as AssetHolding).BookValue
+      locationOccupierType:
+       type: string
+       example: Business
+       description: |
+          `status: Provisionally Registered`
+          bian-reference: LocationRegistryEntry.Location.RealPropertyAsset.RealPropertyHolding.CurrentOccupier
+      locationOccupierReference:
+       type: string
+       example: ABC Inc
+       description: |
+          `status: Registered`
+          iso-link: [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_FEHzNMTGEeChad0JzLk7QA_-1382123937/elements/_FEHzN8TGEeChad0JzLk7QA_1608854558)     
+          bian-reference: LocationRegistryEntry.Location.RealPropertyAsset.RealPropertyHolding.CurrentOccupier(as Role).Player(as Party).PartyName
+      locationOccupierTerms:
+       type: string
+       example: Leasehold
+       description: |
+          `status: Provisionally Registered`
+          bian-reference: LocationRegistryEntry.Location.RealPropertyAsset.CurrentOccupier.OwnerOccupierRelationship(as PartyRelationship).RelationshipAgreement.
+          bian-reference: LocationRegistryEntry.Location.RealPropertyAsset.CurrentOccupier.OwnerOccupierRelationship(as PartyRelationship).RelationshipAgreement.TermsAndConditions
+      alliancePartnerReference:
+       type: string 
+       example: APRE4905
+       description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier 
+      
+  OccupancyBaseWithIdAndRoot: 
+    type: object
+    properties: 
+      locationDataDirectoryEntryReference:
+       type: string
+       example: LDR7234653254
+       description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier     
+      occupancyDirectoryEntryReference:
+       type: string
+       example: ODER734634
+       description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier     
+      locationReference:
+       type: string
+       example: LC7237
+       description: |
+          `status: Provisionally Registered`
+          bian-reference: LocationRegistryEntry.Location     
+      customerReference:
+       type: string
+       example: CR765234624
+       description: |
+          `status: Provisionally Registered`
+          bian-reference: LocationRegistryEntry.Location.RealPropertyAsset.CurrentOwner
+          bian-reference: LocationRegistryEntry.Location.RealPropertyAsset.CurrentOccupier
+          bian-reference: LocationRegistryEntry.Location.RealPropertyAsset.RealPropertyHolding.CurrentOccupier
+      locationOwnerTitle:
+       type: string
+       example: John/Peter
+       description: |
+          `status: Provisionally Registered`
+          bian-reference: LocationRegistryEntry.Location.RealPropertyAsset.CurrentOwner
+      locationValue:
+       type: string
+       example: Estimated $100,000
+       description: |
+          `status: Provisionally Registered`
+          bian-reference: LocationRegistryEntry.Location.RealPropertyAsset.RealPropertyHolding(as AssetHolding).MarketValue
+          bian-reference: LocationRegistryEntry.Location.RealPropertyAsset.RealPropertyHolding(as AssetHolding).BookValue
+      locationOccupierType:
+       type: string
+       example: Business
+       description: |
+          `status: Provisionally Registered`
+          bian-reference: LocationRegistryEntry.Location.RealPropertyAsset.RealPropertyHolding.CurrentOccupier
+      locationOccupierReference:
+       type: string
+       example: ABC Inc
+       description: |
+          `status: Registered`
+          iso-link: [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_FEHzNMTGEeChad0JzLk7QA_-1382123937/elements/_FEHzN8TGEeChad0JzLk7QA_1608854558)      
+          bian-reference: LocationRegistryEntry.Location.RealPropertyAsset.CurrentOccupier.OwnerOccupierRelationship(as PartyRelationship).RelationshipAgreement.TermsAndConditions
+      locationOccupierTerms:
+       type: string
+       example: Leasehold
+       description: |
+          `status: Provisionally Registered`
+          bian-reference: LocationRegistryEntry.Location.RealPropertyAsset.CurrentOccupier.OwnerOccupierRelationship(as PartyRelationship).RelationshipAgreement.TermsAndConditions
+      alliancePartnerReference:
+       type: string 
+       example: APRE4905
+       description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier 
+
+  LocationDataRecordRequest:
+    type: object
+    properties:
+      recordingRecordType: 
+        type: string
+        example: "Behavior model performance feedback"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Indicator    
+      recordingRecord:
+        type: object
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary    
+      recordingRecordDateTime:
+        type: string
+        example: "2018-08-28T09:00:00"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::DateTime    
+      empolyeeBusinessUnitReference:
+        type: string
+        example: "Ref6798"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier    
+        
+  LocationDataRecordResponse:
+    type: object
+    properties:
+      recordingRecordReference:
+        type: string
+        example: "RRR3456"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier    
+      recordingRecordStatus:
+        type: string
+        example: "Applied"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text    
+        
+  DirectoryEntryRefreshResponse:
+    type: object
+    properties:
+      refreshStatus:
+        type: string
+        example: Refreshed
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Indicator    
+  
+  DirectoryEntry:
+    type: object
+    properties:
+      locationDataDirectoryEntryReference:
+        type: string
+        example: LDDER123
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier

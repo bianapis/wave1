@@ -1,0 +1,714 @@
+---
+swagger: "2.0"
+info:
+  description: |
+    ## Description:
+    Maintain/track the status of customer precedents
+    ## Example of use:
+    A range of precedents and terms needs to be tracked and applied across the different products and services to ensure compliance with regulatory and contractual terms
+    ## General comment:
+  version: "4.0.0"
+  title: Service Domain - Customer Precedents
+host: virtserver.swaggerhub.com
+basePath: /BIAN/sd-customer-precedents/4.0.0
+schemes:
+- https
+paths:
+  /customer-precedents/customer-precedents-procedure/:
+    get:
+      tags:
+      - retrieve
+      summary: Retrieve available Customer Precedent Control Record Ids
+      operationId: retrieveCustomerPrecedentProfileRefernceIds
+      produces:
+      - application/json
+      parameters:
+      - name: collection-filter
+        in: query
+        description: Filter to refine the result set. ex- 'customerReference = CPPR4891'
+        type: string
+      responses:
+        200:
+          description: successfully retrieved Customer Precedent Control Record Ids
+          schema:
+            type: array
+            items:
+              type: string
+            example: [CPPR4891, CPPR9841]
+            
+  /customer-precedents/customer-precedents-procedure/behavioral-qualifiers/:
+    get:
+      tags:
+      - retrieve
+      summary: Retrieve all Behavioral Qualifier names in the Customer Precedents Service Domain.
+      operationId: retrieveCustomerPrecedentsBQsProcedure
+      produces:
+      - application/json
+      responses:
+        200:
+          description: Successfully retrieved Customer Precedents Behavioral Qualifiers
+          schema:
+            type: array
+            items:
+              type: string
+            example: [capture, maintenance, record]
+            
+  /customer-precedents/customer-precedents-procedure/{cr-reference-id}/{behavioral-qualifier}/:
+    get:
+      tags:
+      - retrieve
+      summary: Retrieve Behavioral Qualifier Reference Ids of a given behavioral qualifier.
+      operationId: RetrieveBehaviorQualifierReferenceIds
+      produces:
+      - application/json
+      parameters:
+      - name: cr-reference-id
+        in: path
+        description: Customer Precedent Profile Reference
+        required: true
+        type: string
+      - name: behavioral-qualifier
+        in: path
+        description: Behavioral Qualifier name (ex. maintenance)
+        required: true
+        type: string
+      - name: collection-filter
+        in: query
+        description: Filter to refine result set. ex- 'Customer Precedent Maintenance Schedule = 2018-09-14'
+        required: false
+        type: string
+      responses:
+        200:
+          description: Successfully retrieved Behavioral Qualifier reference IDs
+          schema:
+            type: array
+            items:
+              type: string
+            example: [BQREFID1237, BQREFID4562, BQREFID7893]
+            
+  /customer-precedents/customer-precedents-procedure/{cr-reference-id}:
+    get:
+      tags:
+      - retrieve
+      summary: Retrieve customer precedent master record
+      operationId: retrieveCustomerPrecedentsProcedure
+      produces:
+      - application/json
+      parameters:
+      - name: cr-reference-id
+        in: path
+        description: Customer Precedent Profile Reference
+        required: true
+        type: string
+      responses:
+        200:
+          description: Successfully retrieved Customer Precedent Profile
+          schema:
+            $ref: '#/definitions/CustomerPrecedentsBaseWithId'
+            
+  /customer-precedents/customer-precedents-procedure/{cr-reference-id}/captures/{bq-reference-id}:
+    get:
+      tags:
+      - retrieve
+      summary: Retrieve capture details of a Customer Precedent record
+      operationId: retrieveCustomerPrecedentsCaptureProcedure
+      produces:
+      - application/json
+      parameters:
+      - name: cr-reference-id
+        in: path
+        description: Customer Precedent Profile Reference
+        required: true
+        type: string
+      - name: bq-reference-id
+        in: path
+        description: Customer Precedent Profile Capture Task Reference
+        required: true
+        type: string
+      responses:
+        200:
+          description: Successfully retrieved Customer Precedent Capture record
+          schema:
+            $ref: '#/definitions/CustomerPrecedentCaptureBaseWIthIds'
+            
+  /customer-precedents/customer-precedents-procedure/{cr-reference-id}/maintenance/{bq-reference-id}:
+    get:
+      tags:
+      - retrieve
+      summary: Retrieve customer precedent maintenance task
+      operationId: retrieveCustomerPrecedentsMaintenanceProcedure
+      produces:
+      - application/json
+      parameters:
+      - name: cr-reference-id
+        in: path
+        description: Customer Precedent Profile Reference
+        required: true
+        type: string
+      - name: bq-reference-id
+        in: path
+        description: Customer Precedent Profile Maintenance Task Reference
+        required: true
+        type: string
+      responses:
+        200:
+          description: Successfully retrieved Customer Precedent Maintenance Task
+          schema:
+            $ref: '#/definitions/CustomerPrecedentMaintenanceBaseWithIds'
+            
+  /customer-precedents/customer-precedents-procedure/{cr-reference-id}/records/{bq-reference-id}:
+    get:
+      tags:
+      - retrieve
+      summary: Retrieve customer precedent record report
+      operationId: retrieveCustomerPrecedentsRecordProcedure
+      produces:
+      - application/json
+      parameters:
+      - name: cr-reference-id
+        in: path
+        description: Customer Precedent Profile Reference
+        required: true
+        type: string
+      - name: bq-reference-id
+        in: path
+        description: Customer Precedent Profile Recording Record Reference
+        required: true
+        type: string
+      responses:
+        200:
+          description: Successfully retrieved Customer Precedent Record Report
+          schema:
+            $ref: '#/definitions/RetrieveCustomerPrecedentRecord'
+            
+  /customer-precedents/customer-precedents-procedure/{cr-reference-id}/captures/{bq-reference-id}/updation:
+    put:
+      tags:
+      - update
+      summary: Update details of an active customer precedent record
+      operationId: updateCustomerPrecedentsProcedure
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - name: cr-reference-id
+        in: path
+        description: Customer Precedent Profile Reference
+        required: true
+        type: string
+      - name: bq-reference-id
+        in: path
+        description: Customer Precedent Profile Capture Task Reference
+        required: true
+        type: string
+      - in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/CustomerPrecedentBase'
+      responses:
+        200:
+          description: Successfully updated customer precedent record
+          schema:
+            $ref: '#/definitions/CustomerPrecedentsBaseWithId'
+  /customer-precedents/customer-precedents-procedure/{cr-reference-id}/recording:
+    post:
+      tags:
+      - record
+      summary: Record activity/feedback against an active customer precedent record
+      operationId: recordCustomerPrecedentsProcedure
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - name: cr-reference-id
+        in: path
+        description: Customer Precedent Profile Reference
+        required: true
+        type: string
+      - in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/CustomerPrecedentsRecordRequest'
+      responses:
+        201:
+          description: Customer Precedents Recording Request Applied
+          schema:
+            $ref: '#/definitions/CustomerPrecedentsRecordResponse'
+  /customer-precedents/customer-precedents-procedure/{cr-reference-id}/captures/{bq-reference-id}/execution:
+    put:
+      tags:
+      - execute
+      summary: Execute an automated action against an active Customer Precedent Profile and update a precedent record
+      operationId: executeCustomerPrecedentsProcedureUpdate
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - name: cr-reference-id
+        in: path
+        description: Customer Precedent Profile Reference
+        required: true
+        type: string
+      - name: bq-reference-id
+        in: path
+        description: Customer Precedent Profile Capture Task Reference
+        required: true
+        type: string
+      - in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/CustomerPrecedentCaptureBase'
+      responses:
+        200:
+          description: Execution successful, record updated
+          schema:
+            $ref: '#/definitions/CustomerPrecedentCaptureBaseWIthIds'
+  /customer-precedents/customer-precedents-procedure/{cr-reference-id}/captures/execution:
+    post:
+      tags:
+      - execute
+      summary: Execute an automated action against an active Customer Precedent Profile and create a precedent record
+      operationId: executeCustomerPrecedentsProcedureCreate
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - name: cr-reference-id
+        in: path
+        description: Customer Precedent Profile Reference
+        required: true
+        type: string
+      - in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/CustomerPrecedentCaptureBase'
+      responses:
+        201:
+          description: Execution successful, record created
+          schema:
+            $ref: '#/definitions/CustomerPrecedentCaptureBaseWIthIds'
+  /customer-precedents/customer-precedents-procedure/{cr-reference-id}/captures/{bq-reference-id}/requisition:
+    put:
+      tags:
+      - request
+      summary: Request a workstep/decision against an active customer precedent record
+      operationId: requestCustomerPrecedentsProcedureUpdate
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - name: cr-reference-id
+        in: path
+        description: Customer Precedent Profile Reference
+        required: true
+        type: string
+      - name: bq-reference-id
+        in: path
+        description: Customer Precedent Profile Capture Task Reference
+        required: true
+        type: string
+      responses:
+        200:
+          description: Successfully Refreshed the Capture
+          schema:
+            $ref: '#/definitions/CustomerPrecedentCaptureRefreshResponse'
+
+definitions:
+  CustomerPrecedentsBaseWithId:
+    type: object
+    properties:
+      customerPrecedentProfileReference:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+          general-info: 'Customer Precedent Profile Reference'
+        example: "CPPR1582"
+      customerPrecedentProfileRecord:
+        type: object
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+          general-info: 'The collection of precedents for a customer'
+      customerReference:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+          general-info: 'Customer Reference'
+        example: "CR2345"
+      precedentType:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+        example: "residential status"
+      customerPrecedentReference:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+          general-info: 'The reference to this Customer Precedent'
+        example: "CPR67890"
+      customerPrecedentValue:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+        example: "non-resident"
+      customerPrecedentValueDate:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Date
+          general-info: 'Date when precedent value last checked/confirmed'
+        example: "09/01/2016"
+
+  CustomerPrecedentMaintenanceBaseWithIds:
+    type: object
+    properties:
+      customerPrecedentProfileMaintenanceTaskReference:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+        example: "CPPMTR3498"
+      customerPrecedentProfileReference:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+          general-info: 'Customer Precedent Profile Reference'
+        example: "CPPR1582"
+      precedentType:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+        example: "residential status"
+      customerPrecedentReference:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+          general-info: 'The reference to this Customer Precedent'
+        example: "CPR67890"
+      customerPrecedentMaintenanceSchedule:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::DateTime
+          general-info: 'Timing for maintenance/confirmation'
+        example: "2018-08-28T09:00:00"
+      customerPrecedentMaintenanceTaskReference:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+          general-info: 'The reference ID for this maintenance task'
+        example: "CPMTR1234"
+      customerPrecedentMaintenanceTask:
+        type: object
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+          general-info: 'Record of the work done to check value'
+      customerPrecedentMaintenanceTaskResult:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Indicator
+        example: "confirmed"
+      customerPrecedentValue:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+        example: "non-resident"
+      customerPrecedentProfileUpdateLog:
+        type: object
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+          general-info: 'Historical values of precedent profile maintenance/changes'
+
+  CustomerPrecedentCaptureBase:
+    type: object
+    properties:
+      customerPrecedentProfileRecord:
+        type: object
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+          general-info: 'The collection of precedents for a customer'
+      customerReference:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+          general-info: 'Customer Reference'
+        example: "CR2345"
+      precedentType:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+        example: "residential status"
+      customerPrecedentReference:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+          general-info: 'The reference to this Customer Precedent'
+        example: "CPR67890"
+      customerPrecedentValue:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+        example: "non-resident"
+      customerPrecedentValueDate:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Date
+          general-info: 'Date when precedent value last checked/confirmed'
+        example: "09/01/2016"
+
+  CustomerPrecedentCaptureBaseWIthIds:
+    type: object
+    properties:
+      customerPrecedentProfileCaptureTaskReference:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+          general-info: 'The reference to this capture task'
+        example: "CPPCTR797l"
+      customerPrecedentProfileReference:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+          general-info: 'Customer Precedent Profile Reference'
+        example: "CPPR1582"
+      customerPrecedentProfileRecord:
+        type: object
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+          general-info: 'The collection of precedents for a customer'
+      customerReference:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+          general-info: 'Customer Reference'
+        example: "CR2345"
+      precedentType:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+        example: "residential status"
+      customerPrecedentReference:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+          general-info: 'The reference to this Customer Precedent'
+        example: "CPR67890"
+      customerPrecedentValue:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+        example: "non-resident"
+      customerPrecedentValueDate:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Date
+          general-info: 'Date when precedent value last checked/confirmed'
+        example: "09/01/2016"
+
+  CustomerPrecedentsRecordRequest:
+    type: object
+    properties:
+      customerReference:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+          general-info: 'Customer Reference'
+        example: "CR2345"
+      customerPrecedentReference:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+          general-info: 'The reference to this Customer Precedent'
+        example: "CPR67890"
+      recordingRecordType:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+        example: "precedent value update"
+      recordingRecord:
+        type: object
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+      recordingRecordDateTime:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::DateTime
+        example: "2018-08-28T09:00:00"
+      empolyeeBusinessUnitReference:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+          general-info: 'The business unit reference for this recording request'
+        example: "EBUR6798"
+
+  CustomerPrecedentsRecordResponse:
+    type: object
+    properties:
+      customerPrecedentProfileRecordingRecordReference:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+        example: "CRRR3456"
+      recordingRecordStatus:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+        example: "Applied"
+
+  CustomerPrecedentBase:
+    type: object
+    properties:
+      customerPrecedentProfileRecord:
+        type: object
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+          general-info: 'The collection of precedents for a customer'
+      customerReference:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+          general-info: 'Customer Reference'
+        example: "CR2345"
+      precedentType:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+        example: "residential status"
+      customerPrecedentReference:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+          general-info: 'The reference to this Customer Precedent'
+        example: "CPR67890"
+      customerPrecedentValue:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+        example: "non-resident"
+      customerPrecedentValueDate:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Date
+          general-info: 'Date when precedent value last checked/confirmed'
+        example: "09/01/2016"
+
+  RetrieveCustomerPrecedentRecord:
+    type: object
+    properties:
+      customerPrecedentProfileRecordingRecordReference:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+        example: "CRRR3456"
+      customerPrecedentProfileReference:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+          general-info: 'Customer Precedent Profile Reference'
+        example: "CPPR1582"
+      customerReference:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+          general-info: 'Customer Reference'
+        example: "CR2345"
+      customerPrecedentReference:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+          general-info: 'The reference to this Customer Precedent'
+        example: "CPR67890"
+      recordingRecordType:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+        example: "precedent value update"
+      recordingRecord:
+        type: object
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+      recordingRecordDateTime:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::DateTime
+        example: "2018-08-28T09:00:00"
+      recordingRecordStatus:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+        example: "Applied"
+      empolyeeBusinessUnitReference:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+          general-info: 'The business unit reference for this recording request'
+        example: "EBUR6798"
+
+  CustomerPrecedentCaptureRefreshResponse:
+    type: object
+    properties:
+      refreshStatus:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+        example: "Refreshed"

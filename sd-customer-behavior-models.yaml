@@ -1,0 +1,1002 @@
+swagger: '2.0'
+info:
+  version: "4.0.0"
+  title: 'Service Domain - Customer Behavior Models'
+  description: >
+        ## Description:
+
+        Assess the coverage and impact of the portfolio of customer behavior models and develop and refine the portfolio of available models
+
+        ## Example of use:
+
+        Decision scientists track the use and impact of behavior models and make design improvements to enhance their accuracy
+
+        ## General comment:
+
+        This service domain handles the development, maintenance and assessment of the collection of customer behavior models that are deployed across the bank. This includes more general analyses for sales, operational behavior, relationship development and specific behaviors such as credit and fraud detection. Customer can cover consumer, corporate and merchant behavior for some behavior models/scanners
+
+host: virtserver.swaggerhub.com
+basePath: /BIAN/sd-customer-behavior-models/2.0.1
+schemes:
+ - https
+paths:
+  /customer-behavior-models/customer-behavior-model-specification/:
+    get:
+      tags:
+      - retrieve
+      summary: Retrieve Customer Behavior Model
+      operationId: retrieveCustomerBehaviorModelsReferenceIds
+      produces:
+      - application/json
+      parameters:
+      - name: collection-filter
+        in: query
+        description: Filter to refine the result set. ex- 'customerBehaviorModelStatus = "in-force"'
+        required: false
+        type: string
+      responses:
+        200:
+          description: successfully retrieved Customer Behavior Models Control Record Ids
+          schema:
+            type: array
+            items:
+              type: string
+            example: ['CBMR123', 'CBMR345']
+            
+  /customer-behavior-models/customer-behavior-model-specification/behavior-qualifiers/:
+    get:
+      tags:
+      - retrieve
+      summary: Retrieve BQs for Customer Behavior Models
+      operationId: retrieveCustomerBehaviorModelsBQsProcedure
+      produces:
+      - application/json
+      responses:
+        200:
+          description: Successfully retrieved Customer Behavior Models Behavior Qualifiers
+          schema:
+            type: array
+            items:
+              type: string
+            example: ['record', 'design', 'testing', 'compliance', 'implementation', 'deployment']
+  /customer-behavior-models/customer-behavior-model-specification/{cr-reference-id}/{behavior-qualifier}/:
+    get:
+      tags:
+      - retrieve
+      summary: Retrieve bq-reference-ids of a Behavior Model
+      operationId: retrieveCustomerBehaviorModelsBQReferenceIds
+      produces:
+      - application/json
+      parameters:
+      - name: cr-reference-id
+        in: path
+        description: Customer Behavifor Model Reference
+        required: true
+        type: string
+      - name: behavior-qualifier
+        in: path
+        description: Behavior Qualifier name (ex. testing)
+        required: true
+        type: string
+      - name: collection-filter
+        in: query
+        description: Filter to refine result set. ex- 'customerBehaviorModelTestReference == "CBMTR7264646"'
+        required: false
+        type: string
+      responses:
+        200:
+          description: Successfully retrieved Behavior Qualifier reference IDs
+          schema:
+            type: array
+            items:
+              type: string
+            example: ['CBMTTR76253', 'CBMTTR72635']
+
+  /customer-behavior-models/customer-behavior-model-specification/{cr-reference-id}:
+    get:
+      tags:
+      - retrieve
+      summary: Retrieve Customer Behavior Model
+      operationId: retrieveCustomerBehaviorModel
+      produces:
+      - application/json
+      parameters:
+      - name: cr-reference-id
+        in: path
+        description: Customer Behavior Model Reference
+        required: true
+        type: string
+      responses:
+        200:
+          description: Successfully retrieved Customer Behavior Model record
+          schema:
+            $ref: "#/definitions/RetrieveCustomerBehaviorModelResponse"
+  /customer-behavior-models/customer-behavior-model-specification/{cr-reference-id}/records/{bq-reference-id}:
+    get:
+      tags:
+      - retrieve
+      summary: Retrieve Customer Behavior Models Record Task
+      operationId: retrieveCustomerBehaviorModelsRecordTask
+      produces:
+      - application/json
+      parameters:
+      - name: cr-reference-id
+        in: path
+        description: Customer Behavior Model Reference
+        required: true
+        type: string
+      - name: bq-reference-id
+        in: path
+        description: Recording Record Reference
+        required: true
+        type: string
+      responses:
+        200:
+          description: Successfully retrieved Customer Behavior Models Record
+          schema:
+            $ref: "#/definitions/CustomerBehaviorModelsRecordBaseWithIdAndRoot"
+  /customer-behavior-models/customer-behavior-model-specification/{cr-reference-id}/designs/{bq-reference-id}:
+    get:
+      tags:
+      - retrieve
+      summary: Retrieve  a Behavior Models Design
+      operationId: retrieveCustomerBehaviorModelsDesignTask
+      produces:
+      - application/json
+      parameters:
+      - name: cr-reference-id
+        in: path
+        description: Customer Behavior Model Reference
+        required: true
+        type: string
+      - name: bq-reference-id
+        in: path
+        description: Customer Behavior Model Design Task Reference
+        required: true
+        type: string
+      responses:
+        200:
+          description: Successfully retrieved Customer Behavior Models Design Activity record
+          schema:
+            $ref: "#/definitions/CustomerBehaviorModelsDesignBaseWithIdAndRoot"
+  /customer-behavior-models/customer-behavior-model-specification/{cr-reference-id}/testings/{bq-reference-id}:
+    get:
+      tags:
+      - retrieve
+      summary: Retrieve a Behavior Models Testing Activity
+      operationId: retrieveCustomerBehaviorModelsTestingTask
+      produces:
+      - application/json
+      parameters:
+      - name: cr-reference-id
+        in: path
+        description: Customer Behavior Model Reference
+        required: true
+        type: string
+      - name: bq-reference-id
+        in: path
+        description: Customer Behavior Model Testing Task Reference
+        required: true
+        type: string
+      responses:
+        200:
+          description: Successfully retrieved Customer Behavior Models Testing Activity record
+          schema:
+            $ref: "#/definitions/CustomerBehaviorModelsTestingBaseWithIdAndRoot"
+  /customer-behavior-models/customer-behavior-model-specification/{cr-reference-id}/compliances/{bq-reference-id}:
+    get:
+      tags:
+      - retrieve
+      summary: Retrieve a Behavior Models Compliance Check
+      operationId: retrieveCustomerBehaviorModelsComplianceTask
+      produces:
+      - application/json
+      parameters:
+      - name: cr-reference-id
+        in: path
+        description: Customer Behavior Model Reference
+        required: true
+        type: string
+      - name: bq-reference-id
+        in: path
+        description: Customer Behavior Model Compliance Task Reference
+        required: true
+        type: string
+      responses:
+        200:
+          description: Successfully retrieved Customer Behavior Models Compliance Check Activity record
+          schema:
+            $ref: "#/definitions/CustomerBehaviorModelsComplianceBaseWithIdAndRoot"
+  /customer-behavior-models/customer-behavior-model-specification/{cr-reference-id}/implementations/{bq-reference-id}:
+    get:
+      tags:
+      - retrieve
+      summary: Retrieve a Behavior Models Implementation
+      operationId: retrieveCustomerBehaviorModelsImplementationTask
+      produces:
+      - application/json
+      parameters:
+      - name: cr-reference-id
+        in: path
+        description: Customer Behavior Model Reference
+        required: true
+        type: string
+      - name: bq-reference-id
+        in: path
+        description: Customer Behavior Model Implementation Task Reference
+        required: true
+        type: string
+      responses:
+        200:
+          description: Successfully Retrieve Customer Behavior Models Implementation Activity record
+          schema:
+            $ref: "#/definitions/CustomerBehaviorModelsImplementationBaseWithIdAndRoot"
+  /customer-behavior-models/customer-behavior-model-specification/{cr-reference-id}/deployments/{bq-reference-id}:
+    get:
+      tags:
+      - retrieve
+      summary: Retrieve a Behavior Models Deployment
+      operationId: retrieveCustomerBehaviorModelsDeploymentTask
+      produces:
+      - application/json
+      parameters:
+      - name: cr-reference-id
+        in: path
+        description: Customer Behavior Model Reference
+        required: true
+        type: string
+      - name: bq-reference-id
+        in: path
+        description: Customer Behavior Model Deployment Task Reference
+        required: true
+        type: string
+      responses:
+        200:
+          description: Successfully retrieved Customer Behavior Models Deployment Task record
+          schema:
+            $ref: "#/definitions/CustomerBehaviorModelsDeploymentBaseWithIdAndRoot"
+  /customer-behavior-models/customer-behavior-model-specification/{cr-reference-id}/designs/{bq-reference-id}/updation:
+    put:
+      tags:
+      - "update"
+      summary: "Update a Behavior Model Design"
+      operationId: "updateCustomerBehaviorModelSpecificationDesign"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "cr-reference-id"
+        in: "path"
+        description: Customer Behavior Model Reference
+        required: true
+        type: "string"
+      - name: "bq-reference-id"
+        in: "path"
+        description: Customer Behavior Model Design Task Reference
+        required: true
+        type: "string"
+      - in: "body"
+        name: "body"
+        description: "Update Behavior Model Design request payload"
+        required: true
+        schema:
+          $ref: "#/definitions/CustomerBehaviorModelsDesignBase"
+      responses:
+        200:
+          description: "successful"
+          schema:
+            $ref: "#/definitions/CustomerBehaviorModelsDesignBaseWithIdAndRoot"
+
+  /customer-behavior-models/customer-behavior-model-specification/{cr-reference-id}/recording:
+    post:
+      tags:
+      - record
+      summary: Record use/activity and results for a behavior model
+      operationId: recordCustomerBehaviorModelSpecification
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - name: cr-reference-id
+        in: path
+        description: Customer Behavior Model Reference
+        required: true
+        type: string
+      - in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/RecordCustomerBehaviorModelSpecificationRequestPayload'
+      responses:
+        201:
+          description: Customer Behavior Model Recording Request Applied
+          schema:
+            $ref: '#/definitions/RecordCustomerBehaviorModelSpecificationResponsePayload'
+  /customer-behavior-models/customer-behavior-model-specification/{cr-reference-id}/deployments/{bq-reference-id}/requisition:
+    put:
+      tags: 
+      - request
+      operationId: requestCustomerBehaviorModelSpecificationDeploymentUpdate
+      summary: Update a Behavior Model deployment
+      produces: 
+      - application/json
+      parameters: 
+      - name: cr-reference-id
+        in: path
+        description: Customer Behavior Model Reference
+        required: true
+        type: string
+      - name: bq-reference-id
+        in: path
+        description: Customer Behavior Model Deployment Task Reference
+        required: true
+        type: string
+      - in: body
+        name: body
+        description: Request Behavior Model Deployment request payload
+        required: true
+        schema: 
+          $ref: '#/definitions/CustomerBehaviorModelsDeploymentBase'
+      responses:
+        200:
+          description: Successfully Updated Behavior Model deployment
+          schema:
+            $ref: '#/definitions/CustomerBehaviorModelsDeploymentBaseWithIdAndRoot' 
+
+  /customer-behavior-models/customer-behavior-model-specification/{cr-reference-id}/deployments/requisition:
+    post:
+      tags: 
+      - request
+      operationId: requestCustomerBehaviorModelSpecificationDeploymentCreate
+      summary: Create a new Behavior Model deployment
+      produces: 
+      - application/json
+      parameters: 
+      - name: cr-reference-id
+        in: path
+        description: Customer Behavior Model Reference
+        required: true
+        type: string
+      - in: body
+        name: body
+        description: Request Behavior Model Deployment request payload
+        required: true
+        schema: 
+          $ref: '#/definitions/CustomerBehaviorModelsDeploymentBase'
+      responses:
+        201:
+          description: Successfully Created Behavior Model deployment
+          schema:
+            $ref: '#/definitions/CustomerBehaviorModelsDeploymentBaseWithIdAndRoot' 
+definitions:
+  RetrieveCustomerBehaviorModelResponse:
+    type: object
+    properties:
+      customerBehaviorModelPortfolioReference:
+        type: string
+        example: "CBPR76354"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      customerBehaviorModelPortfolioRecord:
+        type: object
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+          general-info: record of all models usage and performance statistics
+      customerBehaviorModelReference:
+        type: string
+        example: "CBMR746565"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+          general-info: The reference ID to this Customer Behavior Model Portfolio
+      customerBehaviorModelType:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      customerBehaviorModelPurpose:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+          general-info: defines analysis/insights provided
+      customerBehaviorModelStatus:
+        type: string
+        example: under development
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      customerBehaviorModelUsage:
+        type: object
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+          general-info: records number of production deployments and frequency of execution
+      customerBehaviorModelImpact:
+        type: object
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+          general-info: records impact/accuracy of model insights
+      customerBehaviorModelBudget:
+        type: object
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+          general-info: records time/effort on design/development by version/date
+      customerBehaviorModelVersion:
+        type: string
+        example: "v1.0.0"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+          general-info: release version of available model
+      customerBehaviorModel:
+        type: object
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+          general-info: this is the executable model specificaion
+  RecordCustomerBehaviorModelSpecificationRequestPayload:
+    type: object
+    properties:
+      recordingRecordType:
+        type: string
+        example: "Behavior model performance feedback"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+          general-info: the layout/type of the feedback provided
+      recordingRecord:
+        type: object
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+          general-info: the recorded feedback
+      recordingRecordDateTime:
+        $ref: 'https://api.swaggerhub.com/domains/BIAN/Common-Model/1.0.0#/definitions/ISODateTime'
+      employeeBusinessUnitReference:
+        type: string
+        example: "EBU890"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+  RecordCustomerBehaviorModelSpecificationResponsePayload:
+    type: object
+    properties:
+      recordingRecordReference:
+        type: string
+        example: "REC567"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+          general-info: reference to the feedback
+      recordingRecordStatus:
+        type: string
+        example: applied
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+  CustomerBehaviorModelsRecordBaseWithIdAndRoot:
+    type: object
+    properties:
+      customerBehaviorModelReference:
+        type: string
+        example: "CBM1234"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+          general-info: The reference ID to this Customer Behavior Model Portfolio
+      recordingRecordReference:
+        type: string
+        example: "REC567"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+          general-info: reference to the feedback
+      recordingRecordType:
+        type: string
+        example: "Behavior model performance feedback"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+          general-info: the layout/type of the feedback provided
+      recordingRecord:
+        type: object
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+          general-info: the recorded feedback
+      recordingRecordDateTime:
+        $ref: 'https://api.swaggerhub.com/domains/BIAN/Common-Model/1.0.0#/definitions/ISODateTime'
+      recordingRecordStatus:
+        type: string
+        example: applied
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      employeeBusinessUnitReference:
+        type: string
+        example: "EBU890"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+
+  CustomerBehaviorModelsDesignBase:
+    type: object
+    properties:
+      customerBehaviorModelDesignTaskRecord:
+        type: object
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+          general-info: details/tracking the design activity
+      customerMarketDataServiceReference:
+        type: string
+        example: "CMDS7182"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+          general-info: service providers of example market research and production data
+      customerMarketDataReference:
+        type: string 
+        example: "CMD1020"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+          general-info: example market research/production data file
+      productServiceActivityReportReference:
+        type: string
+        example: "PSAR7836"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+          general-info: internal bank activity report - used for development
+      productServiceActivityReport:
+        type: object
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+          general-info: data file/report of production activity
+      customerBehaviorModelType:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      customerBehaviorModelUsage:
+        type: object
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+          general-info: records number of production deployments and frequency of execution
+      customerBehaviorModelImpact:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+          general-info: records impact/accuracy of model insights
+      customerBehaviorModelFeedbackRecord:
+        type: object
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+          general-info: user provided feedback/suggestions
+      customerBehaviorModelSpecification:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+          general-info: design - inputs, calculations, outputs
+      customerBehaviorModelOperationalRequirements:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+          general-info: defines operational and technical requirements
+      customerBehaviorModelAllowedUsage: 
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+          general-info: defines when/where model can be used
+      customerBehaviorModelUsageGuidelines:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+          general-info: guidance on usage and result interpretation
+  CustomerBehaviorModelsDesignBaseWithIdAndRoot:
+    type: object
+    properties:
+      customerBehaviorModelReference:
+        type: string
+        example: "CBMR735464"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+          general-info: The reference ID to this Customer Behavior Model Portfolio
+      customerBehaviorModel:
+        type: object
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+          general-info: this is the executable model specificaion
+      customerBehaviorModelDesignTaskReference:
+        type: string
+        example: "CBDTR7364646"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+          general-info: reference to design activity
+      customerBehaviorModelDesignTaskRecord:
+        type: object
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+          general-info: details/tracking the design activity
+      customerMarketDataServiceReference:
+        type: string
+        example: "CMDS7182"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+          general-info: service providers of example market research and production data
+      customerMarketDataReference:
+        type: string 
+        example: "CMD1020"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+          general-info: example market research/production data file
+      productServiceActivityReportReference:
+        type: string
+        example: "PSAR7836"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+          general-info: internal bank activity report - used for development
+      productServiceActivityReport:
+        type: object
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+          general-info: data file/report of production activity
+      customerBehaviorModelType:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      customerBehaviorModelUsage:
+        type: object
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+          general-info: records number of production deployments and frequency of execution
+      customerBehaviorModelImpact:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+          general-info: records impact/accuracy of model insights
+      customerBehaviorModelFeedbackRecord:
+        type: object
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+          general-info: user provided feedback/suggestions
+      customerBehaviorModelSpecification:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+          general-info: design - inputs, calculations, outputs
+      customerBehaviorModelOperationalRequirements:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+          general-info: defines operational and technical requirements
+      customerBehaviorModelAllowedUsage: 
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+          general-info: defines when/where model can be used
+      customerBehaviorModelUsageGuidelines:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+          general-info: guidance on usage and result interpretation
+  CustomerBehaviorModelsTestingBaseWithIdAndRoot:
+    type: object
+    properties:
+      customerBehaviorModelReference:
+        type: string
+        example: "CBM1234"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+          general-info: The reference ID to this Customer Behavior Model Portfolio
+      customerBehaviorModel:
+        type: object
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+          general-info: this is the executable model specificaion
+      customerBehaviorModelTestingTaskReference:
+        type: string
+        example: "CBTTR74649873"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+          general-info: reference to testing activity
+      customerBehaviorModelTestingTaskRecord:
+        type: object
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+          general-info: details/tracking the testing activity
+      customerBehaviorModelType:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      customerBehaviorModelTestReference:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+          general-info: the reference ID to the Customer Behavior Model Test
+      customerBehaviorModelTestType:
+        type: string
+        example: unit
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      customerBehaviorModelTestHarnessReference:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+          general-info: the testing environment
+      customerBehaviorModelTestResult:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Indicator
+          general-info: The result of the test. Errors result in further design/implementation
+  CustomerBehaviorModelsComplianceBaseWithIdAndRoot:
+    type: object
+    properties:
+      customerBehaviorModelReference:
+        type: string
+        example: "CBM1234"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+          general-info: The reference ID to this Customer Behavior Model Portfolio
+      customerBehaviorModel:
+        type: object
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+          general-info: this is the executable model specificaion
+      customerBehaviorModelComplianceTaskReference:
+        type: string
+        example: "COMP2302"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+          general-info: reference to compliance checking activity
+      customerBehaviorModelComplianceTaskRecord:
+        type: object
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+          general-info: details/tracking the compliance checking activity
+      customerBehaviorModelType:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      complianceTestReference:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+          general-info: the reference ID to the Customer Behavior Model Compliance Test
+      complianceTestType:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      complianceTestResult:
+        type: object
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+          general-info: The result of the compliance test. Failure results in further design/development
+  CustomerBehaviorModelsImplementationBaseWithIdAndRoot:
+    type: object
+    properties:
+      customerBehaviorModelReference:
+        type: string
+        example: "CBM1234"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+          general-info: The reference ID to this Customer Behavior Model Portfolio
+      customerBehaviorModel:
+        type: object
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+          general-info: this is the executable model specificaion
+      customerBehaviorModelImplementationTaskReference:
+        type: string
+        example: "IMP6732"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+          general-info: reference to implementation activity
+      customerBehaviorModelImplementationTaskRecord:
+        type: object
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+          general-info: details/tracking the implementation activity
+      customerBehaviorModelType:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      customerBehaviorModelDevelopmentTaskReference:
+        type: string
+        example: "DEV9873"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+          general-info: the reference ID to the Customer Behavior Model Development Task
+      customerBehaviorModelDevelopmentTaskDescription:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      customerBehaviorModelDevelopmentTaskBudget:
+        type: object
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+          general-info: planned and actual time and effort for the development task
+      customerBehaviorModelDevelopmentTaskOrganization:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      customerBehaviorModelDevelopmentTaskStatus:
+        type: string
+        example: complete
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      customerBehaviorModelDevelopmentTaskDeliverable:
+        type: object
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+      customerBehaviorModelStatus:
+        type: string
+        example: under development
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+  CustomerBehaviorModelsDeploymentBase:
+    type: object
+    properties:
+      customerBehaviorModel:
+        type: object
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+          general-info: this is the executable model specificaion
+      customerBehaviorModelDeploymentTaskRecord:
+        type: object
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+          general-info: details/tracking the deployment activity
+      employeeBusinessUnitReference:
+        type: string
+        example: "EBU890"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+          general-info: the unit requesting the deployment
+      customerBehaviorModelVersion:
+        type: string
+        example: "v1.0.0"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+          general-info: release version of available model
+      customerBehaviorModelDeploymentStatus:
+        type: string
+        example: pending
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+          general-info: tracks completion of deployment actions
+      customerBehaviorModelUsage:
+        type: object
+        example: 2 production deployments
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+          general-info: records number of production deployments
+  CustomerBehaviorModelsDeploymentBaseWithIdAndRoot:
+    type: object
+    properties:
+      customerBehaviorModelReference:
+        type: string
+        example: "CBM1234"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+          general-info: The reference ID to this Customer Behavior Model Portfolio
+      customerBehaviorModel:
+        type: object
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+          general-info: this is the executable model specificaion
+      customerBehaviorModelDeploymentTaskReference:
+        type: string
+        example: "DEP43268"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+          general-info: reference to deployment task
+      customerBehaviorModelDeploymentTaskRecord:
+        type: object
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+          general-info: details/tracking the deployment activity
+      employeeBusinessUnitReference:
+        type: string
+        example: "EBU890"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+          general-info: the unit requesting the deployment
+      customerBehaviorModelVersion:
+        type: string
+        example: "v1.0.0"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+          general-info: release version of available model
+      customerBehaviorModelDeploymentStatus:
+        type: string
+        example: pending
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+          general-info: tracks completion of deployment actions
+      customerBehaviorModelUsage:
+        type: object
+        example: 2 production deployments
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+          general-info: records number of production deployments
+      customerBehaviorModelDeploymentTaskResult:
+        type: string
+        example: Success
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+          general-info: release version of available model

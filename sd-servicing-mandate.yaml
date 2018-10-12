@@ -1,0 +1,571 @@
+swagger: '2.0'
+info:
+  version: "4.0.0"
+  title: 'Service Domain - Servicing Mandate'
+  description: >
+    
+    ## Service Domain Role:
+    
+    This service domain maintains the allowed customer servicing arrangements for a service provider covering general access to the bank's products and services and optionally customer specific arrangements.
+    
+    ## Example of Use:
+  
+    A third party provider has accessed the bank on behalf of a customer to initiate payment for a purchased product. The bank checks that the service provider is permitted to perform payments in general and whether there are specific constrains for this customer.
+    
+    ## General Comments:
+    
+    The Servicing Mandate service domain maintains an agreement between the bank and an external party that governs/constrains the allowed access given to the bank's products and services. This access permission can be defined at two levels - overall for the service provider and at a more detailed level as applied to a specific customer.
+        
+host: virtserver.swaggerhub.com
+basePath: /BIAN/sd-servicing-mandate/4.0.0
+schemes:
+ - https
+paths:
+  /servicing-mandate/servicing-mandate-agreement/:
+    get:
+      tags:
+      - retrieve
+      operationId: RetrieveServicingMandateAgreementReferenceIds
+      summary: Retrieve Servicing Mandate Agreement Control Record Ids
+      produces:
+      - application/json
+      parameters:
+      - name : collection-filter
+        in: query
+        description: Filter to refine the result set. ex- 'partyReference = PR2345'
+        type: string
+      responses:
+        200:
+          description: Successfully retrieved control record reference IDs
+          schema:
+            type: array
+            items:
+              type: string
+            example: [SMA56735, SMA6743]
+
+  /servicing-mandate/servicing-mandate-agreement/behavior-qualifiers:
+    get:
+      tags:
+      - retrieve
+      operationId: RetrieveServicingmandateAgreementBehaviorQualifiers
+      summary: Retrieve all Behaviour Qualifier names
+      produces:
+      - application/json
+      responses:
+        200:
+          description: Successfully retrieved behavior qualifier names
+          schema:
+            type: array
+            items:
+              type: string
+            example: ['customer-terms']
+
+  /servicing-mandate/servicing-mandate-agreement/{cr-reference-id}/{behavior-qualifier}:
+    get:
+      tags:
+      - retrieve
+      operationId: RetrieveBehaviorQualifierReferenceIds
+      summary: Retrieve Behavior Qulifier Reference Ids for a given Behavior Qulifier
+      produces:
+      - application/json
+      parameters:
+      - name: cr-reference-id
+        in: path
+        description: Servicing Mandate Agreement Reference
+        required: true
+        type: string
+      - name: behavior-qualifier
+        in: path
+        description: Behavior Qualifier Name
+        required: true
+        type: string
+      - name: collection-filter
+        in: query
+        type: string
+        description: Filter to refine the result set. ex- 'productServiceType = credit card'
+      responses:
+        200:
+          description: Successfully retrieved behavior qualifier IDs
+          schema:
+            type: array
+            items:
+              type: string
+            example: ["CT134", "CT0832", "CT27912"]
+
+  /servicing-mandate/servicing-mandate-agreement/{cr-reference-id}:
+    get:
+      tags:
+      - retrieve
+      operationId: retrieveServicingMandateAgreement
+      summary: Retrieve servicing mandate report
+      produces:
+      - application/json
+      parameters:
+      - name: cr-reference-id
+        in: path
+        description: Servicing Mandate Agreement Reference
+        type: string
+        required: true
+      responses:
+        200:
+          description: Successfully retrieved Servicing Mandate report
+          schema:
+            $ref: '#/definitions/AgreementBaseWithId'
+
+  /servicing-mandate/servicing-mandate-agreement/{cr-reference-id}/customer-terms/{bq-reference-id}:
+    get:
+      tags:
+      - retrieve
+      operationId: retrieveServicingMandateAgreementCustomerTerms
+      summary: Retrieve Servicing Mandate Agreement Customer Terms
+      produces:
+      - application/json
+      parameters:
+      - name: cr-reference-id
+        in: path
+        description: Servicing Mandate Agreement Reference
+        type: string
+        required: true
+      - name: bq-reference-id
+        in: path
+        description: Servicing Mandate Agreement Customer Product/Service Profile Reference
+        type: string
+        required: true
+      responses:
+        200:
+          description: Successfully retrieved Customer Terms
+          schema:
+            $ref: '#/definitions/CustomerTermsBaseWithIdAndRoot'
+    delete:
+      tags:
+      - termination
+      summary: Initiate the termination processing of the servicing mandate for a customer
+      operationId: terminateServicingMandateAgreementCustomerTerms
+      produces:
+      - application/json
+      parameters:
+      - name: cr-reference-id
+        in: path
+        description: Servicing Mandate Agreement Reference
+        type: string
+        required: true
+      - name: bq-reference-id
+        in: path
+        description: Servicing Mandate Agreement Customer Product/Service Profile Reference
+        type: string
+        required: true
+      responses:
+        204:
+          description: Successfully deleted Customer Terms record
+
+  /servicing-mandate/servicing-mandate-agreement/initiation:
+    post:
+      tags:
+      - initiate
+      summary: Initialize/set-up the service mandate/terms for a service provider
+      operationId: initiateServicingMandateAgreement
+      produces:
+      - application/json
+      parameters:
+      - name: body
+        in: body
+        description: Initiate Servicing Mandate Agreement Control Record request payload
+        required: true
+        schema:
+          $ref: '#/definitions/AgreementBase'
+      responses:
+        201:
+          description: "A new servicing mandate agreement is created"
+          schema:
+            $ref: '#/definitions/AgreementBaseWithId'
+
+  /servicing-mandate/servicing-mandate-agreement/{cr-reference-id}/customer-terms/initiation:
+    post:
+      tags:
+      - initiate
+      summary: Initialize/set-up the service mandate/terms for a customer
+      operationId: InitiateServicingMandateAgreementCustomerTerms
+      produces:
+      - application/json
+      parameters:
+      - name: cr-reference-id
+        in: path
+        description: Servicing Mandate Agreement Reference
+        type: string
+        required: true
+      - name: body
+        in: body
+        description: Initiate Customer Terms Behavior Qualifier request payload
+        required: true
+        schema:
+          $ref: '#/definitions/CustomerTermsBase'
+      responses:
+        201:
+          description: "A new servicing mandate agreement is created"
+          schema:
+            $ref: '#/definitions/CustomerTermsBaseWithIdAndRoot'
+
+  /servicing-mandate/servicing-mandate-agreement/{cr-reference-id}/updation:
+    put:
+      tags:
+      - update
+      summary: Update the in-force servicing mandate for a service provider
+      operationId: UpdateServicingMandateAgreement
+      produces:
+      - application/json
+      parameters:
+      - name: cr-reference-id
+        in: path
+        description: Servicing Mandate Agreement Reference
+        type: string
+        required: true
+      - name: body
+        in: body
+        description: Update Servicing Mandate Agreement Control Record request payload
+        required: true
+        schema:
+          $ref: '#/definitions/AgreementBase'
+      responses:
+        200:
+          description: Successfully updated Servicing Mandate control record
+          schema:
+            $ref: '#/definitions/AgreementBaseWithId'
+
+  /servicing-mandate/servicing-mandate-agreement/{cr-reference-id}/customer-terms/{bq-reference-id}/updation:
+    put:
+      tags:
+      - update
+      summary: Update the in-force servicing mandate for a customer
+      operationId: UpdateServicingMandateAgreementCustomerTerms
+      produces:
+      - application/json
+      parameters:
+      - name: cr-reference-id
+        in: path
+        description: Servicing Mandate Agreement Reference
+        type: string
+        required: true
+      - name: bq-reference-id
+        in: path
+        description: Servicing Mandate Agreement Customer Product/Service Profile Reference
+        type: string
+        required: true
+      - name: body
+        in: body
+        description: Update Customer Terms Behavior Qualifier request payload
+        required: true
+        schema:
+          $ref: '#/definitions/CustomerTermsBase'
+      responses:
+        200:
+          description: Successfully updated Customer Terms behavior qualifier
+          schema:
+            $ref: '#/definitions/CustomerTermsBaseWithIdAndRoot'
+
+  /servicing-mandate/servicing-mandate-agreement/{cr-reference-id}/customer-terms/evaluation:
+    post:
+      tags:
+      - evaluate
+      summary:  Evaluate if a proposed action is covered by a servicing mandate
+      operationId: EvaluateServicingMandateAgreementCustomerTerms
+      produces:
+      - application/json
+      parameters:
+      - name: cr-reference-id
+        in: path
+        description: Servicing Mandate Agreement Reference
+        type: string
+        required: true
+      - name: body
+        in: body
+        description: Evaluate Customer Terms request payload
+        required: true
+        schema:
+          $ref: '#/definitions/CustomerTermsBase'
+      responses:
+        200:
+          description: Successfully evaluated Customer Terms
+          schema:
+            $ref: '#/definitions/CustomerTermsBaseWithIdAndRoot'
+
+  /servicing-mandate/servicing-mandate-agreement/{cr-reference-id}/requisition:
+    put:
+      tags:
+      - request
+      summary: Request that the servicing mandate is reviewed/refreshed
+      operationId: requestServicingMandateAgreement
+      produces:
+      - application/json
+      parameters:
+      - name: cr-reference-id
+        in: path
+        description: Servicing Mandate Agreement Reference
+        type: string
+        required: true
+      responses:
+        200:
+          description: Successfully refreshed Servicing Mandate Agreement
+          schema:
+            $ref: '#/definitions/ServicingMandateRefreshResponse'
+
+definitions:
+  AgreementBase:
+    type: object
+    properties:
+      servicingMandateAgreementRecord:
+        type: object
+        description: |
+          generalInfo: all listed terms combined for the complete agreement record
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+      partyReference:
+        type: string
+        example: PR9873
+        description: |
+          generalInfo: reference to the party granted the servicing mandate - a service provider
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      servicingMandateAgreementType:
+        type: string
+        example: PSD2
+        description: |
+          generalInfo: allows for different categories of third party mandates
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      servicingMandateAgreementJurisdiction:
+        type: string
+        description: |
+          generalInfo: defines the geographic coverage/scope
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      servicingMandateAgreementValidFromToDate:
+        type: string
+        example: "01/01/2016 - 06/01/2018"
+        description: |
+          generalInfo: the commencement and term/duration of the agreement
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Duration
+      servicingMandateAgreementSignaturesResponsibleParties:
+        type: string
+        description: |
+          generalInfo: authorities and interested parties
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      documentReference:
+        type: string
+        example: DR973
+        description: |
+          generalInfo: filed documents pertaining to the agreement
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      servicingMandateAgreementProductServiceProfileReference:
+        type: string
+        example: PSP07331
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      servicingMandateAgreementProductServiceProfile:
+        type: string
+        description: |
+          generalInfo: the is the overarching product/service access profile permitted under the mandate
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      productServiceType:
+        type: string
+        example: credit card
+        description: |
+          generalInfo: defines all available products/services
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      servicingMandateAgreementProductServiceTypeEligibility:
+        type: string
+        description: |
+          generalInfo: defines if and under what terms a product/service is accessable under the mandate
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+  AgreementBaseWithId:
+    type: object
+    properties:
+      servicingMandateAgreementReference:
+        type: string
+        example: SMA1234
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      servicingMandateAgreementRecord:
+        type: object
+        description: |
+          generalInfo: all listed terms combined for the complete agreement record
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+      partyReference:
+        type: string
+        example: PR9873
+        description: |
+          generalInfo: reference to the party granted the servicing mandate - a service provider
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      servicingMandateAgreementType:
+        type: string
+        example: PSD2
+        description: |
+          generalInfo: allows for different categories of third party mandates
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      servicingMandateAgreementJurisdiction:
+        type: string
+        description: |
+          generalInfo: defines the geographic coverage/scope
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      servicingMandateAgreementValidFromToDate:
+        type: string
+        example: "01/01/2016 - 06/01/2018"
+        description: |
+          generalInfo: the commencement and term/duration of the agreement
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Duration
+      servicingMandateAgreementSignaturesResponsibleParties:
+        type: string
+        description: |
+          generalInfo: authorities and interested parties
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      documentReference:
+        type: string
+        example: DR973
+        description: |
+          generalInfo: filed documents pertaining to the agreement
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      servicingMandateAgreementProductServiceProfileReference:
+        type: string
+        example: PSP07331
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      servicingMandateAgreementProductServiceProfile:
+        type: string
+        description: |
+          generalInfo: the is the overarching product/service access profile permitted under the mandate
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      productServiceType:
+        type: string
+        example: credit card
+        description: |
+          generalInfo: defines all available products/services
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      servicingMandateAgreementProductServiceTypeEligibility:
+        type: string
+        description: |
+          generalInfo: defines if and under what terms a product/service is accessable under the mandate
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+  CustomerTermsBase:
+    type: object
+    description: details the specific servicing mandate terms applicable to an individual customer
+    properties:
+      customerReference:
+        type: string
+        example: CR93278
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      servicingMandateAgreementRecord:
+        type: object
+        description: |
+          generalInfo: all listed terms combined for the complete agreement record
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+      servicingMandateAgreementCustomerProductServiceProfile:
+        type: string
+        description: |
+          generalInfo: this details the specific customer access allowed under the mandate
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      productServiceType:
+        type: string
+        example: credit card
+        description: |
+          generalInfo: defines all available products/services
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      servicingMandateAgreementCustomerProductServiceTypeAccess:
+        type: string
+        description: |
+          generalInfo: defines if and under what terms a product/service can be accessed for this customer under the mandate
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      servicingMandateAgreementCustomerProductServiceTypeUsage:
+        type: string
+        description: |
+          generalInfo: records the usage of products/service under the mandate for control purposes
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+    
+  CustomerTermsBaseWithIdAndRoot:
+    type: object
+    description: details the specific servicing mandate terms applicable to an individual customer
+    properties:
+      servicingMandateAgreementCustomerProductServiceProfileReference:
+        type: string
+        example: CPSP734
+        description: |
+          generalInfo: refers to the terms in force for a specific customer covered by the mandate
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      customerReference:
+        type: string
+        example: CR93278
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      servicingMandateAgreementReference:
+        type: string
+        example: SMA1234
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      servicingMandateAgreementRecord:
+        type: object
+        description: |
+          generalInfo: all listed terms combined for the complete agreement record
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+      servicingMandateAgreementCustomerProductServiceProfile:
+        type: string
+        description: |
+          generalInfo: this details the specific customer access allowed under the mandate
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      productServiceType:
+        type: string
+        example: credit card
+        description: |
+          generalInfo: defines all available products/services
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      servicingMandateAgreementCustomerProductServiceTypeAccess:
+        type: string
+        description: |
+          generalInfo: defines if and under what terms a product/service can be accessed for this customer under the mandate
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      servicingMandateAgreementCustomerProductServiceTypeUsage:
+        type: string
+        description: |
+          generalInfo: records the usage of products/service under the mandate for control purposes
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+  
+  ServicingMandateRefreshResponse:
+    type: object
+    properties:
+      refreshStatus:
+        type: string
+        example: Refreshed
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text

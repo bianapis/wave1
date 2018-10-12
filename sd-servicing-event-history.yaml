@@ -1,0 +1,1095 @@
+swagger: '2.0'
+info:
+  version: "4.0.0"
+  title: 'Service Domain - Servicing Event History'
+  description: >
+
+        ## Description: 
+      
+        This service domain captures, classifies and stores servicing activity and events to support root cause analysis.
+
+        ## Example of use:
+        
+        A servicing contact is concluded and the contact details and result is captured. In cases the call is recorded.
+        
+        ## General comment:
+        
+        The Servicing Event History service domain captures the details of servicing activity to support root cause analysis. The information captured can include summary details of the servicing activity, product access details and click-stream/voice records as necessary. The captured detail can be analyzed for staff assessment and training and to support procedural refinements.
+
+# Added by API Auto Mocking Plugin
+host: virtserver.swaggerhub.com
+basePath: /BIAN/sd-servicing-event-history/4.0.0
+
+schemes:
+ - https
+
+paths:
+
+  /servicing-event-history/servicing-event-log/:
+    get:
+      tags: 
+      - retrieve
+      operationId: RetrieveServicingEventHistoryReferenceIds
+      summary: "Retrieve Servicing Event History Control Record Ids available."
+      produces: 
+      - application/json
+      parameters: 
+      - name : collection-filter
+        in: query
+        description: Filter to refine the result set. ex- "employeeBusinessUnitReference == 'EBR76345'"
+        type: string 
+      responses:
+        200:
+          description: successful
+          schema:
+            type: array
+            items:
+              type: string
+            example: [EHR123, EHR345]
+            
+  /servicing-event-history/servicing-event-log/behavior-qualifiers/:
+    get:
+      tags: 
+      - retrieve
+      operationId: RetrieveServicingEventHistoryBehaviorQualifiers
+      summary: "Retrieve all Behaviour Qualifier names."
+      produces: 
+      - application/json
+      responses:
+        200:
+          description: successful
+          schema:
+            type: array
+            items:
+              type: string
+            example: [assignment, session, issue, facility] 
+            
+  /servicing-event-history/servicing-event-log/{cr-reference-id}/{behavior-qualifier}/:
+    get:
+      tags: 
+      - retrieve
+      operationId: RetrieveBehaviorQualifierReferenceIds
+      summary: "Retrieve Behaviour Qualifier Reference Ids of the given Behavior Qulifier."
+      produces: 
+      - application/json
+      parameters: 
+      - name : cr-reference-id
+        in: path
+        description: Customer Servicing Activity Event History Reference
+        required: true
+        type: string
+      - name : behavior-qualifier
+        in: path
+        description: Behavior Qualifier Name. ex- facility
+        required: true
+        type: string
+      - name : collection-filter
+        in: query
+        description: Filter to refine the result set. ex- "servicingFacilityType == 'on-line help'"
+        type: string
+      responses:
+        200:
+          description: successful
+          schema:
+            type: array
+            items:
+              type: string
+            example: [SFRR345, SFRR789, SFRR456]
+
+  /servicing-event-history/servicing-event-log/{cr-reference-id}:
+    get:
+      tags: 
+      - retrieve
+      summary: "Retrieve Servicing event log reporting"
+      operationId: retrieveServicingEventLog
+      produces: 
+      - application/json
+      parameters:
+      - in: path
+        name: cr-reference-id
+        description: Customer Servicing Activity Event History Reference
+        type: string
+        required: true
+      responses:
+        200:
+          description: Successfully retrieved servicing event log
+          schema:
+            $ref: '#/definitions/ServicingEventHistoryResponse'
+
+  /servicing-event-history/servicing-event-log/{cr-reference-id}/assignments/{bq-reference-id}:
+    get:
+      tags: 
+      - retrieve
+      summary: "Retrieve servicing event log assignments"
+      operationId: retrieveServicingEventLogAssignment
+      produces: 
+      - application/json
+      parameters:
+      - in: path
+        name: cr-reference-id
+        description: Customer Servicing Activity Event History Reference
+        type: string
+        required: true
+      - in: path
+        name: bq-reference-id
+        description: Servicing Position Assignment Event Record Reference
+        type: string
+        required: true
+      responses:
+        200:
+          description: Successfully retrieved servicing event log assignments
+          schema:
+            $ref: '#/definitions/ServicingEventHistoryAssignmentWithIdAndRootResponse'
+
+  /servicing-event-history/servicing-event-log/{cr-reference-id}/sessions/{bq-reference-id}:
+    get:
+      tags: 
+      - retrieve
+      summary: "Retrieve servicing session event log"
+      operationId: retrieveServicingEventLogSession
+      produces: 
+      - application/json
+      parameters:
+      - in: path
+        name: cr-reference-id
+        description: Customer Servicing Activity Event History Reference
+        type: string
+        required: true
+      - in: path
+        name: bq-reference-id
+        description: Servicing Session Event Record Reference
+        type: string
+        required: true
+      responses:
+        200:
+          description: Successfully retrieved servicing session event log
+          schema:
+            $ref: '#/definitions/ServicingEventHistorySessionWithIdAndRootResponse'
+
+  /servicing-event-history/servicing-event-log/{cr-reference-id}/issues/{bq-reference-id}:
+    get:
+      tags: 
+      - retrieve
+      summary: "Retrieve servicing issue event log"
+      operationId: retrieveServicingEventIssuesLog
+      produces: 
+      - application/json
+      parameters:
+      - in: path
+        name: cr-reference-id
+        description: Customer Servicing Activity Event History Reference
+        type: string
+        required: true
+      - in: path
+        name: bq-reference-id
+        description: Servicing Session Issue Record Reference
+        type: string
+        required: true
+      responses:
+        200:
+          description: Successfully retrieved servicing event issues log
+          schema:
+            $ref: '#/definitions/ServicingEventHistoryIssuesWithIdAndRootResponse'
+
+  /servicing-event-history/servicing-event-log/{cr-reference-id}/facilities/{bq-reference-id}:
+    get:
+      tags: 
+      - retrieve
+      summary: "Retrieve details of access event to facilities available to the servicing position"
+      operationId: retrieveServicingEventLogFacility
+      produces: 
+      - application/json
+      parameters:
+      - in: path
+        name: cr-reference-id
+        description: Customer Servicing Activity Event History Reference
+        type: string
+        required: true
+      - name : bq-reference-id
+        in: path
+        description: Servicing Session Facility Use Record Reference
+        required: true
+        type: string
+      responses:
+        200:
+          description: Successfully retrieved details of access events to facilities available to the servicing position
+          schema:
+            $ref: '#/definitions/ServicingEventHistoryFacilityWithIdAndRootResponse'
+            
+  /servicing-event-history/servicing-event-log/{cr-reference-id}/facilities/recording:
+    post:
+      tags: 
+      - record
+      summary: "Record a Servicing utility/facility usage events"
+      operationId: recordServicingEventLogFacility
+      consumes: 
+      - application/json
+      produces: 
+      - application/json
+      parameters:
+      - in: path
+        name: cr-reference-id
+        description: Customer Servicing Activity Event History Reference
+        type: string
+        required: true
+      - in: body
+        name: body
+        description: facility usage event record request payload
+        required: true
+        schema: 
+          $ref: '#/definitions/ServicingEventHistoryFacilityRecordRequest'
+      responses:
+        201:
+          description: Successfully created facility usage event
+          schema:
+            $ref: '#/definitions/ServicingEventHistoryFacilityRecordResponse'
+
+  /servicing-event-history/servicing-event-log/{cr-reference-id}/issues/recording:
+    post:
+      tags: 
+      - record
+      summary: "Record a servicing issue event"
+      operationId: recordServicingEventLogIssues
+      consumes: 
+      - application/json
+      produces: 
+      - application/json
+      parameters:
+      - in: path
+        name: cr-reference-id
+        description: Customer Servicing Activity Event History Reference
+        type: string
+        required: true
+      - in: body
+        name: body
+        description: Servicing issue event record payload
+        required: true
+        schema: 
+          $ref: '#/definitions/ServicingEventHistoryIssueRecordRequest'
+      responses:
+        201:
+          description: Successfully created servicing issue events record
+          schema:
+            $ref: '#/definitions/ServicingEventHistoryIssueRecordResponse'
+
+  /servicing-event-history/servicing-event-log/{cr-reference-id}/sessions/recording:
+    post:
+      tags: 
+      - record
+      summary: "Record Servicing session results/events"
+      operationId: recordServicingEventLogSession
+      consumes: 
+      - application/json
+      produces: 
+      - application/json
+      parameters:
+      - in: path
+        name: cr-reference-id
+        description: Customer Servicing Activity Event History Reference
+        type: string
+        required: true
+      - in: body
+        name: body
+        description:  Servicing session results/events request payload
+        required: true
+        schema: 
+          $ref: '#/definitions/ServicingEventHistorySessionRecordRequest'
+      responses:
+        201:
+          description: Successfully created servicing session events record
+          schema:
+            $ref: '#/definitions/ServicingEventHistorySessionRecordResponse'
+
+  /servicing-event-history/servicing-event-log/{cr-reference-id}/assignments/recording:
+    post:
+      tags: 
+      - record
+      summary: "Record Servicing position assignment events"
+      operationId: recordServicingEventLogAssignment
+      consumes: 
+      - application/json
+      produces: 
+      - application/json
+      parameters:
+      - in: path
+        name: cr-reference-id
+        description: Customer Servicing Activity Event History Reference
+        type: string
+        required: true
+      - in: body
+        name: body
+        description: Record Servicing position assignment events payload
+        required: true
+        schema: 
+          $ref: '#/definitions/ServicingEventHistoryAssignmentRecordRequest'
+      responses:
+        201:
+          description: Successfully created Servicing position assignment event record 
+          schema:
+            $ref: '#/definitions/ServicingEventHistoryAssignmentRecordResponse'
+            
+  /servicing-event-history/servicing-event-log/{cr-reference-id}/updation:
+    put:
+      tags: 
+      - update
+      summary: "Update servicing log records"
+      operationId: updateServicingEventLog
+      consumes: 
+      - application/json
+      produces: 
+      - application/json
+      parameters:
+      - in: path
+        name: cr-reference-id
+        description: Customer Servicing Activity Event History Reference
+        type: string
+        required: true
+      - in: body
+        name: body
+        description: Update servicing log record request payload
+        required: true
+        schema: 
+          $ref: '#/definitions/ServicingEventHistoryUpdateRequest'
+      responses:
+        200:
+          description: Successfully updated servicing event log
+          schema:
+            $ref: '#/definitions/ServicingEventHistoryResponse'
+            
+definitions:
+  ServicingEventHistoryResponse:
+    type: object
+    properties:
+      customerServicingActivityEventHistoryReference:
+        type: string
+        example: SAR7246245
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      servicingPositionReference:
+        type: string
+        example: L1234
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      employeeBusinessUnitReference:
+        type: string
+        example: EBU721345
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      customerServicingActivityEventHistoryRecord:
+        type: object
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+      customerServicingActivityEventHistoryReportType:
+        type: string
+        example: records extract
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      customerServicingActivityEventHistoryReportParameters:
+        type: string
+        example: period
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      customerServicingActivityEventHistoryReport:
+        type: object
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+  ServicingEventHistoryUpdateRequest:
+    type: object
+    properties:
+      servicingPositionReference:
+        type: string
+        example: SPR123
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      employeeBusinessUnitReference:
+        type: string
+        example: EBU721345
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      customerServicingActivityEventHistoryRecord:
+        type: object
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+      customerServicingActivityEventHistoryReportType:
+        type: string
+        example: records extract
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      parameters:
+        type: string
+        example: period
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      customerServicingActivityEventHistoryReport:
+        type: object
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+  ServicingEventHistoryAssignmentWithIdAndRootResponse:
+    type: object
+    properties:
+      servicingPositionAssignmentEventRecordReference:
+        type: string
+        example: SAER7246245
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      customerServicingActivityEventHistoryReference:
+        type: string
+        example: SAR723435
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      servicingPositionAssignmentEventRecord:
+        type: object
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+          general-info: the event record covering the assignment
+      servicingPositionReference:
+        type: string
+        example: L1234
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      servicingPositionSessionReference:
+        type: string
+        example: SPSR72345
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      employeeBusinessUnitReference:
+        type: string
+        example: EBU721345
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      dateTimeLocation:
+        type: string
+        example: "2020-11-22T22:00:00, Kolkata"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      servicingPositionActivityReport:
+        type: object
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+          general-info: log of servicing activity
+      servicingPositionActivityStatistics: 
+        type: string
+        example: wait time
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+  ServicingEventHistoryAssignmentRecordRequest:
+    type: object
+    properties:
+      servicingPositionAssignmentEventRecord:
+        type: object
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+          general-info: the event record covering the assignment
+      servicingPositionReference:
+        type: string
+        example: L1234
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      servicingPositionSessionReference:
+        type: string
+        example: SPSR72345
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      employeeBusinessUnitReference:
+        type: string
+        example: EBU721345
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      dateTimeLocation:
+        type: string
+        example: "2020-11-22T22:00:00, Kolkata"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      servicingPositionActivityReport:
+        type: object
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+          general-info: log of servicing activity
+      servicingPositionActivityStatistics: 
+        type: string
+        example: wait time
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+
+  ServicingEventHistoryAssignmentRecordResponse:
+    type: object
+    properties:
+      servicingPositionAssignmentEventRecordReference:
+        type: string
+        example: SAER7246245
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      customerServicingActivityEventHistoryReference:
+        type: string
+        example: SAR723435
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      recordingRecordStatus:
+        type: string
+        example: Applied
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+        
+  ServicingEventHistorySessionWithIdAndRootResponse:
+    type: object
+    description: session activity events
+    properties:
+      servicingSessionEventRecordReference:
+        type: string
+        example: SSER7246245
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      customerServicingActivityEventHistoryReference:
+        type: string
+        example: SAR723435
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      servicingSessionEventRecord:
+        type: object
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+          general-info: the event record covering the customer servicing session
+      servicingPositionReference:
+        type: string
+        example: L1234
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      servicingPositionSessionReference:
+        type: string
+        example: SPSR72345
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      employeeBusinessUnitReference:
+        type: string
+        example: EBU721345
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      dateTimeLocation:
+        type: string
+        example: "2020-11-22T22:00:00, Kolkata"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      customerContactReference:
+        type: string
+        example: 456789003
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+          general-info: contact record reference for serviced customers during session
+      sessionMechanism:
+        type: string
+        example: phone
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      servicingFacilityType:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+          general-info: servicing facility used during the session
+        example: automatic
+      servicingFacilityInstanceReference:
+        type: string
+        example: 123025078
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+          general-info: record of any output or action generated using the facility
+      sessionStartEndTime:
+        type: string
+        example: "2020-12-20 23:02:56"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      contactDialogueRecord:
+        type: object
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+          general-info: session dialogue log of actions returned to SD-Contact Handler
+      contactDialogueType:
+        type: string
+        example: verified customer
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      contactDialogueScript:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+          general-info: a prompt provided to structure the interaction for self-service and assisted interactions
+      contactDialogueLogReference:
+        type: string
+        example: 456123489
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      contactDialogueLog:
+        type: string
+        example: click-stream
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+  ServicingEventHistorySessionRecordRequest:
+    type: object
+    description: session activity events
+    properties:
+      servicingSessionEventRecord:
+        type: object
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+          general-info: the event record covering the customer servicing session
+      servicingPositionReference:
+        type: string
+        example: L1234
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      servicingPositionSessionReference:
+        type: string
+        example: SPSR72345
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      employeeBusinessUnitReference:
+        type: string
+        example: EBU721345
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      dateTimeLocation:
+        type: string
+        example: "2020-11-22T22:00:00, Kolkata"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      servicingLogReference:
+        type: string
+        example: 456987123
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      customerContactReference:
+        type: string
+        example: 456789003
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+          general-info: contact record reference for serviced customers during session
+      sessionMechanism:
+        type: string
+        example: phone
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      servicingFacilityType:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+          general-info: servicing facility used during the session
+        example: automatic
+      servicingFacilityInstanceReference:
+        type: string
+        example: 123025078
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+          general-info: record of any output or action generated using the facility
+      sessionStartEndTime:
+        type: string
+        example: "2020-12-20 23:02:56"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      contactDialogueRecord:
+        type: object
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+          general-info: session dialogue log of actions returned to SD-Contact Handler
+      contactDialogueType:
+        type: string
+        example: verified customer
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      contactDialogueScript:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+          general-info: a prompt provided to structure the interaction for self-service and assisted interactions
+      contactDialogueLogReference:
+        type: string
+        example: 456123489
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      contactDialogueLog:
+        type: string
+        example: click-stream
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+
+  ServicingEventHistorySessionRecordResponse:
+    type: object
+    description: session activity events
+    properties:
+      servicingSessionEventRecordReference:
+        type: string
+        example: SSER7246245
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      customerServicingActivityEventHistoryReference:
+        type: string
+        example: SAR723435
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      recordingRecordStatus:
+        type: string
+        example: Applied
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+
+  ServicingEventHistoryIssuesWithIdAndRootResponse:
+    type: object
+    description: servicing issue events
+    properties:
+      servicingSessionIssueRecordReference:
+        type: string
+        example: SAER7246245
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      customerServicingActivityEventHistoryReference:
+        type: string
+        example: SAR723435
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      servicingSessionIssueRecord:
+        type: object
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+          general-info: the event record covering the assignment
+      servicingPositionReference:
+        type: string
+        example: L1234
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      servicingPositionSessionReference:
+        type: string
+        example: SPSR72345
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      employeeBusinessUnitReference:
+        type: string
+        example: EBU721345
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      customerContactRecordReference:
+        type: string
+        example: 123054098
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+          general-info: customer contact where issue occurred
+      productionIssueType:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+          general-info: type of event or error being recorded
+        example: support facility failure
+      productionIssueDescription:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+          general-info: description of the event error
+        example: unexpected error during installation
+      productionIssueDiagnosis:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+          general-info: evaluation of the event cause and impact
+        example: several
+      productionIssueResolutionTask:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+          general-info: description of corrective action
+        example: there are no specifications
+      productionIssueRecord:
+        type: object
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+          general-info: detail of the issue, response and interested parties
+      productionIssueStatus:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+          general-info: tracking the state of resolution of a reported issue
+        example: registered
+  ServicingEventHistoryIssueRecordRequest:
+    type: object
+    description: servicing issue events
+    properties:
+      servicingSessionIssueRecord:
+        type: object
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+          general-info: the event record covering the assignment
+      servicingPositionReference:
+        type: string
+        example: L1234
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      servicingPositionSessionReference:
+        type: string
+        example: SPSR72345
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      employeeBusinessUnitReference:
+        type: string
+        example: EBU721345
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      customerContactRecordReference:
+        type: string
+        example: 123054098
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+          general-info: customer contact where issue occurred
+      productionIssueType:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+          general-info: type of event or error being recorded
+        example: support facility failure
+      productionIssueDescription:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+          general-info: description of the event error
+        example: unexpected error during installation
+      productionIssueDiagnosis:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+          general-info: evaluation of the event cause and impact
+        example: several
+      productionIssueResolutionTask:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+          general-info: description of corrective action
+        example: there are no specifications
+      productionIssueRecord:
+        type: object
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+          general-info: detail of the issue, response and interested parties
+      productionIssueStatus:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+          general-info: tracking the state of resolution of a reported issue
+        example: registered
+        
+  ServicingEventHistoryIssueRecordResponse:
+    type: object
+    description: servicing issue events
+    properties:
+      servicingSessionIssueRecordReference:
+        type: string
+        example: SAER7246245
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      customerServicingActivityEventHistoryReference:
+        type: string
+        example: SAR723435
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      recordingRecordStatus:
+        type: string
+        example: Applied
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+        
+  ServicingEventHistoryFacilityWithIdAndRootResponse:
+    type: object
+    description: details of facilities available to the servicing position
+    properties:
+      servicingSessionFacilityUseRecordReference:
+        type: string
+        example: SAFR7534
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      customerServicingActivityEventHistoryReference:
+        type: string
+        example: SAR723435
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      servicingSessionFacilityUseRecord:
+        type: object
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+          general-info: the event record covering the use of a supporting facility
+      servicingFacilityType:
+        type: string
+        example: commission tracking
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      servicingFacilityReference:
+        type: string
+        example: FR123456087
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+          general-info: access to facility
+      servicingFacilityInstanceReference:
+        type: string
+        example: FIR123474
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+          general-info: reference to the result of using the facility in a servicing session
+      servicingFacilityRecord:
+        type: object
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+          general-info: result of using the facility
+  ServicingEventHistoryFacilityRecordRequest:
+    type: object
+    properties:
+      servicingSessionFacilityUseRecord:
+        type: object
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+          general-info: the event record covering the use of a supporting facility
+      servicingFacilityType:
+        type: string
+        example: commission tracking
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      servicingFacilityReference:
+        type: string
+        example: FR123456087
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+          general-info: access to facility
+      servicingFacilityInstanceReference:
+        type: string
+        example: FIR123474
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+          general-info: reference to the result of using the facility in a servicing session
+      servicingFacilityRecord:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+          general-info: result of using the facility
+        example: commission transaction
+        
+  ServicingEventHistoryFacilityRecordResponse:
+    type: object
+    description: details of facilities available to the servicing position
+    properties:
+      servicingSessionFacilityUseRecordReference:
+        type: string
+        example: SAFR7534
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      customerServicingActivityEventHistoryReference:
+        type: string
+        example: SAR723435
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      recordingRecordStatus:
+        type: string
+        example: Applied
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text

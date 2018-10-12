@@ -1,0 +1,1528 @@
+swagger: '2.0'
+info:
+  version: "4.0.0"
+  title: 'Service Domain - Document Services'
+  description: >
+        ## Description: 
+      
+        This service domain captures, classifies, stores, maintains and retrieves any material document in any media as appropriate. It includes both electronic and physical distribution services
+      
+        ## Example of use:
+      
+        A legal significant document is created during product fulfillment. It is classified and stored for subsequent reference as may be required
+
+        ## General comment:
+      
+        This service domain handles the status tracking, classification, recording/copying (for all media) storage and retrieval of all active documents of significance. It can include document services that retrieve documents from external sources on request. This can combine physical but more commonly electronic storage, retrieval and distribution of important and/or legally significant documentation. It delegates to the service domain Archive Services for longer term storage needs
+        
+# Added by API Auto Mocking Plugin
+host: virtserver.swaggerhub.com
+basePath: /BIAN/sd-document-services/4.0.0
+# schemes:
+#  - http
+# Added by API Auto Mocking Plugin
+schemes:
+ - https
+ - http
+ 
+paths:
+
+  /document-services/document-handling-operating-session/:
+    get:
+      tags: 
+      - retrieve
+      summary: "Retrieve Document Services Control Record Ids available within the Service Domain."
+      operationId: retrieveDocumentServicesReferenceIds
+      produces: 
+      - application/json
+      parameters:
+      - name : collection-filter
+        in: query
+        description: "Filter to refine the result set. ex- 'documentServicesConfigurationSetup = DSCS123"
+        type: string
+      responses:
+        200:
+          description: "Retrieved document handling operating session ids"
+          schema:
+            type: array
+            items:
+              type: string
+            example: [DSSR3452, DSSR8821]
+  
+  /document-services/document-handling-operating-session/behavior-qualifiers/:
+    get:
+      tags: 
+      - retrieve
+      summary: "Retrieve all Behaviour Qualifier names in the Documet Services Service Domain."
+      operationId: retrieveDocumentServicesBehaviorQualifiers
+      produces: 
+      - application/json
+      responses:
+        200:
+          description: "Retrieved document handling operating session behavior qualifiers names"
+          schema:
+            type: array
+            items:
+              type: string
+            example: [capture, retrieval, amendment, verification, provisioning, archiving]
+  
+  /document-services/document-handling-operating-session/{cr-reference-id}/{behavior-qualifier}/:
+    get:
+      tags: 
+      - retrieve
+      summary: "Retrieve Behaviour Qualifier Reference Ids of the given Behavior Qulifier."
+      operationId: RetrieveBehaviorQualifierReferenceIds
+      produces: 
+      - application/json
+      parameters:
+      - in: path
+        name: cr-reference-id
+        description: "Document Services Session Reference"
+        type: string
+        required: true
+      - name : behavior-qualifier
+        in: path
+        description: Behavior Qualifier Name. ex- capture
+        required: true
+        type: string
+      - name : collection-filter
+        in: query
+        description: Filter to refine the result set. ex- 'locationReference = LR123'
+        type: string
+      responses:
+        200:
+          description: "Retrieved document handling operating session behavior qualifiers ids"
+          schema:
+            type: array
+            items:
+              type: string
+            example: [BQREFID1237, BQREFID4562, BQREFID7893]
+
+  /document-services/document-handling-operating-session/{cr-reference-id}:
+    get:
+      tags: 
+      - retrieve
+      summary: "Retrieve document handling operating session master control record data"
+      operationId: retrieveDocumentHandlingOperatingSession
+      produces: 
+      - application/json
+      parameters:
+      - in: path
+        type: string
+        required: true
+        name: cr-reference-id
+        description: "Document Services Session Reference"
+      responses:
+        200:
+          description: Successfully retrieved document handling operating session
+          schema:
+            $ref: '#/definitions/RetrieveDocumentServicesOperatingSession'
+            
+  /document-services/document-handling-operating-session/{cr-reference-id}/captures/{bq-reference-id}:
+    get:
+      tags: 
+      - retrieve
+      summary: "Retrieve Document Services capture"
+      operationId: retrieveDocumentHandlingOperatingSessionCapture
+      produces: 
+      - application/json
+      parameters:
+      - name: cr-reference-id
+        in: path
+        description: "Document Services Session Reference"
+        required: true
+        type: string
+      - name: bq-reference-id
+        in: path
+        description: "Document Capture Reference"
+        type: string
+        required: true
+      responses:
+        200:
+          description: Sucessfully retrieved document handling operating session capture
+          schema:
+            $ref: '#/definitions/DocumentServicesCaptureResponse'
+
+  /document-services/document-handling-operating-session/{cr-reference-id}/retrievals/{bq-reference-id}:
+    get:
+      tags: 
+      - retrieve
+      summary: "Retrieve document handling operating session retrieval"
+      operationId: retrieveDocumentHandlingOperatingSessionRetrieval
+      produces: 
+      - application/json
+      parameters:
+      - in: path
+        type: string
+        required: true
+        name: cr-reference-id
+        description: "Document Services Session Reference"
+      - in: path
+        type: string
+        required: true
+        name: bq-reference-id
+        description: "Document Retrieval Reference"
+      responses:
+        200:
+          description: Sucessfully retrieved document handling operating session retrieval
+          schema:
+            $ref: '#/definitions/DocumentServicesRetrievalResponse'
+
+  /document-services/document-handling-operating-session/{cr-reference-id}/amendments/{bq-reference-id}:
+    get:
+      tags: 
+      - retrieve
+      summary: "Retrieve document handling operating session amendment"
+      operationId: retrieveDocumentHandlingOperatingSessionAmendment
+      produces: 
+      - application/json
+      parameters:
+      - in: path
+        type: string
+        required: true
+        name: cr-reference-id
+        description: "Document Services Session Reference"
+      - in: path
+        type: string
+        required: true
+        name: bq-reference-id
+        description: "Document Amendment Reference"
+      responses:
+        200:
+          description: Successfully retrieved document handling operating session amendment
+          schema:
+            $ref: '#/definitions/DocumentServicesAmendmentResponse'
+
+  /document-services/document-handling-operating-session/{cr-reference-id}/verifications/{bq-reference-id}:
+    get:
+      tags: 
+      - retrieve
+      summary: "Retrieve document handling operating session verification"
+      operationId: retrieveDocumentHandlingOperatingSessioVerification
+      produces: 
+      - application/json
+      parameters:
+      - in: path
+        type: string
+        required: true
+        name: cr-reference-id
+        description: "Document Services Session Reference"
+      - in: path
+        type: string
+        required: true
+        name: bq-reference-id
+        description: "Document Verification Service Reference"
+      responses:
+        200:
+          description: Successfully Retrieved document handling operating session verification
+          schema:
+            $ref: '#/definitions/DocumentServicesVerificationResponse'
+
+  /document-services/document-handling-operating-session/{cr-reference-id}/provisionings/{bq-reference-id}:
+    get:
+      tags: 
+      - retrieve
+      summary: "Retrieve document handling operating session provisioning"
+      operationId: retrieveDocumentHandlingOperatingSessionProvisioning
+      produces: 
+      - application/json
+      parameters:
+      - in: path
+        type: string
+        required: true
+        name: cr-reference-id
+        description: "Document Services Session Reference"
+      - in: path
+        type: string
+        required: true
+        name: bq-reference-id
+        description: "Document Provisioning Service Reference"
+      responses:
+        200:
+          description: Successfully retrieved document handling operating session provisioning
+          schema:
+            $ref: '#/definitions/DocumentServicesProvisioningResponse'
+
+  /document-services/document-handling-operating-session/{cr-reference-id}/archivings/{bq-reference-id}:
+    get:
+      tags: 
+      - retrieve
+      summary: "Retrieve document handling operating session archiving"
+      operationId: retrieveDocumentHandlingOperatingSessionArchiving
+      produces: 
+      - application/json
+      parameters:
+      - in: path
+        type: string
+        required: true
+        name: cr-reference-id
+        description: "Document Services Session Reference"
+      - in: path
+        type: string
+        required: true
+        name: bq-reference-id
+        description: "Archived Document Storage Reference"
+      responses:
+        200:
+          description: Successfully retrieved document handling operating session archiving
+          schema:
+            $ref: '#/definitions/DocumentServicesArchivingResponse'
+            
+  /document-services/document-handling-operating-session/{cr-reference-id}/verifications/{bq-reference-id}/requisition:
+    put:
+      tags: 
+      - request
+      summary: "Update document handling operating session verification"
+      operationId: requestDocumentHandlingOperatingSessionUpdate
+      consumes: 
+      - application/json
+      produces: 
+      - application/json
+      parameters:
+      - in: path
+        type: string
+        required: true
+        name: cr-reference-id
+        description: "Document Services Session Reference"
+      - in: path
+        type: string
+        required: true
+        name: bq-reference-id
+        description: "Document Verification Service Reference"
+      - in: body
+        name: body
+        description: "Document Services verification request payload"
+        required: true
+        schema:
+          $ref: "#/definitions/DocumentServicesVerificationRequest"
+      responses:
+        200:
+          description: "Updated document handling operating session verification"
+          schema:
+            $ref: '#/definitions/DocumentServicesVerificationResponse'
+  
+  /document-services/document-handling-operating-session/{cr-reference-id}/verifications/requisition:
+    post:
+      tags: 
+      - request
+      summary: "Create document handling operating session verification"
+      operationId: requestDocumentHandlingOperatingSessionCreate
+      consumes: 
+      - application/json
+      produces: 
+      - application/json
+      parameters:
+      - in: path
+        type: string
+        required: true
+        name: cr-reference-id
+        description: "Document Services Session Reference"
+      - in: body
+        name: body
+        description: "Document Services verification request payload"
+        required: true
+        schema:
+          $ref: "#/definitions/DocumentServicesVerificationRequest"
+      responses:
+        201:
+          description: "Created document handling operating session verification"
+          schema:
+            $ref: '#/definitions/DocumentServicesVerificationResponse'
+
+  /document-services/document-handling-operating-session/{cr-reference-id}/provisionings/{bq-reference-id}/requisition:
+    put:
+      tags: 
+      - request
+      summary: "Update document handling operating session provisioning"
+      operationId: requestDocumentHandlingOperatingSessionProvisioningUpdate
+      consumes: 
+      - application/json
+      produces: 
+      - application/json
+      parameters:
+      - in: path
+        type: string
+        required: true
+        name: cr-reference-id
+        description: "Document Services Session Reference"
+      - in: path
+        type: string
+        required: true
+        name: bq-reference-id
+        description: "Document Provisioning Service Reference"
+      - in: body
+        name: body
+        description: "Document request data"
+        required: true
+        schema:
+          $ref: "#/definitions/DocumentServicesProvisioningRequest"
+      responses:
+        200:
+          description: "Updated document handling operating session provisioning"
+          schema:
+            $ref: '#/definitions/DocumentServicesProvisioningResponse'
+
+  /document-services/document-handling-operating-session/{cr-reference-id}/provisioning/requisition:
+    post:
+      tags: 
+      - request
+      summary: "Create document handling operating session provisioning"
+      operationId: requestDocumentHandlingOperatingSessionProvisioningCreate
+      consumes: 
+      - application/json
+      produces: 
+      - application/json
+      parameters:
+      - in: path
+        type: string
+        required: true
+        name: cr-reference-id
+        description: "Document Services Session Reference"
+      - in: body
+        name: body
+        description: "Document Services provisioning request payload"
+        required: true
+        schema:
+          $ref: "#/definitions/DocumentServicesProvisioningRequest"
+      responses:
+        201:
+          description: "Created document handling operating session provisioning"
+          schema:
+            $ref: '#/definitions/DocumentServicesProvisioningResponse'
+  
+  /document-services/document-handling-operating-session/{cr-reference-id}/captures/{bq-reference-id}/execution:
+    put:
+      tags: 
+      - execute
+      summary: "Update document handling operating session capture"
+      operationId: executeDocumentHandlingOperatingSessionCapture
+      consumes: 
+      - application/json
+      produces: 
+      - application/json
+      parameters:
+      - in: path
+        type: string
+        required: true
+        name: cr-reference-id
+        description: "Document Services Session Reference"
+      - in: path
+        type: string
+        required: true
+        name: bq-reference-id
+        description: "Document Capture Reference"
+      - in: body
+        name: body
+        description: "Document request data"
+        required: true
+        schema:
+          $ref: "#/definitions/DocumentServicesCaptureExecuteRequest"
+      responses:
+        200:
+          description: "Updated document handling operating session capture"
+          schema:
+            $ref: '#/definitions/DocumentServicesCaptureResponse'
+            
+  /document-services/document-handling-operating-session/{cr-reference-id}/captures/execution:
+    post:
+      tags: 
+      - execute
+      summary: "Create document handling operating session capture"
+      operationId: executeDocumentHandlingOperatingSessionCaptureCreate
+      consumes: 
+      - application/json
+      produces: 
+      - application/json
+      parameters:
+      - in: path
+        type: string
+        required: true
+        name: cr-reference-id
+        description: "Document Services Session Reference"
+      - in: body
+        name: body
+        description: "Document request data"
+        required: true
+        schema:
+          $ref: "#/definitions/DocumentServicesCaptureExecuteRequest"
+      responses:
+        201:
+          description: "Created document handling operating session capture"
+          schema:
+            $ref: '#/definitions/DocumentServicesCaptureResponse'
+  
+  /document-services/document-handling-operating-session/{cr-reference-id}/retrievals/{bq-reference-id}/execution:
+    put:
+      tags: 
+      - execute
+      summary: "Update document handling operating session retrieval"
+      operationId: executeDocumentHandlingOperatingSessionRetrievalUpdate
+      consumes: 
+      - application/json
+      produces: 
+      - application/json
+      parameters:
+      - in: path
+        type: string
+        required: true
+        name: cr-reference-id
+        description: "Document Services Session Reference"
+      - in: path
+        type: string
+        required: true
+        name: bq-reference-id
+        description: "Document Retrieval Reference"
+      - in: body
+        name: body
+        description: "Document request data"
+        required: true
+        schema:
+          $ref: "#/definitions/DocumentServicesRetrievalExecuteRequest"
+      responses:
+        200:
+          description: "Updated document handling operating session retrieval"
+          schema:
+            $ref: '#/definitions/DocumentServicesRetrievalResponse'
+            
+  /document-services/document-handling-operating-session/{cr-reference-id}/retrievals/execution:
+    post:
+      tags: 
+      - execute
+      summary: "Create document handling operating session retrieval"
+      operationId: executeDocumentHandlingOperatingSessionRetrievalCreate
+      consumes: 
+      - application/json
+      produces: 
+      - application/json
+      parameters:
+      - in: path
+        type: string
+        required: true
+        name: cr-reference-id
+        description: "Document Services Session Reference"
+      - in: body
+        name: body
+        description: "Document request data"
+        required: true
+        schema:
+          $ref: "#/definitions/DocumentServicesRetrievalExecuteRequest"
+      responses:
+        201:
+          description: "Created document handling operating session retrieval"
+          schema:
+            $ref: '#/definitions/DocumentServicesRetrievalResponse'
+            
+  /document-services/document-handling-operating-session/{cr-reference-id}/amendments/{bq-reference-id}/execution:
+    put:
+      tags: 
+      - execute
+      summary: "Update document handling operating session amendment"
+      operationId: executeDocumentHandlingOperatingSessionAmendmentUpdate
+      consumes: 
+      - application/json
+      produces: 
+      - application/json
+      parameters:
+      - in: path
+        type: string
+        required: true
+        name: cr-reference-id
+        description: "Document Services Session Reference"
+      - in: path
+        type: string
+        required: true
+        name: bq-reference-id
+        description: "Document Amendment Reference"
+      - in: body
+        name: body
+        description: "Document request data"
+        required: true
+        schema:
+          $ref: "#/definitions/DocumentServicesAmendmentExecuteRequest"
+      responses:
+        200:
+          description: "Updated document handling operating session amendment"
+          schema:
+            $ref: '#/definitions/DocumentServicesAmendmentResponse'
+            
+  /document-services/document-handling-operating-session/{cr-reference-id}/amendments/execution:
+    post:
+      tags: 
+      - execute
+      summary: "Create document handling operating session amendment"
+      operationId: executeDocumentHandlingOperatingSessionAmendmentCreate
+      consumes: 
+      - application/json
+      produces: 
+      - application/json
+      parameters:
+      - in: path
+        type: string
+        required: true
+        name: cr-reference-id
+        description: "Document Services Session Reference"
+      - in: body
+        name: body
+        description: "Document request data"
+        required: true
+        schema:
+          $ref: "#/definitions/DocumentServicesAmendmentExecuteRequest"
+      responses:
+        201:
+          description: "Created document handling operating session amendment"
+          schema:
+            $ref: '#/definitions/DocumentServicesAmendmentResponse'
+    
+  /document-services/document-handling-operating-session/{cr-reference-id}/recording:
+    post:
+      tags: 
+      - record
+      summary: "Record activity/feedback relating to document services activity"
+      operationId: recordDocumentHandlingOperatingSession
+      consumes: 
+      - application/json
+      produces: 
+      - application/json
+      parameters:
+      - in: path
+        type: string
+        required: true
+        name: cr-reference-id
+        description: "Document Services Session Reference"
+      - in: body
+        name: body
+        description: "Document record request payload"
+        required: true
+        schema:
+          $ref: "#/definitions/DocumentServicesRecordRequest"
+      responses:
+        201:
+          description: "Recorded document handling operating session"
+          schema:
+            $ref: '#/definitions/DocumentServicesRecordResponse'
+
+definitions:
+
+  RetrieveDocumentServicesOperatingSession:
+    type: object
+    properties:
+      documentServicesSessionReference:
+        type: string
+        example: DSSR8798
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: DocumentHandlingSession
+      documentServicesConfigurationSetup:
+        type: string
+        example: DSCS2323
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: DocumentHandlingSession.DocumentHandlingSystem(as System).AvailableOption
+
+  DocumentServicesCaptureResponse:
+    type: object
+    properties:
+      documentServicesSessionReference:
+        type: string
+        example: "DSSR32434"
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: DocumentHandlingSession
+      documentCaptureReference:
+        type: string
+        example: "DCR47438"
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: DocumentHandlingSession.NormalDocumentEvent.TriggeredDocumentHandlingAction
+      locationReference:
+        type: string
+        example: "documents/BIAN/V2/2.0.1"
+        description: |
+          `status: Registered`
+          iso-link: [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_FNET28TGEeChad0JzLk7QA_1924783636/elements/_FNNdxMTGEeChad0JzLk7QA_-339896662)
+          bian-reference: DocumentHandlingSession.NormalDocumentEvent.HandledDocument.PlaceOfIssue
+          general-info:  where document captured
+      businessUnitEmployeeReference:
+        type: string
+        example: "BUER4466558879"
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: DocumentHandlingSession.NormalDocumentEvent.HandledDocument.DocumentPartyRole(as DocumentCapturer).Player(as Person)
+          general-info:  who captured document
+      productServiceActivityReference:
+        type: string
+        example: "PSAR7788996632"
+        description: |
+          `status: Registered`
+          iso-link: [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_FNET28TGEeChad0JzLk7QA_1924783636/elements/_ftetAHO3EeO82qXU9yOWsg)
+          bian-reference: DocumentHandlingSession.NormalDocumentEvent.HandledDocument.Purpose
+          general-info:  why the document was captured
+      documentCaptureDateTime:
+        $ref: 'https://api.swaggerhub.com/domains/BIAN/Common-Model/1.0.0#/definitions/ISODate'
+      documentReference:
+        type: string
+        example: "DOCR446998551"
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: DocumentHandlingSession.NormalDocumentEvent.HandledDocument
+      documentSubjectReference:
+        type: string
+        example: "DSR456985214"
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: DocumentHandlingSession.NormalDocumentEvent.HandledDocument.Subject
+          general-info:  source or customer identification
+      documentProductServiceActionReference:
+        type: string
+        example: "DPSAR123456987"
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: DocumentHandlingSession.DocumentHandlingSystem.SupportedProduct
+      documentTypeDescription:
+        type: string
+        example: "Text"
+        description: |
+          `status: Registered`
+          iso-link-1: [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_FNET28TGEeChad0JzLk7QA_1924783636/elements/_FNNdw8TGEeChad0JzLk7QA_-209473937)
+          bian-reference: DocumentHandlingSession.NormalDocumentEvent.HandledDocument.Type
+          `status: Registered`
+          iso-link-2: [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_FNET28TGEeChad0JzLk7QA_1924783636/elements/_ftetAHO3EeO82qXU9yOWsg)
+          bian-reference: DocumentHandlingSession.NormalDocumentEvent.HandledDocument.Purpose
+          general-info:  document type or description 
+      documentMediaFormat:
+        type: string
+        example: "JPEG"
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: DocumentHandlingSession.NormalDocumentEvent.HandledDocument.Presentation.Format
+          `status: Registered`
+          iso-link-2: [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_9lOqonltEeG7BsjMvd1mEw_-1685162102/elements/_prF7MLbpEeGAapiw3IODVw_2145476732)
+          bian-reference: DocumentHandlingSession.NormalDocumentEvent.HandledDocument.Presentation.Medium
+          general-info:  document media or format
+      documentVersionValueDate:
+        type: string
+        example: "V-2.0.0"
+        description: |
+          `status: Registered`
+          iso-link-1: [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_FNET28TGEeChad0JzLk7QA_1924783636/elements/_IPGLYHQsEeKIFpWttHerUA_-1289671010)
+          bian-reference: DocumentHandlingSession.NormalDocumentEvent.HandledDocument.PreviousVersion
+          `status: Provisionally Registered`
+          bian-reference: DocumentHandlingSession.NormalDocumentEvent.HandledDocument.ValueDate
+          general-info:  Document version or date 
+      documentUpdateHistory:
+        type: string
+        example: "/documents/BIAN/V1/1.0.0, /documents/BIAN/V1/1.0.1, /documents/BIAN/V1/1.1.0"
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: DocumentHandlingSession.NormalDocumentEvent.HandledDocument.PreviousVersion
+          general-info:  links to earlier versions
+      documentLocation:
+        type: string
+        example: "/documents/BIAN/V2/2.0.1"
+        description: |
+          `status: Registered`
+          iso-link: [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_FNET28TGEeChad0JzLk7QA_1924783636/elements/_FNNdyMTGEeChad0JzLk7QA_189871564)
+          bian-reference: DocumentHandlingSession.NormalDocumentEvent.HandledDocument.PlaceOfStorage
+          general-info:  physical master version and copies
+      documentStatus:
+        type: string
+        example: "AUTHENTICATED"
+        description: |
+          `status: Registered`
+          iso-link: [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_FNET28TGEeChad0JzLk7QA_1924783636/elements/_FNNdwcTGEeChad0JzLk7QA_-1077516966)
+          bian-reference: DocumentHandlingSession.NormalDocumentEvent.HandledDocument.Status
+      documentContent:
+        type: object
+        description: |
+          `status: Registered`
+          iso-link-1: [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_FNET28TGEeChad0JzLk7QA_1924783636/elements/_5fkf4XRYEeO82qXU9yOWsg)
+          bian-reference: DocumentHandlingSession.NormalDocumentEvent.HandledDocument.DocumentIdentification
+          iso-link-2: [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_FNET28TGEeChad0JzLk7QA_1924783636/elements/_FNNdxMTGEeChad0JzLk7QA_-339896662)
+          bian-reference: DocumentHandlingSession.NormalDocumentEvent.HandledDocument.PlaceOfIssue
+          general-info:  "Document content"
+
+  DocumentServicesRetrievalResponse:
+    type: object
+    properties:
+      documentServicesSessionReference:
+        type: string
+        example: "4466558879"
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: DocumentHandlingSession
+      documentRetrievalReference:
+        type: string
+        example: "865479245"
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: DocumentHandlingSession.NormalDocumentEvent.TriggeredDocumentHandlingAction
+      serviceRequestorReference:
+        type: string
+        example: "446998551"
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: DocumentHandlingSession.NormalDocumentEvent.TriggeredDocumentHandlingAction(as Action).RoleInAction(as ServiceRequestor)
+      documentReference:
+        type: string
+        example: "446998551"
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: DocumentHandlingSession.NormalDocumentEvent.HandledDocument
+      documentSubjectReference:
+        type: string
+        example: "456985214"
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: DocumentHandlingSession.NormalDocumentEvent.HandledDocument.Subject
+          general-info:  source or customer identification
+      documentProductServiceActionReference:
+        type: string
+        example: "123456987"
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: DocumentHandlingSession.DocumentHandlingSystem.SupportedProduct
+      documentTypeDescription:
+        type: string
+        example: "Text"
+        description: |
+          `status: Registered`
+          iso-link-1: [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_FNET28TGEeChad0JzLk7QA_1924783636/elements/_FNNdw8TGEeChad0JzLk7QA_-209473937)
+          bian-reference: DocumentHandlingSession.NormalDocumentEvent.HandledDocument.Type
+          `status: Registered`
+          iso-link-2: [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_FNET28TGEeChad0JzLk7QA_1924783636/elements/_ftetAHO3EeO82qXU9yOWsg)
+          bian-reference: DocumentHandlingSession.NormalDocumentEvent.HandledDocument.Purpose
+          general-info:  document type or description 
+      documentMediaFormat:
+        type: string
+        example: "JPEG"
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: DocumentHandlingSession.NormalDocumentEvent.HandledDocument.Presentation.Format
+          `status: Registered`
+          iso-link-2: [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_9lOqonltEeG7BsjMvd1mEw_-1685162102/elements/_prF7MLbpEeGAapiw3IODVw_2145476732)
+          bian-reference: DocumentHandlingSession.NormalDocumentEvent.HandledDocument.Presentation.Medium
+          general-info:  document media or format
+      documentVersionValueDate:
+        type: string
+        example: "V-2.0.0"
+        description: |
+          `status: Registered`
+          iso-link-1: [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_FNET28TGEeChad0JzLk7QA_1924783636/elements/_IPGLYHQsEeKIFpWttHerUA_-1289671010)
+          bian-reference: DocumentHandlingSession.NormalDocumentEvent.HandledDocument.PreviousVersion
+          `status: Provisionally Registered`
+          bian-reference: DocumentHandlingSession.NormalDocumentEvent.HandledDocument.ValueDate
+          general-info:  Document version or date 
+      documentUpdateHistory:
+        type: string
+        example: "/documents/BIAN/V1/1.0.0, /documents/BIAN/V1/1.0.1, /documents/BIAN/V1/1.1.0"
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: DocumentHandlingSession.NormalDocumentEvent.HandledDocument.PreviousVersion
+          general-info:  links to earlier versions
+      documentLocation:
+        type: string
+        example: "/documents/BIAN/V2/2.0.0"
+        description: |
+          `status: Registered`
+          iso-link: [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_FNET28TGEeChad0JzLk7QA_1924783636/elements/_FNNdyMTGEeChad0JzLk7QA_189871564)
+          bian-reference: DocumentHandlingSession.NormalDocumentEvent.HandledDocument.PlaceOfStorage
+          general-info:  physical master version and copies
+      documentStatus:
+        type: string
+        example: "AUTHENTICATED"
+        description: |
+          `status: Registered`
+          iso-link: [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_FNET28TGEeChad0JzLk7QA_1924783636/elements/_FNNdwcTGEeChad0JzLk7QA_-1077516966)
+          bian-reference: DocumentHandlingSession.NormalDocumentEvent.HandledDocument.Status
+      documentContent:
+        type: object
+        description: |
+          `status: Registered`
+          iso-link-1: [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_FNET28TGEeChad0JzLk7QA_1924783636/elements/_5fkf4XRYEeO82qXU9yOWsg)
+          bian-reference: DocumentHandlingSession.NormalDocumentEvent.HandledDocument.DocumentIdentification
+          iso-link-2: [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_FNET28TGEeChad0JzLk7QA_1924783636/elements/_FNNdxMTGEeChad0JzLk7QA_-339896662)
+          bian-reference: DocumentHandlingSession.NormalDocumentEvent.HandledDocument.PlaceOfIssue
+          general-info:  "Document content"
+
+  DocumentServicesAmendmentResponse:
+    type: object
+    properties:
+      documentServicesSessionReference:
+        type: string
+        example: "4466558879"
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: DocumentHandlingSession
+      documentAmendmentReference:
+        type: string
+        example: "456987123"
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: DocumentHandlingSession.NormalDocumentEvent.TriggeredDocumentHandlingAction
+      documentReference:
+        type: string
+        example: "446998551"
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: DocumentHandlingSession.NormalDocumentEvent.HandledDocument
+      documentAmendmentDescription:
+        type: string
+        example: "Modification of new requirements"
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: DocumentHandlingSession.NormalDocumentEvent.TriggeredDocumentHandlingAction(as Action).Description
+          general-info:  Document amendment 
+      documentVersionValueDate:
+        type: string
+        example: "V-2.0.0"
+        description: |
+          `status: Registered`
+          iso-link-1: [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_FNET28TGEeChad0JzLk7QA_1924783636/elements/_IPGLYHQsEeKIFpWttHerUA_-1289671010)
+          bian-reference: DocumentHandlingSession.NormalDocumentEvent.HandledDocument.PreviousVersion
+          `status: Provisionally Registered`
+          bian-reference: DocumentHandlingSession.NormalDocumentEvent.HandledDocument.ValueDate
+          general-info:  Document version or date 
+      documentUpdateHistory:
+        type: string
+        example: "/documents/BIAN/V1/1.0.0, /documents/BIAN/V1/1.0.1, /documents/BIAN/V1/1.1.0"
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: DocumentHandlingSession.NormalDocumentEvent.HandledDocument.PreviousVersion
+          general-info:  links to earlier versions
+      documentStatus:
+        type: string
+        example: "AUTHENTICATED"
+        description: |
+          `status: Registered`
+          iso-link: [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_FNET28TGEeChad0JzLk7QA_1924783636/elements/_FNNdwcTGEeChad0JzLk7QA_-1077516966)
+          bian-reference: DocumentHandlingSession.NormalDocumentEvent.HandledDocument.Status
+      documentContent:
+        type: object
+        description: |
+          `status: Registered`
+          iso-link-1: [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_FNET28TGEeChad0JzLk7QA_1924783636/elements/_5fkf4XRYEeO82qXU9yOWsg)
+          bian-reference: DocumentHandlingSession.NormalDocumentEvent.HandledDocument.DocumentIdentification
+          iso-link-2: [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_FNET28TGEeChad0JzLk7QA_1924783636/elements/_FNNdxMTGEeChad0JzLk7QA_-339896662)
+          bian-reference: DocumentHandlingSession.NormalDocumentEvent.HandledDocument.PlaceOfIssue
+          general-info:  "Document content"
+      documentAmendmentResult:
+        type: object
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: DocumentHandlingSession.NormalDocumentEvent.TriggeredDocumentHandlingAction(As Action).Result
+          general-info:  "Document amendment result"
+
+  DocumentServicesVerificationResponse:
+    type: object
+    properties:
+      documentServicesSessionReference:
+        type: string
+        example: "4466558879"
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: DocumentHandlingSession
+      documentVerificationServiceReference:
+        type: string
+        example: "456124481"
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: DocumentHandlingSession.NormalDocumentEvent.TriggeredDocumentHandlingAction
+      documentReference:
+        type: string
+        example: "DR123"
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: DocumentHandlingSession.NormalDocumentEvent.HandledDocument
+      documentVerificationType:
+        type: string
+        example: "UPDATE"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+          general-info:  document verification type
+      documentVerificationServiceProviderReference:
+        type: string
+        example: "456124481"
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: DocumentHandlingSession.NormalDocumentEvent.TriggeredDocumentHandlingAction(as Action).RoleInAction(as ServiceRequestor)
+          general-info:  if external agent used
+      documentStatus:
+        type: string
+        example: "VERIFIED"
+        description: |
+          `status: Registered`
+          iso-link: [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_FNET28TGEeChad0JzLk7QA_1924783636/elements/_FNNdwcTGEeChad0JzLk7QA_-1077516966)
+          bian-reference: DocumentHandlingSession.NormalDocumentEvent.HandledDocument.Status
+          general-info:  update verification status
+      documentVerificationResult:
+        type: string
+        example: "approved"
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: DocumentHandlingSession.NormalDocumentEvent.TriggeredDocumentHandlingAction(As Action).Result
+          general-info:  Document verification result
+
+  DocumentServicesProvisioningResponse:
+    type: object
+    properties:
+      documentServicesSessionReference:
+        type: string
+        example: "DSSR58879"
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: DocumentHandlingSession
+      documentProvisioningServiceReference:
+        type: string
+        example: "DPSR32000"
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: DocumentHandlingSession.NormalDocumentEvent.TriggeredDocumentHandlingAction
+      documentReference:
+        type: string
+        example: "DR123"
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: DocumentHandlingSession.NormalDocumentEvent.HandledDocument
+      documentProvisioningTimeLimit:
+        $ref: 'https://api.swaggerhub.com/domains/BIAN/Common-Model/1.0.0#/definitions/ISODateTime'
+      customerReference:
+        type: string
+        example: "CR3745142"
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: DocumentHandlingSession.NormalDocumentEvent.TriggeredDocumentHandlingAction(as Action).RoleInAction(as ServiceRequestor)
+          general-info:  source of requested document
+      documentProductServiceActionReference:
+        type: string
+        example: "123456987"
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: DocumentHandlingSession.DocumentHandlingSystem.SupportedProduct
+          general-info:  document product or service action reference, if appropriate
+      documentTypeDescription:
+        type: string
+        example: "Text"
+        description: |
+          `status: Registered`
+          iso-link-1: [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_FNET28TGEeChad0JzLk7QA_1924783636/elements/_FNNdw8TGEeChad0JzLk7QA_-209473937)
+          bian-reference: DocumentHandlingSession.NormalDocumentEvent.HandledDocument.Type
+          `status: Registered`
+          iso-link-2: [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_FNET28TGEeChad0JzLk7QA_1924783636/elements/_ftetAHO3EeO82qXU9yOWsg)
+          bian-reference: DocumentHandlingSession.NormalDocumentEvent.HandledDocument.Purpose
+          general-info:  document type or description 
+      documentMediaFormat:
+        type: string
+        example: "JPEG"
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: DocumentHandlingSession.NormalDocumentEvent.HandledDocument.Presentation.Format
+          `status: Registered`
+          iso-link-2: [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_9lOqonltEeG7BsjMvd1mEw_-1685162102/elements/_prF7MLbpEeGAapiw3IODVw_2145476732)
+          bian-reference: DocumentHandlingSession.NormalDocumentEvent.HandledDocument.Presentation.Medium
+          general-info:  document media or format
+      documentVersionValueDate:
+        type: string
+        example: "V-2.0.0"
+        description: |
+          `status: Registered`
+          iso-link-1: [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_FNET28TGEeChad0JzLk7QA_1924783636/elements/_IPGLYHQsEeKIFpWttHerUA_-1289671010)
+          bian-reference: DocumentHandlingSession.NormalDocumentEvent.HandledDocument.PreviousVersion
+          `status: Provisionally Registered`
+          bian-reference: DocumentHandlingSession.NormalDocumentEvent.HandledDocument.ValueDate
+          general-info:  Document version or date 
+      documentLocation:
+        type: string
+        example: "/documents/BIAN/V2/2.0.0"
+        description: |
+          `status: Registered`
+          iso-link: [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_FNET28TGEeChad0JzLk7QA_1924783636/elements/_FNNdyMTGEeChad0JzLk7QA_189871564)
+          bian-reference: DocumentHandlingSession.NormalDocumentEvent.HandledDocument.PlaceOfStorage
+          general-info:  physical master version and copies
+      documentStatus:
+        type: string
+        example: "AUTHENTICATED"
+        description: |
+          `status: Registered`
+          iso-link: [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_FNET28TGEeChad0JzLk7QA_1924783636/elements/_FNNdwcTGEeChad0JzLk7QA_-1077516966)
+          bian-reference: DocumentHandlingSession.NormalDocumentEvent.HandledDocument.Status
+      documentContent:
+        type: object
+        description: |
+          `status: Registered`
+          iso-link-1: [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_FNET28TGEeChad0JzLk7QA_1924783636/elements/_5fkf4XRYEeO82qXU9yOWsg)
+          bian-reference: DocumentHandlingSession.NormalDocumentEvent.HandledDocument.DocumentIdentification
+          iso-link-2: [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_FNET28TGEeChad0JzLk7QA_1924783636/elements/_FNNdxMTGEeChad0JzLk7QA_-339896662)
+          bian-reference: DocumentHandlingSession.NormalDocumentEvent.HandledDocument.PlaceOfIssue
+          general-info:  "Document content"
+      documentProvisioningServiceResult:
+        type: string
+        example: "Success"
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: DocumentHandlingSession.NormalDocumentEvent.TriggeredDocumentHandlingAction(As Action).Result
+
+  DocumentServicesArchivingResponse:
+    type: object
+    properties:
+      documentServicesSessionReference:
+        type: string
+        example: "DSSR58879"
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: DocumentHandlingSession
+      documentArchivingConfiguration:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+          general-info:  "Set-up or locations"
+      documentArchivingSchedule:
+        type: string
+        example: "0 15 15 ? * *"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+          general-info:  timing based on document type
+      documentReference:
+        type: string
+        example: "DOCR124481"
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: DocumentHandlingSession.NormalDocumentEvent.HandledDocument
+      documentLocation:
+        type: string
+        example: "/documents/BIAN/V2/2.0.0"
+        description: |
+          `status: Registered`
+          iso-link: [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_FNET28TGEeChad0JzLk7QA_1924783636/elements/_FNNdyMTGEeChad0JzLk7QA_189871564)
+          bian-reference: DocumentHandlingSession.NormalDocumentEvent.HandledDocument.PlaceOfStorage
+      documentStatus:
+        type: string
+        example: "finished"
+        description: |
+          `status: Registered`
+          iso-link: [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_FNET28TGEeChad0JzLk7QA_1924783636/elements/_FNNdwcTGEeChad0JzLk7QA_-1077516966)
+          bian-reference: DocumentHandlingSession.NormalDocumentEvent.HandledDocument.Status
+      archivedDocumentStorageReference:
+        type: string
+        example: "456132023"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+
+  DocumentServicesVerificationRequest:
+    type: object
+    properties:
+      documentReference:
+        type: string
+        example: DR123 
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: DocumentHandlingSession.NormalDocumentEvent.HandledDocument
+      documentVerificationType:
+        type: string
+        example: "UPDATE"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+          general-info:  document verification type
+      documentVerificationServiceProviderReference:
+        type: string
+        example: "456124481"
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: DocumentHandlingSession.NormalDocumentEvent.TriggeredDocumentHandlingAction(as Action).RoleInAction(as ServiceRequestor)
+          general-info:  if external agent used
+      documentStatus:
+        type: string
+        example: "PENDING"
+        description: |
+          `status: Registered`
+          iso-link: [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_FNET28TGEeChad0JzLk7QA_1924783636/elements/_FNNdwcTGEeChad0JzLk7QA_-1077516966)
+          bian-reference: DocumentHandlingSession.NormalDocumentEvent.HandledDocument.Status
+          general-info:  update verification status
+      documentVerificationResult:
+        type: string
+        example: "PENDING"
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: DocumentHandlingSession.NormalDocumentEvent.TriggeredDocumentHandlingAction(As Action).Result
+          general-info:  Document verification result
+
+  DocumentServicesProvisioningRequest:
+    type: object
+    properties:
+      documentReference:
+        type: string
+        example: "446998551"
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: DocumentHandlingSession.NormalDocumentEvent.HandledDocument
+      documentProvisioningTimeLimit:
+        $ref: 'https://api.swaggerhub.com/domains/BIAN/Common-Model/1.0.0#/definitions/ISODateTime'
+      customerReference:
+        type: string
+        example: "378163745142"
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: DocumentHandlingSession.NormalDocumentEvent.TriggeredDocumentHandlingAction(as Action).RoleInAction(as ServiceRequestor)
+          general-info:  source of requested document
+      documentProductServiceActionReference:
+        type: string
+        example: "123456987"
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: DocumentHandlingSession.DocumentHandlingSystem.SupportedProduct
+          general-info:  document product or service action reference
+      documentTypeDescription:
+        type: string
+        example: "Text"
+        description: |
+          `status: Registered`
+          iso-link-1: [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_FNET28TGEeChad0JzLk7QA_1924783636/elements/_FNNdw8TGEeChad0JzLk7QA_-209473937)
+          bian-reference: DocumentHandlingSession.NormalDocumentEvent.HandledDocument.Type
+          `status: Registered`
+          iso-link-2: [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_FNET28TGEeChad0JzLk7QA_1924783636/elements/_ftetAHO3EeO82qXU9yOWsg)
+          bian-reference: DocumentHandlingSession.NormalDocumentEvent.HandledDocument.Purpose
+          general-info:  document type or description 
+      documentMediaFormat:
+        type: string
+        example: "JPEG"
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: DocumentHandlingSession.NormalDocumentEvent.HandledDocument.Presentation.Format
+          `status: Registered`
+          iso-link-2: [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_9lOqonltEeG7BsjMvd1mEw_-1685162102/elements/_prF7MLbpEeGAapiw3IODVw_2145476732)
+          bian-reference: DocumentHandlingSession.NormalDocumentEvent.HandledDocument.Presentation.Medium
+          general-info:  document media or format
+      documentVersionValueDate:
+        type: string
+        example: "V-2.0.0"
+        description: |
+          `status: Registered`
+          iso-link-1: [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_FNET28TGEeChad0JzLk7QA_1924783636/elements/_IPGLYHQsEeKIFpWttHerUA_-1289671010)
+          bian-reference: DocumentHandlingSession.NormalDocumentEvent.HandledDocument.PreviousVersion
+          `status: Provisionally Registered`
+          bian-reference: DocumentHandlingSession.NormalDocumentEvent.HandledDocument.ValueDate
+          general-info:  Document version or date  
+      documentLocation:
+        type: string
+        example: "/documents/BIAN/V2/2.0.0"
+        description: |
+          `status: Registered`
+          iso-link: [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_FNET28TGEeChad0JzLk7QA_1924783636/elements/_FNNdyMTGEeChad0JzLk7QA_189871564)
+          bian-reference: DocumentHandlingSession.NormalDocumentEvent.HandledDocument.PlaceOfStorage
+          general-info:  physical master version and copies
+      documentStatus:
+        type: string
+        example: "AUTHENTICATED"
+        description: |
+          `status: Registered`
+          iso-link: [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_FNET28TGEeChad0JzLk7QA_1924783636/elements/_FNNdwcTGEeChad0JzLk7QA_-1077516966)
+          bian-reference: DocumentHandlingSession.NormalDocumentEvent.HandledDocument.Status
+      documentContent:
+        type: object
+        description: |
+          `status: Registered`
+          iso-link-1: [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_FNET28TGEeChad0JzLk7QA_1924783636/elements/_5fkf4XRYEeO82qXU9yOWsg)
+          bian-reference: DocumentHandlingSession.NormalDocumentEvent.HandledDocument.DocumentIdentification
+          iso-link-2: [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_FNET28TGEeChad0JzLk7QA_1924783636/elements/_FNNdxMTGEeChad0JzLk7QA_-339896662)
+          bian-reference: DocumentHandlingSession.NormalDocumentEvent.HandledDocument.PlaceOfIssue
+          general-info:  "Document content"
+      documentProvisioningServiceResult:
+        type: string
+        example: "Success"
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: DocumentHandlingSession.NormalDocumentEvent.TriggeredDocumentHandlingAction(As Action).Result
+
+  DocumentServicesCaptureExecuteRequest:
+    type: object
+    properties:
+      locationReference:
+        type: string
+        example: "/documents/BIAN/V2/2.0.0"
+        description: |
+          `status: Registered`
+          iso-link: [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_FNET28TGEeChad0JzLk7QA_1924783636/elements/_FNNdxMTGEeChad0JzLk7QA_-339896662)
+          bian-reference: DocumentHandlingSession.NormalDocumentEvent.HandledDocument.PlaceOfIssue
+          general-info:  where document captured
+      businessUnitEmployeeReference:
+        type: string
+        example: "4466558879"
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: DocumentHandlingSession.NormalDocumentEvent.HandledDocument.DocumentPartyRole(as DocumentCapturer).Player(as Person)
+          general-info:  who captured document
+      productServiceActivityReference:
+        type: string
+        example: "PSAR7788996632"
+        description: |
+          `status: Registered`
+          iso-link: [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_FNET28TGEeChad0JzLk7QA_1924783636/elements/_ftetAHO3EeO82qXU9yOWsg)
+          bian-reference: DocumentHandlingSession.NormalDocumentEvent.HandledDocument.Purpose
+          general-info:  why the document was captured
+      documentCaptureDateTime:
+        $ref: 'https://api.swaggerhub.com/domains/BIAN/Common-Model/1.0.0#/definitions/ISODateTime'
+      documentSubjectReference:
+        type: string
+        example: "456985214"
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: DocumentHandlingSession.NormalDocumentEvent.HandledDocument.Subject
+          general-info:  source or customer identification
+      documentProductServiceActionReference:
+        type: string
+        example: "123456987"
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: DocumentHandlingSession.DocumentHandlingSystem.SupportedProduct
+      documentTypeDescription:
+        type: string
+        example: "Text"
+        description: |
+          `status: Registered`
+          iso-link-1: [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_FNET28TGEeChad0JzLk7QA_1924783636/elements/_FNNdw8TGEeChad0JzLk7QA_-209473937)
+          bian-reference: DocumentHandlingSession.NormalDocumentEvent.HandledDocument.Type
+          `status: Registered`
+          iso-link-2: [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_FNET28TGEeChad0JzLk7QA_1924783636/elements/_ftetAHO3EeO82qXU9yOWsg)
+          bian-reference: DocumentHandlingSession.NormalDocumentEvent.HandledDocument.Purpose
+          general-info:  document type or description 
+      documentMediaFormat:
+        type: string
+        example: "JPEG"
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: DocumentHandlingSession.NormalDocumentEvent.HandledDocument.Presentation.Format
+          `status: Registered`
+          iso-link-2: [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_9lOqonltEeG7BsjMvd1mEw_-1685162102/elements/_prF7MLbpEeGAapiw3IODVw_2145476732)
+          bian-reference: DocumentHandlingSession.NormalDocumentEvent.HandledDocument.Presentation.Medium
+          general-info:  document media or format
+      documentVersionValueDate:
+        type: string
+        example: "V-2.0.0"
+        description: |
+          `status: Registered`
+          iso-link-1: [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_FNET28TGEeChad0JzLk7QA_1924783636/elements/_IPGLYHQsEeKIFpWttHerUA_-1289671010)
+          bian-reference: DocumentHandlingSession.NormalDocumentEvent.HandledDocument.PreviousVersion
+          `status: Provisionally Registered`
+          bian-reference: DocumentHandlingSession.NormalDocumentEvent.HandledDocument.ValueDate
+          general-info:  Document version or date  
+      documentUpdateHistory:
+        type: string
+        example: "/documents/BIAN/V1/1.0.0, /documents/BIAN/V1/1.0.1, /documents/BIAN/V1/1.1.0"
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: DocumentHandlingSession.NormalDocumentEvent.HandledDocument.PreviousVersion
+          general-info:  links to earlier versions
+      documentLocation:
+        type: string
+        example: "/documents/BIAN/V2/2.0.0"
+        description: |
+          `status: Registered`
+          iso-link: [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_FNET28TGEeChad0JzLk7QA_1924783636/elements/_FNNdyMTGEeChad0JzLk7QA_189871564)
+          bian-reference: DocumentHandlingSession.NormalDocumentEvent.HandledDocument.PlaceOfStorage
+          general-info:  physical master version and copies
+      documentStatus:
+        type: string
+        example: "AUTHENTICATED"
+        description: |
+          `status: Registered`
+          iso-link: [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_FNET28TGEeChad0JzLk7QA_1924783636/elements/_FNNdwcTGEeChad0JzLk7QA_-1077516966)
+          bian-reference: DocumentHandlingSession.NormalDocumentEvent.HandledDocument.Status
+      documentContent:
+        type: object
+        description: |
+          `status: Registered`
+          iso-link-1: [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_FNET28TGEeChad0JzLk7QA_1924783636/elements/_5fkf4XRYEeO82qXU9yOWsg)
+          bian-reference: DocumentHandlingSession.NormalDocumentEvent.HandledDocument.DocumentIdentification
+          iso-link-2: [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_FNET28TGEeChad0JzLk7QA_1924783636/elements/_FNNdxMTGEeChad0JzLk7QA_-339896662)
+          bian-reference: DocumentHandlingSession.NormalDocumentEvent.HandledDocument.PlaceOfIssue
+          general-info:  "Document content"
+
+  DocumentServicesRetrievalExecuteRequest:
+    type: object
+    properties:
+      serviceRequestorReference:
+        type: string
+        example: "446998551"
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: DocumentHandlingSession.NormalDocumentEvent.TriggeredDocumentHandlingAction(as Action).RoleInAction(as ServiceRequestor)
+      documentReference:
+        type: string
+        example: "446998551"
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: DocumentHandlingSession.NormalDocumentEvent.HandledDocument
+      documentSubjectReference:
+        type: string
+        example: "456985214"
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: DocumentHandlingSession.NormalDocumentEvent.HandledDocument.Subject
+          general-info:  source or customer identification
+      documentProductServiceActionReference:
+        type: string
+        example: "123456987"
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: DocumentHandlingSession.DocumentHandlingSystem.SupportedProduct
+      documentTypeDescription:
+        type: string
+        example: "Text"
+        description: |
+          `status: Registered`
+          iso-link-1: [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_FNET28TGEeChad0JzLk7QA_1924783636/elements/_FNNdw8TGEeChad0JzLk7QA_-209473937)
+          bian-reference: DocumentHandlingSession.NormalDocumentEvent.HandledDocument.Type
+          `status: Registered`
+          iso-link-2: [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_FNET28TGEeChad0JzLk7QA_1924783636/elements/_ftetAHO3EeO82qXU9yOWsg)
+          bian-reference: DocumentHandlingSession.NormalDocumentEvent.HandledDocument.Purpose
+          general-info:  document type or description 
+      documentMediaFormat:
+        type: string
+        example: "JPEG"
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: DocumentHandlingSession.NormalDocumentEvent.HandledDocument.Presentation.Format
+          `status: Registered`
+          iso-link-2: [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_9lOqonltEeG7BsjMvd1mEw_-1685162102/elements/_prF7MLbpEeGAapiw3IODVw_2145476732)
+          bian-reference: DocumentHandlingSession.NormalDocumentEvent.HandledDocument.Presentation.Medium
+          general-info:  document media or format
+      documentVersionValueDate:
+        type: string
+        example: "V-2.0.0"
+        description: |
+          `status: Registered`
+          iso-link-1: [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_FNET28TGEeChad0JzLk7QA_1924783636/elements/_IPGLYHQsEeKIFpWttHerUA_-1289671010)
+          bian-reference: DocumentHandlingSession.NormalDocumentEvent.HandledDocument.PreviousVersion
+          `status: Provisionally Registered`
+          bian-reference: DocumentHandlingSession.NormalDocumentEvent.HandledDocument.ValueDate
+          general-info:  Document version or date 
+      documentUpdateHistory:
+        type: string
+        example: "/documents/BIAN/V1/1.0.0, /documents/BIAN/V1/1.0.1, /documents/BIAN/V1/1.1.0"
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: DocumentHandlingSession.NormalDocumentEvent.HandledDocument.PreviousVersion
+          general-info:  links to earlier versions
+      documentLocation:
+        type: string
+        example: "/documents/BIAN/V2/2.0.0"
+        description: |
+          `status: Registered`
+          iso-link: [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_FNET28TGEeChad0JzLk7QA_1924783636/elements/_FNNdyMTGEeChad0JzLk7QA_189871564)
+          bian-reference: DocumentHandlingSession.NormalDocumentEvent.HandledDocument.PlaceOfStorage
+          general-info:  physical master version and copies
+      documentStatus:
+        type: string
+        example: "AUTHENTICATED"
+        description: |
+          `status: Registered`
+          iso-link: [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_FNET28TGEeChad0JzLk7QA_1924783636/elements/_FNNdwcTGEeChad0JzLk7QA_-1077516966)
+          bian-reference: DocumentHandlingSession.NormalDocumentEvent.HandledDocument.Status
+      documentContent:
+        type: object
+        description: |
+          `status: Registered`
+          iso-link-1: [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_FNET28TGEeChad0JzLk7QA_1924783636/elements/_5fkf4XRYEeO82qXU9yOWsg)
+          bian-reference: DocumentHandlingSession.NormalDocumentEvent.HandledDocument.DocumentIdentification
+          iso-link-2: [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_FNET28TGEeChad0JzLk7QA_1924783636/elements/_FNNdxMTGEeChad0JzLk7QA_-339896662)
+          bian-reference: DocumentHandlingSession.NormalDocumentEvent.HandledDocument.PlaceOfIssue
+          general-info:  "Document content"
+
+  DocumentServicesAmendmentExecuteRequest:
+    type: object
+    properties:
+      documentReference:
+        type: string
+        example: "446998551"
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: DocumentHandlingSession.NormalDocumentEvent.HandledDocument
+      documentAmendmentDescription:
+        type: string
+        example: "Modification of new requirements"
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: DocumentHandlingSession.NormalDocumentEvent.TriggeredDocumentHandlingAction(as Action).Description
+          general-info:  Document amendment 
+      documentVersionValueDate:
+        type: string
+        example: "V-2.0.0"
+        description: |
+          `status: Registered`
+          iso-link-1: [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_FNET28TGEeChad0JzLk7QA_1924783636/elements/_IPGLYHQsEeKIFpWttHerUA_-1289671010)
+          bian-reference: DocumentHandlingSession.NormalDocumentEvent.HandledDocument.PreviousVersion
+          `status: Provisionally Registered`
+          bian-reference: DocumentHandlingSession.NormalDocumentEvent.HandledDocument.ValueDate
+          general-info:  Document version or date 
+      documentUpdateHistory:
+        type: string
+        example: "/documents/BIAN/V1/1.0.0, /documents/BIAN/V1/1.0.1, /documents/BIAN/V1/1.1.0"
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: DocumentHandlingSession.NormalDocumentEvent.HandledDocument.PreviousVersion
+          general-info:  links to earlier versions
+      documentStatus:
+        type: string
+        example: "AUTHENTICATED"
+        description: |
+          `status: Registered`
+          iso-link: [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_FNET28TGEeChad0JzLk7QA_1924783636/elements/_FNNdwcTGEeChad0JzLk7QA_-1077516966)
+          bian-reference: DocumentHandlingSession.NormalDocumentEvent.HandledDocument.Status
+      documentContent:
+        type: object
+        description: |
+          `status: Registered`
+          iso-link-1: [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_FNET28TGEeChad0JzLk7QA_1924783636/elements/_5fkf4XRYEeO82qXU9yOWsg)
+          bian-reference: DocumentHandlingSession.NormalDocumentEvent.HandledDocument.DocumentIdentification
+          iso-link-2: [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_FNET28TGEeChad0JzLk7QA_1924783636/elements/_FNNdxMTGEeChad0JzLk7QA_-339896662)
+          bian-reference: DocumentHandlingSession.NormalDocumentEvent.HandledDocument.PlaceOfIssue
+          general-info:  "Document content"
+      documentAmendmentResult:
+        type: object
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: DocumentHandlingSession.NormalDocumentEvent.TriggeredDocumentHandlingAction(As Action).Result
+          general-info:  "Document amendment result"
+
+  DocumentServicesRecordRequest:
+    type: object
+    properties:
+      recordingRecordType:
+        type: string
+        example: "BehaviorModelPerformanceFeedback"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      recordingRecord:
+        type: object
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+      recordingRecordDateTime:
+        $ref: 'https://api.swaggerhub.com/domains/BIAN/Common-Model/1.0.0#/definitions/ISODateTime'
+      empolyeeBusinessUnitReference:
+        type: string
+        example: "EBUR6798"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+
+  DocumentServicesRecordResponse:
+    type: object
+    properties:
+      recordingRecordReference:
+        type: string
+        example: "CRRR3456"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      recordingRecordStatus:
+        type: string
+        example: "Applied"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text

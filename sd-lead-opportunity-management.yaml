@@ -1,0 +1,1246 @@
+swagger: '2.0'
+info:
+  version: "4.0.0"
+  title: 'Service Domain - Lead/Opportunity Management'
+  description: >
+        ## Description:
+
+        Capture, classify and track a sales lead with an established client for additional priducts or services.
+
+        ## Example of use:
+
+        A lead is identified during a customer servicing interaction and the lead captured for subsequent follow-up
+
+        ## General comment:
+
+        This service domain provides a resource to capture and progress identified lead/opportunities that may arise during customer relationship development, sales, servicing and fulfillment interactions
+
+host: virtserver.swaggerhub.com
+basePath: /BIAN/sd-lead-opportunity-management/2.0.0
+schemes:
+ - https
+paths:
+  /lead-opportunity-management/lead-opportunity-procedure/{cr-reference-id}/updation:
+    put:
+      tags:
+      - update
+      operationId: UpdateLeadOpportunity
+      summary: Update a Lead/Opportunity record
+      produces:
+      - application/json
+      parameters:
+      - name : cr-reference-id
+        in: path
+        description: Lead/Opportunity Reference
+        required: true
+        type: string
+      - in: body
+        name: body
+        description: Update control record request payload
+        required: true
+        schema:
+          $ref: '#/definitions/Update'
+      responses:
+        200:
+          description: Successfully Updated
+          schema:
+            $ref: '#/definitions/UpdateWithIds'
+
+  /lead-opportunity-management/lead-opportunity-procedure/{cr-reference-id}/developments/recording:
+    post:
+      tags:
+      - record
+      operationId: RecordLeadOpportunity
+      summary: Record activity/feedback against a lead/opportunity
+      produces:
+      - application/json
+      parameters:
+      - name : cr-reference-id
+        in: path
+        description: Lead/Opportunity Development Task Reference
+        required: true
+        type: string
+      - in: body
+        name: body
+        description: Record control record request payload
+        required: true
+        schema:
+          $ref: '#/definitions/Development'
+      responses:
+        201:
+          description: A new Record is created
+          schema:
+            $ref: '#/definitions/DevelopmentRecordWithIds'
+
+  /lead-opportunity-management/lead-opportunity-procedure/{cr-reference-id}/captures/execution:
+    post:
+        tags:
+        - execute
+        operationId: ExecuteLeadOpportunityCreate
+        summary: Execute an automation for a Lead/Opportunity
+        produces:
+        - application/json
+        parameters:
+        - name : cr-reference-id
+          in: path
+          description: Lead/Opportunity Development Task Reference
+          required: true
+          type: string
+        - in: body
+          name: body
+          description: Execute lead/opportunity request payload
+          required: true
+          schema:
+            $ref: '#/definitions/CaptureBase'
+        responses:
+          201:
+            description: successful
+            schema:
+              $ref: '#/definitions/CaptureBaseWithStatusAndIds'
+
+  /lead-opportunity-management/lead-opportunity-procedure/{cr-reference-id}/captures/{bq-reference-id}/execution:
+    put:
+      tags:
+      - execute
+      operationId: ExecuteLeadOpportunityUpdate
+      summary: Execute an automation for a Lead/Opportunity
+      produces:
+      - application/json
+      parameters:
+      - name : cr-reference-id
+        in: path
+        description: Lead/Opportunity Reference
+        required: true
+        type: string
+      - name : bq-reference-id
+        in: path
+        description: Lead/Opportunity Capture Task Reference
+        required: true
+        type: string
+      - in: body
+        name: body
+        description: Execute lead/opportunity request payload
+        required: true
+        schema:
+          $ref: '#/definitions/CaptureBaseWithStatus'
+      responses:
+        200:
+          description: successful
+          schema:
+            $ref: '#/definitions/CaptureBaseWithStatusAndIds'
+
+  /lead-opportunity-management/lead-opportunity-procedure/{cr-reference-id}/captures/requisition:
+    post:
+      tags:
+      - request
+      operationId: requestLeadOpportunityProcedureCapturePost
+      description: Create a new Lead/Opportunity capture
+      summary: Request a workstep on a Capture
+      produces:
+      - application/json
+      parameters:
+      - name : cr-reference-id
+        in: path
+        description: Lead/Opportunity Reference
+        required: true
+        type: string
+      - in: body
+        name: body
+        description: Request standing order request payload
+        required: true
+        schema:
+          $ref: '#/definitions/CaptureBase'
+      responses:
+        201:
+          description: successful
+          schema:
+            $ref: '#/definitions/CaptureBaseWithStatusAndIds'
+
+  /lead-opportunity-management/lead-opportunity-procedure/{cr-reference-id}/captures/{bq-reference-id}/requisition:
+    put:
+      tags:
+      - request
+      operationId: requestLeadOpportunityProcedureCapturePut
+      description: Update an exising Lead/Opportunity capture
+      summary: Request a workstep on a Capture
+      produces:
+      - application/json
+      parameters:
+      - name : cr-reference-id
+        in: path
+        description: Lead/Opportunity Reference
+        required: true
+        type: string
+      - name : bq-reference-id
+        in: path
+        description: Lead/Opportunity Capture Task Reference
+        required: true
+        type: string
+      - in: body
+        name: body
+        description: Request standing order request payload
+        required: true
+        schema:
+          $ref: '#/definitions/CaptureBaseWithStatus'
+      responses:
+        200:
+          description: successful
+          schema:
+            $ref: '#/definitions/CaptureBaseWithStatusAndIds'
+
+  /lead-opportunity-management/lead-opportunity-procedure/{cr-reference-id}/assignments/requisition:
+    post:
+      tags:
+      - request
+      operationId: requestLead/OpportunityProcedureAssignmentPost
+      description: Create an exising Lead/Opportunity assignments
+      summary: Request a workstep on an Assignment
+      produces:
+      - application/json
+      parameters:
+      - name : cr-reference-id
+        in: path
+        description: Lead/Opportunity Reference
+        required: true
+        type: string
+      - in: body
+        name: body
+        description: Request standing order request payload
+        required: true
+        schema:
+          $ref: '#/definitions/Assignment'
+      responses:
+        201:
+          description: successful
+          schema:
+            $ref: '#/definitions/AssignmentWithStatusAndIds'
+
+  /lead-opportunity-management/lead-opportunity-procedure/{cr-reference-id}/assignments/{bq-reference-id}/requisition:
+    put:
+      tags:
+      - request
+      operationId: OpportunityProcedureAssignmentPut
+      description: Update an exising Lead/Opportunity assignments
+      summary: Request a workstep on an Assignment
+      produces:
+      - application/json
+      parameters:
+      - name : cr-reference-id
+        in: path
+        description: Lead/Opportunity Reference
+        required: true
+        type: string
+      - name : bq-reference-id
+        in: path
+        description: Lead/Opportunity Capture Task Reference
+        required: true
+        type: string
+      - in: body
+        name: body
+        description: Request standing order request payload
+        required: true
+        schema:
+          $ref: '#/definitions/AssignmentWithStatus'
+      responses:
+        200:
+          description: successful
+          schema:
+            $ref: '#/definitions/AssignmentWithStatusAndIds'
+            
+  /lead-opportunity-management/lead-opportunity-procedure/:
+    get:
+      tags: 
+      - retrieve
+      operationId: RetrieveLeadOpportunityProcedureReferenceIds
+      summary: Retrieve Lead/Opportunity cr-reference-ids
+      produces: 
+      - application/json
+      parameters: 
+      - name : collection-filter
+        in: query
+        description: Filter to refine the result set. ex- 'customerReference = CR2345' 
+        type: string 
+      responses:
+        200:
+          description: Successfully retrieved
+          schema:
+            type: array
+            items:
+              type: string
+            example: [CR56735, CR6743]
+            
+  /lead-opportunity-management/lead-opportunity-procedure/behavior-qualifiers/:
+    get:
+      tags: 
+      - retrieve
+      operationId: RetrieveLeadOpportunityProcedureBehaviorQualifiers
+      summary: Retrieve Behavior Qualifier Names
+      produces: 
+      - application/json
+      responses:
+        200:
+          description: Successfully retrieved
+          schema:
+            type: array
+            items:
+              type: string
+            example: [Capture, Development, Assignment, Update, Reporting]
+
+  /lead-opportunity-management/lead-opportunity-procedure/{cr-reference-id}/{behavior-qualifier}/:
+    get:
+      tags: 
+      - retrieve
+      operationId: RetrieveBehaviorQualifierReferenceIds
+      summary: Retrieve bq-reference-ids
+      produces: 
+      - application/json
+      parameters: 
+      - name : cr-reference-id
+        in: path
+        description: Lead/Opportunity Reference
+        required: true
+        type: string
+      - name : behavior-qualifier
+        in: path
+        description: Behavior Qualifier Name
+        required: true
+        type: string
+      - name : collection-filter
+        in: query
+        description: Filter to refine the result set. ex- 'customerCampaignType = t'
+        type: string
+      responses:
+        200:
+          description: successful
+          schema:
+            type: array
+            items:
+              type: string
+            example: [BQID346, BQID346346, BQID3456746, BQID434]
+            
+  /lead-opportunity-management/lead-opportunity-procedure/{cr-reference-id}:
+    get:
+      tags:
+      - retrieve
+      operationId: RetrieveLeadOpportunity
+      summary: Retrieve Lead/Opportunity
+      produces:
+      - application/json
+      parameters:
+      - name : cr-reference-id
+        in: path
+        description: Lead/Opportunity Reference
+        required: true
+        type: string
+      responses:
+        200:
+          description: successful
+          schema:
+            $ref: '#/definitions/LeadOpportunityWithIds'
+
+  /lead-opportunity-management/lead-opportunity-procedure/{cr-reference-id}/captures/{bq-reference-id}:
+    get:
+      tags:
+      - retrieve
+      operationId: RetrieveCapture
+      summary: Retrieve Capture behavior qualifier
+      produces:
+      - application/json
+      parameters:
+      - name : cr-reference-id
+        in: path
+        description: Lead/Opportunity Reference
+        required: true
+        type: string
+      - name : bq-reference-id
+        in: path
+        description: Lead/Opportunity Capture Task Reference
+        required: true
+        type: string
+      responses:
+        200:
+          description: Successfully Retrieved
+          schema:
+            $ref: '#/definitions/CaptureBaseWithStatusAndIds'
+
+  /lead-opportunity-management/lead-opportunity-procedure/{cr-reference-id}/developments/{bq-reference-id}:
+    get:
+      tags:
+      - retrieve
+      operationId: RetrieveDevelopment
+      summary: Retrieve Development behavior qualifier
+      produces:
+      - application/json
+      parameters:
+      - name : cr-reference-id
+        in: path
+        description: Lead/Opportunity Reference
+        required: true
+        type: string
+      - name : bq-reference-id
+        in: path
+        description: Lead/Opportunity Development Task Reference
+        required: true
+        type: string
+      responses:
+        200:
+          description: Successfully Retrieved
+          schema:
+            $ref: '#/definitions/DevelopmentWithIds'
+
+  /lead-opportunity-management/lead-opportunity-procedure/{cr-reference-id}/assignments/{bq-reference-id}:
+    get:
+      tags:
+      - retrieve
+      operationId: RetrieveAssignment
+      summary: Retrieve Assignment behavior qualifier
+      produces:
+      - application/json
+      parameters:
+      - name : cr-reference-id
+        in: path
+        description: Lead/Opportunity Reference
+        required: true
+        type: string
+      - name : bq-reference-id
+        in: path
+        description: Lead/Opportunity Assignment Task Reference
+        required: true
+        type: string
+      responses:
+        200:
+          description: Successfully Retrieved
+          schema:
+            $ref: '#/definitions/AssignmentWithStatusAndIds'
+
+  /lead-opportunity-management/lead-opportunity-procedure/{cr-reference-id}/updates/{bq-reference-id}:
+    get:
+      tags:
+      - retrieve
+      operationId: RetrieveUpdate
+      summary: Retrieve Update behavior qualifier
+      produces:
+      - application/json
+      parameters:
+      - name : cr-reference-id
+        in: path
+        description: Lead/Opportunity Reference
+        required: true
+        type: string
+      - name : bq-reference-id
+        in: path
+        description: Lead/Opportunity Update Reference
+        required: true
+        type: string
+      responses:
+        200:
+          description: Successfully Retrieved
+          schema:
+            $ref: '#/definitions/UpdateWithIds'
+
+  /lead-opportunity-management/lead-opportunity-procedure/{cr-reference-id}/reportings/{bq-reference-id}:
+    get:
+      tags:
+      - retrieve
+      operationId: RetrieveReporting
+      summary: Retrieve Reporting behavior qualifier
+      produces:
+      - application/json
+      parameters:
+      - name : cr-reference-id
+        in: path
+        description: Lead/Opportunity Reference
+        required: true
+        type: string
+      - name : bq-reference-id
+        in: path
+        description: Lead/Opportunity Report Reference
+        required: true
+        type: string
+      responses:
+        200:
+          description: Successfully Retrieved
+          schema:
+            $ref: '#/definitions/ReportingWithIds'
+
+definitions:
+  Update:
+    type: object
+    properties:
+      customerReference:
+        type: string
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: SalesLeadManagement.SalesLead(as PartyRelationshipLifecyclePhase).PartyRelationship(as CustomerRelationship).Customer
+        example: "CUS1234"
+      productServiceReference:
+        type: string
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: SalesLeadManagement.SalesLead.ProductToSell
+          general-info: 'target of the opportunity'
+        example: "PS0892"
+      employeeBusinessUnitReference:
+        type: string
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: SalesLeadManagement.SalesLead(as PartyRelationshipLifecyclePhase).PartyRelationship(as CustomerRelationship).Customer.RelationshipManager.Business Unit
+        example: "EBU9872"
+      leadOpportunityDescription:
+        type: string
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: SalesLeadManagement.SalesLead(as PartyRelationshipLifecyclePhase).Description
+          general-info: 'narrative/description of opportunity'
+        example: This is a sample lead
+      dateTime:
+        type: string
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: SalesLeadManagement.SalesLead.StructuredInteraction.TimeBracket
+          general-info: 'date/time of update to the lead/opportunity'
+        example: "2018-09-11T08:50:05"
+      leadOpportunityStatus:
+        type: string
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: SalesLeadManagement.SalesLead(as PartyRelationshipLifecyclePhase).Status
+        example: open
+
+  UpdateWithIds:
+    type: object
+    properties:
+      leadOpportunityUpdateReference:
+        type: string
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: SalesLeadManagement.SalesLead.StructuredInteraction
+        example: "LOU9871"
+      leadOpportunityReference:
+        type: string
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: SalesLeadManagement.SalesLead
+        example: "LO218"
+      customerReference:
+        type: string
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: SalesLeadManagement.SalesLead(as PartyRelationshipLifecyclePhase).PartyRelationship(as CustomerRelationship).Customer
+        example: "CUS1234"
+      productServiceReference:
+        type: string
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: SalesLeadManagement.SalesLead.ProductToSell
+          general-info: 'target of the opportunity'
+        example: "PS0892"
+      employeeBusinessUnitReference:
+        type: string
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: SalesLeadManagement.SalesLead(as PartyRelationshipLifecyclePhase).PartyRelationship(as CustomerRelationship).Customer.RelationshipManager.Business Unit
+        example: "EBU9872"
+      leadOpportunityDescription:
+        type: string
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: SalesLeadManagement.SalesLead(as PartyRelationshipLifecyclePhase).Description
+          general-info: 'narrative/description of opportunity'
+        example: This is a sample lead
+      dateTime:
+        type: string
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: SalesLeadManagement.SalesLead.StructuredInteraction.TimeBracket
+          general-info: 'date/time of update to the lead/opportunity'
+        example: "2018-09-11T08:50:05"
+      leadOpportunityStatus:
+        type: string
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: SalesLeadManagement.SalesLead(as PartyRelationshipLifecyclePhase).Status
+        example: open
+
+  Development:
+    type: object
+    properties:
+      customerReference:
+        type: string
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: SalesLeadManagement.SalesLead(as PartyRelationshipLifecyclePhase).PartyRelationship(as CustomerRelationship).Customer
+        example: "CUS1234"
+      productServiceReference:
+        type: string
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: SalesLeadManagement.SalesLead.ProductToSell
+          general-info: 'target of the opportunity'
+        example: "PS0892"
+      employeeBusinessUnitReference:
+        type: string
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: SalesLeadManagement.SalesLead(as PartyRelationshipLifecyclePhase).PartyRelationship(as CustomerRelationship).Customer.RelationshipManager.Business Unit
+        example: "EBU9872"
+      customerContactReference:
+        type: string
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: SalesLeadManagement.SalesLead(as PartyRelationshipLifecyclePhase).PartyRelationship(as CustomerRelationship).Customer.RepresentativeOfCustomer
+          general-info: 'if customer contacted directly'
+        example: "CC0273"
+      correspondenceReference:
+        type: string
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: SalesLeadManagement.SalesLead(as PartyRelationshipLifecyclePhase).PartyRelationship(as CustomerRelationship).Customer(as Role).Player(as Party).ContactPoint
+          general-info: 'if customer contacted indirectly'
+        example: "COR027238"
+      dateTime:
+        type: string
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: SalesLeadManagement.SalesLead.StructuredInteraction.TimeBracket
+          general-info: 'date/time of update to the lead/opportunity'
+        example: "2018-09-11T08:50:05"
+      leadOpportunityDescription:
+        type: string
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: SalesLeadManagement.SalesLead.StructuredInteraction.Description
+          general-info: 'narrative/description of opportunity'
+        example: This is a sample lead
+      leadOpportunityStatus:
+        type: string
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: SalesLeadManagement.SalesLead(as PartyRelationshipLifecyclePhase).Status
+        example: open
+
+  DevelopmentWithIds:
+    type: object
+    properties:
+      leadOpportunityDevelopmentTaskReference:
+        type: string
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: SalesLeadManagement.SalesLead.StructuredInteraction
+        example: "LODT972"
+      leadOpportunityReference:
+        type: string
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: SalesLeadManagement.SalesLead
+        example: "LO218"
+      customerReference:
+        type: string
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: SalesLeadManagement.SalesLead(as PartyRelationshipLifecyclePhase).PartyRelationship(as CustomerRelationship).Customer
+        example: "CUS1234"
+      productServiceReference:
+        type: string
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: SalesLeadManagement.SalesLead.ProductToSell
+          general-info: 'target of the opportunity'
+        example: "PS0892"
+      employeeBusinessUnitReference:
+        type: string
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: SalesLeadManagement.SalesLead(as PartyRelationshipLifecyclePhase).PartyRelationship(as CustomerRelationship).Customer.RelationshipManager.Business Unit
+        example: "EBU9872"
+      customerContactReference:
+        type: string
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: SalesLeadManagement.SalesLead(as PartyRelationshipLifecyclePhase).PartyRelationship(as CustomerRelationship).Customer.RepresentativeOfCustomer
+          general-info: 'if customer contacted directly'
+        example: "CC0273"
+      correspondenceReference:
+        type: string
+        description: |
+          `status: Registered`
+          bian-reference: SalesLeadManagement.SalesLead(as PartyRelationshipLifecyclePhase).PartyRelationship(as CustomerRelationship).Customer(as Role).Player(as Party).ContactPoint
+          iso-link: [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_FNqJt8TGEeChad0JzLk7QA_-1317971633/elements/_FEHzOMTGEeChad0JzLk7QA_-1894201405)
+          general-info: 'if customer contacted indirectly'
+        example: "COR027238"
+      dateTime:
+        type: string
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: SalesLeadManagement.SalesLead.StructuredInteraction.TimeBracket
+          general-info: 'date/time of update to the lead/opportunity'
+        example: "2018-09-11T08:50:05"
+      leadOpportunityDescription:
+        type: string
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: SalesLeadManagement.SalesLead.StructuredInteraction.Description
+          general-info: 'narrative/description of opportunity'
+        example: This is a sample lead
+      leadOpportunityStatus:
+        type: string
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: SalesLeadManagement.SalesLead(as PartyRelationshipLifecyclePhase).Status
+        example: open
+
+  DevelopmentRecordWithIds:
+    type: object
+    properties:
+      leadOpportunityDevelopmentTaskReference:
+        type: string
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: SalesLeadManagement.SalesLead.StructuredInteraction
+        example: "LODT972"
+      leadOpportunityReference:
+        type: string
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: SalesLeadManagement.SalesLead
+        example: "LO218"
+      customerReference:
+        type: string
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: SalesLeadManagement.SalesLead(as PartyRelationshipLifecyclePhase).PartyRelationship(as CustomerRelationship).Customer
+        example: "CUS1234"
+      productServiceReference:
+        type: string
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: SalesLeadManagement.SalesLead.ProductToSell
+          general-info: 'target of the opportunity'
+        example: "PS0892"
+      employeeBusinessUnitReference:
+        type: string
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: SalesLeadManagement.SalesLead(as PartyRelationshipLifecyclePhase).PartyRelationship(as CustomerRelationship).Customer.RelationshipManager.Business Unit
+        example: "EBU9872"
+      customerContactReference:
+        type: string
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: SalesLeadManagement.SalesLead(as PartyRelationshipLifecyclePhase).PartyRelationship(as CustomerRelationship).Customer.RepresentativeOfCustomer
+          general-info: 'if customer contacted directly'
+        example: "CC0273"
+      correspondenceReference:
+        type: string
+        description: |
+          `status: Registered`
+          bian-reference: SalesLeadManagement.SalesLead(as PartyRelationshipLifecyclePhase).PartyRelationship(as CustomerRelationship).Customer(as Role).Player(as Party).ContactPoint
+          iso-link: [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_FNqJt8TGEeChad0JzLk7QA_-1317971633/elements/_FEHzOMTGEeChad0JzLk7QA_-1894201405)
+          general-info: 'if customer contacted indirectly'
+        example: "COR027238"
+      dateTime:
+        type: string
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: SalesLeadManagement.SalesLead.StructuredInteraction.TimeBracket
+          general-info: 'date/time of update to the lead/opportunity'
+        example: "2018-09-11T08:50:05"
+      leadOpportunityDescription:
+        type: string
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: SalesLeadManagement.SalesLead.StructuredInteraction.Description
+          general-info: 'narrative/description of opportunity'
+        example: This is a sample lead
+      leadOpportunityStatus:
+        type: string
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: SalesLeadManagement.SalesLead(as PartyRelationshipLifecyclePhase).Status
+        example: open
+      recordingRecordReference:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+        example: "DR9872"
+      recordingRecordStatus:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+        example: applied
+
+  CaptureBase:
+    type: object
+    properties:
+      customerReference:
+        type: string
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: SalesLeadManagementSalesLeadManagement.SalesLead(as PartyRelationshipLifecyclePhase).PartyRelationship(as CustomerRelationship).Customer
+        example: "CUS1234"
+      customerCampaignReference:
+        type: string
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: SalesLeadManagement.SalesLead.Campaign
+          general-info: 'if opportunity generated by a campaign'
+        example: "CC2145"
+      customerCampaignType:
+        type: string
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: SalesLeadManagement.SalesLead.Campaign.CampaignType
+        example: "T2"
+      customerCampaignVersionNumber:
+        type: string
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: SalesLeadManagement.SalesLead.Campaign.CampaignVersion
+        example: "v3.7.1"
+      productServiceReference:
+        type: string
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: SalesLeadManagement.SalesLead.ProductToSell
+          general-info: 'target of the opportunity'
+        example: "PS0892"
+      employeeBusinessUnitReference:
+        type: string
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: SalesLeadManagement.SalesLead(as PartyRelationshipLifecyclePhase).PartyRelationship(as CustomerRelationship).Customer.RelationshipManager.Business Unit
+        example: "EBU9872"
+      leadOpportunityDescription:
+        type: string
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: SalesLeadManagement.SalesLead(as PartyRelationshipLifecyclePhase).Description
+          general-info: 'narrative/description of opportunity'
+        example: This is a sample lead
+      dateTime:
+        type: string
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: SalesLeadManagement.SalesLead(as PartyRelationshipLifecyclePhase).TimeBracket.FromDateTime
+          general-info: 'date/time of update to the lead/opportunity'
+        example: "2018-09-11T08:50:05"
+
+  CaptureBaseWithStatus:
+    type: object
+    properties:
+      customerReference:
+        type: string
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: SalesLeadManagementSalesLeadManagement.SalesLead(as PartyRelationshipLifecyclePhase).PartyRelationship(as CustomerRelationship).Customer
+        example: "CUS1234"
+      customerCampaignReference:
+        type: string
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: SalesLeadManagement.SalesLead.Campaign
+          general-info: 'if opportunity generated by a campaign'
+        example: "CC2145"
+      customerCampaignType:
+        type: string
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: SalesLeadManagement.SalesLead.Campaign.CampaignType
+        example: "T2"
+      customerCampaignVersionNumber:
+        type: string
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: SalesLeadManagement.SalesLead.Campaign.CampaignVersion
+        example: "v3.7.1"
+      productServiceReference:
+        type: string
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: SalesLeadManagement.SalesLead.ProductToSell
+          general-info: 'target of the opportunity'
+        example: "PS0892"
+      employeeBusinessUnitReference:
+        type: string
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: SalesLeadManagement.SalesLead(as PartyRelationshipLifecyclePhase).PartyRelationship(as CustomerRelationship).Customer.RelationshipManager.Business Unit
+        example: "EBU9872"
+      leadOpportunityDescription:
+        type: string
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: SalesLeadManagement.SalesLead(as PartyRelationshipLifecyclePhase).Description
+          general-info: 'narrative/description of opportunity'
+        example: This is a sample lead
+      dateTime:
+        type: string
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: SalesLeadManagement.SalesLead(as PartyRelationshipLifecyclePhase).TimeBracket.FromDateTime
+          general-info: 'date/time of update to the lead/opportunity'
+        example: "2018-09-11T08:50:05"
+      leadOpportunityStatus:
+        type: string
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: SalesLeadManagement.SalesLead(as PartyRelationshipLifecyclePhase).Status
+        example: open
+
+  CaptureBaseWithStatusAndIds:
+    type: object
+    properties:
+      leadOpportunityCaptureTaskReference:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+        example: "LACT0983"
+      leadOpportunityReference:
+        type: string
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: SalesLeadManagement.SalesLead
+        example: "LO218"
+      customerReference:
+        type: string
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: SalesLeadManagementSalesLeadManagement.SalesLead(as PartyRelationshipLifecyclePhase).PartyRelationship(as CustomerRelationship).Customer
+        example: "CUS1234"
+      customerCampaignReference:
+        type: string
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: SalesLeadManagement.SalesLead.Campaign
+          general-info: 'if opportunity generated by a campaign'
+        example: "CC2145"
+      customerCampaignType:
+        type: string
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: SalesLeadManagement.SalesLead.Campaign.CampaignType
+        example: "T2"
+      customerCampaignVersionNumber:
+        type: string
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: SalesLeadManagement.SalesLead.Campaign.CampaignVersion
+        example: "v3.7.1"
+      productServiceReference:
+        type: string
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: SalesLeadManagement.SalesLead.ProductToSell
+          general-info: 'target of the opportunity'
+        example: "PS0892"
+      employeeBusinessUnitReference:
+        type: string
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: SalesLeadManagement.SalesLead(as PartyRelationshipLifecyclePhase).PartyRelationship(as CustomerRelationship).Customer.RelationshipManager.Business Unit
+        example: "EBU9872"
+      leadOpportunityDescription:
+        type: string
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: SalesLeadManagement.SalesLead(as PartyRelationshipLifecyclePhase).Description
+          general-info: 'narrative/description of opportunity'
+        example: This is a sample lead
+      dateTime:
+        type: string
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: SalesLeadManagement.SalesLead(as PartyRelationshipLifecyclePhase).TimeBracket.FromDateTime
+          general-info: 'date/time of update to the lead/opportunity'
+        example: "2018-09-11T08:50:05"
+      leadOpportunityStatus:
+        type: string
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: SalesLeadManagement.SalesLead(as PartyRelationshipLifecyclePhase).Status
+        example: open
+
+  Assignment:
+    type: object
+    properties:
+      customerReference:
+        type: string
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: SalesLeadManagement.SalesLead(as PartyRelationshipLifecyclePhase).PartyRelationship(as CustomerRelationship).Customer
+        example: "CUS1234"
+      productServiceReference:
+        type: string
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: SalesLeadManagement.SalesLead.ProductToSell
+          general-info: 'target of the opportunity'
+        example: "PS0892"
+      employeeBusinessUnitReference:
+        type: string
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: SalesLeadManagement.SalesLead(as PartyRelationshipLifecyclePhase).PartyRelationship(as CustomerRelationship).Customer.RelationshipManager.Business Unit
+        example: "EBU9872"
+      leadOpportunityDescription:
+        type: string
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: SalesLeadManagement.SalesLead(as PartyRelationshipLifecyclePhase).Description
+          general-info: 'narrative/description of opportunity'
+        example: This is a sample lead
+      dateTime:
+        type: string
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: SalesLeadManagement.SalesLead(as PartyRelationshipLifecyclePhase).PartyRelationship(as CustomerRelationship).Customer.RelationshipManager(as Role).ApplicablePeriod.FromDateTime
+          general-info: 'date/time of update to the lead/opportunity'
+        example: "2018-09-11T08:50:05"
+
+  AssignmentWithStatusAndIds:
+    type: object
+    properties:
+      leadOpportunityAssignmentReference:
+        type: string
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: SalesLeadManagement.SalesLead(as PartyRelationshipLifecyclePhase).PartyRelationship(as CustomerRelationship).Customer.RelationshipManager
+        example: "LOA98273"
+      leadOpportunityReference:
+        type: string
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: SalesLeadManagement.SalesLead
+        example: "LO218"
+      customerReference:
+        type: string
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: SalesLeadManagement.SalesLead(as PartyRelationshipLifecyclePhase).PartyRelationship(as CustomerRelationship).Customer
+        example: "CUS1234"
+      productServiceReference:
+        type: string
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: SalesLeadManagement.SalesLead.ProductToSell
+          general-info: 'target of the opportunity'
+        example: "PS0892"
+      employeeBusinessUnitReference:
+        type: string
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: SalesLeadManagement.SalesLead(as PartyRelationshipLifecyclePhase).PartyRelationship(as CustomerRelationship).Customer.RelationshipManager.Business Unit
+        example: "EBU9872"
+      leadOpportunityDescription:
+        type: string
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: SalesLeadManagement.SalesLead(as PartyRelationshipLifecyclePhase).Description
+          general-info: 'narrative/description of opportunity'
+        example: This is a sample lead
+      dateTime:
+        type: string
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: SalesLeadManagement.SalesLead(as PartyRelationshipLifecyclePhase).PartyRelationship(as CustomerRelationship).Customer.RelationshipManager(as Role).ApplicablePeriod.FromDateTime
+          general-info: 'date/time of update to the lead/opportunity'
+        example: "2018-09-11T08:50:05"
+      leadOpportunityStatus:
+        type: string
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: SalesLeadManagement.SalesLead(as PartyRelationshipLifecyclePhase).Status
+        example: open
+
+  AssignmentWithStatus:
+    type: object
+    properties:
+      customerReference:
+        type: string
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: SalesLeadManagement.SalesLead(as PartyRelationshipLifecyclePhase).PartyRelationship(as CustomerRelationship).Customer
+        example: "CUS1234"
+      productServiceReference:
+        type: string
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: SalesLeadManagement.SalesLead.ProductToSell
+          general-info: 'target of the opportunity'
+        example: "PS0892"
+      employeeBusinessUnitReference:
+        type: string
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: SalesLeadManagement.SalesLead(as PartyRelationshipLifecyclePhase).PartyRelationship(as CustomerRelationship).Customer.RelationshipManager.Business Unit
+        example: "EBU9872"
+      leadOpportunityDescription:
+        type: string
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: SalesLeadManagement.SalesLead(as PartyRelationshipLifecyclePhase).Description
+          general-info: 'narrative/description of opportunity'
+        example: This is a sample lead
+      dateTime:
+        type: string
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: SalesLeadManagement.SalesLead(as PartyRelationshipLifecyclePhase).PartyRelationship(as CustomerRelationship).Customer.RelationshipManager(as Role).ApplicablePeriod.FromDateTime
+          general-info: 'date/time of update to the lead/opportunity'
+      leadOpportunityStatus:
+        type: string
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: SalesLeadManagement.SalesLead(as PartyRelationshipLifecyclePhase).Status
+        example: open
+
+  LeadOpportunityWithIds:
+    type: object
+    properties:
+      leadOpportunityReference:
+        type: string
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: SalesLeadManagement.SalesLead
+        example: "LO218"
+      customerReference:
+        type: string
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: SalesLeadManagementSalesLeadManagement.SalesLead(as PartyRelationshipLifecyclePhase).PartyRelationship(as CustomerRelationship).Customer
+        example: "CUS1234"
+      customerCampaignReference:
+        type: string
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: SalesLeadManagement.SalesLead.Campaign
+          general-info: 'if opportunity generated by a campaign'
+        example: "CC2145"
+      customerCampaignType:
+        type: string
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: SalesLeadManagement.SalesLead.Campaign.CampaignType
+        example: "T2"
+      customerCampaignVersionNumber:
+        type: string
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: SalesLeadManagement.SalesLead.Campaign.CampaignVersion
+        example: "v3.7.1"
+      productServiceReference:
+        type: string
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: SalesLeadManagement.SalesLead.ProductToSell
+          general-info: 'target of the opportunity'
+        example: "PS0892"
+      employeeBusinessUnitReference:
+        type: string
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: SalesLeadManagement.SalesLead(as PartyRelationshipLifecyclePhase).PartyRelationship(as CustomerRelationship).Customer.RelationshipManager.Business Unit
+        example: "EBU9872"
+      leadOpportunityDescription:
+        type: string
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: SalesLeadManagement.SalesLead(as PartyRelationshipLifecyclePhase).Description
+          general-info: 'narrative/description of opportunity'
+        example: This is a sample lead
+      dateTime:
+        type: string
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: SalesLeadManagement.SalesLead(as PartyRelationshipLifecyclePhase).TimeBracket.FromDateTime
+          general-info: 'date/time of update to the lead/opportunity'
+        example: "2018-09-11T08:50:05"
+      leadOpportunityStatus:
+        type: string
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: SalesLeadManagement.SalesLead(as PartyRelationshipLifecyclePhase).Status
+        example: open
+
+  ReportingWithIds:
+    type: object
+    properties:
+      LeadOpportunityReportReference:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+        example: "LOR6523"
+      leadOpportunityReference:
+        type: string
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: SalesLeadManagement.SalesLead
+        example: "LO218"
+      customerReference:
+        type: string
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: SalesLeadManagement.SalesLead(as PartyRelationshipLifecyclePhase).PartyRelationship(as CustomerRelationship).Customer
+        example: "CUS1234"
+      customerCampaignReference:
+        type: string
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: SalesLeadManagement.SalesLead.Campaign
+          general-info: 'if opportunity generated by a campaign'
+        example: "CC2145"
+      customerCampaignType:
+        type: string
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: SalesLeadManagement.SalesLead.Campaign.CampaignType
+        example: "T2"
+      customerCampaignVersionNumber:
+        type: string
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: SalesLeadManagement.SalesLead.Campaign.CampaignVersion
+        example: "v3.7.1"
+      productServiceReference:
+        type: string
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: SalesLeadManagement.SalesLead.ProductToSell
+          general-info: 'target of the opportunity'
+        example: "PS0892"
+      employeeBusinessUnitReference:
+        type: string
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: SalesLeadManagement.SalesLead(as PartyRelationshipLifecyclePhase).PartyRelationship(as CustomerRelationship).Customer.RelationshipManager.Business Unit
+        example: "EBU9872"
+      leadOpportunityDescription:
+        type: string
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: SalesLeadManagement.SalesLead(as PartyRelationshipLifecyclePhase).Description
+          general-info: 'narrative/description of opportunity'
+        example: This is a sample lead
+      dateTime:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::DateTime
+          general-info: 'date/time of report to the lead/opportunity'
+        example: "2018-09-11T08:50:05"
+      LeadOpportunityReport:
+        type: object
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+          general-info: 'returned report content'
+      leadOpportunityStatus:
+        type: string
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: SalesLeadManagement.SalesLead(as PartyRelationshipLifecyclePhase).Status
+        example: open

@@ -1,0 +1,851 @@
+swagger: "2.0"
+info:
+  version: "4.0.0"
+  title: Service Domain - Financial Gateway
+  description: >
+        ## Description: 
+      
+        Operate automated message interfaces to secure networks such as SWIFT, TELEX, ACH and Exchange reporting services
+
+        ## Example of use:
+        
+        During the 24 hour cycle, the bank's 'wire room' unit establishes the connections with the different payments, SWIFT and reporting networks
+        
+        ## General comment:
+        
+        This service domain supports the operational connections with the range of financial networks that support interbank and financial institution connectivity. This includes SWIFT, ACH gateways, and market regulatory reporting connections. The service domain does not create content itself, it provides a message exchange service between (financial) institutions. One of its responsibilities is to route a message to the destination specified by the caller, but it does not decide the destination itself.
+host: virtserver.swaggerhub.com
+basePath: /BIAN/sd-financial-gateway/4.0.0
+schemes:
+ - https
+paths:
+  /financial-gateway/financial-gateway-operating-session:
+    get:
+      tags:
+      - retrieve
+      operationId: RetrieveFinancialGatewayReferenceIds
+      summary: Retrieve available Financial Gateway Control Record IDs.
+      produces:
+      - application/json
+      parameters:
+      - name: collection-filter
+        in: query
+        description: Filter to refine the result set; ex. - 'gatewayServiceConfigurationParameterType = "security setting"'
+        type: string
+      responses:
+        200:
+          description: Successfully retrieved Financial Gateway Control Record IDs.
+          schema:
+            type: array
+            items:
+              type: string
+            example: [GOSR123, GOSR345]
+
+
+  /financial-gateway/financial-gateway-operating-session/behavior-qualifiers:
+    get:
+      tags:
+      - retrieve
+      operationId: RetrieveFinancialGatewayBehaviorQualifiers
+      summary: Retrieve all Behavior Qualifier names in the Financial Gateway Service Domain.
+      produces:
+      - application/json
+      responses:
+        200:
+          description: Successfully retrieved all Behavior Qualifier names in the Financial Gateway Service Domain.
+          schema:
+            type: array
+            items:
+              type: string
+            example: [inbound, outbound, issues, reporting]
+
+  /financial-gateway/financial-gateway-operating-session/{cr-reference-id}/{behavior-qualifier}:
+    get:
+      tags:
+      - retrieve
+      operationId: RetrieveFinancialGatewayBQIds
+      summary: Retrieve BQ Reference IDs of the given Financial Gateway Behavior Qualifier
+      produces:
+      - application/json
+      parameters:
+      - name: cr-reference-id
+        in: path
+        description: Gateway Operating Session Reference
+        required: true
+        type: string
+      - name: behavior-qualifier
+        in: path
+        description: Behavior Qualifier Name; ex. - "inbound"
+        required: true
+        type: string
+      - name: collection-filter
+        in: query
+        description: Filter to refine the result set; ex. - "gatewayInboundMessageStatus = pending"
+        type: string
+      responses:
+        200:
+          description: Successfully retrieved Financial Gateway Behavior Qualifier reference IDs.
+          schema:
+            type: array
+            items:
+              type: string
+            example: [GIMR345, GIMR789, GIMR456]
+  
+  /financial-gateway/financial-gateway-operating-session/{cr-reference-id}:
+    get:
+      tags:
+      - retrieve
+      operationId: RetrieveFinancialGateway
+      summary: Retrieve Financial Gateway Master Control Record data
+      produces: 
+      - application/json
+      parameters:
+      - name: cr-reference-id
+        in: path
+        description: Gateway Operating Session Reference
+        required: true
+        type: string
+      responses:
+        200:
+          description: Successfully retrieved Financial Gateway Master Control Record data.
+          schema:
+            $ref: "#/definitions/RetrieveFinancialGatewayResponse"
+
+  
+  # bq=inbound
+  /financial-gateway/financial-gateway-operating-session/{cr-reference-id}/inbounds/{bq-reference-id}:
+    get:
+      tags:
+      - retrieve
+      operationId: RetrieveInbound
+      summary: Retrieve Financial Gateway Inbound Message record
+      produces:
+      - application/json
+      parameters:
+      - name: cr-reference-id
+        in: path
+        description: Gateway Operating Session Reference
+        required: true
+        type: string
+      - name: bq-reference-id
+        in: path
+        description: Gateway Inbound Message Reference
+        required: true
+        type: string
+      responses:
+        200:
+          description: Successfully Retrieved Financial Gateway Inbound Message record
+          schema:
+            $ref: "#/definitions/InboundBaseWithIdAndRoot"
+  
+  # bq=outbound
+  /financial-gateway/financial-gateway-operating-session/{cr-reference-id}/outbounds/{bq-reference-id}:
+    get:
+      tags:
+      - retrieve
+      operationId: RetrieveOutbound
+      summary: Retrieve Financial Gateway Outbound Message record.
+      produces:
+      - application/json
+      parameters:
+      - name: cr-reference-id
+        in: path
+        description: Gateway Operating Session Reference
+        required: true
+        type: string
+      - name: bq-reference-id
+        in: path
+        description: Gateway Outbound Message Reference
+        required: true
+        type: string
+      responses:
+        200:
+          description: Successfully Retrieved Financial Gateway Outbound Message record.
+          schema:
+            $ref: "#/definitions/OutboundBaseWithIdAndRoot"
+  
+  # bq=issues
+  /financial-gateway/financial-gateway-operating-session/{cr-reference-id}/issues/{bq-reference-id}:
+    get:
+      tags:
+      - retrieve
+      operationId: RetrieveIssue
+      summary: Retrieve a Financial Gateway Issues Message record
+      produces:
+      - application/json
+      parameters:
+      - name: cr-reference-id
+        in: path
+        description: Gateway Operating Session Reference
+        required: true
+        type: string
+      - name: bq-reference-id
+        in: path
+        description: Gateway Service Issue Reference
+        required: true
+        type: string
+      responses:
+        200:
+          description: Successfully Retrieved Financial Gateway Inbound Message record
+          schema:
+            $ref: "#/definitions/IssueBaseWithIdAndRoot"
+  
+  # bq=reporting
+  /financial-gateway/financial-gateway-operating-session/{cr-reference-id}/reportings/{bq-reference-id}:
+    get:
+      tags:
+      - retrieve
+      operationId: RetrieveReporting
+      summary: Retrieve  Financial Gateway Reporting record
+      produces:
+      - application/json
+      parameters:
+      - name: cr-reference-id
+        in: path
+        description: Gateway Operating Session Reference
+        required: true
+        type: string
+      - name: bq-reference-id
+        in: path
+        description: Gateway Service Session Report Reference
+        required: true
+        type: string
+      responses:
+        200:
+          description: Successfully Retrieved Financial Gateway Reporting record
+          schema:
+            $ref: "#/definitions/ReportingBaseWithIdAndRoot"
+
+  /financial-gateway/financial-gateway-operating-session/{cr-reference-id}/recording:
+    post:
+      tags:
+      - record
+      operationId: recordFinancialGateway
+      summary: Records a Financial Gateway
+      produces:
+      - application/json
+      parameters:
+      - name: cr-reference-id
+        in: path
+        description: Gateway Operating Session Reference
+        required: true
+        type: string
+      - in: body
+        name: body
+        description: Record control record request payload
+        required: true
+        schema:
+          $ref: "#/definitions/FinancialGatewayRecordRequest"
+      responses:
+        201:
+          description: A new Record is created.
+          schema:
+            $ref: "#/definitions/FinancialGatewayRecordResponse"
+
+  #bq=inbound
+  /financial-gateway/financial-gateway-operating-session/{cr-reference-id}/inbounds/{bq-reference-id}/execution:
+    put:
+      tags:
+      - execute
+      operationId: ExecuteInboundUpdate
+      description: Update a Financial Gateway Inbound Message record
+      summary: Update a Financial Gateway Inbound Message record
+      produces:
+      - application/json
+      parameters:
+      - name: cr-reference-id
+        in: path
+        description: Gateway Operating Session Reference
+        required: true
+        type: string
+      - name: bq-reference-id
+        in: path
+        description: Gateway Inbound Message Reference
+        required: true
+        type: string
+      - in: body
+        name: body
+        description: Execute inbounds request payload
+        required: true
+        schema:
+          $ref: "#/definitions/InboundBase"
+      responses:
+        200:
+          description: Successfully Updated a Financial Gateway Inbound Message record
+          schema:
+            $ref: "#/definitions/InboundBaseWithIdAndRoot"
+
+  /financial-gateway/financial-gateway-operating-session/{cr-reference-id}/inbounds/execution:
+    post:
+      tags:
+      - execute
+      operationId: ExecuteInboundCreate
+      description: Create a Financial Gateway Inbound Message record
+      summary: Create a Financial Gateway Inbound Message record
+      produces:
+      - application/json
+      parameters:
+      - name: cr-reference-id
+        in: path
+        description: Gateway Operating Session Reference
+        required: true
+        type: string
+      - in: body
+        name: body
+        description: Execute inbounds request payload
+        required: true
+        schema:
+          $ref: "#/definitions/InboundBase"
+      responses:
+        201:
+          description: Successfully Created a Financial Gateway Inbound Message record
+          schema:
+            $ref: "#/definitions/InboundBaseWithIdAndRoot"
+
+  #bq=outbound
+  /financial-gateway/financial-gateway-operating-session/{cr-reference-id}/outbounds/{bq-reference-id}/execution:
+    put:
+      tags:
+      - execute
+      operationId: ExecuteOutboundUpdate
+      description: Update Financial Gateway Outbound Message record
+      summary: Update Financial Gateway Outbound Message record
+      produces:
+      - application/json
+      parameters:
+      - name: cr-reference-id
+        in: path
+        description: Gateway Operating Session Reference
+        required: true
+        type: string
+      - name: bq-reference-id
+        in: path
+        description: Gateway Outbound Message Reference
+        required: true
+        type: string
+      - in: body
+        name: body
+        description: Execute outbounds request payload
+        required: true
+        schema:
+          $ref: "#/definitions/OutboundBase"
+      responses:
+        200:
+          description: Successfully Updated Financial Gateway Outbound Message record
+          schema:
+            $ref: "#/definitions/OutboundBaseWithIdAndRoot"
+
+  /financial-gateway/financial-gateway-operating-session/{cr-reference-id}/outbounds/execution:
+    post:
+      tags:
+      - execute
+      operationId: ExecuteOutboundCreate
+      description: Created Financial Gateway Outbound Message record
+      summary: Created Financial Gateway Outbound Message record
+      produces:
+      - application/json
+      parameters:
+      - name: cr-reference-id
+        in: path
+        description: Gateway Operating Session Reference
+        required: true
+        type: string
+      - in: body
+        name: body
+        description: Execute outbounds request payload
+        required: true
+        schema:
+          $ref: "#/definitions/OutboundBase"
+      responses:
+        201:
+          description: Successfully Created Financial Gateway Outbound Message record
+          schema:
+            $ref: "#/definitions/OutboundBaseWithIdAndRoot"
+
+definitions:
+
+  RetrieveFinancialGatewayResponse:
+    type: object
+    properties:
+      gatewayOperatingSessionReference:
+        type: string
+        example: OSR7346465
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+          general-info: refers to active EBranch service session
+      gatewayServiceReference:
+        type: string
+        example: GSR746565
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+          general-info: refers to the service, e.g., S.W.I.F.T., Telex
+      gatewayServiceSchedule:
+        type: object
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+          general-info: describes service availability
+      gatewayServiceConfigurationParameterType:
+        type: string
+        example: security setting
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      gatewayServiceConfigurationParameter:
+        type: string
+        example: high security
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+          general-info: the setting/value for a service parameter
+      gatewayServiceSecurityMechanismType:
+        type: string
+        example: encryption keys
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      gatewayServiceSecurityMechanismReference:
+        type: string
+        example: GSMR7365465
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+
+  InboundBase:
+    type: object
+    properties:
+      gatewayInboundMessageType:
+        type: string
+        example: urgent
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      gatewayInboundMessageRecord:
+        type: object
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+          general-info: message content
+      gatewayInboundMessageReceiver:
+        type: string
+        example: EBU7346565
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+          general-info: employee/business unit addressed by the message
+      gatewayInboundMessageStatus:
+        type: string
+        example: pending
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+          general-info: e.g., pending, delivered, possible duplicate, error
+      gatewayServiceSessionStatistics:
+        type: object
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+          general-info: maintained service activity statistics
+
+  InboundBaseWithIdAndRoot:
+    type: object
+    properties:
+      gatewayServiceReference:
+        type: string
+        example: GSR724645735
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+          general-info: service reference id
+      gatewayOperatingSessionReference:
+        type: string
+        example: GOSR746565
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+          general-info: active service session reference id
+      gatewayInboundMessageReference:
+        type: string
+        example: GIMR7354646
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+          general-info: inbound connection reference id
+      gatewayInboundMessageType:
+        type: string
+        example: urgent
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+          general-info: message type
+      gatewayInboundMessageRecord:
+        type: object
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+          general-info: message content
+      gatewayInboundMessageReceiver:
+        type: string
+        example: EBU74655
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+          general-info: employee/business unit addressed by the message
+      gatewayInboundMessageStatus:
+        type: string
+        example: pending
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+          general-info: e.g., pending, delivered, possible duplicate, error
+      gatewayServiceSessionStatistics:
+        type: object
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+          general-info: maintained service activity statistics
+
+  OutboundBase:
+    type: object
+    properties:
+      gatewayOutboundMessageType:
+        type: string
+        example: urgent
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+          general-info: message type
+      gatewayOutboundMessageRecord:
+        type: object
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+          general-info: message content
+      gatewayOutboundMessageSender:
+        type: string
+        example: EBU746565
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+          general-info: employee/business unit sending the message
+      gatewayOutboundMessageReceiver:
+        type: string
+        example: OMR736465
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+          general-info: Message addressee
+      gatewayOutboundMessageStatus:
+        type: string
+        example: pending
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+          general-info: e.g., pending, delivered, possible duplicate, error
+      gatewayServiceSessionStatistics:
+        type: object
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+          general-info: maintained service activity statistics
+
+  OutboundBaseWithIdAndRoot:
+    type: object
+    properties:
+      gatewayServiceReference:
+        type: string
+        example: GSR724645735
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+          general-info: service reference id
+      gatewayOperatingSessionReference:
+        type: string
+        example: GOSR746565
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+          general-info: active service session reference id
+      gatewayOutboundMessageReference:
+        type: string
+        example: OMR736465
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+          general-info: outbound connection reference id
+      gatewayOutboundMessageType:
+        type: string
+        example: urgent
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+          general-info: message type
+      gatewayOutboundMessageRecord:
+        type: object
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+          general-info: message content
+      gatewayOutboundMessageSender:
+        type: string
+        example: EBU746565
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+          general-info: employee/business unit sending the message
+      gatewayOutboundMessageReceiver:
+        type: string
+        example: OMR736465
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+          general-info: Message addressee
+      gatewayOutboundMessageStatus:
+        type: string
+        example: pending
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+          general-info: e.g., pending, delivered, possible duplicate, error
+      gatewayServiceSessionStatistics:
+        type: object
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+          general-info: maintained service activity statistics
+
+  IssueBaseWithIdAndRoot:
+    type: object
+    properties:
+      gatewayServiceReference:
+        type: string
+        example: GSR724645735
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+          general-info: service reference id
+      gatewayOperatingSessionReference:
+        type: string
+        example: GOSR746565
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+          general-info: active service session reference id
+      gatewayServiceIssueReference:
+        type: string
+        example: GSIR746575
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+          general-info: reference id of the issue raised
+      employeeBusinessUnitReference:
+        type: string
+        example: EBU736464
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+          general-info: the reference id of the employee/business unit that the issue is reported by
+      messageReference:
+        type: string
+        example: MSG73647458
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+          general-info: the reference id of the message involved in the issue
+      productionIssueType:
+        type: string
+        example: network failure
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+          general-info: type of event/error being recorded
+      productionIssueDescription:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+          general-info: description of the event error
+      productionIssueDiagnosis:
+        type: string
+        example: Router failure
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+          general-info: evaluation of the event cause and impact
+      productionIssueResolutionTask:
+        type: string
+        example: Replace router hardware
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+          general-info: description of the corrective action
+      productionIssueRecord:
+        type: object
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+          general-info: detail of the issue, response, and interested parties
+      productionIssueStatus:
+        type: string
+        example: pending
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+          general-info: tracking the state of resolution of a reported issue
+
+  ReportingBaseWithIdAndRoot:
+    type: object
+    properties:
+      gatewayOperatingSessionReference:
+        type: string
+        example: GOSR746565
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+          general-info: active service session reference id
+      gatewayServiceSessionReportReference:
+        type: string
+        example: GSRR736465
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+          general-info: reference id of the report
+      gatewayServiceSessionReportType:
+        type: string
+        example: realtime status
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+          general-info: e.g., realtime status, session statistics
+      gatewayServiceSessionStatistics:
+        type: object
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+          general-info: maintained service activity statistics
+      gatewayServiceConfigurationParameter:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+          general-info: the setting/value for a service parameter
+      gatewayServiceSessionReport:
+        type: object
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+          general-info: the session activity report
+
+  FinancialGatewayRecordRequest:
+    type: object
+    properties:
+      recordingRecordType:
+        type: string
+        example: "Behavior model performance feedback"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+          general-info: the layout/type of the feedback provided
+      recordingRecord:
+        type: object
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+          general-info: the feedback
+      recordingRecordDateTime:
+        type: string
+        example: "2018-09-06T09:00:00"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::DateTime
+      employeeBusinessUnitReference:
+        type: string
+        example: REF456
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+
+  FinancialGatewayRecordResponse:
+    type: object
+    properties:
+      recordingRecordReference:
+        type: string
+        example: "RRR4678"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      recordingRecordStatus:
+        type: string
+        example: "Applied"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+        
+  FinancialGatewayConfigureRequest:
+    type: object
+    properties:
+      gatewayServiceReference:
+        type: string
+        example: GSR724645735
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+          general-info: service reference id
+      gatewaySchedule:
+        type: object
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+          general-info: describes service availability
+      gatewayServiceConfigurationParameterType:
+        type: string
+        example: security setting
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+          general-info: e.g., security setting, menu options
+      gatewayServiceConfigurationParameter:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+          general-info: the setting/value for a service parameter
+
+  FinancialGatewayConfigureResponse:
+    type: object
+    properties:
+      gatewayServiceReference:
+        type: string
+        example: GSR724645735
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+          general-info: service reference id
+      gatewayOperatingSessionReference:
+        type: string
+        example: GOSR746565
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+          general-info: active service session reference id
+      gatewaySchedule:
+        type: object
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+          general-info: describes service availability
+      gatewayServiceConfigurationParameterType:
+        type: string
+        example: security setting
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+          general-info: e.g., security setting, menu options
+      gatewayServiceConfigurationParameter:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+          general-info: the setting/value for a service parameter

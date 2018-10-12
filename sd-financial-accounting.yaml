@@ -1,0 +1,494 @@
+swagger: '2.0'
+info:
+  version: "4.0.0"
+  title: 'Service Domain - Financial Accounting'
+  description: >
+        ## Description:
+
+        Financial booking of all business activity in an ledger/sub-ledger accounting structure/hierarchy according to the appropriate chart of accounts
+
+        ## Example of use:
+
+        The corporate financial reports are assembled to schedule for accounting and general reporting needs
+
+        ## General comment:
+
+        This service domain handles the posting of business activity to the bank's financial accounts. These will typically be double entry ledgers and can include multiple levels of consolidation (sub-ledgers) The financial accounts conform to chart of accounts and appropriate GAP rules and are rolled up into the GL as part of the financial statements
+
+
+host: virtserver.swaggerhub.com
+basePath: /BIAN/sd-financial-accounting/4.0.0
+schemes:
+ - https
+paths:
+  /financial-accounting/financial-booking-log:
+    get:
+      tags:
+      - retrieve
+      summary: Retrieve all available Financial Accounting Control Record Ids
+      operationId: retrieveFinancialAccountingRefernceIds
+      produces:
+      - application/json
+      parameters:
+      - name: collection-filter
+        in: query
+        description: Filter to refine the result set. ex- 'base-currency = USD'
+        required: false
+        type: string
+      responses:
+        200:
+          description: successfully retrieved Financial Accounting Control Record Ids
+          schema:
+            type: array
+            items:
+              type: string
+            example: ['FA123', 'FA345']
+            
+  /financial-accounting/financial-booking-log/behavior-qualifiers:
+    get:
+      tags:
+      - retrieve
+      summary: Retrieve all Behaviour Qualifier names for Financial Accounting
+      operationId: retrieveFinancialAccountingBQsProcedure
+      produces:
+      - application/json
+      parameters: []
+      responses:
+        200:
+          description: Successfully retrieved Financial Accounting Behavior Qualifier Names
+          schema:
+            type: array
+            items:
+              type: string
+            example: ['booking', 'update']
+        
+  /financial-accounting/financial-booking-log/{cr-reference-id}/{behavior-qualifier}:
+    get:
+      tags:
+      - retrieve
+      summary: Retrieve Behavior Qualifier Reference Ids of a given behavior qualifier
+      produces:
+      - application/json
+      parameters:
+      - name: cr-reference-id
+        in: path
+        description: Subledger Reference
+        required: true
+        type: string
+      - name: behavior-qualifier
+        in: path
+        description: Behavior Qualifier name (ex. booking)
+        required: true
+        type: string
+      - name: collection-filter
+        in: query
+        description: Filter to refine result set. ex- 'bookingValueDate < 2016-09-01'
+        required: false
+        type: string
+      responses:
+        200:
+          description: Successfully retrieved Behavior Qualifier reference IDs
+          schema:
+            type: array
+            items:
+              type: string
+            example: ['BOOK142', 'BOOK789', 'BOOK342']
+            
+  /financial-accounting/financial-booking-log/{cr-reference-id}:
+    get:
+        tags:
+        - retrieve
+        summary: Retrieve sub-ledger record extract/report
+        operationId: retrieveFinancialBookingLog
+        produces:
+        - application/json
+        parameters:
+        - name: cr-reference-id
+          in: path
+          description: Subledger Reference
+          required: true
+          type: string
+        responses:
+          200:
+            description: Successfully retrieved Financial Account Subledger
+            schema:
+              $ref: "#/definitions/RetrieveFinancialBookingLogResponse"
+              
+  /financial-accounting/financial-booking-log/{cr-reference-id}/reporting/{bq-reference-id}:
+    get:
+      tags:
+      - retrieve
+      summary: Retrieve sub-ledger record reporting
+      operationId: retrieveFinancialBookingLogReporting
+      produces:
+      - application/json
+      parameters:
+      - name: cr-reference-id
+        in: path
+        description: Subledger Reference
+        required: true
+        type: string
+      - name: bq-reference-id
+        in: path
+        description: Reporting Service Reference
+        required: true
+        type: string
+      responses:
+        200:
+          description: Successfully retrieved Financial Account Subledger Booking entry
+          schema:
+            $ref: "#/definitions/ReportingBaseWithIdAndRoot"
+            
+  /financial-accounting/financial-booking-log/{cr-reference-id}/bookings/{bq-reference-id}:
+    get:
+      tags:
+      - retrieve
+      summary: Retrieve sub-ledger record booking entry
+      operationId: retrieveFinancialBookingLogBooking
+      produces:
+      - application/json
+      parameters:
+      - name: cr-reference-id
+        in: path
+        description: Subledger Reference
+        required: true
+        type: string
+      - name: bq-reference-id
+        in: path
+        description: Booking Reference
+        required: true
+        type: string
+      responses:
+        200:
+          description: Successfully retrieved Financial Account Subledger Booking entry
+          schema:
+            $ref: "#/definitions/BookingBaseWithIdAndRoot"
+            
+  /financial-accounting/financial-booking-log/{cr-reference-id}/updates/{bq-reference-id}:
+    get:
+      tags:
+      - retrieve
+      summary: Retrieve sub-ledger update record
+      operationId: retrieveFinancialBookingLogUpdate
+      produces:
+      - application/json
+      parameters:
+      - name: cr-reference-id
+        in: path
+        description: Subledger Reference
+        required: true
+        type: string
+      - name: bq-reference-id
+        in: path
+        description: Update Reference
+        required: true
+        type: string
+      responses:
+        200:
+          description: Successfully retrieved Financial Account Subledger Update record
+          schema:
+            $ref: "#/definitions/UpdateBaseWithIdAndRoot"
+            
+  /financial-accounting/financial-booking-log/{cr-reference-id}/updates/{bq-reference-id}/updation:
+    put:
+      tags:
+      - update
+      operationId: updateFinancialBookingLog 
+      summary: Update/correct details of sub-ledger posting
+      produces: 
+      - application/json
+      parameters:
+      - name: cr-reference-id
+        in: path
+        description: Subledger Reference
+        required: true
+        type: string
+      - name: bq-reference-id
+        in: path
+        description: Update Reference
+        required: true
+        type: string
+      - in: body
+        name: body
+        description: Update subledger details request payload
+        required: true
+        schema: 
+          $ref: '#/definitions/UpdateBase'
+      responses:
+        200:
+          description: updated Financial Accounting record successfully
+          schema:
+            $ref: "#/definitions/UpdateBaseWithIdAndRoot"
+            
+  /financial-accounting/financial-booking-log/{cr-reference-id}/bookings/recording:
+    post:
+      tags:
+      - record
+      operationId: recordFinancialBookingLog
+      summary: Record a sub-ledger entry (includes classification)
+      produces: 
+      - application/json
+      parameters:
+      - name: cr-reference-id
+        in: path
+        description: Subledger Reference
+        required: true
+        type: string
+      - in: body
+        name: body
+        description: Record subledger entry request payload
+        required: true
+        schema: 
+          $ref: '#/definitions/BookingBase'
+      responses:
+        201:
+          description: Created a Financial Accounting record successfully
+          schema:
+            $ref: '#/definitions/RecordFinancialAccountResponse'
+
+definitions:
+  RetrieveFinancialBookingLogResponse:
+    type: object
+    properties:
+      subledgerReference:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+          general-info: the reference ID to this Financial Booking Log
+        example: "SR1234"
+      subledgerType:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+        example: "accounts receivable"
+      productInstanceReference:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+          general-info: linked product/service reference number
+        example: "PI89374"
+      businessUnitReference:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+          general-info: link business unit/activity
+        example: "BU89237"
+      baseCurrency:
+        $ref: 'https://api.swaggerhub.com/domains/BIAN/Common-Model/1.0.0#/definitions/CurrencyCode'
+      chartOfAccountBookingRules:
+        type: object
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+          general-info: Chart of Account/Booking Rules
+      status:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+        example: "active"
+
+  ReportingBaseWithIdAndRoot:
+    type: object
+    properties:
+      financialLedgerServiceReference:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+          general-info: SDR Reference ID
+        example: "FLSR234"
+      subledgerReference:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+          general-info: the reference ID to the Financial Booking Log
+        example: "SR1234"
+      reportingServiceReference:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+          general-info: the reference ID to the reporting service
+        example: "REP234"
+      ledgerReportType:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+        example: "general"
+      reportingPeriod:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Duration
+        example: "01/01/2015 - 01/01/2016"
+      report:
+        type: object
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+          general-info: ledger statement
+      reportingResult:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Indicator
+        example: success
+
+  BookingBase:
+    type: object
+    properties:
+      bookingPurpose:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      bookingAmount:
+        type: object
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Amount
+          general-info: credit/debit pair
+      bookingValueDate:
+        type: string
+        format: date
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Date
+        example: "09/01/2016"
+      bookingResult:
+        type: object
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Indicator
+
+  BookingBaseWithIdAndRoot:
+    type: object
+    properties:
+      bookingReference:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+          general-info: the reference ID to this Booking/Posting to the ledger
+        example: "BR7237"
+      subledgerReference:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+          general-info: the reference ID to the Financial Booking Log
+        example: "SR1234"
+      bookingPurpose:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+        example: 
+      bookingAmount:
+        type: object
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Amount
+          general-info: credit/debit pair
+      bookingValueDate:
+        type: string
+        format: date
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Date
+        example: "09/01/2016"
+      bookingResult:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Indicator
+        example: "booked"
+
+  UpdateBase:
+    type: object
+    properties:
+      ledgerUpdatePurpose:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+        example: current account update
+      ledgerUpdateEmployeeReference:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+          general-info: Employee reference ID, for audit purposes
+        example: ER123
+      ledgerUpdateDescription:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+        example: Financial log - current account update
+
+  UpdateBaseWithIdAndRoot:
+    type: object
+    properties:
+      updateReference:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+          general-info: the reference ID to this update to the ledger
+        example: "U2394"
+      subledgerReference:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+          general-info: the reference ID to the Financial Booking Log
+        example: "SR1234"
+      ledgerUpdatePurpose:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+        example: current account update
+      ledgerUpdateEmployeeReference:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+          general-info: Employee reference ID, for audit purposes
+        example: ER123
+      ledgerUpdateDescription:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+        example: Financial log - current account update
+      ledgerUpdateResult:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Indicator
+        example: "successful"
+
+  RecordFinancialAccountResponse:
+    type: object
+    properties:
+      recordingRecordReference:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+        example: "RRR4678"
+      recordingRecordStatus:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+        example: "Applied"

@@ -1,0 +1,356 @@
+swagger: "2.0"
+info:
+  version: "4.0.0"
+  title: 'Service Domain - Correspondent Bank Data Management'
+  description: >
+        ## Service Domain Role:
+        
+        This service domain maintains correspondent bank reference details. This includes correspondent bank payment parameters in particular bank limits and capturing transaction activity to track reciprocity.
+        
+        ## Example of Use:
+        
+        Correspondent bank (reciprocal) activity is consolidated to support periodic correspondent banking relationship reviews.
+        
+        ## General Comments:
+        
+        This service domain maintains reference details specific to a correspondent banking partner covering payment terms and preferences and security keys. It also consolidates transactional activity as might be needed to track reciprocity with the correspondent bank. Any specific arrangements and terms (e.g. SSIs) that might override market directory details are maintained here as part of the data record.
+
+host: "virtserver.swaggerhub.com"
+basePath: "/BIAN/sd-correspondent-bank-data-management/4.0.0"
+schemes:
+- "https"
+paths:
+  /correspondent-bank-data-management/correspondent-bank-directory-entry/{cr-reference-id}/updation:
+    put:
+      tags:
+      - update
+      summary: 'Update entries'
+      description: Update an existing correspondent bank directory entry
+      operationId: updateCorrespondentBankDirectory
+      produces:
+      - application/json
+      parameters:
+      - name: cr-reference-id
+        in: path
+        description: Correspondent Bank Directory Entry Reference
+        required: true
+        type: string
+      - in: body
+        name: CorrespondentBank
+        required: true
+        schema:
+          $ref: '#/definitions/CorrespondentBankWithoutId'
+      responses:
+        200:
+          description: Successfully updated correspondent bank directory entries.
+          schema:
+            $ref: '#/definitions/CorrespondentBank'
+  /correspondent-bank-data-management/correspondent-bank-directory-entry/registration:
+    post:
+      tags:
+      - register
+      summary: 'Capture entries'
+      description: Register a new correspondent bank in the directory
+      operationId: registerCorrespondentBankDirectory
+      produces:
+      - application/json
+      parameters:
+      - in: body
+        name: CorrespondentBank
+        required: true
+        schema:
+          $ref: '#/definitions/CorrespondentBankWithoutId'
+      responses:
+        201:
+          description: Successfully registered a new corresponent bank in the directory.
+          schema:
+            $ref: '#/definitions/CorrespondentBank'
+  /correspondent-bank-data-management/correspondent-bank-directory-entry/{cr-reference-id}/requisition:
+    put:
+      tags:
+      - request
+      summary: 'Request directory entries'
+      description: Request a refresh/check of a correspondent bank directory entry
+      operationId: requestCorrespondentBankDirectoryUpdate
+      produces:
+      - application/json
+      parameters:
+      - name: cr-reference-id
+        in: path
+        description: Correspondent Bank Reference
+        required: true
+        type: string
+      - in: body
+        name: CorrespondentBank
+        required: true
+        schema:
+          $ref: '#/definitions/CorrespondentBankWithoutId'
+      responses:
+        200:
+          description: Successfully requested a refresh/check of a correspondent bank directory entry.
+          schema:
+            $ref: '#/definitions/CorrespondentBank'
+  /correspondent-bank-data-management/correspondent-bank-directory-entry/requisition:
+    post:
+      tags:
+      - request
+      summary: 'Request directory entries'
+      description: Request a refresh/check of a correspondent bank directory entry
+      operationId: requestCorrespondentBankDirectoryCreate
+      produces:
+      - application/json
+      parameters:
+      - in: body
+        name: CorrespondentBank
+        required: true
+        schema:
+          $ref: '#/definitions/CorrespondentBankWithoutId'
+      responses:
+        201:
+          description: Successfully created a refresh/check of a correspondent bank directory entry.
+          schema:
+            $ref: '#/definitions/CorrespondentBank'
+  /correspondent-bank-data-management/correspondent-bank-directory-entry/{cr-reference-id}/recording:
+    post:
+      tags:
+      - record
+      summary: 'Record feedback'
+      description: Record usage or feedback against a correspondent bank directory entry
+      operationId: recordCorrespondentBankDirectory
+      produces:
+      - application/json
+      parameters:
+      - name: cr-reference-id
+        in: path
+        description: Correspondent Bank Reference
+        required: true
+        type: string
+      - in: body
+        name: CorrespondentBank
+        required: true
+        schema:
+          $ref: '#/definitions/CorrespondentBankDataManagementRecordRequest'
+      responses:
+        201:
+          description: A new record is created
+          schema:
+            $ref: '#/definitions/CorrespondentBankDataManagementRecordResponse'
+  /correspondent-bank-data-management/correspondent-bank-directory-entry/:
+    get:
+      tags:
+      - retrieve
+      summary: Retrieve Control Record Ids.
+      operationId: RetrieveCorrespondentBankDataManagementIds
+      produces:
+      - application/json
+      parameters:
+      - name: collection-filter
+        in: query
+        description: Filter to refine the result set. ex- "'vostroAccountReference == 'VAR1234'"
+        required: false
+        type: string
+      responses:
+        200:
+          description: successful
+          schema:
+            type: array
+            items:
+              type: string
+            example: [CAR123, CAR345]
+
+  /correspondent-bank-data-management/correspondent-bank-directory-entry/{cr-reference-id}:
+    get:
+      tags:
+      - retrieve
+      summary: 'Retrieve reporting'
+      description: Retrieve a correspondent bank directory record/report
+      operationId: retrieveCorrespondentBankDirectory
+      produces:
+      - application/json
+      parameters:
+      - name: cr-reference-id
+        in: path
+        description: Correspondent Bank Reference
+        required: true
+        type: string
+      responses:
+        200:
+          description: Successfully retrieved correspondent bank directory.
+          schema:
+            $ref: '#/definitions/CorrespondentBank'
+definitions:
+  CorrespondentBankWithoutId:
+    type: object
+    properties:
+      correspondentBankReference:
+        type: string
+        example: CBRE0423
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier      
+      clearingSortCodes:
+        type: string
+        example: BIC35/BIC40
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text    
+      contactAddresses:
+        type: string
+        example: 132C Social Street Hudson NewYork United States
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text    
+      legalEntityIdentifiers:
+        type: string
+        example: ISO17442
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier    
+      bankHierarchy:
+        type: string
+        example: ManagingDirector
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text    
+      holidayTimeZoneSchedule:
+        type: string
+        example: GMT-4 NY USA
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Duration    
+      vostroAccountReference:
+        type: string
+        example: VARE2000
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier      
+      nostroMirrorAccountReference:
+        type: string
+        example: NMAR3032
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier      
+      corresponentBankAgreementReference:
+        type: string
+        example: BAR72364234
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier      
+      correspondentBankAgreement:
+        type: string
+        example: Agreement Content
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text    
+
+  CorrespondentBank:
+    type: object
+    properties:
+      correspondentBankDirectoryEntryReference:
+        type: string
+        example: CBDF3940
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier      
+      correspondentBankReference:
+        type: string
+        example: CBRE0423
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier      
+      clearingSortCodes:
+        type: string
+        example: BIC35/BIC40
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text    
+      contactAddresses:
+        type: string
+        example: 132C Social Street Hudson NewYork United States
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text    
+      legalEntityIdentifiers:
+        type: string
+        example: ISO17442
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier      
+      bankHierarchy:
+        type: string
+        example: Associates/VicePresident/ManagingDirector
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text  
+      holidayTimeZoneSchedule:
+        type: string
+        example: GMT-4 NY USA
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Duration      
+      vostroAccountReference:
+        type: string
+        example: VARE2000
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier      
+      nostroMirrorAccountReference:
+        type: string
+        example: NMAR3032
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier      
+      corresponentBankAgreementReference:
+        type: string
+        example: BAR72364234
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier      
+      correspondentBankAgreement:
+        type: string
+        example: Agreement Content
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text    
+
+  CorrespondentBankDataManagementRecordRequest:
+    type: object
+    properties:
+      recordingRecordType:
+        type: string
+        example: Behavior Model Performance Feedback
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text    
+      recordingRecord:
+        type: object
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary    
+      recordingRecordDateTime:
+        type: string
+        example: "2018-08-28T09:00:00"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::DateTime    
+      employeeBusinessUnitReference:
+        type: string
+        example: EBUR6798
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier      
+  CorrespondentBankDataManagementRecordResponse:
+    type: object
+    properties:
+      recordingRecordReference:
+        type: string
+        example: RRR59821735
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier      
+      recordingRecordStatus:
+        type: string
+        example: Applied
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text

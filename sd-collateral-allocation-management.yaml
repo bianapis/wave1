@@ -1,0 +1,521 @@
+swagger: "2.0"
+info:
+  version: "4.0.0"
+  title: 'Service Domain - Collateral Allocation Management'
+  description: >
+        ## Service Domain Role:
+        
+        This service domain manages the holding, valuation and allocation of a customer's collateral assets to products on behalf of a customer.
+        
+        ## Example of Use:
+        
+        A corporate applies for a new facility and the available collateral is checked to see if there is sufficient collateral on hand to allocate to the loan.
+        
+        ## General Comments:
+        
+        This service domain manages the collateral holdings for a customer, tracking and authorizing the allocation of collateral to different financial facilities. The service domain oversees periodic valuations and collateral asset maintenance activity as needed. The service domain also provides reports on overall collateral usage which can include applying specific analytical assessments to support general risk management (e.g. exposure to property value fluctuations based on prevailing market conditions).
+  
+host: "virtserver.swaggerhub.com"
+basePath: "/BIAN/sd-collateral-allocation-management/4.0.0"
+schemes:
+- "https"
+paths:
+  /collateral-allocation-management/collateral-asset-allocation/{cr-reference-id}/updation:
+    put:
+      tags:
+      - update
+      summary: Update asset
+      operationId: updateCollateralAssetAllocation
+      produces:
+      - application/json
+      parameters:
+      - name: cr-reference-id
+        in: path
+        description: Collateral Asset Reference
+        required: true
+        type: string
+      - in: body
+        name: body
+        description: Update allocatable collateral asset record
+        required: true
+        schema:
+          $ref: '#/definitions/CollateralAssetBase'
+      responses:
+        200:
+          description: success
+          schema:
+            $ref: '#/definitions/CollateralAssetBaseWithId'
+  /collateral-allocation-management/collateral-asset-allocation/{cr-reference-id}/recording:
+    post:
+      tags:
+      - record
+      summary: Record details
+      operationId: Record Collateral Asset Allocation
+      produces:
+      - application/json
+      parameters:
+      - name: cr-reference-id
+        in: path
+        description: Collateral Asset Reference
+        required: true
+        type: string
+      - in: body
+        name: body
+        description: Record Collateral Asset Allocation
+        required: true
+        schema:
+          $ref: '#/definitions/CollateralAllocationManagementRecordRequest'
+      responses:
+        201:
+          description: A Record is successfully created
+          schema:
+            $ref: '#/definitions/CollateralAllocationManagementRecordResponse'
+  /collateral-allocation-management/collateral-asset-allocation/{cr-reference-id}/provision:
+    post:
+      tags:
+      - Provide
+      summary: 'Provide asset allocation'
+      description: Provide/allocate a collateral asset
+      operationId: provideCollateralAssetAllocationAllocation
+      produces:
+      - application/json
+      parameters:
+      - name: cr-reference-id
+        in: path
+        description: Collateral Asset Reference
+        required: true
+        type: string
+      - in: body
+        name: body
+        description: Provide allocatable collateral asset allocation record
+        required: true
+        schema:
+          $ref: '#/definitions/AllocationBase'
+      responses:
+        201:
+          description: A provision is made successfully
+          schema:
+            $ref: '#/definitions/AllocationBaseWithId'
+  /collateral-allocation-management/collateral-asset-allocation:
+    get:
+      tags: 
+      - retrieve
+      operationId: RetrieveCollateralAllocationManagementReferenceIds
+      summary: Retrieve Control Record Ids.
+      produces: 
+      - application/json
+      parameters: 
+      - name : collection-filter
+        in: query
+        description: Filter to refine the result set. ex- 'collateral-Type = CT123'
+        type: string 
+      responses:
+        200:
+          description: successful
+          schema:
+            type: array
+            items:
+              type: string
+            example: [CAR123, CAR345]
+  /collateral-allocation-management/collateral-asset-allocation/behavior-qualifiers:
+    get:
+      tags: 
+      - retrieve
+      operationId: RetrieveCollateralAllocationManagementBehaviorQualifiers
+      summary: Retrieve BQ names.
+      produces: 
+      - application/json
+      responses:
+        200:
+          description: successful
+          schema:
+            type: array
+            items:
+              type: string
+            example: [Allocation] 
+  /collateral-allocation-management/collateral-asset-allocation/{cr-reference-id}/{behavior-qualifier}:
+    get:
+      tags: 
+      - retrieve
+      operationId: RetrieveBehaviorQualifierReferenceIds
+      summary: Retrieve BQ Ids.
+      produces: 
+      - application/json
+      parameters: 
+      - name : cr-reference-id
+        in: path
+        description: Collateral Asset Reference
+        required: true
+        type: string
+      - name : behavior-qualifier
+        in: path
+        description: Behavior Qualifier Name. ex- Allocation
+        required: true
+        type: string
+      - name : collection-filter
+        in: query
+        description: Filter to refine the result set. ex- 'collateral-allocation-amount > $5000'
+        type: string
+      responses:
+        200:
+          description: successful
+          schema:
+            type: array
+            items:
+              type: string
+            example: [ARR121, ARR31]           
+  /collateral-allocation-management/collateral-asset-allocation/{cr-reference-id}:
+    get:
+      tags:
+      - retrieve
+      summary: Retrieve resource allocation report
+      operationId: retrieveCollateralAssetAdministrativePlan
+      produces:
+      - application/json
+      parameters:
+      - name: cr-reference-id
+        in: path
+        description: Collateral Asset Reference
+        required: true
+        type: string
+      responses:
+        200:
+          description: Retrieve resource and/or resource allocation report
+          schema:
+            $ref: '#/definitions/CollateralAssetBaseWithId'
+  
+  /collateral-allocation-management/collateral-asset-allocation/{cr-reference-id}/allocations/{bq-reference-id}:
+    get:
+      tags:
+      - retrieve
+      summary: Retrieve resource report
+      operationId: retrieveCollateralAssetAdministrativePlanAllocation
+      produces:
+      - application/json
+      parameters:
+      - name: cr-reference-id
+        in: path
+        description: Collateral Asset Reference
+        required: true
+        type: string
+      - name: bq-reference-id
+        in: path
+        description: Allocation Request Reference
+        required: true
+        type: string
+      responses:
+        200:
+          description: Retrieve resource and/or resource allocation
+          schema:
+            $ref: '#/definitions/AllocationBaseWithId'
+definitions:
+  CollateralAssetBase:
+    type: object
+    properties:
+      customerReference:
+        type: string
+        example: CSRE3456
+        description: |
+          `status: Supplied`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier           
+      collateralType:
+        type: string
+        example: Residential
+        description: |
+          `status: Supplied`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text         
+      collateralAssetRecord:
+        type: string
+        description: |
+          `status: Supplied`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary         
+      collateralAssetAllocationProfile:
+        type: string
+        example: DomesticResidence
+        description: |
+          `status: Supplied`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text    
+  CollateralAssetBaseWithId:
+    type: object
+    properties:
+      collateralAssetReference:
+        type: string
+        example: CARE2215 
+        description: |
+          `status: Supplied`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier      
+      customerReference:
+        type: string
+        example: CSRE3456
+        description: |
+          `status: Supplied`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier      
+      collateralType:
+        type: string
+        example: Residential
+        description: |
+          `status: Supplied`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text    
+      collateralAssetRecord:
+        type: string
+        description: |
+          `status: Supplied`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary    
+      collateralAssetAllocationProfile:
+        type: string
+        example: DomesticResidence 
+        description: |
+          `status: Supplied`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text    
+  CollateralAllocationManagementRecordRequest:
+    type: object
+    properties:
+      recordingRecordType:
+        type: string
+        example: BehaviorModelPerformanceFeedback
+        description: |
+          `status: Supplied`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text    
+      recordingRecord:
+        type: object
+        description: |
+          `status: Supplied`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary    
+      recordingRecordDateTime:
+        type: string
+        example: 2018-08-28T09:00:00
+        description: |
+          `status: Supplied`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::DateTime    
+      empolyeeBusinessUnitReference:
+        type: string
+        example: EBUR6798
+        description: |
+          `status: Supplied`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier      
+  CollateralAllocationManagementRecordResponse:
+    type: object
+    properties:
+      recordingRecordReference:
+        type: string
+        example: CRRR3456
+        description: |
+          `status: Supplied`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier      
+      recordingRecordStatus:
+        type: string
+        example: Applied/InProcess/Pending
+        description: |
+          `status: Supplied`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text    
+  AllocationBase:
+    type: object
+    properties:
+      requestedAllocationRequestType:
+        type: string
+        example: earmark for future allocation
+        description: |
+          `status: Supplied`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text    
+      productInstanceReference:
+        type: string
+        example: PIR123
+        description: |
+          `status: Supplied`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier      
+      customerOfferReference:
+        type: string
+        example: COFR0390
+        description: |
+          `status: Supplied`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier      
+      customerReference:
+        type: string
+        example: CSRE3456  
+        description: |
+          `status: Supplied`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier      
+      collateralEarmarkAmount:
+        type: string
+        example: $50000
+        description: |
+          `status: Supplied`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Amount    
+      collateralEarmarkDuration:
+        type: string
+        example: 12Months
+        description: |
+          `status: Supplied`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Duration    
+      collateralAllocationAmount:
+        type: string
+        example: $300000 
+        description: |
+          `status: Supplied`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Amount    
+      collateralAllocationDuration:
+        type: string
+        example: 12Months
+        description: |
+          `status: Supplied`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Duration    
+      collateralAllocationRecallAmount:
+        type: string
+        example: $10000
+        description: |
+          `status: Supplied`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Amount    
+      collateralAllocationRecallTimetable:
+        type: string
+        description: |
+          `status: Supplied`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Time      
+      collateralAllocationRecallResult:
+        type: object
+        description: |
+          `status: Supplied`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text      
+      collateralAssetValuation:
+        type: string
+        example: $3000000
+        description: |
+          `status: Supplied`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Value    
+      collateralAssetValuationDate:
+        type: string
+        example: "2018-07-31"
+        description: |
+          `status: Supplied`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Date    
+      collateralAssetLoanToValueRatio:
+        type: string
+        example: 2:1
+        description: |
+          `status: Supplied`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Ratio    
+      collateralAssetAllocationProfile:
+        type: string
+        example: DomesticResidence
+        description: |
+          `status: Supplied`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text    
+      collateralAssetAllocationState:
+        type: string
+        example: Pending confirmation
+        description: |
+          `status: Supplied`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text    
+  AllocationBaseWithId:
+    type: object
+    properties:
+      collateralAssetReference:
+        type: string
+        example: CAR123
+        description: |
+          `status: Supplied`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier      
+      allocationRequestReference:
+        type: string
+        example: ARR123
+        description: |
+          `status: Supplied`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier      
+      requestedAllocationRequestType:
+        type: string
+        example: earmark for future allocation
+        description: |
+          `status: Supplied`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text      
+      productInstanceReference:
+        type: string
+        example: PIR123
+        description: |
+          `status: Supplied`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier      
+      customerOfferReference:
+        type: string
+        example: COFR0390
+        description: |
+          `status: Supplied`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier      
+      customerReference:
+        type: string
+        example: CSRE3456  
+        description: |
+          `status: Supplied`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier      
+      collateralEarmarkAmount:
+        type: string
+        example: $50000
+        description: |
+          `status: Supplied`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Amount    
+      collateralEarmarkDuration:
+        type: string
+        example: 12Months
+        description: |
+          `status: Supplied`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Duration    
+      collateralAllocationAmount:
+        type: string
+        example: $300000  
+        description: |
+          `status: Supplied`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Amount    
+      collateralAllocationDuration:
+        type: string
+        example: 12Months
+        description: |
+          `status: Supplied`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Duration    
+      collateralAllocationRecallAmount:
+        type: string
+        example: $10000
+        description: |
+          `status: Supplied`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Amount    
+      collateralAllocationRecallTimetable:
+        type: string
+        description: |
+          `status: Supplied`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Time    
+      collateralAllocationRecallResult:
+        type: object
+        description: |
+          `status: Supplied`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text    
+      collateralAssetValuation:
+        type: string
+        example: $3000000
+        description: |
+          `status: Supplied`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Value    
+      collateralAssetValuationDate:
+        type: string
+        example: "2018-07-31"
+        description: |
+          `status: Supplied`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Date    
+      collateralAssetLoanToValueRatio:
+        type: string
+        example: 2:1
+        description: |
+          `status: Supplied`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Ratio    
+      collateralAssetAllocationProfile:
+        type: string
+        example: DomesticResidence
+        description: |
+          `status: Supplied`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text    
+      collateralAssetAllocationState:
+        type: string
+        example: Pending confirmation
+        description: |
+          `status: Supplied`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text    
+      collateralAllocationRequestResult:
+        type: object
+        description: |
+          `status: Supplied`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text

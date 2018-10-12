@@ -1,0 +1,305 @@
+---
+swagger: "2.0"
+info:
+  description: |
+    ## Description:
+    Capture market research from multiple sources, classify and store information for retrieval
+    ## Example of use:
+    A market research department handles the access and consolidation and classification of market research
+    ## General comment:
+    This service domain supports general market research for a wide range of uses and sources - including customer and competitor activity and related market assessments. It can combine subscribing to and consolidating market research with supporting on-line/interactive access to market news sources (general not financial market). A more sophisticated implementation will support specific market information requests and the consolidation of gathered intelligence
+  version: "4.0.0"
+  title: Service Domain - Market Research
+host: virtserver.swaggerhub.com
+basePath: /BIAN/sd-market-research/4.0.0
+schemes:
+- https
+paths:
+  /market-research/general-market-research-procedure:
+    get:
+      tags:
+      - "retrieve"
+      summary: "Retrieve Market Research Control Record Ids available within the Service Domain."
+      operationId: "RetrieveMarketResearchReferenceIds"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "collection-filter"
+        in: "query"
+        description: "Filter to refine the result set. ex- 'employeeBusinessUnitReference = EBU123'"
+        required: false
+        type: "string"
+      responses:
+        200:
+          description: "successfully retrieved Market Research Control Record IDs"
+          schema:
+            type: "array"
+            items:
+              type: "string"
+            example:
+            - "MR123"
+            - "MR345"
+
+  /market-research/general-market-research-procedure/{cr-reference-id}:
+    get:
+      tags:
+      - "retrieve"
+      summary: "Retrieve Market Research Master Control Record data"
+      operationId: "retrieveGeneralMarketResearchProcedure"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "cr-reference-id"
+        in: "path"
+        description: "Market Research Report Request Reference ID"
+        required: true
+        type: "string"
+      responses:
+        200:
+          description: "Successfully retrieved Market Research Report"
+          schema:
+            $ref: "#/definitions/ReportingBaseWithId"
+            
+  /market-research/general-market-research-procedure/{cr-reference-id}/updation:
+    put:
+      tags:
+      - "update"
+      summary: "Update a market research request."
+      operationId: "updateGeneralMarketResearchProcedure"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "cr-reference-id"
+        in: "path"
+        description: "Market Research Report Request Reference ID"
+        required: true
+        type: "string"
+      - in: "body"
+        name: "body"
+        description: "Update control record request payload"
+        required: true
+        schema:
+          $ref: "#/definitions/ReportingBase"
+      responses:
+        200:
+          description: "Successfully updated Market Research report"
+          schema:
+            $ref: "#/definitions/ReportingBaseWithId"
+
+  /market-research/general-market-research-procedure/{cr-reference-id}/recording:
+    post:
+      tags:
+      - "record"
+      summary: "Record feedback against market research"
+      operationId: "recordGeneralMarketResearchProcedure"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "cr-reference-id"
+        in: "path"
+        description: "Market Research Report Request Reference ID"
+        required: true
+        type: "string"
+      - in: "body"
+        name: "body"
+        description: "Record control record request payload"
+        required: true
+        schema:
+          $ref: "#/definitions/MarketResearchRecordRequest"
+      responses:
+        201:
+          description: "A new Record is created"
+          schema:
+            $ref: "#/definitions/MarketResearchRecordResponse"
+
+  /market-research/general-market-research-procedure/{cr-reference-id}/requisition:
+    put:
+      tags:
+      - "request"
+      summary: "Request a collection of reports by topic."
+      description: "Update an exising Market Research report"
+      operationId: "requestGeneralMarketResearchProcedureUpdate"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "cr-reference-id"
+        in: "path"
+        description: "Market Research Report Request Reference"
+        required: true
+        type: "string"
+      - in: "body"
+        name: "body"
+        description: "Request Market Research report request payload"
+        required: true
+        schema:
+          $ref: "#/definitions/ReportingBase"
+      responses:
+        200:
+          description: "successful"
+          schema:
+            $ref: "#/definitions/ReportingBaseWithId"
+
+  /market-research/general-market-research-procedure/requisition:
+    post:
+      tags:
+      - "request"
+      summary: "Request a collection of reports by topic."
+      description: "Create a new Market Research report"
+      operationId: "requestGeneralMarketResearchProcedureCreate"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "Request Market Research report request payload"
+        required: true
+        schema:
+          $ref: "#/definitions/ReportingBase"
+      responses:
+        201:
+          description: "Created a Market Research report successfully"
+          schema:
+            $ref: "#/definitions/ReportingBaseWithId"
+
+definitions:
+  ReportingBase:
+    type: "object"
+    properties:
+      marketResearchReportRequest:
+        type: "object"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+          general-info: 'the details of the research request'
+      employeeBusinessUnitReference:
+        type: "string"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+          general-info: 'the employee/business unit requesting the research report'
+        example: "EBU234"
+      marketResearchSourceReference:
+        type: "string"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+          general-info: 'reference to sources of market research reports and databases'
+        example: "MRS09789"
+      marketResearchReportTypeReference:
+        type: "string"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+          general-info: 'reference to a specific market research report or database'
+        example: "MRT2039"
+      marketResearchReportVersionPeriod:
+        type: "string"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Indicator
+          general-info: 'defines the specific report instance of a report type by version or date'
+        example: "v8.0.3"
+      marketResearchReport:
+        type: "object"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+          general-info: 'tthe content of a specific report or database in any suitable form'
+
+  ReportingBaseWithId:
+    type: "object"
+    properties:
+      marketResearchReportRequestReference:
+        type: "string"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+        example: "MR123"
+      marketResearchReportRequest:
+        type: "object"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+          general-info: 'the details of the research request'
+      employeeBusinessUnitReference:
+        type: "string"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+          general-info: 'the employee/business unit requesting the research report'
+        example: "EBU234"
+      marketResearchSourceReference:
+        type: "string"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+          general-info: 'reference to sources of market research reports and databases'
+        example: "MRS09789"
+      marketResearchReportTypeReference:
+        type: "string"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+          general-info: 'reference to a specific market research report or database'
+        example: "MRT2039"
+      marketResearchReportVersionPeriod:
+        type: "string"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Indicator
+          general-info: 'defines the specific report instance of a report type by version or date'
+        example: "v8.0.3"
+      marketResearchReport:
+        type: "object"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+          general-info: 'the content of a specific report or database in any suitable form'
+
+  MarketResearchRecordRequest:
+    type: "object"
+    properties:
+      recordingRecordType:
+        type: "string"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+          general-info: 'the layout/type of the feedback provided'
+        example: "quality of coverage"
+      recordingRecord:
+        type: "object"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+          general-info: 'the feedback'
+      recordingRecordDateTime:
+        type: "string"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::DateTime
+        format: "date-time"
+        example: "2018-09-20T18:18:23.990Z"
+      employeeBusinessUnitReference:
+        type: "string"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+          general-info: 'the employee/business unit requesting the research report'
+        example: "EBU1234"
+
+  MarketResearchRecordResponse:
+    type: "object"
+    properties:
+      recordingRecordReference:
+        type: "string"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+          general-info: 'reference to the feedback'
+        example: "REC098"
+      recordingRecordStatus:
+        type: "string"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+        example: "applied"

@@ -1,0 +1,793 @@
+swagger: "2.0"
+info:
+  version: 4.0.0
+  title: Service Domain - Position Keeping
+  description: >
+        
+        ## Description:
+        
+          This service domain administers the debit and credit entries made against a financial account/position, keeping track of the balance (a transaction journal).
+
+        ## Example of use:
+        
+          Any product fulfillment domain, current account, savings account, credit card, etc, delegates transaction posting/track to the Position Keeping service domain.
+        
+        ## General comment:
+        
+          Position Keeping is the service domain that maintains transaction journals for a wide range of bank activities - product fulfillment in particular.  It keeps a record of all debit and credit entries to the position. It can offer utilities that enable it to maintain balances/positions, to calculate interest and to support account reconciliation activities. Position keeping may support accounts in multiple currencies and conforming to different accounting rules as needed.
+
+host: virtserver.swaggerhub.com
+basePath: /BIAN/sd-position-keeping/4.0.0
+schemes:
+ - https
+paths:
+  /position-keeping/financial-position-log/{cr-reference-id}/updation:
+    put:
+      tags:
+      - update
+      summary: "Transaction/journal update"
+      operationId: updateFinancialPositionLog
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - name: cr-reference-id
+        in: path
+        description: Transaction Journal Reference
+        required: true
+        type: string
+      - in: body
+        name: body
+        description: Update control record request payload
+        required: true
+        schema:
+          $ref: '#/definitions/PositionKeepingUpdateRequest'
+      responses:
+        200:
+          description: Transaction/Journal updated successfully
+          schema:
+            $ref: '#/definitions/PositionKeepingUpdateResponse'
+            
+  /position-keeping/financial-position-log/{cr-reference-id}/postings/{bq-reference-id}/recording:
+    post:
+      tags:
+      - record
+      summary: "Record a journal transaction (includes classification)"
+      operationId: recordFinancialPositionLog
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - name: cr-reference-id
+        in: path
+        description: Transaction Journal Reference
+        required: true
+        type: string
+      - name: bq-reference-id
+        in: path
+        description: Posting Reference
+        required: true
+        type: string  
+      - in: body
+        name: body
+        description: Record control record request payload
+        required: true
+        schema:
+          $ref: '#/definitions/PositionKeepingRecordRequest'
+      responses:
+        201:
+          description: A new Record is created
+          schema:
+            $ref: '#/definitions/PositionKeepingRecordResponse'
+  /position-keeping/financial-position-log/{cr-reference-id}/amount-blocks/{bq-reference-id}/recording:
+    post:
+      tags:
+      - record
+      summary: "Record an amount block against a journal"
+      operationId: recordFinancialPositionLogAmountBlock
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - name: cr-reference-id
+        in: path
+        description: Transaction Journal Reference
+        required: true
+        type: string
+      - name: bq-reference-id
+        in: path
+        description: Amount Block Reference
+        required: true
+        type: string  
+      - in: body
+        name: body
+        description: Record Financial Position Log Amount Block
+        required: true
+        schema:
+          $ref: '#/definitions/PositionKeepingAmountRecordRequest'
+      responses:
+        201:
+          description: A new Record is created
+          schema:
+            $ref: '#/definitions/PositionKeepingAmountRecordResponse'
+  /position-keeping/financial-position-log/:
+    get:
+      tags: 
+      - retrieve
+      summary: "Retrieve Position Keeping Control Record Ids available."
+      operationId: RetrievePositionKeepingReferenceIds
+      produces: 
+      - application/json
+      parameters: 
+      - name : collection-filter
+        in: query
+        description: Filter to refine the result set. ex- 'Transaction Journal Reference = TJR123'
+        type: string 
+      responses:
+        200:
+          description: successful
+          schema:
+            type: array
+            items:
+              type: string
+            example: [TJR123, TJR345] 
+  /position-keeping/financial-position-log/behavior-qualifiers/:
+    get:
+      tags: 
+      - retrieve
+      summary: "Retrieve all Behaviour Qualifier names."
+      operationId: RetrievePositionKeepingBehaviorQualifiers
+      produces: 
+      - application/json
+      responses:
+        200:
+          description: successful
+          schema:
+            type: array
+            items:
+              type: string
+            example: [posting, amount-block, reposrting]
+  /position-keeping/financial-position-log/{cr-reference-id}/{behavior-qualifier}/:
+    get:
+      tags: 
+      - retrieve
+      summary: "Retrieve Behaviour Qualifier Reference Ids of the given Behavior Qualifier."
+      operationId: RetrieveBehaviorQualifierReferenceIds
+      produces: 
+      - application/json
+      parameters: 
+      - name : cr-reference-id
+        in: path
+        description: Transaction Journal Reference
+        required: true
+        type: string
+      - name : behavior-qualifier
+        in: path
+        description: Behavior Qualifier Name. ex- posting
+        required: true
+        type: string
+      - name : collection-filter
+        in: query
+        description: Filter to refine the result set. ex- 'postingAmount > $5000'
+        type: string
+      responses:
+        200:
+          description: successful
+          schema:
+            type: array
+            items:
+              type: string
+            example: [PR345, PR789, PR456] 
+            
+  /position-keeping/financial-position-log/{cr-reference-id}:
+    get:
+      tags:
+      - retrieve
+      summary: "Retrieve transaction journal record extract/report"
+      operationId: retrieveFinancialPosition
+      produces:
+      - application/json
+      parameters:
+      - name: cr-reference-id
+        in: path
+        description: Control Record Reference Id
+        required: true
+        type: string
+      responses:
+        200:
+          description: Transaction/Journal retrieved successfully
+          schema:
+            $ref: '#/definitions/PositionKeepingTransactionJournalComplete'
+         
+  /position-keeping/financial-position-log/{cr-reference-id}/amount-blocks/{bq-reference-id}:
+    get:
+      tags:
+      - retrieve
+      summary: "Retrieve Amount Blocks record extract/report"
+      operationId: retrieveFinancialPositionLogAmountBlock
+      produces:
+      - application/json
+      parameters:
+      - name: cr-reference-id
+        in: path
+        description: Control Record Reference Id
+        required: true
+        type: string
+      - name: bq-reference-id
+        in: path
+        description: Behaviour Qualifier Reference Id
+        required: true
+        type: string
+      responses:
+        200:
+          description: Amount block retrieved successfully
+          schema:
+            $ref: '#/definitions/PositionKeepingAmountBlockWithID'
+  /position-keeping/financial-position-log/{cr-reference-id}/postings/{bq-reference-id}:
+    get:
+      tags:
+      - retrieve
+      summary: "Retrieve Posting record extract/report"
+      operationId: retrieveFinancialPositionLogPosting
+      parameters:
+      - name: cr-reference-id
+        in: path
+        description: Control Record Reference Id
+        required: true
+        type: string
+      - name: bq-reference-id
+        in: path
+        description: Behaviour Qualifier Reference Id
+        required: true
+        type: string
+      responses:
+        200:
+          description: Posting retrieved successfully
+          schema:
+            $ref: '#/definitions/PositionKeepingPostingComplete'
+  /position-keeping/financial-position-log/{cr-reference-id}/updates/{bq-reference-id}:
+    get:
+      tags:
+      - retrieve
+      summary: "Retrieve Update record extract/report"
+      operationId: retrieveFinancialPositionLogUpdate
+      parameters:
+      - name: cr-reference-id
+        in: path
+        description: Control Record Reference Id
+        required: true
+        type: string
+      - name: bq-reference-id
+        in: path
+        description: Behaviour Qualifier Reference Id
+        required: true
+        type: string
+      responses:
+        200:
+          description: Update retrieved successfully
+          schema:
+            $ref: '#/definitions/PositionKeepingUpdateComplete'
+  /position-keeping/financial-position-log/{cr-reference-id}/reportings/{bq-reference-id}:
+    get:
+      tags:
+      - retrieve
+      summary: "Retrieve Reporting record extract/report"
+      operationId: retrieveFinancialPositionLogReporting
+      parameters:
+      - name: cr-reference-id
+        in: path
+        description: Control Record Reference Id
+        required: true
+        type: string
+      - name: bq-reference-id
+        in: path
+        description: Behaviour Qualifier Reference Id
+        required: true
+        type: string
+      responses:
+        200:
+          description: Reporting retrieved successfully
+          schema:
+            $ref: '#/definitions/PositionKeepingReportingWithID'
+
+definitions:
+  PositionKeepingUpdateRequest:
+    type: object
+    properties:
+      transactionJournalReference:
+        type: string
+        example: TJR12
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier 
+          general-info: Transaction Journal Reference
+      journalUpdatePurpose:
+        type: string
+        example: refresh
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+          general-info: Journal Update Purpose
+      journalUpdateEmployeeReference:
+        type: string
+        example: JUER121
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier 
+          general-info: Journal Update Employee Reference for audit purposes
+      journalUpdateDescription:
+        type: string
+        example: Journal Update
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+          general-info: Journal Update Description
+      
+  PositionKeepingUpdateResponse:
+    type: object
+    properties:
+      updateReference:
+        type: string
+        example: UR1234
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier 
+      transactionJournalReference:
+        type: string
+        example: 456123789
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier 
+      journalUpdatePurpose:
+        type: string
+        example: refresh
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+          general-info: Journal Update Purpose
+      journalUpdateEmployeeReference:
+        type: string
+        example: JUER121
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier 
+          general-info: Journal Update Employee Reference for audit purposes
+      journalUpdateDescription:
+        type: string
+        example: Journal Update
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+          general-info: Journal Update Description
+      journalUpdateResult:
+        type: string
+        example: Success
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+    
+  PositionKeepingRecordRequest:
+    type: object
+    properties:
+      postingPurpose:
+        type: string
+        example: to record
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      postingAmount:
+        type: string
+        example: $5000
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Amount
+      postingValueDate:
+        type: string
+        example: 2018-09-06
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Date
+    
+  PositionKeepingRecordResponse:
+    type: object
+    properties:
+      postingReference:
+        type: string
+        example: ABR212
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier 
+      transactionJournalReference:
+        type: string
+        example: TJR432
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier 
+      postingPurpose:
+        type: string
+        example: to record
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      postingAmount:
+        type: string
+        example: $5000
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Amount
+      postingValueDate:
+        type: string
+        example: 2018-09-06
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Date
+      postingResult:
+        type: string
+        example: Success
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      recordingRecordReference:
+        type: string
+        example: "RRR4678"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier 
+      recordingRecordStatus:
+        type: string
+        example: "Applied"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+        
+  PositionKeepingAmountRecordRequest:
+    type: object
+    properties:
+      amountBlockType:
+        type: string
+        example: pending or final
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      priority:
+        type: string
+        example: high
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      amount:
+        type: string
+        example: $5000
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Amount
+      dateType: 
+        type: string
+        example: START
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+          general-info: start, expiry
+      date:
+        type: string
+        example: "2018-09-06"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Date
+
+  PositionKeepingAmountRecordResponse:
+    type: object
+    properties:
+      amountBlockReference:
+        type: string
+        example: ABR212
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier 
+      transactionJournalReference:
+        type: string
+        example: TJR432
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier 
+      amountBlockType:
+        type: string
+        example: pending or final
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      priority:
+        type: string
+        example: high
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      amount:
+        type: string
+        example: $5000
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Amount
+      dateType: 
+        type: string
+        example: START
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+          general-info: start, expiry
+      date:
+        type: string
+        example: "2018-09-06"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Date
+      recordingRecordReference:
+        type: string
+        example: "RRR4678"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier 
+      recordingRecordStatus:
+        type: string
+        example: "Applied"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+        
+  PositionKeepingTransactionJournalComplete:
+    type: object
+    properties:
+      transactionJournalReference:
+        type: string
+        example: 456123789
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier 
+      transactionJournalType:
+        type: string
+        example: TYPE1
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      productInstanceReference:
+        type: string
+        example: 484DF5S1S84
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier 
+          general-info: linked product/service reference number
+      customerReference:
+        type: string
+        example: 159482637
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier 
+          general-info: product/service account holder
+      counterpartyReference:
+        type: string
+        example: A1A4F8X1D45
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier 
+          general-info: Merchant refernce, card network reference
+      accountingJurisdictionOrCompliance:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      baseCurrency:
+        type: string
+        example: USD
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      interestAllocationRules:
+        type: string
+        example: '[''$INCOME<500$'',''$OUTCOME>=10000$'']'
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      positionLimitsAndRules:
+        type: string
+        example: '[''1000$'', ''$INCOME<500$'']'
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      initiationDate:
+        type: string
+        example: "2018-05-29"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Date
+      authorization:
+        type: string
+        example: REFERENCE
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+          general-info: Reference, date, etc.
+      status:
+        type: string
+        example: ACTIVE
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+          general-info: Active, in-suspense, unbilled/billed, etc.
+    
+  PositionKeepingAmountBlockWithID:
+    type: object
+    properties:
+      transactionJournalReference:
+        type: string
+        example: TJR432
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier 
+      amountBlockReference:
+        type: string
+        example: 789456123
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier 
+      amountBlockType:
+        type: string
+        example: FINAL
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+          general-info: pending, final
+      priority:
+        type: string
+        example: PRIORITY1
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      amount:
+        type: string
+        example: 999
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Amount
+      dateType:
+        type: string
+        example: START
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+          general-info: start, expiry
+      date:
+        type: string
+        example: "2018-05-29"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Date
+    
+  PositionKeepingReportingWithID:
+    type: object
+    properties:
+      transactionJournalReference:
+        type: string
+        example: TJR432
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier 
+      reportingServiceReference:
+        type: string
+        example: RSR22
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier 
+      positionKeepingServiceReference:
+        type: string
+        example: PKSR523
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier 
+      journalReportType:
+        type: string
+        example: TYPE1
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      reportingPeriod:
+        type: string
+        example: "201702-21801"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      report:
+        type: string
+        example: 9KFSD9FC6
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+          general-info: Journal statement
+      reportingResult:
+        type: object
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+          general-info: List of actions within the journal
+    
+  PositionKeepingPostingComplete:
+    type: object
+    properties:
+      postingReference:
+        type: string
+        example: 789456123
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier 
+      transactionJournalReference:
+        type: string
+        example: 456123789
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier 
+      postingPurpose:
+        type: string
+        example: Purpose of posting
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      postingAmount:
+        type: string
+        example: 125$
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Amount
+          general-info: Credit/debit pair
+      postingValueDate:
+        type: string
+        example: "2018-05-29"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Date
+      postingResult:
+        type: object
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+    
+  PositionKeepingUpdateComplete:
+    type: object
+    properties:
+      updateReference:
+        type: string
+        example: 789456123
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier 
+      transactionJournalReference:
+        type: string
+        example: 456123789
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier 
+      journalUpdatePurpose:
+        type: string
+        example: Purpose of update journal
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      journalUpdateEmployeeReference:
+        type: string
+        example: A1A4F8X1D45
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier 
+          general-info: For audit purposes
+      journalUpdateDescription:
+        type: string
+        example: Description for update journal
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      journalUpdateResult:
+        type: object
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary

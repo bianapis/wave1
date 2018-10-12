@@ -1,0 +1,245 @@
+swagger: "2.0"
+info:
+  version: "4.0.0"
+  title: 'Service Domain - Disbursement'
+  description: >
+        ## Service Domain Role:
+        
+        This service domain handles the disbursement of funds to newly established loans/facilities as necessary.
+        
+        ## Example of Use:
+        
+        A disbursement is processed at the closing of a new loan.
+        
+        ## General Comments:
+        
+        This service domain handles the disbursement of funds typically for different loan facilities. Though typically a rather simple service it is modeled as a discrete service center as many banks handle disbursements from a specialist unit.
+
+host: "virtserver.swaggerhub.com"
+basePath: "/BIAN/sd-disbursement/4.0.0"
+schemes:
+ - "https"
+paths:
+  /disbursement/disbursement-transaction/initiation:
+    post:
+      tags: 
+        - initiate
+      summary: "Initiate loan disbursement"
+      description: "Initiate a disbursement transaction"
+      operationId: initiateDisbursementTransaction
+      produces: 
+        - application/json
+      parameters: 
+        - in: body
+          name: body
+          description: Initiate Loan Disbursement
+          required: true
+          schema:
+            $ref: '#/definitions/DisbursementBase'
+      responses:
+        201:
+          description: Disbursement Transaction Created Successfully
+          schema:
+            $ref: '#/definitions/DisbursementWithId'
+            
+  /disbursement/disbursement-transaction/{cr-reference-id}/updation:
+    put:
+      tags: 
+        - update
+      summary: "Update transaction"
+      description: "Update/amend details of an active disbursement (includes termination)"
+      operationId: updateDisbursementTransaction
+      produces: 
+        - application/json
+      parameters: 
+        - in: path
+          name: cr-reference-id
+          required: true
+          type: string
+          description: Disbursement Instruction Reference
+        - in: body
+          name: body
+          required: true
+          schema: 
+            $ref: '#/definitions/DisbursementBase'  
+      responses:
+        200:
+          description: successful
+          schema:
+            $ref: '#/definitions/DisbursementWithId'
+            
+  /disbursement/disbursement-transaction/:
+    get:
+      tags: 
+      - retrieve
+      operationId: RetrieveDisbursementTransactionReferenceIds
+      summary: Retrieve Control Record Ids
+      produces: 
+      - application/json
+      parameters: 
+      - name : collection-filter
+        in: query
+        description: Filter to refine the result set. ex- 'amount > 20000'
+        type: string
+      responses:
+        200:
+          description: successful
+          schema:
+            type: array
+            items:
+              type: string
+            example: [DIR123, DIR345]   
+            
+  /disbursement/disbursement-transaction/{cr-reference-id}:
+    get:
+      tags: 
+        - retrieve
+      summary: "Retrieve newly established loans fund"
+      operationId: retrieveDisbursementTransaction
+      produces: 
+        - application/json
+      parameters: 
+        - name : cr-reference-id
+          in: path
+          description: Disbursement Instruction Reference
+          required: true
+          type: string
+      responses:
+        200:
+          description: successful
+          schema:
+            $ref: "#/definitions/DisbursementWithId"
+           
+definitions:
+  DisbursementWithId: 
+    type: object
+    properties: 
+      productInstanceReference:
+       type: string
+       example: PRIR5859
+       description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier       
+      disbursementInstructionReference:
+       type: string
+       example: DIRE9549 
+       description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier       
+      authorizingEmployeeReference:
+       type: string
+       example: AERE5245
+       description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier       
+      customerReference:
+       type: string
+       example: CSRE3456
+       description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier       
+      fundingAccountReference:
+       type: string
+       example: FARE4235
+       description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier       
+      payeeReference:
+       type: string
+       example: PAEE5007
+       description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier       
+      payeeProductInstanceReference:
+       type: string
+       example: PAIR7456
+       description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier       
+      payeeBankReference:
+       type: string
+       example: PEBR2783
+       description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier       
+      amount: 
+        type: string
+        example: 5000
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Amount    
+      currency:
+        type: string
+        example: USD
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text    
+      valueDate:
+        type: string
+        example: "2018-08-28"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Date    
+  DisbursementBase: 
+    type: object
+    properties: 
+      productInstanceReference:
+       type: string
+       example: PIR5245
+       description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier       
+      authorizingEmployeeReference:
+       type: string
+       example: AERE5245
+       description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier       
+      customerReference:
+       type: string
+       example: CSRE3456
+       description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier       
+      fundingAccountReference:
+       type: string
+       example: FARE4235
+       description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier       
+      payeeReference:
+       type: string
+       example: PAEE5007
+       description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier       
+      payeeProductInstanceReference:
+       type: string
+       example: PAIR7456
+       description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier       
+      payeeBankReference:
+       type: string
+       example: PEBR2783
+       description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier       
+      amount: 
+        type: string
+        example: 5000
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Amount    
+      currency:
+        type: string
+        example: USD
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text    
+      valueDate:
+        type: string
+        example: "2018-08-28"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Date

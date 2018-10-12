@@ -1,0 +1,562 @@
+swagger: "2.0"
+info:
+  version: "4.0.0"
+  title: 'Service Domain - Regulatory Compliance'
+  description: >
+        ## Service Domain Role:
+        
+        This service domain provides a service to interpret regulatory requirements, provide guidance and define and implement a portfolio of regulatory compliance tests across all appropriate bank activities.
+        
+        ## Example of Use:
+        
+        A new customer's details are passed for regulatory watch list checks. A subsequent transaction is reported for regulatory compliance checks.
+        
+        ## General Comments:
+        
+        This service domain administers the scheduled and ad-hoc application of regulatory checks. This includes interpreting the full range of regulatory requirements governing the bank's operations and determining which regulations apply in specific circumstances across the enterprise. Support and guidelines are provided to activities in the bank that are subject to the regulations and scheduled and ad-hoc checks performed to confirm compliance.
+
+host: "virtserver.swaggerhub.com"
+basePath: "/BIAN/sd-regulatory-compliance/4.0.0"
+schemes:
+- "https"
+paths:
+  /regulatory-compliance/regulatory-compliance-assessment/{cr-reference-id}/recording:
+    post:
+      tags:
+      - record
+      summary: 'Record compliance assessment'
+      description: Record details against an active regulatory compliance assessment
+      operationId: recordRegulatoryComplianceAssessment
+      produces:
+      - application/json
+      parameters:
+      - name: cr-reference-id
+        in: path
+        description: Regulatory Assessment Reference
+        required: true
+        type: string
+      - in: body
+        name: body
+        description: Record Regulatory Compliance request payload
+        required: true
+        schema:
+          $ref: '#/definitions/RegulatoryCompliancesRecordAndEvaluateRequest'
+      responses:
+        201:
+          description: A new record is created
+          schema:
+            $ref: '#/definitions/RegulatoryCompliancesRecordResponse'
+  /regulatory-compliance/regulatory-compliance-assessment/{cr-reference-id}/evaluation:
+    post:
+      tags:
+      - evaluate
+      summary: 'Evaluate compliance test'
+      operationId: evaluateRegulatoryComplianceAssessment
+      produces:
+      - application/json
+      parameters:
+      - name: cr-reference-id
+        in: path
+        required: true
+        description: Regulatory Assessment Reference
+        type: string
+      - in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/RegulatoryCompliancesRecordAndEvaluateRequest'
+      responses:
+        201:
+          description: Successfully Evaluated Assessment
+          schema:
+            $ref: '#/definitions/Assessment'
+  /regulatory-compliance/regulatory-compliance-assessment/:
+    get:
+      tags:
+      - retrieve
+      summary: Retrieve CR Ids
+      operationId: RetrieveRegulatoryComplianceReferenceIds
+      produces:
+      - application/json
+      parameters:
+      - name: collection-filter
+        in: query
+        description: Regulatory Assessment Reference ex- 'regulatoryAuthorityReference = RA123'
+        required: false
+        type: string
+      responses:
+        200:
+          description: successful
+          schema:
+            type: array
+            items:
+              type: string
+            example: [RECP123, RECP345]
+
+  /regulatory-compliance/regulatory-compliance-assessment/{cr-reference-id}:
+    get:
+      tags:
+      - retrieve
+      summary: 'Retrieve reporting'
+      description: Retrieve a regulatory compliance assessment report
+      operationId: retrieveRegulatoryComplianceAssessment
+      produces:
+      - application/json
+      parameters:
+      - name: cr-reference-id
+        in: path
+        description: Regulatory Assessment Reference
+        required: true
+        type: string
+      - name: collection-filter
+        in: query
+        description: Regulation Reference ex- 'regulationReference = RR123'
+        required: false
+        type: string
+      responses:
+        200:
+          description: Successfully retrieved Regulatory Compliance report.
+          schema:
+            $ref: '#/definitions/AssessmentWithAssociations'
+
+  /regulatory-compliance/regulatory-compliance-assessment/{cr-reference-id}/requisition:
+    put:
+      tags:
+      - request
+      summary: Update advisory record
+      operationId: requestRegulatoryComplianceAssessmentUpdate
+      produces:
+      - application/json
+      parameters:
+      - name: cr-reference-id
+        in: path
+        description: Regulatory Assessment Task Reference
+        required: true
+        type: string
+      - in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/AdviceBase'
+      responses:
+        200:
+          description: Successfully updated regulatory compliance advisory service record
+          schema:
+            $ref: '#/definitions/Advice'
+  /regulatory-compliance/regulatory-compliance-assessment/requisition:
+    post:
+      tags:
+      - request
+      summary: Create advisory record
+      operationId: requestRegulatoryComplianceAssessmentCreate
+      produces:
+      - application/json
+      parameters:
+      - in: body
+        name: body
+        description: Request Regulatory Compliance Assessment Request payload
+        required: true
+        schema:
+          $ref: '#/definitions/AdviceBase'
+      responses:
+        201:
+          description: Successfully created regulatory compliance advisory service record
+          schema:
+            $ref: '#/definitions/Advice'
+
+definitions:
+  RegulatoryCompliancesRecordAndEvaluateRequest:
+    type: object
+    properties:
+      businessUnitReference:
+        type: string
+        example: EBUR2356
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier      
+      ProductOrServiceReference:
+        type: string
+        example: PR123
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier      
+      customerReference:
+        type: string
+        example: CR123
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier      
+      regulatoryAuthorityReference:
+        type: string
+        example: RAR123
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier      
+      regulationReference:
+        type: string
+        example: RR123
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier      
+      regulatoryAssessmentTaskRecord:
+        type: object
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary    
+      documentReference:
+        type: string
+        example: DR123
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier      
+
+  RegulatoryCompliancesRecordResponse:
+    type: object
+    properties:
+      regulatoryAssessmentResult:
+        type: object
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference:  BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Indicator    
+      recordingRecordReference:
+        type: string
+        example: RRRR5456
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier      
+      recordingRecordStatus:
+        type: string
+        example: Applied
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference:  BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Indicator    
+        
+  Assessment:
+    type: object
+    properties:
+      regulatoryAssessmentReference:
+        type: string
+        example: RAR1234
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier      
+      businessUnitReference:
+        type: string
+        example: BURE4534
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier      
+      productServiceReference:
+        type: string
+        example: PSRE4577
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier      
+      customerReference:
+        type: string
+        example: CSRE3456
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier      
+      regulatoryAuthorityReference:
+        type: string
+        example: RARE5435
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier      
+      regulationReference:
+        type: string
+        example: RGRF4537
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier      
+      regulatoryAssessmentTaskRecord:
+        type: object
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary    
+      regulatoryAssessmentResult:
+        type: string
+        example: Success
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference:  BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Indicator    
+      documentReference:
+        type: string
+        example: DCRE8470
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier      
+        
+  AssessmentWithAssociations:
+    type: object
+    properties:
+      regulatoryAssessmentReference:
+        type: string
+        example: RAR1234
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier      
+      businessUnitReference:
+        type: string
+        example: BURE4534
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier      
+      productServiceReference:
+        type: string
+        example: PSRE4577
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier      
+      customerReference:
+        type: string
+        example: CSRE3456
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier      
+      regulatoryAuthorityReference:
+        type: string
+        example: RARE5435
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier      
+      regulationReference:
+        type: string
+        example: RGRF4537
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier      
+      regulatoryAssessmentTaskRecord:
+        type: object
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary      
+      regulatoryAssessmentResult:
+        type: string
+        example: Success
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference:  BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Indicator    
+      documentReference:
+        type: string
+        example: DCRE8470
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier    
+      tests:
+        $ref: '#/definitions/Tests'
+      guidelines:
+        $ref: '#/definitions/Guidelines'
+      advices:
+        $ref: '#/definitions/Advice'
+        
+  AdviceBase:
+    type: object
+    properties:
+      regulatoryAdvisoryTaskReference:
+        type: string
+        example: RURF0398
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier      
+      businessUnitEmployeeReference:
+        type: string
+        example: BUER2920
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier      
+      productServiceReference:
+        type: string
+        example: PSR2209
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier      
+      customerReference:
+        type: string
+        example: CR732463
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier      
+      regulatoryAuthorityReference:
+        type: string
+        example: RAR723642
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier      
+      regulatoryGuidelineRegulationReference:
+        type: string
+        example: RGGR7880
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier      
+      regulatoryAdvisoryTaskRecord:
+        type: object
+        example: ROTR3201
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary    
+      documentReference:
+        type: string
+        example: DR1501
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier      
+  Advice:
+    type: object
+    properties:
+      regulatoryAssessmentReference:
+        type: string
+        example: RAR1234
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier      
+      regulatoryAdvisoryTaskReference:
+        type: string
+        example: RURF0398
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier      
+      businessUnitEmployeeReference:
+        type: string
+        example: BUER2920
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier      
+      productServiceReference:
+        type: string
+        example: PSR2209
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier      
+      customerReference:
+        type: string
+        example: CR732463
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier      
+      regulatoryAuthorityReference:
+        type: string
+        example: RAR723642
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier      
+      regulatoryGuidelineRegulationReference:
+        type: string
+        example: RGGR7880
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier      
+      regulatoryAdvisoryTaskRecord:
+        type: object
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary    
+      documentReference:
+        type: string
+        example: DR1501
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier      
+  Tests:
+    type: object
+    properties:
+      regulatoryAssessmentReference:
+        type: string
+        example: RAR1234
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier      
+      regulatoryTestReference:
+        type: string
+        example: RTR959
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier      
+      regulatoryAuthorityReference:
+        type: string
+        example: RARE5435
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier      
+      regulatoryAuthorityJurisdiction:
+        type: string
+        example: NewYork United States
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Name  
+      regulationReference:
+        type: string
+        example: RGRF4537
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier    
+      regulationDefinition:
+        type: string
+        example: Goals
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text    
+      regulationComplianceReportingRequirements:
+        type: string
+        example: Weekly
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Duration    
+      regulationAccountability:
+        type: string
+        example: Responsibility
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Name    
+      regulationPenalties:
+        type: string
+        example: NonCompliance
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference:  BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Indicator    
+  
+  Guidelines:
+    type: object
+    properties:
+      regulatoryAssessmentReference:
+        type: string
+        example: RAR1234
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier      
+      regulatoryTestReference:
+        type: string
+        example: RTR959
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier      
+      regulatoryAuthorityReference:
+        type: string
+        example: RARE5435
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier      
+      regulatoryAuthorityJurisdiction:
+        type: string
+        example: NewYork United States
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Name    
+      regulatoryGuidelineReference:
+        type: string
+        example: RDRE6288
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier      
+      regulatoryGuidelineType:
+        type: string
+        example: Penalties
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference:  BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Indicator    
+      regulatoryGuidelineRecord:
+        type: object
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary

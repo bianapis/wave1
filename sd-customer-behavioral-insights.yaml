@@ -1,0 +1,399 @@
+swagger: "2.0"
+info:
+  description: |
+    ## Description:
+    Apply behavioral analysis to customer event history to maintain ratings/scores (such as propensity to buy) and detect life events or trends
+    ## Example of use:
+    A regular analysis of customer event histories is used to update the maintained range of customer behavioral insights. The update results are notified to the Party Data Management and Party Profile Service Domains as appropriate
+    ## General comment:
+    This service domain references the data assembled by service domain Customer Event History to develop behavioral insights into customers. This analysis can support sales and marketing activity (e.g. by determining the likely response to sales efforts based on passed performance) as well as identifying changes in status and behavior that might influence the desired product mix for a customer. The actual analysis routines are developed in the Analytics area
+  version: "4.0.0"
+  title: Service Domain - Customer Behavioral Insights
+host: virtserver.swaggerhub.com
+basePath: /BIAN/sd-customer-behavioral-insights/2.0.0
+schemes:
+- https
+paths:
+  /customer-behavioral-insights/customer-behavior-analysis/:
+    get:
+      tags:
+      - retrieve
+      summary: Retrieve available Customer Behavioral Analysis Control Record Ids.
+      operationId: retrieveCustomerBehavioralInsightsReferenceIds
+      produces:
+      - application/json
+      parameters:
+      - name: collection-filter
+        in: query
+        description: Filter to refine the result set. ex- 'customerInsightsType = Type-1'
+        required: false
+        type: string
+      responses:
+        200:
+          description: Successfully retrieved Control Record IDs
+          schema:
+            type: array
+            items:
+              type: string
+            example:
+            - CBA123
+            - CBA345
+
+  /customer-behavioral-insights/customer-behavior-analysis/behavior-qualifiers:
+    get:
+      tags:
+      - retrieve
+      summary: Retrieve all BQ names in the Customer Behavioral Analysis Service Domain.
+      operationId: retrieveCustomerBehavioralInsightsBehaviorQualifiers
+      produces:
+      - application/json
+      responses:
+        200:
+          description: Successfully retrieved Behavioral Qualifiers
+          schema:
+            type: array
+            items:
+              type: string
+            example:
+            - algorithm
+
+  /customer-behavioral-insights/customer-behavior-analysis/{cr-reference-id}/{behavior-qualifier}:
+    get:
+      tags:
+      - retrieve
+      summary: Retrieve BQ Reference Ids of the given Behavior Qualifier.
+      operationId: RetrieveBehaviorQualifierReferenceIds
+      produces:
+      - application/json
+      parameters:
+      - name: cr-reference-id
+        in: path
+        description: Customer Insights Record Reference
+        required: true
+        type: string
+      - name: behavior-qualifier
+        in: path
+        required: true
+        description: Behavior Qualifier Name. ex- algorithm
+        type: string
+      - name: collection-filter
+        in: query
+        required: false
+        description: Filter to refine the result set. ex- 'customer-insight-algorithm-type = genetic'
+        type: string
+      responses:
+        200:
+          description: successfully retrieved Behavior Qualifier IDs
+          schema:
+            type: array
+            items:
+              type: string
+            example:
+            - ALG345
+            - ALG789
+            - ALG456
+
+  /customer-behavioral-insights/customer-behavior-analysis/{cr-reference-id}:
+    get:
+      tags:
+      - retrieve
+      summary: Retrieve Customer Behavior Analysis Master Control Record data
+      operationId: retrieveCustomerBehaviorAnalysis
+      produces:
+      - application/json
+      parameters:
+      - name: cr-reference-id
+        in: path
+        description: Customer Insights Record Reference
+        required: true
+        type: string
+      responses:
+        200:
+          description: Successfully retrieved Customer Behavior Insights report
+          schema:
+            $ref: "#/definitions/CustomerBehavioralInsightsBaseWithId"
+
+  /customer-behavioral-insights/customer-behavior-analysis/{cr-reference-id}/algorithms/{bq-reference-id}:
+    get:
+      tags:
+      - "retrieve"
+      summary: "Retrieve Customer Insight Algorithm"
+      operationId: "retrieveCustomerInsightAlgorithm"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "cr-reference-id"
+        in: "path"
+        description: "Customer Insights Record Reference"
+        required: true
+        type: "string"
+      - name: "bq-reference-id"
+        in: "path"
+        description: "Customer Insight Algorithm Reference"
+        required: true
+        type: "string"
+      responses:
+        200:
+          description: "Successfully retrieved Customer Insight Algorithm"
+          schema:
+            $ref: "#/definitions/AlgorithmBaseWithId"
+
+  /customer-behavioral-insights/customer-behavior-analysis/{cr-reference-id}/recording:
+    post:
+      tags:
+      - record
+      summary: 'Record activity/feedback relating to Customer Behavioral Insights activity'
+      operationId: "recordCustomerBehaviorAnalysis"
+      produces:
+      - application/json
+      parameters:
+      - name: cr-reference-id
+        in: path
+        description: Customer Insights Record Reference
+        required: true
+        type: string
+      - in: body
+        name: body
+        description: Record control record request payload
+        required: true
+        schema:
+          $ref: "#/definitions/CustomerBehavioralInsightsRecordRequest"
+      responses:
+        201:
+          description: A new Record is created
+          schema:
+            $ref: "#/definitions/CustomerBehavioralInsightsRecordResponse"
+            
+  /customer-behavioral-insights/customer-behavior-analysis/{cr-reference-id}/requisition:
+    put:
+      tags:
+      - request
+      summary: Request specific customer behavioral insights.
+      description: Update an exising Customer Behavioral Insights record
+      operationId: requestCustomerBehaviorAnalysisUpdate
+      produces:
+      - application/json
+      parameters:
+      - name: cr-reference-id
+        in: path
+        description: Customer Insights Record Reference
+        required: true
+        type: string
+      - in: body
+        name: body
+        description: Request customer behavioral insights request payload
+        required: true
+        schema:
+          $ref: "#/definitions/InsightsReportBase"
+      responses:
+        200:
+          description: successfully updated Customer Behavioral Insights record
+          schema:
+            $ref: "#/definitions/CustomerBehavioralInsightsBaseWithId"
+
+  /customer-behavioral-insights/customer-behavior-analysis/requisition:
+    post:
+      tags:
+      - request
+      summary: Request specific customer behavioral insights.
+      description: Create a Customer Behavioral Insights record
+      operationId: requestCustomerBehaviorAnalysisCreate
+      produces:
+      - application/json
+      parameters:
+      - in: body
+        name: body
+        description: Request customer behavioral insights request payload
+        required: true
+        schema:
+          $ref: "#/definitions/InsightsReportBase"
+      responses:
+        201:
+          description: Created a standing order successfully
+          schema:
+            $ref: "#/definitions/CustomerBehavioralInsightsBaseWithId"
+            
+  
+            
+definitions:
+  InsightsReportBase:
+    type: object
+    properties:
+      customerInsightsRecord:
+        type: object
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+          general-info: collection of customer insights maintained for a customer
+      customerInsightType:
+        type: string
+        example: retention candidate
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+          general-info: refers to a maintained customer insight
+      customerInsightAlgorithmReference:
+        type: string
+        example: "ALG92308"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+          general-info: "the algorithm used to derive the customer insight"
+      customerInsight:
+        type: object
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+          general-info: the derived value of the specific insight for the customer
+      customerInsightCalculationDate:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::DateTime
+          general-info: the date/time the value was last calculated
+        
+
+  CustomerBehavioralInsightsBaseWithId:
+    type: object
+    properties:
+      customerInsightsRecordReference:
+        type: string
+        example: "CIR09823"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      customerInsightsRecord:
+        type: object
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+          general-info: "collection of customer insights maintained for a customer"
+      customerInsightType:
+        type: string
+        example: "retention candidate"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+          general-info: "refers to a maintained customer insight"
+      customerInsightAlgorithmReference:
+        type: string
+        example: "ALG92308"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+          general-info: "the algorithm used to derive the customer insight"
+      customerInsight:
+        type: object
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+          general-info: "the derived value of the specific insight for the customer"
+      customerInsightCalculationDate:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::DateTime
+          general-info: the date/time the value was last calculated
+
+  AlgorithmBaseWithId:
+    type: "object"
+    properties:
+      customerInsightAlgorithmReference:
+        type: "string"
+        example: "ALG92308"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      customerInsightAlgorithmType:
+        type: "string"
+        example: "genetic"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      customerInsightAlgorithmUsage:
+        type: "object"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+          general-info: "records number of production deployments and frequency of execution"
+      customerInsightAlgorithmImpact:
+        type: "object"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+          general-info: "reported impact/accuracy of model"
+      customerInsightAlgorithmFeedbackRecord:
+        type: "object"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+          general-info: "user pro vided feedback/suggestions"
+      customerInsightAlgorithmSpecification:
+        type: "object"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+          general-info: "design - inputs, calculations, outputs"
+      customerInsightAlgorithmUsageGuidelines:
+        type: "string"
+        example: "example guideline"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+          general-info: "guidance on usage and result interpretation"
+        
+  CustomerBehavioralInsightsRecordRequest:
+    type: object
+    properties:
+      recordingRecordType:
+        type: string
+        example:  BehaviorModelPerformanceFeedback
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      recordingRecord:
+        type: object
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+      recordingRecordDateTime:
+        type: string
+        example: 2018-09-24T09:00:00
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::DateTime
+      employeeBusinessUnitReference:
+        type: string
+        example: EBU9078
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+        
+  CustomerBehavioralInsightsRecordResponse:
+    type: object
+    properties:
+      customerBehaviorInsightsServiceReference:
+        type: string
+        example: CBIS9798
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      customerInsightAlgorithmReference:
+        type: string
+        example: CIA23
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+          general-info: Optionally, a reference to the specific type of insight analysis
+      recordingRecordReference:
+        type: string
+        example: CRRR3456
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      recordingRecordStatus:
+        type: string
+        example: Applied
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text

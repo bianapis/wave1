@@ -1,0 +1,496 @@
+swagger: '2.0'
+info:
+  version: "4.0.0"
+  title: 'Service Domain - Channel Activity History'
+  description: >
+
+        ## Description: 
+      
+        This service domains consolidates and captures customer channel usage activity to support channel activity analysis and also can be referenced for customer access authorization and routing decisions.
+
+        ## Example of use:
+        
+        Channel Activity Analysis draws on channel activity history data to support channel usage analysis to detect out of pattern behavior for customers.
+        
+        ## General comment:
+        
+        This service domain captures selected transaction activity across multiple channels to provide recent activity details for routing and access control and provide a source of activity data for more involved channel usage analysis.
+
+# Added by API Auto Mocking Plugin
+host: virtserver.swaggerhub.com
+basePath: /BIAN/sd-channel-activity-history/4.0.0
+
+schemes:
+ - https
+
+paths: 
+
+  /channel-activity-history/channel-activity-log/{cr-reference-id}/events/{bq-reference-id}/updation:
+    put:
+      tags:
+      - update
+      operationId: updateChannelActivityLogEvent  
+      summary: "Update/correct any logged event records - (unlikely)"
+      produces: 
+      - application/json
+      parameters:
+      - name : cr-reference-id
+        in: path
+        description: Customer Channel Activity Event History Reference
+        required: true
+        type: string
+      - name : bq-reference-id
+        in: path
+        description: Channel Activity Event Record Reference
+        required: true
+        type: string
+      - in: body
+        name: body
+        description: Update control record request payload
+        required: true
+        schema: 
+          $ref: '#/definitions/Event'
+      responses:
+        200:
+          description: successful
+          schema:
+            $ref: '#/definitions/EventWithIds'
+            
+  /channel-activity-history/channel-activity-log/{cr-reference-id}/events/{bq-reference-id}/recording:
+    post:
+      tags:
+      - record
+      operationId: recordChannelActivityLog
+      summary: "Record a channel activity event"
+      produces: 
+      - application/json
+      parameters:
+      - name : cr-reference-id
+        in: path
+        description: Customer Channel Activity Event History Reference
+        required: true
+        type: string
+      - name : bq-reference-id
+        in: path
+        description: Channel Activity Event Record Reference
+        required: true
+        type: string
+      - in: body
+        name: body
+        description: Record control record request payload
+        required: true
+        schema: 
+          $ref: '#/definitions/Event'
+      responses:
+        201:
+          description: A new Record is created
+          schema:
+            $ref: '#/definitions/EventWithIds'
+
+  /channel-activity-history/channel-activity-log/:
+    get:
+      tags: 
+      - retrieve
+      operationId: RetrieveChannelActivityLogReferenceIds
+      summary: "Retrieve Channel Activity Log Control Record Ids available within the Service Domain."
+      produces: 
+      - application/json
+      parameters: 
+      - name : collection-filter
+        in: query
+        description: Filter to refine the result set. ex- 'customerReference = 436435'
+        type: string 
+      responses:
+        200:
+          description: successful
+          schema:
+            type: array
+            items:
+              type: string
+            example: [CRR2522, CRR432532]
+            
+  /channel-activity-history/channel-activity-log/behavior-qualifiers/:
+    get:
+      tags: 
+      - retrieve
+      operationId: RetrieveChannelActivityLogBehaviorQualifiers
+      summary: "Retrieve all Behaviour Qualifier names."
+      produces: 
+      - application/json
+      responses:
+        200:
+          description: successful
+          schema:
+            type: array
+            items:
+              type: string
+            example: [events] 
+
+  /channel-activity-history/channel-activity-log/{cr-reference-id}/{behavior-qualifier}:
+    get:
+      tags: 
+      - retrieve
+      operationId: RetrieveBehaviorQualifierReferenceIds
+      summary: "Retrieve Behaviour Qualifier Reference Ids of the given Behavior Qulifier."
+      produces: 
+      - application/json
+      parameters: 
+      - name : cr-reference-id
+        in: path
+        description: Customer Channel Activity Event History Reference
+        required: true
+        type: string
+      - name : behavior-qualifier
+        in: path
+        description: Behavior Qualifier Name. ex- events
+        required: true
+        type: string
+      - name : collection-filter
+        in: query
+        description: Filter to refine the result set. ex- 'contactDialogueRecordEmployeeReference = 2300'
+        type: string
+      responses:
+        200:
+          description: successful
+          schema:
+            type: array
+            items:
+              type: string
+            example: [BQR2352, BQR56587] 
+
+  /channel-activity-history/channel-activity-log/{cr-reference-id}:
+    get:
+      tags: 
+      - retrieve
+      operationId: RetrieveChannelActivityLog
+      summary: "Retrieve Channel Activity Log Master Control Record data"
+      produces: 
+      - application/json
+      parameters: 
+      - name : cr-reference-id
+        in: path
+        description: Customer Channel Activity Event History Reference
+        required: true
+        type: string
+      responses:
+        200:
+          description: successful
+          schema:
+            $ref: '#/definitions/LogWithIds'
+            
+  /channel-activity-history/channel-activity-log/{cr-reference-id}/events/{bq-reference-id}:
+    get:
+      tags: 
+      - retrieve
+      operationId: RetrieveEvents
+      summary: "Retrieve Events Behaviour Qualifier with all its' attributes."
+      produces: 
+      - application/json
+      parameters: 
+      - name : cr-reference-id
+        in: path
+        description: Customer Channel Activity Event History Reference
+        required: true
+        type: string
+      - name : bq-reference-id
+        in: path
+        description: Channel Activity Event Record Reference
+        required: true
+        type: string
+      responses:
+        200:
+          description: successful
+          schema:
+            $ref: '#/definitions/EventWithIds'
+
+definitions:
+        
+  LogWithIds:
+    type: object
+    properties:
+      customerChannelActivityEventHistoryReference:
+        type: string
+        example: 76439839
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier 
+      customerReference:
+        type: string
+        example: 86532
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier 
+      channelActivityEventHistoryRecord:
+        type: object
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+      channelActivityEventHistoryReportType:
+        type: string
+        example: T2
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      channelActivityEventHistoryReportParameters:
+        type: string
+        example: 7963
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      channelActivityEventHistoryReport:
+        type: object
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+          
+  Event:
+    type: object
+    properties:
+      channelActivityEventRecord:
+        type: object
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+      customerContactRecordReference:
+        type: string
+        example: 7643
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier 
+      customerContactRecord:
+        type: object
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+      customerContactRecordCustomerReference:
+        type: string
+        example: 54732
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier 
+      customerContactRecordMenuSelection:
+        type: string
+        example: 1345
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      customerContactRecordContactDevice:
+        type: string
+        example: 45732
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      customerContactRecordAuthenticationLevel:
+        type: string
+        example: L1
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      customerContactRecordContactDialogueRecord:
+        type: object
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+      contactDialogueRecordCustomerReference:
+        type: string
+        example: 234676
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier 
+      contactDialogueRecordEmployeeReference:
+        type: string
+        example: 64523
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier 
+      contactDialogueRecordServicingPositionReference:
+        type: string
+        example: 34523
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier 
+      contactDialogueRecordSessionMechanism:
+        type: string
+        example: web
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      contactDialogueRecordSessionStartEndTime:
+        type: string
+        example: "07:24:33+00:00 - 17:24:33+00:00"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      contactDialogueRecordContactDialogueType:
+        type: string
+        example: verified customer
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      contactDialogueRecordContactDialogueScript:
+        type: string
+        example: 3463
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      contactDialogueRecordContactDialogueLogReference:
+        type: string
+        example: 2512
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier 
+      contactDialogueRecordContactDialogueLog:
+        type: string
+        example: L2
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      customerContactActivityRecord:
+        type: object
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+      customerContactFromto:
+        type: string
+        example: "01/01/2018 - 01/01/2019"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      customerContactResult:
+        type: string
+        example: success
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+
+  EventWithIds:
+    type: object
+    properties:
+      channelActivityEventRecordReference:
+        type: string
+        example: 76439839
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier 
+      customerChannelActivityEventHistoryReference:
+        type: string
+        example: 87532
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier 
+      channelActivityEventRecord:
+        type: object
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+      customerContactRecordReference:
+        type: string
+        example: 7643
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier 
+      customerContactRecord:
+        type: object
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+      customerContactRecordCustomerReference:
+        type: string
+        example: 54732
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier 
+      customerContactRecordMenuSelection:
+        type: string
+        example: 1345
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      customerContactRecordContactDevice:
+        type: string
+        example: 45732
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      customerContactRecordAuthenticationLevel:
+        type: string
+        example: L1
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      customerContactRecordContactDialogueRecord:
+        type: object
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+      contactDialogueRecordCustomerReference:
+        type: string
+        example: 234676
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier 
+      contactDialogueRecordEmployeeReference:
+        type: string
+        example: 64523
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier 
+      contactDialogueRecordServicingPositionReference:
+        type: string
+        example: 34523
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier 
+      contactDialogueRecordSessionMechanism:
+        type: string
+        example: web
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      contactDialogueRecordSessionStartEndTime:
+        type: string
+        example: "07:24:33+00:00 - 17:24:33+00:00"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      contactDialogueRecordContactDialogueType:
+        type: string
+        example: verified customer
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      contactDialogueRecordContactDialogueScript:
+        type: string
+        example: 3463
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      contactDialogueRecordContactDialogueLogReference:
+        type: string
+        example: 2512
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier 
+      contactDialogueRecordContactDialogueLog:
+        type: string
+        example: L2
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      customerContactActivityRecord:
+        type: object
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+      customerContactFromto:
+        type: string
+        example: "01/01/2018 - 01/01/2019"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      customerContactResult:
+        type: string
+        example: success
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text

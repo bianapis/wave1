@@ -1,0 +1,1176 @@
+swagger: "2.0"
+info:
+  version: "4.0.0"
+  title: 'Service Domain - Customer Billing'
+  description: >
+        ## Service Domain Role:
+        
+        This service domains provides a central service to compose, issue and track customer billing and invoices.
+        
+        ## Example of Use:
+        
+        An invoice is raised for the fees and commissions applicable to a managed investment portfolio.
+        
+        ## General Comments:
+        
+        This service domain provides a general customer billing service. The service domain is provided with the applicable fees and charges that are authorized for invoicing typically by a product or service fulfillment service domain. Processing can include verification and authorizations steps and the invoice could be issued as a single transaction or a schedule of transactions.
+
+host: "virtserver.swaggerhub.com"
+basePath: "/BIAN/sd-customer-billing/4.0.0"
+schemes:
+- "https"
+paths:
+  /customer-billing/customer-billing-procedure/{cr-reference-id}/updation:
+    put:
+      tags:
+      - update
+      summary: 'Update customer billing record'
+      description: Update details of an active customer invoice
+      operationId: updateCustomerBillingProcedure
+      produces:
+      - application/json
+      parameters:
+      - name: cr-reference-id
+        in: path
+        description: Customer Billing Transaction Reference
+        required: true
+        type: string
+      - in: body
+        name: body
+        description: Update control record payload
+        required: true
+        schema:
+          $ref: '#/definitions/CustomerBillingBillingBaseWithRoot'
+      responses:
+        200:
+          description: Updated billing successfully
+          schema:
+            $ref: '#/definitions/CustomerBillingBillingBaseWithIdAndRoot'
+  /customer-billing/customer-billing-procedure/{cr-reference-id}/recording:
+    post:
+      tags:
+      - record
+      summary: 'Record customer invoice'
+      description: Record information against an active customer invoice
+      operationId: recordCustomerBillingProcedure
+      produces:
+      - application/json
+      parameters:
+      - name: cr-reference-id
+        in: path
+        description: Customer Billing Transaction Reference
+        required: true
+        type: string
+      - in: body
+        name: body
+        description: body
+        required: true
+        schema:
+          $ref: '#/definitions/CustomerBillingRecordRequest'
+      responses:
+        201:
+          description: A new record is created
+          schema:
+            $ref: '#/definitions/CustomerBillingRecordResponse'
+  /customer-billing/customer-billing-procedure/{cr-reference-id}/invoices/{bq-reference-id}/execution:
+    put:
+      tags:
+      - execute
+      summary: 'Update invoice Record'
+      description: Update a customer invoice
+      operationId: executeCustomerBillingProcedureInvoiceUpdate
+      produces:
+      - application/json
+      parameters:
+      - name: cr-reference-id
+        in: path
+        required: true
+        type: string
+        description: Customer Billing Transaction Reference
+      - name: bq-reference-id
+        in: path
+        required: true
+        type: string
+        description: Customer Billing Invoice Reference
+      - in: body
+        name: body
+        required: true
+        description: Customer Billing Invoice Update Payload
+        schema:
+          $ref: '#/definitions/CustomerBillingInvoiceWithBase'
+      responses:
+        200:
+          description: Successfully Update Customer Invoice
+          schema:
+            $ref: '#/definitions/CustomerBillingInvoiceBaseWithIdAndRoot'
+  /customer-billing/customer-billing-procedure/{cr-reference-id}/invoices/execution:
+    post:
+      tags:
+      - execute
+      summary: 'Generate Customer invoice'
+      description: Generate a customer new invoice
+      operationId: executeCustomerBillingProcedureInvoiceCreate
+      produces:
+      - application/json
+      parameters:
+      - name: cr-reference-id
+        in: path
+        required: true
+        type: string
+        description: Customer Billing Invoice Reference
+      - in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/CustomerBillingInvoiceWithBase'
+      responses:
+        201:
+          description: Successful Generated a New Invoice
+          schema:
+            $ref: '#/definitions/CustomerBillingInvoiceBaseWithIdAndRoot'
+  /customer-billing/customer-billing-procedure/{cr-reference-id}/payments/{bq-reference-id}/execution:
+    put:
+      tags:
+      - execute
+      summary: 'Update Customer payment'
+      description: Execute payment processing against active invoice
+      operationId: executeCustomerBillingProcedurePaymentUpdate
+      produces:
+      - application/json
+      parameters:
+      - name: cr-reference-id
+        in: path
+        required: true
+        type: string
+        description: Customer Billing Invoice Reference
+      - name: bq-reference-id
+        in: path
+        required: true
+        type: string
+        description: Customer Billing Payments Reference
+      - in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/CustomerBillingPaymentsBaseWithRoot'
+      responses:
+        200:
+          description: Successfully Updated Payment Record
+          schema:
+            $ref: '#/definitions/CustomerBillingPaymentsBaseWithIdAndRoot'
+  /customer-billing/customer-billing-procedure/{cr-reference-id}/payments/execution:
+    post:
+      tags:
+      - execute
+      summary: 'Create Customer payment processing'
+      description: Execute payment processing against record creation
+      operationId: executeCustomerBillingProcedurePaymentCreate
+      produces:
+      - application/json
+      parameters:
+      - name: cr-reference-id
+        in: path
+        required: true
+        type: string
+        description: Customer Billing Invoice Reference
+      - in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/CustomerBillingPaymentsBaseWithRoot'
+      responses:
+        200:
+          description: Successfully Created Payment Processing Record
+          schema:
+            $ref: '#/definitions/CustomerBillingPaymentsBaseWithIdAndRoot'
+  /customer-billing/customer-billing-procedure/{cr-reference-id}/requisition:
+    put:
+      tags:
+      - request
+      summary: 'Update Customer Billing Record'
+      description: Update a Customer Billing Record
+      operationId: requestCustomerBillingProcedureUpdate
+      produces:
+      - application/json
+      parameters:
+      - name: cr-reference-id
+        in: path
+        required: true
+        type: string
+        description: Customer Billing Invoice Reference
+      - in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/CustomerBillingBillingBaseWithRoot'
+      responses:
+        200:
+          description: Successfully updated customer billing record
+          schema:
+            $ref: '#/definitions/CustomerBillingBillingBaseWithIdAndRoot'
+  /customer-billing/customer-billing-procedure/requisition:
+    post:
+      tags:
+      - request
+      summary: 'Create Customer Billing Record'
+      description: Create a Customer Billing Record
+      operationId: requestCustomerBillingProcedurCreate
+      produces:
+      - application/json
+      parameters:
+      - in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/CustomerBillingBillingBaseWithRoot'
+      responses:
+        201:
+          description: Successfully created billing information
+          schema:
+            $ref: '#/definitions/CustomerBillingBillingBaseWithIdAndRoot'
+  /customer-billing/customer-billing-procedure/{cr-reference-id}/reminders/{bq-reference-id}/requisition:
+    put:
+      tags:
+      - request
+      summary: Update Reminder Record
+      description: Update a Customer Billing Reminder Record
+      operationId: requestCustomerBillingProcedureRemindersUpdate
+      produces:
+      - application/json
+      parameters:
+      - name: cr-reference-id
+        in: path
+        required: true
+        type: string
+        description: Customer Billing Transaction Reference
+      - name: bq-reference-id
+        in: path
+        required: true
+        type: string
+        description: Customer Billing Reminder Reference
+      - in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/CustomerBillingRemindersBaseWithRoot'
+      responses:
+        200:
+          description: Successfully Update Customer Billing Reminder Record
+          schema:
+            $ref: '#/definitions/CustomerBillingRemindersBaseWithIdAndRoot'
+  /customer-billing/customer-billing-procedure/{cr-reference-id}/reminders/requisition:
+    post:
+      tags:
+      - request
+      summary: Create Reminder Record
+      description: Request Customer Billing Reminder Generation
+      operationId: requestCustomerBillingProcedureRemindersCreate
+      produces:
+      - application/json
+      parameters:
+      - name: cr-reference-id
+        in: path
+        required: true
+        type: string
+        description: Customer Billing Transaction Reference
+      - in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/CustomerBillingRemindersBaseWithRoot'
+      responses:
+        201:
+          description: Successfully Created Customer Billing Reminder Record
+          schema:
+            $ref: '#/definitions/CustomerBillingRemindersBaseWithIdAndRoot'
+  /customer-billing/customer-billing-procedure/:
+    get:
+      tags:
+      - retrieve
+      summary: Retrieve CR Ids
+      operationId: RetrieveCustomerBillingReferenceIds
+      produces:
+      - application/json
+      parameters:
+      - name: collection-filter
+        in: query
+        description: Filter to refine the result set. ex- 'customer-reference = CR123'
+        required: false
+        type: string
+      responses:
+        200:
+          description: successful
+          schema:
+            type: array
+            items:
+              type: string
+            example: [BTR123, BTR345]
+            
+  /customer-billing/customer-billing-procedure/behavior-qualifiers/:
+    get:
+      tags:
+      - retrieve
+      summary: Retrieve BQ names
+      operationId: RetrieveCustomerBillingBehaviorQualifiers
+      produces:
+      - application/json
+      parameters: []
+      responses:
+        200:
+          description: successful
+          schema:
+            type: array
+            items:
+              type: string
+            example: [ invoice, tracking, reminders, payments, reporting]
+
+  /customer-billing/customer-billing-procedure/{cr-reference-id}/{behavior-qualifier}/:
+    get:
+      tags:
+      - retrieve
+      summary: Retrieve BQ Ids
+      operationId: RetrieveBehaviorQualiferReferenceIds
+      parameters:
+      - name: cr-reference-id
+        in: path
+        description: Customer Billing Transaction Reference
+        required: true
+        type: string
+      - name: behavior-qualifier
+        in: path
+        description: Behavior Qualifier Name. ex- Invoice
+        required: true
+        type: string
+      - name: collection-filter
+        in: query
+        description: Filter to refine the result set. ex- 'billingAmount > $5000'
+        required: false
+        type: string
+      responses:
+        200:
+          description: successful
+          schema:
+            type: array
+            items:
+              type: string
+            example: [ CBIR123, CBIR345]
+  /customer-billing/customer-billing-procedure/{cr-reference-id}:
+    get:
+      tags:
+      - retrieve
+      summary: 'Retrieve Customer billing reporting'
+      description: Retrieve customer billing procedure report
+      operationId: retrieveCustomerBillingProcedure
+      produces:
+      - application/json
+      parameters:
+      - name: cr-reference-id
+        in: path
+        description: Customer Billing Transaction Reference
+        required: true
+        type: string
+      responses:
+        200:
+          description: Successfully retrieved Customer Billing.
+          schema:
+            $ref: '#/definitions/CustomerBillingBillingBaseWithIdAndRoot'
+  /customer-billing/customer-billing-procedure/{cr-reference-id}/invoices/{bq-reference-id}:
+    get:
+      tags:
+      - retrieve
+      summary: 'Retrieve Invoice Record'
+      description: Retrieve Customer Billing Invoice Record
+      operationId: retrieveCustomerBillingProcedureInvoice
+      produces:
+      - application/json
+      parameters:
+      - name: cr-reference-id
+        in: path
+        description: Customer Billing Transaction Reference
+        required: true
+        type: string
+      - name: bq-reference-id
+        in: path
+        description: Customer Billing Invoice Reference
+        required: true
+        type: string
+      responses:
+        200:
+          description: Successfully retrieved Invoice details
+          schema:
+            $ref: '#/definitions/CustomerBillingInvoiceBaseWithIdAndRoot'
+  /customer-billing/customer-billing-procedure/{cr-reference-id}/trackings/{bq-reference-id}:
+    get:
+      tags:
+      - retrieve
+      summary: 'Retrieve Tracking Record'
+      description: Retrieve Customer Billing Tracking Record
+      operationId: retrieveCustomerBillingProcedureTracking
+      produces:
+      - application/json
+      parameters:
+      - name: cr-reference-id
+        in: path
+        description: Customer Billing Transaction Reference
+        required: true
+        type: string
+      - name: bq-reference-id
+        in: path
+        description: Customer Billing Tracking Activity Reference
+        required: true
+        type: string
+      responses:
+        200:
+          description: Successfully Retrieved Customer Billing Tracking Record
+          schema:
+            $ref: '#/definitions/CustomerBillingTrackingBaseWithIdAndRoot'
+  /customer-billing/customer-billing-procedure/{cr-reference-id}/reminders/{bq-reference-id}:
+    get:
+      tags:
+      - retrieve
+      summary: 'Retrieve Reminder Record'
+      description: Retrieve Customer Billing Reminder Record
+      operationId: retrieveCustomerBillingProcedureReminders
+      produces:
+      - application/json
+      parameters:
+      - name: cr-reference-id
+        in: path
+        description: Customer Billing Transaction Reference
+        required: true
+        type: string
+      - name: bq-reference-id
+        in: path
+        description: Customer Billing Reminder Reference
+        required: true
+        type: string
+      responses:
+        200:
+          description: Successfully retrieved Customer Billing Reminder Record
+          schema:
+            $ref: '#/definitions/CustomerBillingRemindersBaseWithIdAndRoot'
+  /customer-billing/customer-billing-procedure/{cr-reference-id}/payments/{bq-reference-id}:
+    get:
+      tags:
+      - retrieve
+      summary: 'Retrieve Payments Record'
+      description: Retrieve Customer Billing Payments Record
+      operationId: retrieveCustomerBillingProcedurePayments
+      produces:
+      - application/json
+      parameters:
+      - name: cr-reference-id
+        in: path
+        description: Customer Billing Transaction Reference
+        required: true
+        type: string
+      - name: bq-reference-id
+        in: path
+        description: Customer Billing Payments Reference
+        required: true
+        type: string
+      responses:
+        200:
+          description: Successfully retrieved Payments details
+          schema:
+            $ref: '#/definitions/CustomerBillingPaymentsBaseWithIdAndRoot'
+  /customer-billing/customer-billing-procedure/{cr-reference-id}/reportings/{bq-reference-id}:
+    get:
+      tags:
+      - retrieve
+      summary: 'Retrieve reporting'
+      description: Retrieve customer billing procedure report - Reporting
+      operationId: retrieveCustomerBillingProcedureReporting
+      produces:
+      - application/json
+      parameters:
+      - name: cr-reference-id
+        in: path
+        description: Customer Billing Transaction Reference
+        required: true
+        type: string
+      - name: bq-reference-id
+        in: path
+        description: Customer Billing Reporting Reference
+        required: true
+        type: string
+      responses:
+        200:
+          description: Successfully retrieved Reporting details
+          schema:
+            $ref: '#/definitions/CustomerBillingReportingBaseWithIdAndRoot'
+definitions:
+  CustomerBillingBillingBaseWithRoot:
+    type: object
+    properties:
+      customerReference:
+        type: string
+        example: CSRE3456
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      productInstanceReference:
+        type: string
+        example: PRIR5859
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      billedProductServiceActionDescription:
+        type: string
+        example: DetailedDescription/InnovativeFeatures
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      billingParty:
+        type: string
+        example: Bank
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Name
+      billingAddress:
+        type: string
+        example: 12C Church Street Hudson NewYork United States
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      billingPeriod:
+        type: string
+        example: "2018-07-01 To 2018-07-31"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Duration
+      billingStatement:
+        type: string
+        example: statement details
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      billingAmount:
+        type: string
+        example: $1500
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Amount
+      paymentDueDate:
+        type: string
+        example: "2018-08-05"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Date
+      paymentDetails:
+        type: string
+        example: Monthly
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      customerBillingTransactionInvoiceStatus:
+        type: string
+        example: Overdue
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text    
+  CustomerBillingBillingBaseWithIdAndRoot:
+    type: object
+    properties:
+      customerBillingTransactionReference:
+        type: string
+        example: CBTR3222
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier    
+      customerReference:
+        type: string
+        example: CSRE3456
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      productInstanceReference:
+        type: string
+        example: PRIR5859
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      billedProductServiceActionDescription:
+        type: string
+        example: DetailedDescription/InnovativeFeatures
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      billingParty:
+        type: string
+        example: Bank/ThirdParty
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Name
+      billingAddress:
+        type: string
+        example: 12C Church Street Hudson NewYork United States
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      billingPeriod:
+        type: string
+        example: "2018-07-01 To 2018-07-31"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Duration
+      billingStatement:
+        type: string
+        example: statement details
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      billingAmount:
+        type: string
+        example: $1500
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Amount
+      paymentDueDate:
+        type: string
+        example: "2018-08-05"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Date
+      paymentDetails:
+        type: string
+        example: Monthly
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      customerBillingTransactionInvoiceStatus:
+        type: string
+        example: Overdue
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+  CustomerBillingRecordRequest:
+    type: object
+    properties:
+      recordingRecordType:
+        type: string
+        example: BehaviorModelPerformanceFeedback
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      recordingRecord:
+        type: object
+        properties: {}
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+      recordingRecordDateTime:
+        type: string
+        example: "2018-08-28T09:00:00"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::DateTime
+      employeeBusinessUnitReference:
+        type: string
+        example: EBUR2356
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+  CustomerBillingRecordResponse:
+    type: object
+    properties:
+      recordingRecordReference:
+        type: string
+        example: RRRR5456
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      recordingRecordStatus:
+        type: string
+        example: Applied
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+  CustomerBillingInvoiceWithBase:
+    type: object
+    properties:
+      customerReference:
+        type: string
+        example: CR7364
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      productInstanceReference:
+        type: string
+        example: PRIR5859
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      billedProductServiceActionDescription:
+        type: string
+        example: DetailedDescription/InnovativeFeatures
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      billingParty:
+        type: string
+        example: Bank/
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Name
+      billingAddress:
+        type: string
+        example: 12C Church Street Hudson NewYork United States
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      billingPeriod:
+        type: string
+        example: "2018-07-01 To 2018-07-31"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Duration
+      billingStatement:
+        type: string
+        example: statement
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      billingAmount:
+        type: string
+        example: $1500
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Amount
+      paymentDueDate:
+        type: string
+        example: "2018-08-05"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Date
+      customerBillingTransactionInvoiceStatus:
+        type: string
+        example: Overdue
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+  CustomerBillingInvoiceBaseWithIdAndRoot:
+    type: object
+    properties:
+      customerBillingInvoiceReference:
+        type: string
+        example: CBIR790
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      customerBillingTransactionReference:
+        type: string
+        example: CBTR3222
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      productInstanceReference:
+        type: string
+        example: PRIR5859
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      billedProductServiceActionDescription:
+        type: string
+        example: DetailedDescription/InnovativeFeatures
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      billingParty:
+        type: string
+        example: Bank
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Name
+      billingAddress:
+        type: string
+        example: 12C Church Street Hudson NewYork United States
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      billingPeriod:
+        type: string
+        example: "2018-07-01 To 2018-07-31"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Duration
+      billingStatement:
+        type: string
+        example: statement
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      billingAmount:
+        type: string
+        example: $1500
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Amount
+      paymentDueDate:
+        type: string
+        example: "2018-08-05"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Date
+      customerBillingTransactionInvoiceStatus:
+        type: string
+        example: Overdue
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+  CustomerBillingPaymentsBaseWithRoot:
+    type: object
+    properties:
+      customerReference:
+        type: string
+        example: CSRE3456
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      billingAmount:
+        type: string
+        example: $1500
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Amount
+      paymentDueDate:
+        type: string
+        example: "2018-08-05"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Date
+      paymentTransactionReference:
+        type: string
+        example: PTRE4545
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      paymentTransaction:
+        type: string
+        example: CreditTransfer
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      customerBillingTransactionInvoiceStatus:
+        type: string
+        example: Overdue
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+  CustomerBillingPaymentsBaseWithIdAndRoot:
+    type: object
+    properties:
+      customerBillingPaymentsReference:
+        type: string
+        example: CBPR0406
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      customerBillingTransactionReference:
+        type: string
+        example: CBTR3222
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      customerReference:
+        type: string
+        example: CSRE3456
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      billingAmount:
+        type: string
+        example: $1500
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Amount
+      paymentDueDate:
+        type: string
+        example: "2018-08-05"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Date
+      paymentTransactionReference:
+        type: string
+        example: PTRE4545
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      paymentTransaction:
+        type: string
+        example: CreditTransfer
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      customerBillingTransactionInvoiceStatus:
+        type: string
+        example: Overdue
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+  CustomerBillingRemindersBaseWithRoot:
+    type: object
+    properties:
+      billingParty:
+        type: string
+        example: Bank
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Name
+      billingAddress:
+        type: string
+        example: 12C Church Street Hudson NewYork United States
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      billingPeriod:
+        type: string
+        example: "2018-07-01 To 2018-07-31"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Duration
+      billingStatement:
+        type: string
+        example: statement
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      billingAmount:
+        type: string
+        example: $1500
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Amount
+      paymentDueDate:
+        type: string
+        example: "2018-08-05"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Date
+      customerBillingTransactionInvoiceStatus:
+        type: string
+        example: Overdue
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      customerBillingReminderActivityResult:
+        type: object
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+  CustomerBillingRemindersBaseWithIdAndRoot:
+    type: object
+    properties:
+      customerBillingReminderReference:
+        type: string
+        example: CEFR9302
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      customerBillingTransactionReference:
+        type: string
+        example: CBTR3222
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      billingParty:
+        type: string
+        example: Bank/ThirdParty
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Name
+      billingAddress:
+        type: string
+        example: 12C Church Street Hudson NewYork United States
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      billingPeriod:
+        type: string
+        example: "2018-07-01 To 2018-07-31"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Duration
+      billingStatement:
+        type: string
+        example: statement
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      billingAmount:
+        type: string
+        example: $1500
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Amount
+      paymentDueDate:
+        type: string
+        example: "2018-08-05"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Date
+      customerBillingTransactionInvoiceStatus:
+        type: string
+        example: Overdue
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      customerBillingReminderActivityResult:
+        type: object
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+  CustomerBillingTrackingBaseWithIdAndRoot:
+    type: object
+    properties:
+      customerBillingTrackingActivityReference:
+        type: string
+        example: CBKA8390
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      customerBillingTransactionReference:
+        type: string
+        example: CBTR3222
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      customerReference:
+        type: string
+        example: CSRE3456
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      customerBillingInvoiceReference:
+        type: string
+        example: CBIR790
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      billingAmount:
+        type: string
+        example: $1500
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Amount
+      paymentDueDate:
+        type: string
+        example: "2018-08-05"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Date
+      paymentDetails:
+        type: string
+        example: biWeekly/Monthly
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      paymentTransactionReference:
+        type: string
+        example: PTRE4545
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      customerBillingTransactionInvoiceStatus:
+        type: string
+        example: Overdue
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      customerBillingTrackingActivityResult:
+        type: object
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+  CustomerBillingReportingBaseWithIdAndRoot:
+    type: object
+    properties:
+      customerBillingReportingReference:
+        type: string
+        example: CBOR4033
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      customerBillingTransactionReference:
+        type: string
+        example: CBTR3222
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      customerReference:
+        type: string
+        example: CSRE3456
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      productInstanceReference:
+        type: string
+        example: PRIR5859
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      billedProductServiceActionDescription:
+        type: string
+        example: DetailedDescription/InnovativeFeatures
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text    
+      billingParty:
+        type: string
+        example: Bank/ThirdParty
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Name
+      billingAddress:
+        type: string
+        example: 12C Church Street Hudson NewYork United States
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      billingPeriod:
+        type: string
+        example: "2018-07-01 To 2018-07-31"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Duration
+      billingStatement:
+        type: string
+        example: statement
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      billingAmount:
+        type: string
+        example: $1500
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Amount
+      paymentDueDate:
+        type: string
+        example: "2018-08-05"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Date
+      paymentDetails:
+        type: string
+        example: Monthly
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      paymentTransactionReference:
+        type: string
+        example: PTRE4545
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      customerBillingTransactionInvoiceStatus:
+        type: string
+        example: Overdue
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      customerBillingReportingResult:
+        type: object
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary

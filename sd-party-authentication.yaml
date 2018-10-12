@@ -1,0 +1,2253 @@
+swagger: '2.0'
+info:
+  version: "4.0.0"
+  title: 'Service Domain - Party Authentication'
+  description: >
+        ## Service Domain Role: 
+      
+        This service domain provides a customer identify authentication service covering all channels and devices to support access to the banks products and services.
+      
+        ## Example of Use:
+      
+        A customer is authenticated when making phone contact with the bank's service center.
+
+        ## General Comments:
+      
+        Customer authentication is a cross-channel/device capability that provides identity confirmation for customers accessing the bank through any interactive channel. The service may use a combination of one or more mechanisms to authenticate including issued tokens/devices, virtual mechanisms such as passwords and biometrics such as voice/face recognition. Different levels of authentication may be determined to support different types of access and there may be access permissions associated with the authentication mechanism used.
+
+paths:
+  /party-authentication/party-authentication-assessment/evaluation:
+    post:
+      tags: 
+      - evaluate
+      summary: "Evaluate authenticity based on a combination of any assessment"
+      operationId: evaluatePartyAuthenticationAssessment
+      produces: 
+      - application/json
+      parameters:
+      - in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/PartyAuthenticationBasic'
+      responses:
+        201:
+          description: "Party authentication evaluated successfully"
+          schema:
+            $ref: '#/definitions/PartyAuthenticationEvaluationResponse'
+
+  /party-authentication/party-authentication-assessment/{cr-reference-id}/passwords/evaluation:
+    post:
+      tags: 
+      - evaluate
+      summary: "Evaluate authenticity based on passwords/secret questions"
+      operationId: evaluatePartyAuthenticationAssessmentPassword
+      produces: 
+      - application/json
+      parameters:
+      - in: path
+        name: cr-reference-id
+        description: "Customer Contact Authentication Record Reference"
+        type: string
+        required: true
+      - in: body
+        name: body
+        required: true
+        schema:
+          $ref: "#/definitions/PartyAuthenticationPasswordBasic"
+      responses:
+        201:
+          description: "Password created successfully"
+          schema:
+            $ref: '#/definitions/PartyAuthenticationPasswordEvaluationResponse'
+
+  /party-authentication/party-authentication-assessment/{cr-reference-id}/questions/evaluation:
+    post:
+      tags: 
+      - evaluate
+      summary: "Evaluate authenticity based on secret questions and response"
+      operationId: evaluatePartyAuthenticationAssessmentQuestion
+      produces: 
+      - application/json
+      parameters:
+      - in: path
+        name: cr-reference-id
+        description: "Customer Contact Authentication Record Reference"
+        type: string
+        required: true
+      - in: body
+        name: body
+        required: true
+        schema:
+          $ref: "#/definitions/PartyAuthenticationQuestionBasic"
+      responses:
+        201:
+          description: "Question created successfully"
+          schema:
+            $ref: '#/definitions/PartyAuthenticationQuestionEvaluationResponse'
+
+  /party-authentication/party-authentication-assessment/{cr-reference-id}/devices/evaluation:
+    post:
+      tags: 
+      - evaluate
+      summary: "Evaluate authenticity based on device identifiers"
+      operationId: evaluatePartyAuthenticationAssessmentDevice
+      produces: 
+      - application/json
+      parameters:
+      - in: path
+        name: cr-reference-id
+        description: "Customer Contact Authentication Record Reference"
+        type: string
+        required: true
+      - in: body
+        name: body
+        required: true
+        schema:
+          $ref: "#/definitions/PartyAuthenticationDeviceBasic"
+      responses:
+        201:
+          description: "Device created successfully"
+          schema:
+            $ref: '#/definitions/PartyAuthenticationDeviceEvaluationResponse'
+
+  /party-authentication/party-authentication-assessment/{cr-reference-id}/documents/evaluation:
+    post:
+      tags: 
+      - evaluate
+      summary: "Evaluate authenticity based on government issued document content"
+      operationId: evaluatePartyAuthenticationAssessmentDocument
+      produces: 
+      - application/json
+      parameters:
+      - in: path
+        name: cr-reference-id
+        description: "Customer Contact Authentication Record Reference"
+        type: string
+        required: true
+      - in: body
+        name: body
+        required: true
+        schema:
+          $ref: "#/definitions/PartyAuthenticationDocumentBasic"
+      responses:
+        201:
+          description: "Document created successfully"
+          schema:
+            $ref: '#/definitions/PartyAuthenticationDocumentEvaluationResponse'
+
+  /party-authentication/party-authentication-assessment/{cr-reference-id}/biometrics/evaluation:
+    post:
+      tags: 
+      - evaluate
+      summary: "Evaluate authenticity based on biometric characteristics"
+      operationId: evaluatePartyAuthenticationAssessmentBiometric
+      produces: 
+      - application/json
+      parameters:
+      - in: path
+        name: cr-reference-id
+        description: "Customer Contact Authentication Record Reference"
+        type: string
+        required: true
+      - in: body
+        name: body
+        required: true
+        schema:
+          $ref: "#/definitions/PartyAuthenticationBiometricBasic"
+      responses:
+        201:
+          description: "Biometric created successfully"
+          schema:
+            $ref: '#/definitions/PartyAuthenticationBiometricEvaluationResponse'
+
+  /party-authentication/party-authentication-assessment/{cr-reference-id}/behaviorals/evaluation:
+    post:
+      tags: 
+      - evaluate
+      summary: "Evaluate authenticity based on behavioral patterns"
+      operationId: evaluatePartyAuthenticationAssessmentBehavior
+      produces: 
+      - application/json
+      parameters:
+      - in: path
+        name: cr-reference-id
+        description: "Customer Contact Authentication Record Reference"
+        type: string
+        required: true
+      - in: body
+        name: body
+        required: true
+        schema:
+          $ref: "#/definitions/PartyAuthenticationBehavioralBasic"
+      responses:
+        201:
+          description: "Behavioral created successfully"
+          schema:
+            $ref: '#/definitions/PartyAuthenticationBehavioralEvaluationResponse'
+
+  /party-authentication/party-authentication-assessment/{cr-reference-id}/requisition:
+    put:
+      tags: 
+      - request
+      summary: "Request authorization guidance updation"
+      operationId: requestPartyAuthenticationAssessmentUpdate
+      produces: 
+      - application/json
+      parameters:
+      - in: path
+        name: cr-reference-id
+        description: "Customer Contact Authentication Record Reference"
+        type: string
+        required: true
+      - in: body
+        name: body
+        required: true
+        schema:
+          $ref: "#/definitions/PartyAuthenticationBasic"
+      responses:
+        200:
+          description: "Party authentication updated successfully"
+          schema:
+            $ref: '#/definitions/PartyAuthenticationWithID'
+
+  /party-authentication/party-authentication-assessment/requisition:
+    post:
+      tags: 
+      - request
+      summary: "Request authorization guidance creation"
+      operationId: requestPartyAuthenticationAssessmentCreate
+      produces: 
+      - application/json
+      parameters:
+      - in: body
+        name: body
+        required: true
+        schema:
+          $ref: "#/definitions/PartyAuthenticationBasic"
+      responses:
+        201:
+          description: "Created a Party authentication successfully"
+          schema:
+            $ref: '#/definitions/PartyAuthenticationWithID'
+  
+  /party-authentication/party-authentication-assessment/:
+    get:
+      tags: 
+      - retrieve
+      summary: "Retrieve: Party authentication service reporting"
+      operationId: retrievePartyAuthenticationAssessment
+      produces: 
+      - application/json
+      parameters: 
+      - name : collection-filter
+        in: query
+        description: Filter to refine the result set. ex- 'customerContactAuthenticationLevel = Level-1'
+        type: string 
+      responses:
+        200:
+          description: "Successful"
+          schema:
+            type: array
+            items:
+              type: string
+            example: [PRR123, PRR345]
+  
+  /party-authentication/party-authentication-assessment/behavior-qualifiers/:
+    get:
+      tags: 
+      - retrieve
+      summary: "Retrieve all Behaviour Qualifier names in Party Authentication Domain."
+      operationId: retrieveBehaviorQualifierNames
+      produces: 
+      - application/json
+      responses:
+        200:
+          description: "Successful"
+          schema:
+            type: array
+            items:
+              type: string
+            example: [password, document, device, question, biometric, behavior]
+  
+  /party-authentication/party-authentication-assessment/{cr-reference-id}/{behavior-qualifier}/:
+    get:
+      tags: 
+      - retrieve
+      operationId: RetrieveBehaviorQualifierReferenceIds
+      summary: Retrieve Behaviour Qualifier Reference Ids of the given Behavior Qulifier.
+      produces: 
+      - application/json
+      parameters: 
+      - name : cr-reference-id
+        in: path
+        description: Customer Contact Authentication Record Reference
+        required: true
+        type: string
+      - name : behavior-qualifier
+        in: path
+        description: Behavior Qualifier Name. ex- password
+        required: true
+        type: string
+      - name : collection-filter
+        in: query
+        description: Filter to refine the result set. ex- 'authenticationType == "token"'
+        type: string
+      responses:
+        200:
+          description: Successful
+          schema:
+            type: array
+            items:
+              type: string
+            example: [PASS123, PASS345]
+  
+  /party-authentication/party-authentication-assessment/{cr-reference-id}:
+    get:
+      tags: 
+      - retrieve
+      summary: "Retrieve: Party authentication service reporting"
+      operationId: retrievePartyAuthenticationService
+      produces: 
+      - application/json
+      parameters:
+      - in: path
+        name: cr-reference-id
+        type: string
+        description: "Customer Contact Authentication Record Reference"
+        required: true
+      responses:
+        200:
+          description: "Successful"
+          schema:
+            $ref: '#/definitions/PartyAuthenticationComplete'
+
+  /party-authentication/party-authentication-assessment/{cr-reference-id}/passwords/{bq-reference-id}:
+    get:
+      tags: 
+      - retrieve
+      summary: "Retrieve: Party authentication Password service reporting"
+      operationId: retrievePartyAuthenticationAssessmentPassword
+      produces: 
+      - application/json
+      parameters:
+      - in: path
+        name: cr-reference-id
+        description: "Customer Contact Authentication Record Reference"
+        type: string
+        required: true
+      - in: path
+        name: bq-reference-id
+        description: "Customer Authentication Password Test Reference"
+        type: string
+        required: true
+      responses:
+        200:
+          description: "Password retrieved successfully"
+          schema:
+            $ref: '#/definitions/PartyAuthenticationPasswordComplete'
+
+  /party-authentication/party-authentication-assessment/{cr-reference-id}/questions/{bq-reference-id}:
+    get:
+      tags: 
+      - retrieve
+      summary: "Retrieve: Party authentication Question service reporting"
+      operationId: retrievePartyAuthenticationAssessmentQuestion
+      produces: 
+      - application/json
+      parameters:
+      - in: path
+        name: cr-reference-id
+        description: "Customer Contact Authentication Record Reference"
+        type: string
+        required: true
+      - in: path
+        name: bq-reference-id
+        description: "Customer Authentication Question Test Reference"
+        type: string
+        required: true
+      responses:
+        200:
+          description: "Question retrieved successfully"
+          schema:
+            $ref: '#/definitions/PartyAuthenticationQuestionComplete'
+
+  /party-authentication/party-authentication-assessment/{cr-reference-id}/documents/{bq-reference-id}:
+    get:
+      tags: 
+      - retrieve
+      summary: "Retrieve: Party authentication Document service reporting"
+      operationId: retrievePartyAuthenticationAssessmentDocument
+      produces: 
+      - application/json
+      parameters:
+      - in: path
+        name: cr-reference-id
+        description: "Customer Contact Authentication Record Reference"
+        type: string
+        required: true
+      - in: path
+        name: bq-reference-id
+        description: "Customer Authentication Document Test Reference"
+        type: string
+        required: true
+      responses:
+        200:
+          description: "Document retrieved successfully"
+          schema:
+            $ref: '#/definitions/PartyAuthenticationDocumentComplete'
+
+  /party-authentication/party-authentication-assessment/{cr-reference-id}/devices/{bq-reference-id}:
+    get:
+      tags: 
+      - retrieve
+      summary: "Retrieve: Party authentication Device service reporting"
+      operationId: retrievePartyAuthenticationAssessmentDevice
+      produces: 
+      - application/json
+      parameters:
+      - in: path
+        name: cr-reference-id
+        description: "Customer Contact Authentication Record Reference"
+        type: string
+        required: true
+      - in: path
+        name: bq-reference-id
+        description: "Customer Authentication Device Test Reference"
+        type: string
+        required: true
+      responses:
+        200:
+          description: "Device retrieved successfully"
+          schema:
+            $ref: '#/definitions/PartyAuthenticationDeviceComplete'
+
+  /party-authentication/party-authentication-assessment/{cr-reference-id}/biometrics/{bq-reference-id}:
+    get:
+      tags: 
+      - retrieve
+      summary: "Retrieve: Party authentication Biometric service reporting"
+      operationId: retrievePartyAuthenticationAssessmentBiometric
+      produces: 
+      - application/json
+      parameters:
+      - in: path
+        name: cr-reference-id
+        description: "Customer Contact Authentication Record Reference"
+        type: string
+        required: true
+      - in: path
+        name: bq-reference-id
+        description: "Customer Authentication Biometric Test Reference"
+        type: string
+        required: true
+      responses:
+        200:
+          description: "Biometric retrieved successfully"
+          schema:
+            $ref: '#/definitions/PartyAuthenticationBiometricComplete'
+
+  /party-authentication/party-authentication-assessment/{cr-reference-id}/behaviorals/{bq-reference-id}:
+    get:
+      tags: 
+      - retrieve
+      summary: "Retrieve: Party authentication Behavioral service reporting"
+      operationId: retrievePartyAuthenticationAssessmentBehavioral
+      produces: 
+      - application/json
+      parameters:
+      - in: path
+        name: cr-reference-id
+        description: "Customer Contact Authentication Record Reference"
+        type: string
+        required: true
+      - in: path
+        name: bq-reference-id
+        description: "Customer Authentication Behavioral Test Reference"
+        type: string
+        required: true
+      responses:
+        200:
+          description: "Behavioral retrieved successfully"
+          schema:
+            $ref: '#/definitions/PartyAuthenticationBehavioralComplete'
+
+# Added by API Auto Mocking Plugin
+host: virtserver.swaggerhub.com
+basePath: /BIAN/sd-party-authentication/4.0.0
+schemes:
+ - https
+
+definitions:
+  PartyAuthenticationPasswordBasic:
+    type: object
+    properties:
+      customerReference:
+        type: string
+        example: "CR234"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      partyReference:
+        type: string
+        example: "PR11"
+        description: |
+          `status: Registered`
+          bian-reference:  CustomerContactPerson.RepresentedCustomer(asRole).Player(asParty)
+          iso-link: [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_EwTfUMTGEeChad0JzLk7QA_-1978180945/elements/_EwTfUcTGEeChad0JzLk7QA_434950303)
+      authenticationType:
+        type: string
+        example: "token"
+        description: |
+          general-info: E.g. by password, token etc.
+          `status: Registered`
+          bian-reference:  (asAuthentication).SubmittedAuthenticationData.AuthenticationDataScheme.AuthenticationMethod
+          iso-link:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_wcU_wA93EeGeV5vP7Mvdig_-374264443/elements/_FColdsTGEeChad0JzLk7QA_-1070387496)
+      authenticationReferenceDataReference:
+        type: string
+        example: "ARDR45"
+        description: |
+           general-info: Refers to reference data item to be compared with submitted value
+           `status: Provisionally Registered`
+            bian-reference:  (asAuthentication).SubmittedAuthenticationData.AuthenticationDataScheme(asGenericDataScheme).Label
+      authenticationReferenceDataType:
+        type: string
+        example: "PASSWORD"
+        description: |
+          `status: Provisionally Registered`
+          bian-reference:  (asAuthentication).SubmittedAuthenticationData.AuthenticationDataScheme(asGenericDataScheme).Format
+           general-info: Defines reference data item type submitted
+      authenticationReferenceDataValue:
+        type: object
+        description: |
+          `status: Provisionally Registered`
+          bian-reference:  (asAuthentication).SubmittedAuthenticationData(asGenericData).BinaryData
+          `status: Provisionally Registered`
+          bian-reference:  (asAuthentication).SubmittedAuthenticationData(asGenericData).TextualData
+           general-info: Customer provided value is matched to bank maintained value
+      authenticationPasswordReference:
+        type: string
+        example: "APR56"
+        description: |
+         `status: Provisionally Registered`
+          bian-reference:  CustomerContactPerson(asRole).Player(asPerson).PersonProfile.StoredAuthenticationData
+      authenticationPasswordTemplate:
+        type: string
+        example: "XXXX000-XXXX000"
+        description: |
+          `status: Provisionally Registered`
+          bian-reference:  (asAuthentication).SubmittedAuthenticationData.AuthenticationDataScheme(asGenericDataScheme).Format
+           general-info: Defines allowed values/format
+      authenticationPasswordValue:
+        type: string
+        example: "1g54g8fds964d54g8d61df5"
+        description: |
+           general-info: Can be customer provided or bank generated value - encryption applies
+           `status: Provisionally Registered`
+            bian-reference:  CustomerContactPerson(asRole).Player(asPerson).PersonProfile.StoredAuthenticationData(asGenericData).BinaryData
+            `status: Provisionally Registered`
+            bian-reference:  CustomerContactPerson(asRole).Player(asPerson).PersonProfile.StoredAuthenticationData(asGenericData).TextualData
+      authenticationPasswordValidFromDate:
+        type: string
+        example: "2018-07-01"
+        description: |
+          `status: Provisionally Registered`
+          bian-reference:  CustomerContactPerson(asRole).Player(asPerson).PersonProfile.StoredAuthenticationData(asGenericData).ValidityPeriod
+      customerContactAuthenticationRecord:
+        type: object
+        description: |
+          `status: Provisionally Registered`
+          bian-reference:  CustomerContactAuthentication
+           general-info: record generated by authentication task
+      customerContactAuthenticationLevel:
+        type: string
+        example: "level-1"
+        description: |
+           general-info: value returned as a result of the authentication task, defining the level of identity assurance achieved  valid for the duration of the current contact
+            `status: Provisionally Registered`
+            bian-reference:  (asAuthentication).AuthenticationLevel
+            `status: Registered`
+            bian-reference:  (asAuthentication).AuthenticationResult
+            iso-link:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_wcU_wA93EeGeV5vP7Mvdig_-374264443/elements/_UqFPkPkdEea0GN7fTO7hmQ)
+      customerContactAuthenticationGrant:
+          type: string
+          example: "Level-1-activities"
+          description: |
+            `status: Not Mapped`
+            core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+  PartyAuthenticationPasswordEvaluationResponse:
+    type: object
+    properties:
+      customerContactAuthenticationRecordReference:
+        type: string
+        example: CARR7235424
+        description: |     
+          `status: Provisionally Registered`
+          bian-reference:  CustomerContactAuthentication
+      customerAuthenticationPasswordTestReference:
+        type: string
+        example: PTR7265425
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      customerReference:
+        type: string
+        example: 159482637
+        description: |
+           general-info: Authentication subject can be identification as a customer
+           `status: Provisionally Registered`
+            bian-reference:  CustomerContactPerson.RepresentedCustomer
+      partyReference:
+        type: string
+        example: 481597263
+        description: |
+          `status: Registered`
+          general-info: Authentication subject can be identified as a party or legal entity
+          bian-reference:  CustomerContactPerson.RepresentedCustomer(asRole).Player(asParty)
+          iso-link: [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_EwTfUMTGEeChad0JzLk7QA_-1978180945/elements/_EwTfUcTGEeChad0JzLk7QA_434950303)
+      authenticationType:
+        type: string
+        example: "QUESTION"
+        description: |
+          general-info: E.g. by password, token etc.
+          `status: Registered`
+          bian-reference:  (asAuthentication).SubmittedAuthenticationData.AuthenticationDataScheme.AuthenticationMethod
+          iso-link:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_wcU_wA93EeGeV5vP7Mvdig_-374264443/elements/_FColdsTGEeChad0JzLk7QA_-1070387496)
+      authenticationReferenceDataReference:
+        type: string
+        example: "9KFSD9FC6"
+        description: |
+           general-info: Refers to reference data item to be compared with submitted value
+           `status: Provisionally Registered`
+            bian-reference:  (asAuthentication).SubmittedAuthenticationData.AuthenticationDataScheme(asGenericDataScheme).Label
+      authenticationReferenceDataType:
+        type: string
+        example: "PASSWORD"
+        description: |
+          `status: Provisionally Registered`
+          bian-reference:  (asAuthentication).SubmittedAuthenticationData.AuthenticationDataScheme(asGenericDataScheme).Format
+           general-info: Defines reference data item type submitted
+      authenticationReferenceDataValue:
+        type: object
+        description: |
+          `status: Provisionally Registered`
+          bian-reference:  (asAuthentication).SubmittedAuthenticationData(asGenericData).BinaryData
+          `status: Provisionally Registered`
+          bian-reference:  (asAuthentication).SubmittedAuthenticationData(asGenericData).TextualData
+           general-info: Customer provided value is matched to bank maintained value
+      authenticationPasswordReference:
+        type: string
+        example: "1d54g8d61df5"
+        description: |
+          `status: Provisionally Registered`
+          bian-reference:  CustomerContactPerson(asRole).Player(asPerson).PersonProfile.StoredAuthenticationData
+      authenticationPasswordTemplate:
+        type: string
+        example: "XXXX000-XXXX000"
+        description: |
+          `status: Provisionally Registered`
+          bian-reference:  (asAuthentication).SubmittedAuthenticationData.AuthenticationDataScheme(asGenericDataScheme).Format
+           general-info: Defines allowed values/format
+      authenticationPasswordValue:
+        type: string
+        example: "1g54g8fds964d54g8d61df5"
+        description: |
+           general-info: Can be customer provided or bank generated value - encryption applies
+           `status: Provisionally Registered`
+            bian-reference:  CustomerContactPerson(asRole).Player(asPerson).PersonProfile.StoredAuthenticationData(asGenericData).BinaryData
+            `status: Provisionally Registered`
+            bian-reference:  CustomerContactPerson(asRole).Player(asPerson).PersonProfile.StoredAuthenticationData(asGenericData).TextualData
+      authenticationPasswordValidFromToDate:
+        type: string
+        example: "2018-07-01"
+        description: |
+          `status: Provisionally Registered`
+          bian-reference:  CustomerContactPerson(asRole).Player(asPerson).PersonProfile.StoredAuthenticationData(asGenericData).ValidityPeriod
+      customerContactAuthenticationRecord:
+        type: object
+        description: |
+          `status: Provisionally Registered`
+          bian-reference:  CustomerContactAuthentication
+           general-info: record generated by authentication task
+      customerContactAuthenticationLevel:
+        type: string
+        example: "level-1"
+        description: |
+           general-info: value returned as a result of the authentication task, defining the level of identity assurance achieved  valid for the duration of the current contact
+            `status: Provisionally Registered`
+            bian-reference:  (asAuthentication).AuthenticationLevel
+            `status: Registered`
+            bian-reference:  (asAuthentication).AuthenticationResult
+            iso-link:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_wcU_wA93EeGeV5vP7Mvdig_-374264443/elements/_UqFPkPkdEea0GN7fTO7hmQ)
+      customerContactAuthenticationGrant:
+          type: string
+          example: "Level-1-activities"
+          description: |
+            `status: Not Mapped`
+            core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      authenticationPasswordEvaluationResult:
+          type: object
+          description: |
+            `status: Not Mapped`
+            core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+              general-info:
+        
+  PartyAuthenticationQuestionBasic:
+    type: object
+    properties:
+      customerReference:
+        type: string
+        example: CR234
+        description: |
+          `status: Provisionally Registered`
+          bian-reference:  CustomerContactPerson.RepresentedCustomer
+           general-info: Authentication subject can be identification as a customer
+      partyReference:
+        type: string
+        example: PR123
+        description: |
+          `status: Registered`
+          bian-reference:  CustomerContactPerson.RepresentedCustomer(asRole).Player(asParty)
+          iso-link: [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_EwTfUMTGEeChad0JzLk7QA_-1978180945/elements/_EwTfUcTGEeChad0JzLk7QA_434950303)
+          general-info: Authentication subject can be identified as a party or legal entity
+      authenticationType:
+        type: string
+        example: "secret question"
+        description: |
+          general-info: E.g. by password, token etc.
+          `status: Registered`
+          bian-reference:  (asAuthentication).SubmittedAuthenticationData.AuthenticationDataScheme.AuthenticationMethod
+          iso-link:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_wcU_wA93EeGeV5vP7Mvdig_-374264443/elements/_FColdsTGEeChad0JzLk7QA_-1070387496)
+      authenticationSecretQuestionReference:
+        type: string
+        example: "9KFSD9FC6"
+        description: |
+          `status: Provisionally Registered`
+          bian-reference:  CustomerContactPerson(asRole).Player(asPerson).PersonProfile.StoredAuthenticationData
+      authenticationSecretQuestionTemplate:
+        type: string
+        example: "What's you mother's middle name?"
+        description: |
+          `status: Provisionally Registered`
+          bian-reference:  (asAuthentication).SubmittedAuthenticationData.AuthenticationDataScheme(asGenericDataScheme).Format
+           general-info: Question text and expected customer response - given value is compared
+      authenticationSecretQuestionValue:
+        type: string
+        example: "Meghan"
+        description: |
+          general-info: Provided value is compared to expected response
+          `status: Provisionally Registered`
+          bian-reference:  CustomerContactPerson(asRole).Player(asPerson).PersonProfile.StoredAuthenticationData(asGenericData).BinaryData
+          `status: Provisionally Registered`
+          bian-reference:  CustomerContactPerson(asRole).Player(asPerson).PersonProfile.StoredAuthenticationData(asGenericData).ValidityPeriod
+      customerContactAuthenticationRecord:
+        type: object
+        description: |
+          `status: Provisionally Registered`
+          bian-reference:  CustomerContactAuthentication
+           general-info: record generated by authentication task
+      customerContactAuthenticationLevel:
+        type: string
+        example: "level-1"
+        description: |
+          `status: Provisionally Registered`
+          bian-reference:  (asAuthentication).AuthenticationLevel
+          `status: Registered`
+          bian-reference:  (asAuthentication).AuthenticationResult
+          iso-link:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_wcU_wA93EeGeV5vP7Mvdig_-374264443/elements/_UqFPkPkdEea0GN7fTO7hmQ)
+           general-info: value returned as a result of the authentication task, defining the level of identity assurance achieved  valid for the duration of the current contact
+      customerContactAuthenticationGrant:   
+        type: string
+        example: "Level-1-activities"
+        description: |
+            `status: Not Mapped`
+            core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+            general-info: description of allowed access/activities when appropriate
+
+  PartyAuthenticationQuestionEvaluationResponse:
+    type: object
+    properties:
+      customerContactAuthenticationRecordReference:
+        type: string
+        example: CARR7235424
+        description: |
+          `status: Provisionally Registered`
+          bian-reference:  CustomerContactAuthentication
+      customerAuthenticationQuestionTestReference:
+        type: string
+        example: QTR724645
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      customerReference:
+        type: string
+        example: 159482637
+        description: |
+          `status: Provisionally Registered`
+          bian-reference:  CustomerContactPerson.RepresentedCustomer
+           general-info: Authentication subject can be identification as a customer
+      partyReference:
+        type: string
+        example: 481597263
+        description: |
+          `status: Registered`
+          bian-reference:  CustomerContactPerson.RepresentedCustomer(asRole).Player(asParty)
+          iso-link: [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_EwTfUMTGEeChad0JzLk7QA_-1978180945/elements/_EwTfUcTGEeChad0JzLk7QA_434950303)
+          general-info: Authentication subject can be identified as a party or legal entity
+      authenticationType:
+        type: string
+        example: "QUESTION"
+        description: |
+          general-info: E.g. by password, token etc.
+          `status: Registered`
+          bian-reference:  (asAuthentication).SubmittedAuthenticationData.AuthenticationDataScheme.AuthenticationMethod
+          iso-link:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_wcU_wA93EeGeV5vP7Mvdig_-374264443/elements/_FColdsTGEeChad0JzLk7QA_-1070387496)
+      authenticationSecretQuestionReference:
+        type: string
+        example: "9KFSD9FC6"
+        description: |
+          `status: Provisionally Registered`
+          bian-reference:  CustomerContactPerson(asRole).Player(asPerson).PersonProfile.StoredAuthenticationData
+      authenticationSecretQuestionTemplate:
+        type: string
+        example: "What's you mother's middle name?"
+        description: |
+          `status: Provisionally Registered`
+          bian-reference:  (asAuthentication).SubmittedAuthenticationData.AuthenticationDataScheme(asGenericDataScheme).Format
+           general-info: Question text and expected customer response - given value is compared
+      authenticationSecretQuestionValue:
+        type: string
+        example: "Meghan"
+        description: |
+          general-info: Provided value is compared to expected response
+          `status: Provisionally Registered`
+          bian-reference:  CustomerContactPerson(asRole).Player(asPerson).PersonProfile.StoredAuthenticationData(asGenericData).BinaryData
+          `status: Provisionally Registered`
+          bian-reference:  CustomerContactPerson(asRole).Player(asPerson).PersonProfile.StoredAuthenticationData(asGenericData).ValidityPeriod
+      customerContactAuthenticationRecord:
+        type: object
+        description: |
+          `status: Provisionally Registered`
+          bian-reference:  CustomerContactAuthentication
+           general-info: record generated by authentication task
+      customerContactAuthenticationLevel:
+        type: string
+        example: "level-1"
+        description: |
+          `status: Provisionally Registered`
+          bian-reference:  (asAuthentication).AuthenticationLevel
+          `status: Registered`
+          bian-reference:  (asAuthentication).AuthenticationResult
+          iso-link:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_wcU_wA93EeGeV5vP7Mvdig_-374264443/elements/_UqFPkPkdEea0GN7fTO7hmQ)
+           general-info: value returned as a result of the authentication task, defining the level of identity assurance achieved  valid for the duration of the current contact
+      customerContactAuthenticationGrant:   
+        type: string
+        example: "Level-1-activities"
+        description: |
+            `status: Not Mapped`
+            core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+            general-info: description of allowed access/activities when appropriate
+      authenticationSecretQuestionEvaluationResult:
+        type: object
+        description: |
+            `status: Not Mapped`
+            core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+                  
+  PartyAuthenticationDeviceBasic:
+    type: object
+    properties:
+      customerReference:
+        type: string
+        example: CR234
+        description: |
+          `status: Provisionally Registered`
+          bian-reference:  CustomerContactPerson.RepresentedCustomer
+           general-info: Authentication subject can be identification as a customer
+      partyReference:
+        type: string
+        example: PR123
+        description: |
+          `status: Registered`
+          iso-link: [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_EwTfUMTGEeChad0JzLk7QA_-1978180945/elements/_EwTfUcTGEeChad0JzLk7QA_434950303)
+          general-info: Authentication subject can be identified as a party or legal entity
+      authenticationType:
+        type: string
+        example: "device"
+        description: |
+          `status: Registered`
+          bian-reference:  (asAuthentication).SubmittedAuthenticationData.AuthenticationDataScheme.AuthenticationMethod
+          iso-link: [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_wcU_wA93EeGeV5vP7Mvdig_-374264443/elements/_FColdsTGEeChad0JzLk7QA_-1070387496)
+          general-info: E.g. by password, token etc.
+      authenticationDeviceReference:
+        type: string
+        example: "ADR456"
+        description: |
+          `status: Provisionally Registered`
+          bian-reference:  (asAuthentication).AuthenticationTool
+           general-info: Device being used for authentication
+      authenticationDevicePropertyValue:
+        type: string
+        example: "URL"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+          general-info: property of the device being used to authticate e.g. phone number, URL
+      issuedDeviceReference:
+        type: string  
+        example: "IDR44"
+        description: |
+         `status: Provisionally Registered`
+          bian-reference:  (asAuthentication).AuthenticationTool(asResource).CurrentAllocation
+           general-info: Registered customer device reference          
+      issuedDevicePropertyValue:
+        type: string
+        example: "{property1:value1,property2:value2}"
+        description: |
+          `status: Provisionally Registered`
+          bian-reference:  (asAuthentication).AuthenticationTool.StoredData.BinaryData
+          `status: Provisionally Registered`
+          bian-reference:  (asAuthentication).AuthenticationTool.StoredData.TextualData
+           general-info: Registered customer device properties  mainted by SDIssued Device Administration
+      customerContactAuthenticationRecord:
+        type: object
+        description: |
+          `status: Provisionally Registered`
+          bian-reference:  CustomerContactAuthentication
+           general-info: record generated by authentication task
+      customerContactAuthenticationLevel:
+        type: string
+        example: "level-1"
+        description: |
+          `status: Provisionally Registered`
+          bian-reference:  (asAuthentication).AuthenticationLevel
+           general-info: value returned as a result of the authentication task, defining the level of identity assurance achieved  valid for the duration of the current contact
+      customerContactAuthenticationGrant:   
+        type: string
+        example: "Level-1-activities"
+        description: |
+            `status: Not Mapped`
+            core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+            general-info: description of allowed access/activities when appropriate
+
+  PartyAuthenticationDeviceEvaluationResponse:
+    type: object
+    properties:
+      customerContactAuthenticationRecordReference:
+        type: string
+        example: CARR7235424
+        description: |
+          `status: Provisionally Registered`
+          bian-reference:  CustomerContactAuthentication
+      customerAuthenticationDeviceTestReference:
+        type: string
+        example: DTR7265425
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      customerReference:
+        type: string
+        example: 159482637
+        description: |
+          `status: Provisionally Registered`
+          bian-reference:  CustomerContactPerson.RepresentedCustomer
+           general-info: Authentication subject can be identification as a customer
+      partyReference:
+        type: string
+        example: 481597263
+        description: |
+          `status: Registered`
+          bian-reference:  CustomerContactPerson.RepresentedCustomer(asRole).Player(asParty)
+          iso-link:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_EwTfUMTGEeChad0JzLk7QA_-1978180945/elements/_EwTfUcTGEeChad0JzLk7QA_434950303)
+          general-info: Authentication subject can be identified as a party or legal entity
+      authenticationType:
+        type: string
+        example: "QUESTION"
+        description: |
+          `status: Registered`
+          bian-reference:  (asAuthentication).SubmittedAuthenticationData.AuthenticationDataScheme.AuthenticationMethod
+          iso-link: [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_wcU_wA93EeGeV5vP7Mvdig_-374264443/elements/_FColdsTGEeChad0JzLk7QA_-1070387496)
+          general-info: E.g. by password, token etc.
+      authenticationDeviceReference:
+        type: string
+        example: "1g54g8fds964d54g8d61df5"
+        description: |
+         `status: Provisionally Registered`
+          bian-reference:  (asAuthentication).AuthenticationTool
+          general-info: Device being used for authentication
+      authenticationDevicePropertyValue:
+        type: string
+        example: "URL"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+          general-info: property of the device being used to authticate e.g. phone number, URL
+      issuedDeviceReference:
+        type: string  
+        example: "IDR44"
+        description: |
+          `status: Provisionally Registered`
+          bian-reference:  (asAuthentication).AuthenticationTool(asResource).CurrentAllocation
+           general-info: Registered customer device reference
+      issuedDevicePropertyValue:
+        type: string
+        example: "{property1:value1,property2:value2}"
+        description: |
+          `status: Provisionally Registered`
+          bian-reference:  (asAuthentication).AuthenticationTool.StoredData.BinaryData
+          `status: Provisionally Registered`
+          bian-reference:  (asAuthentication).AuthenticationTool.StoredData.TextualData
+           general-info: Registered customer device properties  maintained by SDIssued Device Administration
+      customerContactAuthenticationRecord:
+        type: object
+        description: |
+          `status: Provisionally Registered`
+          bian-reference:  CustomerContactAuthentication
+           general-info: record generated by authentication task
+      customerContactAuthenticationLevel:
+        type: string
+        example: "level-1"
+        description: |
+          `status: Provisionally Registered`
+          bian-reference:  (asAuthentication).AuthenticationLevel
+           general-info: value returned as a result of the authentication task, defining the level of identity assurance achieved  valid for the duration of the current contact
+      customerContactAuthenticationGrant:   
+        type: string
+        example: "Level-1-activities"
+        description: |
+            `status: Not Mapped`
+            core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+            general-info: description of allowed access/activities when appropriate
+      authenticationDeviceEvalautionResult:
+        type: object
+  
+  PartyAuthenticationDocumentBasic:
+    type: object
+    properties:
+      customerReference:
+        type: string
+        example: 159482637
+        description: |
+          `status: Provisionally Registered`
+           bian-reference:  CustomerContactPerson.RepresentedCustomer
+           general-info: Authentication subject can be identification as a customer
+      partyReference:
+        type: string
+        example: 481597263
+        description: |
+          `status: Registered`
+          bian-reference:  CustomerContactPerson.RepresentedCustomer(asRole).Player(asParty)
+          iso-link: [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_EwTfUMTGEeChad0JzLk7QA_-1978180945/elements/_EwTfUcTGEeChad0JzLk7QA_434950303)
+      authenticationType:
+        type: string
+        example: "QUESTION"
+        description: |
+          `status: Registered`
+          bian-reference:  (asAuthentication).SubmittedAuthenticationData.AuthenticationDataScheme.AuthenticationMethod
+          iso-link: [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_wcU_wA93EeGeV5vP7Mvdig_-374264443/elements/_FColdsTGEeChad0JzLk7QA_-1070387496)
+          general-info: E.g. by password, token etc.
+      authenticationDocumentReference:
+        type: string
+        example: "1g54g8fds964d54g8d61df5"
+        description: |
+          `status: Provisionally Registered`
+           bian-reference:  (asAuthentication).SubmittedAuthenticationData.AuthenticatingDocument
+           general-info: Document being used for authentication
+      authenticationDocumentContent:
+        type: object
+        description: |
+          `status: Provisionally Registered`
+           bian-reference:  (asAuthentication).SubmittedAuthenticationData(asGenericData).BinaryData
+           general-info: submitted document content in any appropriate format/media e.g. scan (could be an image, so binary maybe)
+      documentReference:
+        type: string
+        example: "1g54g8fds964d54g8d61df5"
+        description: |
+          `status: Provisionally Registered`
+           bian-reference:  CustomerContactPerson.Player(asPerson).PersonProfile.StoredAuthenticationData.Document
+           general-info: stored document reference
+      documentContent:
+        type: string
+        description: |
+          `status: Provisionally Registered`
+           bian-reference:  CustomerContactPerson.Player(asPerson).PersonProfile.StoredAuthenticationData(asGenericData).BinaryData
+           general-info: stored document  available in any suitable media for comparison
+      authenticationDocumentComparisonResult:
+        type: string
+        description: |
+          `status: Registered`
+          bian-reference:  (asAuthentication).AuthenticationResult
+          iso-link: [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_wcU_wA93EeGeV5vP7Mvdig_-374264443/elements/_UqFPkPkdEea0GN7fTO7hmQ)
+          general-info: Result of comparing pressented document to stored value
+      customerContactAuthenticationRecord:
+        type: object
+        description: |
+          `status: Provisionally Registered`
+           bian-reference:  CustomerContactAuthentication
+           general-info: record generated by authentication task
+      customerContactAuthenticationLevel:
+        type: string
+        example: "level-1"
+        description: |
+          `status: Provisionally Registered`
+           bian-reference:  (asAuthentication).AuthenticationLevel
+           general-info: value returned as a result of the authentication task, defining the level of identity assurance achieved  valid for the duration of the current contact
+      customerContactAuthenticationGrant:   
+        type: string
+        example: "Level-1-activities"
+        description: |
+            `status: Provisionally Registered`
+            bian-reference:  TBD
+            general-info: description of allowed access/activities when appropriate
+
+  PartyAuthenticationDocumentEvaluationResponse:
+    type: object
+    properties:
+      customerContactAuthenticationRecordReference:
+        type: string
+        example: CARR7235424
+        description: |
+          `status: Provisionally Registered`
+           bian-reference:  CustomerContactAuthentication
+      customerAuthenticationDocumentTestReference:
+        type: string
+        example: DOTR72456245
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      customerReference:
+        type: string
+        example: 159482637
+        description: |
+          `status: Provisionally Registered`
+           bian-reference:  CustomerContactPerson.RepresentedCustomer
+           general-info: Authentication subject can be identification as a customer
+      partyReference:
+        type: string
+        example: 481597263
+        description: |
+          `status: Registered`
+          bian-reference:  CustomerContactPerson.RepresentedCustomer(asRole).Player(asParty)
+          iso-link: [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_EwTfUMTGEeChad0JzLk7QA_-1978180945/elements/_EwTfUcTGEeChad0JzLk7QA_434950303)
+      authenticationType:
+        type: string
+        example: "QUESTION"
+        description: |
+          `status: Registered`
+          bian-reference:  (asAuthentication).SubmittedAuthenticationData.AuthenticationDataScheme.AuthenticationMethod
+          iso-link: [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_wcU_wA93EeGeV5vP7Mvdig_-374264443/elements/_FColdsTGEeChad0JzLk7QA_-1070387496)
+          general-info: E.g. by password, token etc.
+          
+      authenticationDocumentReference:
+        type: string
+        example: "1g54g8fds964d54g8d61df5"
+        description: |
+          `status: Provisionally Registered`
+           bian-reference:  (asAuthentication).SubmittedAuthenticationData.AuthenticatingDocument
+           general-info: Document being used for authentication
+      authenticationDocumentContent:
+        type: object
+        description: |
+          `status: Provisionally Registered`
+           bian-reference:  (asAuthentication).SubmittedAuthenticationData(asGenericData).BinaryData
+           general-info: submitted document content in any appropriate format/media e.g. scan (could be an image, so binary maybe)
+      documentReference:
+        type: string
+        example: "1g54g8fds964d54g8d61df5"
+        description: |
+          `status: Provisionally Registered`
+           bian-reference:  CustomerContactPerson.Player(asPerson).PersonProfile.StoredAuthenticationData.Document
+           general-info: stored document reference
+      documentContent:
+        type: string
+        description: |
+          `status: Provisionally Registered`
+           bian-reference:  CustomerContactPerson.Player(asPerson).PersonProfile.StoredAuthenticationData(asGenericData).BinaryData
+           general-info: stored document  available in any suitable media for comparison
+      authenticationDocumentComparisonResult:
+        type: string
+        description: |
+          `status: Registered`
+          bian-reference:  (asAuthentication).AuthenticationResult
+          iso-link: [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_wcU_wA93EeGeV5vP7Mvdig_-374264443/elements/_UqFPkPkdEea0GN7fTO7hmQ)
+          general-info: Result of comparing pressented document to stored value
+      customerContactAuthenticationRecord:
+        type: object
+        description: |
+          `status: Provisionally Registered`
+           bian-reference:  CustomerContactAuthentication
+           general-info: record generated by authentication task
+      customerContactAuthenticationLevel:
+        type: string
+        example: "level-1"
+        description: |
+          `status: Provisionally Registered`
+           bian-reference:  (asAuthentication).AuthenticationLevel
+           general-info: value returned as a result of the authentication task, defining the level of identity assurance achieved  valid for the duration of the current contact
+      customerContactAuthenticationGrant:   
+        type: string
+        example: "Level-1-activities"
+        description: |
+            `status: Provisionally Registered`
+            bian-reference:  TBD
+            general-info: description of allowed access/activities when appropriate
+      authenticationDocumentEvaluationResult:
+        type: object
+        description: |
+            `status: Not Mapped`
+            core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+              general-info:
+
+  PartyAuthenticationDocumentComplete:
+    type: object
+    properties:
+      customerContactAuthenticationRecordReference:
+        type: string
+        example: CARR7235424
+        description: |
+          `status: Provisionally Registered`
+           bian-reference:  CustomerContactAuthentication
+      customerAuthenticationDocumentTestReference:
+        type: string
+        example: DTR724645
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      customerReference:
+        type: string
+        example: 159482637
+        description: |
+          `status: Provisionally Registered`
+           bian-reference:  CustomerContactPerson.RepresentedCustomer
+           general-info: Authentication subject can be identification as a customer
+      partyReference:
+        type: string
+        example: 481597263
+        description: |
+          `status: Registered`
+          bian-reference:  CustomerContactPerson.RepresentedCustomer(asRole).Player(asParty)
+          iso-link: [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_EwTfUMTGEeChad0JzLk7QA_-1978180945/elements/_EwTfUcTGEeChad0JzLk7QA_434950303)
+      authenticationType:
+        type: string
+        example: "QUESTION"
+        description: |
+          `status: Registered`
+          bian-reference:  (asAuthentication).SubmittedAuthenticationData.AuthenticationDataScheme.AuthenticationMethod
+          iso-link:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_wcU_wA93EeGeV5vP7Mvdig_-374264443/elements/_FColdsTGEeChad0JzLk7QA_-1070387496)
+          general-info: E.g. by password, token etc.
+      authenticationDocumentReference:
+        type: string
+        example: "1g54g8fds964d54g8d61df5"
+        description: |
+          `status: Provisionally Registered`
+           bian-reference:  (asAuthentication).SubmittedAuthenticationData.AuthenticatingDocument
+           general-info: Document being used for authentication
+      authenticationDocumentContent:
+        type: object
+        description: |
+          `status: Provisionally Registered`
+           bian-reference:  (asAuthentication).SubmittedAuthenticationData(asGenericData).BinaryData
+           general-info: submitted document content in any appropriate format/media e.g. scan (could be an image, so binary maybe)
+      documentReference:
+        type: string
+        example: "1g54g8fds964d54g8d61df5"
+        description: |
+          `status: Provisionally Registered`
+          bian-reference:  CustomerContactPerson.Player(asPerson).PersonProfile.StoredAuthenticationData.Document
+           general-info: stored document reference
+      documentContent:
+        type: string
+        description: |
+          `status: Provisionally Registered`
+           bian-reference:  CustomerContactPerson.Player(asPerson).PersonProfile.StoredAuthenticationData(asGenericData).BinaryData
+           general-info: stored document  available in any suitable media for comparison
+      authenticationDocumentComparisonResult:
+        type: string
+        description: |
+          `status: Registered`
+          bian-reference:  (asAuthentication).AuthenticationResult
+          iso-link:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_wcU_wA93EeGeV5vP7Mvdig_-374264443/elements/_UqFPkPkdEea0GN7fTO7hmQ)
+          general-info: Result of comparing pressented document to stored value
+      customerContactAuthenticationRecord:
+        type: object
+        description: |
+          `status: Provisionally Registered`
+           bian-reference:  CustomerContactAuthentication
+           general-info: record generated by authentication task
+      customerContactAuthenticationLevel:
+        type: string
+        example: "level-1"
+        description: |
+          `status: Provisionally Registered`
+           bian-reference:  (asAuthentication).AuthenticationLevel
+           general-info: value returned as a result of the authentication task, defining the level of identity assurance achieved  valid for the duration of the current contact
+      customerContactAuthenticationGrant:   
+        type: string
+        example: "Level-1-activities"
+        description: |
+            `status: Provisionally Registered`
+            bian-reference:  TBD
+            general-info: description of allowed access/activities when appropriate      
+  
+  PartyAuthenticationBiometricBasic:
+    type: object
+    properties:
+      customerReference:
+        type: string
+        example: 159482637
+        description: |
+          `status: Provisionally Registered`
+            bian-reference:  CustomerContactPerson.RepresentedCustomer
+            general-info: Authentication subject can be identification as a customer
+      partyReference:
+        type: string
+        example: 481597263
+        description: |
+          `status: Registered`
+          bian-reference:  CustomerContactPerson.RepresentedCustomer(asRole).Player(asParty)
+          iso-link: [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_EwTfUMTGEeChad0JzLk7QA_-1978180945/elements/_EwTfUcTGEeChad0JzLk7QA_434950303)
+          general-info: Authentication subject can be identified as a party or legal entity
+      authenticationType:
+        type: string
+        example: "QUESTION"
+        description: |
+          `status: Registered`
+          bian-reference:  (asAuthentication).SubmittedAuthenticationData.AuthenticationDataScheme.AuthenticationMethod
+          iso-link: [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_wcU_wA93EeGeV5vP7Mvdig_-374264443/elements/_FColdsTGEeChad0JzLk7QA_-1070387496)
+          general-info: E.g. by password, token etc.
+      authenticationBiometricType:
+        type: string
+        example: "FACE_SCAN"
+        description: |
+          `status: Provisionally Registered`
+            bian-reference:  (asAuthentication).SubmittedAuthenticationData.AuthenticationDataScheme(asGenericDataScheme).Format
+            general-info: Type of biometric record being used
+      authenticationBiometricRecord:
+        type: object
+        description: |
+          `status: Provisionally Registered`
+            bian-reference:  (asAuthentication).SubmittedAuthenticationData(asGenericData).BinaryData
+            general-info: Biometric record submitted for authetication e.g. face scan
+      registeredBiometricReference:
+        type: string
+        example: "1g54g8fds964d54g8d61df5"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+          general-info: Registered customer biometric record reference
+        
+      registeredBiometricRecord:
+        type: string
+        example: "4aa1-1g54g8fd-s964d54-g8d61df5"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+          general-info: Registered customer biometric record  mainted by SDIssued Device Administration
+      customerContactAuthenticationRecord:
+          type: object
+          description: |
+            `status: Provisionally Registered`
+              bian-reference:  CustomerContactAuthentication
+              general-info: record generated by authentication task
+      customerContactAuthenticationLevel:
+        type: string
+        example: "level-1"
+        description: |
+          `status: Provisionally Registered`
+            bian-reference:  (asAuthentication).AuthenticationLevel
+            general-info: value returned as a result of the authentication task, defining the level of identity assurance achieved  valid for the duration of the current contact
+      customerContactAuthenticationGrant:   
+        type: string
+        example: "Level-1-activities"
+        description: |
+            `status: Not Mapped`
+            core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+            general-info: description of allowed access/activities when appropriate
+
+        
+  PartyAuthenticationBiometricEvaluationResponse:
+    type: object
+    properties:
+        customerContactAuthenticationRecordReference:
+          type: string
+          example: CARR7235424
+          description: |
+            `status: Provisionally Registered`
+              bian-reference:  CustomerContactAuthentication
+        customerAuthenticationBiometricTestReference:
+          type: string
+          example: BTR7265425
+          description: |
+            `status: Not Mapped`
+            core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+        customerReference:
+          type: string
+          example: 159482637
+          description: |
+            `status: Provisionally Registered`
+              bian-reference:  CustomerContactPerson.RepresentedCustomer
+              general-info: Authentication subject can be identification as a customer
+        partyReference:
+          type: string
+          example: 481597263
+          description: |
+            `status: Registered`
+            bian-reference:  CustomerContactPerson.RepresentedCustomer(asRole).Player(asParty)
+            iso-link: [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_EwTfUMTGEeChad0JzLk7QA_-1978180945/elements/_EwTfUcTGEeChad0JzLk7QA_434950303)
+            general-info: Authentication subject can be identified as a party or legal entity
+        authenticationType:
+          type: string
+          example: "QUESTION"
+          description: |
+            `status: Registered`
+            bian-reference:  (asAuthentication).SubmittedAuthenticationData.AuthenticationDataScheme.AuthenticationMethod
+            iso-link: [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_wcU_wA93EeGeV5vP7Mvdig_-374264443/elements/_FColdsTGEeChad0JzLk7QA_-1070387496)
+            general-info: E.g. by password, token etc.
+        authenticationBiometricType:
+          type: string
+          example: "FACE_SCAN"
+          description: |
+            `status: Provisionally Registered`
+              bian-reference:  (asAuthentication).SubmittedAuthenticationData.AuthenticationDataScheme(asGenericDataScheme).Format
+              general-info: Type of biometric record being used
+        authenticationBiometricRecord:
+          type: object
+          description: |
+            `status: Provisionally Registered`
+              bian-reference:  (asAuthentication).SubmittedAuthenticationData(asGenericData).BinaryData
+              general-info: Biometric record submitted for authetication e.g. face scan
+              
+        registeredBiometricReference:
+          type: string
+          example: "1g54g8fds964d54g8d61df5"
+          description: |
+            `status: Not Mapped`
+            core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+            general-info: Registered customer biometric record reference
+          
+        registeredBiometricRecord:
+          type: string
+          example: "4aa1-1g54g8fd-s964d54-g8d61df5"
+          description: |
+            `status: Not Mapped`
+            core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+            general-info: Registered customer biometric record  mainted by SDIssued Device Administration
+          
+        customerContactAuthenticationRecord:
+          type: object
+          description: |
+            `status: Provisionally Registered`
+              bian-reference:  CustomerContactAuthentication
+              general-info: record generated by authentication task
+        customerContactAuthenticationLevel:
+          type: string
+          example: "level-1"
+          description: |
+            `status: Provisionally Registered`
+              bian-reference:  (asAuthentication).AuthenticationLevel
+              general-info: value returned as a result of the authentication task, defining the level of identity assurance achieved  valid for the duration of the current contact
+        customerContactAuthenticationGrant:   
+          type: string
+          example: "Level-1-activities"
+          description: |
+              `status: Not Mapped`
+              core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+              general-info: description of allowed access/activities when appropriate
+        authenticationBiometricEvaluationResult:
+          type: object
+          description: |
+              `status: Not Mapped`
+              core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+                general-info:
+  
+  PartyAuthenticationBiometricComplete:
+    type: object
+    properties:
+      customerContactAuthenticationRecordReference:
+        type: string
+        example: CARR7235424
+        description: |
+          `status: Provisionally Registered`
+           bian-reference:  CustomerContactAuthentication
+           general-info:
+      customerAuthenticationBiometricTestReference:
+        type: string
+        example: CABTR123
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+          general-info:
+      customerReference:
+        type: string
+        example: 159482637
+        description: |
+          `status: Provisionally Registered`
+           bian-reference:  CustomerContactPerson.RepresentedCustomer
+           general-info: Authentication subject can be identification as a customer
+      partyReference:
+        type: string
+        example: 481597263
+        description: |
+          `status: Registered`
+          bian-reference:  CustomerContactPerson.RepresentedCustomer(asRole).Player(asParty)
+          iso-link: [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_EwTfUMTGEeChad0JzLk7QA_-1978180945/elements/_EwTfUcTGEeChad0JzLk7QA_434950303)
+          general-info: Authentication subject can be identified as a party or legal entity
+      authenticationType:
+        type: string
+        example: "QUESTION"
+        description: |
+          `status: Registered`
+          bian-reference:  (asAuthentication).SubmittedAuthenticationData.AuthenticationDataScheme.AuthenticationMethod
+          iso-link: [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_wcU_wA93EeGeV5vP7Mvdig_-374264443/elements/_FColdsTGEeChad0JzLk7QA_-1070387496)
+          general-info: E.g. by password, token etc.
+      authenticationBiometricType:
+        type: string
+        example: "FACE_SCAN"
+        description: |
+          `status: Provisionally Registered`
+           bian-reference:  (asAuthentication).SubmittedAuthenticationData.AuthenticationDataScheme(asGenericDataScheme).Format
+           general-info: Type of biometric record being used
+      authenticationBiometricRecord:
+        type: object
+        description: |
+          `status: Provisionally Registered`
+          bian-reference:  (asAuthentication).SubmittedAuthenticationData(asGenericData).BinaryData
+           general-info: Biometric record submitted for authetication e.g. face scan
+      registeredBiometricReference:
+        type: string
+        example: "1g54g8fds964d54g8d61df5"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+          general-info: Registered customer biometric record reference
+        
+      registeredBiometricRecord:
+        type: string
+        example: "4aa1-1g54g8fd-s964d54-g8d61df5"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+          general-info: Registered customer biometric record  mainted by SDIssued Device Administration
+      customerContactAuthenticationRecord:
+        type: object
+        description: |
+          `status: Provisionally Registered`
+           bian-reference:  CustomerContactAuthentication
+           general-info: record generated by authentication task
+      customerContactAuthenticationLevel:
+        type: string
+        example: "level-1"
+        description: |
+          `status: Provisionally Registered`
+           bian-reference:  (asAuthentication).AuthenticationLevel
+           general-info: value returned as a result of the authentication task, defining the level of identity assurance achieved  valid for the duration of the current contact
+      customerContactAuthenticationGrant:   
+        type: string
+        example: "Level-1-activities"
+        description: |
+            `status: Not Mapped`
+            core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+            general-info: description of allowed access/activities when appropriate   
+        
+  PartyAuthenticationBasic:
+    description: "This is the master record that is updated by the different authentication tasks/approaches listed"
+    type: object
+    properties:
+      customerContactAuthenticationRecord:
+        type: object
+        description: |
+          `status: Provisionally Registered`
+          bian-reference:  CustomerContactAuthentication
+          `status: Provisionally Registered`
+          bian-reference:  CustomerContactAuthentication
+          general-info: record generated by authentication task
+      customerContactAuthenticationLevel:
+        type: string
+        example: "level-1"
+        description: |
+          `status: Registered`
+          bian-reference:  (asAssessment).AssessmentResult
+          iso-link:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_wcU_wA93EeGeV5vP7Mvdig_-374264443/elements/_UqFPkPkdEea0GN7fTO7hmQ)
+          `status: Registered`
+          bian-reference:  (asAuthentication).AuthenticationResult
+          iso-link:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_wcU_wA93EeGeV5vP7Mvdig_-374264443/elements/_UqFPkPkdEea0GN7fTO7hmQ)
+          `status: Registered`
+          bian-reference:  (asAuthentication).AuthenticationValue
+          iso-link:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_wcU_wA93EeGeV5vP7Mvdig_-374264443/elements/_FColeMTGEeChad0JzLk7QA_1230435094)
+           general-info: value returned as a result of the authentication task, defining the level of identity assurance achieved  valid for the duration of the current contact
+      customerContactAuthenticationGrant:   
+        type: string
+        example: "Level-1-activities"
+        description: |
+            `status: Not Mapped`
+            core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+            general-info: description of allowed access/activities when appropriate
+
+  PartyAuthenticationWithID:
+    description: "This is the master record that is updated by the different authentication tasks/approaches listed"
+    type: object
+    properties:
+      customerContactAuthenticationRecordReference:
+        type: string
+        example: CARR7235424
+        description: |
+          `status: Provisionally Registered`
+          bian-reference:  CustomerContactAuthentication
+      customerContactAuthenticationRecord:
+        type: object
+        description: |
+          `status: Provisionally Registered`
+          bian-reference:  CustomerContactAuthentication
+          `status: Provisionally Registered`
+          bian-reference:  CustomerContactAuthentication
+           general-info: record generated by authentication task
+      customerContactAuthenticationLevel:
+        type: string
+        example: "level-1"
+        description: |
+          `status: Provisionally Registered`
+          bian-reference:  (asAuthentication).AuthenticationLevel
+           general-info: value returned as a result of the authentication task, defining the level of identity assurance achieved  valid for the duration of the current contact
+      customerContactAuthenticationGrant:   
+        type: string
+        example: "Level-1-activities"
+        description: |
+            `status: Not Mapped`
+            core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+            general-info: description of allowed access/activities when appropriate
+            
+  PartyAuthenticationEvaluationResponse:
+    description: "This is the master record that is updated by the different authentication tasks/approaches listed"
+    type: object
+    properties:
+      customerContactAuthenticationRecordReference:
+        type: string
+        example: CARR7235424
+        description: |
+          `status: Provisionally Registered`
+          bian-reference:  CustomerContactAuthentication
+      customerContactAuthenticationRecord:
+        type: object
+        description: |
+          `status: Provisionally Registered`
+          bian-reference:  CustomerContactAuthentication
+           general-info: record generated by authentication task
+      customerContactAuthenticationLevel:
+        type: string
+        example: "level-1"
+        description: |
+          `status: Registered`
+          bian-reference:  (asAssessment).AssessmentResult
+          iso-link:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_wcU_wA93EeGeV5vP7Mvdig_-374264443/elements/_UqFPkPkdEea0GN7fTO7hmQ)
+          `status: Registered`
+          bian-reference:  (asAuthentication).AuthenticationResult
+          iso-link:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_wcU_wA93EeGeV5vP7Mvdig_-374264443/elements/_UqFPkPkdEea0GN7fTO7hmQ)
+          `status: Registered`
+          bian-reference:  (asAuthentication).AuthenticationValue
+          iso-link:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_wcU_wA93EeGeV5vP7Mvdig_-374264443/elements/_FColeMTGEeChad0JzLk7QA_1230435094)
+           general-info: value returned as a result of the authentication task, defining the level of identity assurance achieved  valid for the duration of the current contact
+      customerContactAuthenticationGrant:   
+        type: string
+        example: "Level-1-activities"
+        description: |
+            `status: Not Mapped`
+            core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+            general-info: description of allowed access/activities when appropriate
+      customerContactAuthenticationEvaluationResult:
+        type: object
+        description: |
+            `status: Not Mapped`
+            core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+  PartyAuthenticationComplete:
+    description: "This is the master record that is updated by the different authentication tasks/approaches listed"
+    type: object
+    properties:
+      customerContactAuthenticationRecordReference:
+        type: string
+        example: CARR7235424
+        description: |
+          `status: Provisionally Registered`
+          bian-reference:  CustomerContactAuthentication
+      customerContactAuthenticationRecord:
+        type: object
+        description: |
+          `status: Provisionally Registered`
+          bian-reference:  CustomerContactAuthentication
+           general-info: record generated by authentication task
+      customerContactAuthenticationLevel:
+        type: string
+        example: "level-1"
+        description: |
+          `status: Registered`
+          bian-reference:  (asAssessment).AssessmentResult
+          iso-link:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_wcU_wA93EeGeV5vP7Mvdig_-374264443/elements/_UqFPkPkdEea0GN7fTO7hmQ)
+          `status: Registered`
+          bian-reference:  (asAuthentication).AuthenticationResult
+          iso-link:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_wcU_wA93EeGeV5vP7Mvdig_-374264443/elements/_UqFPkPkdEea0GN7fTO7hmQ)
+          `status: Registered`
+          bian-reference:  (asAuthentication).AuthenticationValue
+          iso-link:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_wcU_wA93EeGeV5vP7Mvdig_-374264443/elements/_FColeMTGEeChad0JzLk7QA_1230435094)
+           general-info: value returned as a result of the authentication task, defining the level of identity assurance achieved  valid for the duration of the current contact
+      customerContactAuthenticationGrant:   
+        type: string
+        example: "Level-1-activities"
+        description: |
+            `status: Not Mapped`
+            core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+            general-info: description of allowed access/activities when appropriate
+  
+  PartyAuthenticationPasswordComplete:
+    type: object
+    properties:
+      customerContactAuthenticationRecordReference:
+        type: string
+        example: CARR7235424
+        description: |
+          `status: Provisionally Registered`
+          bian-reference:  CustomerContactAuthentication
+      customerAuthenticationPasswordTestReference:
+        type: string
+        example: PTR7265425
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      customerReference:
+        type: string
+        example: 159482637
+        description: |
+          `status: Provisionally Registered`
+          bian-reference:  CustomerContactPerson.RepresentedCustomer
+           general-info: Authentication subject can be identification as a customer
+      partyReference:
+        type: string
+        example: 481597263
+        description: |
+          `status: Registered`
+          bian-reference:  CustomerContactPerson.RepresentedCustomer(asRole).Player(asParty)
+          iso-link: [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_EwTfUMTGEeChad0JzLk7QA_-1978180945/elements/_EwTfUcTGEeChad0JzLk7QA_434950303)
+          general-info: Authentication subject can be identified as a party or legal entity
+      authenticationType:
+        type: string
+        example: "QUESTION"
+        description: |
+          `status: Registered`
+          bian-reference:  (asAuthentication).SubmittedAuthenticationData.AuthenticationDataScheme.AuthenticationMethod
+          iso-link:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_wcU_wA93EeGeV5vP7Mvdig_-374264443/elements/_FColdsTGEeChad0JzLk7QA_-1070387496)
+          general-info: E.g. by password, token etc.
+      
+      authenticationReferenceDataReference:
+        type: string
+        example: "ARDR45"
+        description: |
+          `status: Provisionally Registered`
+          bian-reference:  (asAuthentication).SubmittedAuthenticationData.AuthenticationDataScheme(asGenericDataScheme).Label
+           general-info: Refers to reference data item to be compared with submitted value
+      
+      authenticationReferenceDataType:
+        type: string
+        example: "PASSWORD"
+        description: |
+          `status: Provisionally Registered`
+          bian-reference:  (asAuthentication).SubmittedAuthenticationData.AuthenticationDataScheme(asGenericDataScheme).Format
+           general-info: Defines reference data item type submitted
+      authenticationReferenceDataValue:
+        type: object
+        description: |
+          `status: Provisionally Registered`
+          bian-reference:  (asAuthentication).SubmittedAuthenticationData(asGenericData).BinaryData
+          `status: Provisionally Registered`
+          bian-reference:  (asAuthentication).SubmittedAuthenticationData(asGenericData).TextualData
+           general-info: Customer provided value is matched to bank maintained value
+      authenticationPasswordReference:
+        type: string
+        example: "APR56"
+        description: |
+          `status: Provisionally Registered`
+          bian-reference:  CustomerContactPerson(asRole).Player(asPerson).PersonProfile.StoredAuthenticationData
+      authenticationPasswordTemplate:
+        type: string
+        example: "XXXX000-XXXX000"
+        description: |
+          `status: Provisionally Registered`
+          bian-reference:  (asAuthentication).SubmittedAuthenticationData.AuthenticationDataScheme(asGenericDataScheme).Format
+           general-info: Defines allowed values/format
+      authenticationPasswordValue:
+        type: string
+        example: "1g54g8fds964d54g8d61df5"
+        description: |
+          `status: Provisionally Registered`
+          bian-reference:  CustomerContactPerson(asRole).Player(asPerson).PersonProfile.StoredAuthenticationData(asGenericData).BinaryData
+          `status: Provisionally Registered`
+          bian-reference:  CustomerContactPerson(asRole).Player(asPerson).PersonProfile.StoredAuthenticationData(asGenericData).TextualData
+           general-info: Can be customer provided or bank generated value - encryption applies
+      authenticationPasswordValidFromToDate:
+        type: string
+        example: "2018-07-01 to 2018-09-01"
+        description: |
+          `status: Provisionally Registered`
+          bian-reference:  CustomerContactPerson(asRole).Player(asPerson).PersonProfile.StoredAuthenticationData(asGenericData).ValidityPeriod
+
+      customerContactAuthenticationRecord:
+        type: object
+        description: |
+          `status: Provisionally Registered`
+          bian-reference:  CustomerContactAuthentication
+          `status: Provisionally Registered`
+          bian-reference:  CustomerContactAuthentication
+           general-info: record generated by authentication task
+      customerContactAuthenticationLevel:
+        type: string
+        example: "level-1"
+        description: |
+          `status: Provisionally Registered`
+          bian-reference:  (asAuthentication).AuthenticationLevel
+          `status: Registered`
+          bian-reference:  (asAuthentication).AuthenticationResult
+          iso-link:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_wcU_wA93EeGeV5vP7Mvdig_-374264443/elements/_UqFPkPkdEea0GN7fTO7hmQ)
+
+           general-info: value returned as a result of the authentication task, defining the level of identity assurance achieved  valid for the duration of the current contact
+      customerContactAuthenticationGrant:   
+        type: string
+        example: "Level-1-activities"
+        description: |
+            `status: Not Mapped`
+            core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+            general-info: description of allowed access/activities when appropriate      
+        
+  PartyAuthenticationQuestionComplete:
+    type: object
+    properties:
+      customerContactAuthenticationRecordReference:
+        type: string
+        example: CARR7235424
+        description: |
+          `status: Provisionally Registered`
+          bian-reference:  CustomerContactAuthentication
+      customerAuthenticationQuestionTestReference:
+        type: string
+        example: QTR724645
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      customerReference:
+        type: string
+        example: 159482637
+        description: |
+          `status: Provisionally Registered`
+          bian-reference:  CustomerContactPerson.RepresentedCustomer
+           general-info: Authentication subject can be identification as a customer
+      partyReference:
+        type: string
+        example: 481597263
+        description: |
+          `status: Registered`
+          bian-reference:  CustomerContactPerson.RepresentedCustomer(asRole).Player(asParty)
+          iso-link:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_EwTfUMTGEeChad0JzLk7QA_-1978180945/elements/_EwTfUcTGEeChad0JzLk7QA_434950303)
+          general-info: Authentication subject can be identified as a party or legal entity
+      authenticationType:
+        type: string
+        example: "QUESTION"
+        description: |
+          `status: Registered`
+          bian-reference:  (asAuthentication).SubmittedAuthenticationData.AuthenticationDataScheme.AuthenticationMethod
+          iso-link:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_wcU_wA93EeGeV5vP7Mvdig_-374264443/elements/_FColdsTGEeChad0JzLk7QA_-1070387496)
+          general-info: E.g. by password, token etc.
+      authenticationSecretQuestionReference:
+        type: string
+        example: "9KFSD9FC6"
+        description: |
+          `status: Provisionally Registered`
+          bian-reference:  CustomerContactPerson(asRole).Player(asPerson).PersonProfile.StoredAuthenticationData
+
+      authenticationSecretQuestionTemplate:
+        type: string
+        example: "What's you mother's middle name?"
+        description: |
+          `status: Provisionally Registered`
+          bian-reference:  (asAuthentication).SubmittedAuthenticationData.AuthenticationDataScheme(asGenericDataScheme).Format
+           general-info: Question text and expected customer response - given value is compared
+      authenticationSecretQuestionValue:
+        type: string
+        example: "Meghan"
+        description: |
+          `status: Provisionally Registered`
+          bian-reference:  CustomerContactPerson(asRole).Player(asPerson).PersonProfile.StoredAuthenticationData(asGenericData).BinaryData
+          `status: Provisionally Registered`
+          bian-reference:  CustomerContactPerson(asRole).Player(asPerson).PersonProfile.StoredAuthenticationData(asGenericData).ValidityPeriod
+           general-info: Provided value is compared to expected response
+      customerContactAuthenticationRecord:
+        type: object
+        description: |
+          `status: Provisionally Registered`
+          bian-reference:  CustomerContactAuthentication
+          `status: Provisionally Registered`
+          bian-reference:  CustomerContactAuthentication
+           general-info: record generated by authentication task
+      customerContactAuthenticationLevel:
+        type: string
+        example: "level-1"
+        description: |
+          `status: Provisionally Registered`
+          bian-reference:  (asAuthentication).AuthenticationLevel
+          `status: Registered`
+          bian-reference:  (asAuthentication).AuthenticationResult
+          iso-link:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_wcU_wA93EeGeV5vP7Mvdig_-374264443/elements/_UqFPkPkdEea0GN7fTO7hmQ)
+
+           general-info: value returned as a result of the authentication task, defining the level of identity assurance achieved  valid for the duration of the current contact
+      customerContactAuthenticationGrant:   
+        type: string
+        example: "Level-1-activities"
+        description: |
+            `status: Not Mapped`
+            core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+            general-info: description of allowed access/activities when appropriate
+      
+  PartyAuthenticationDeviceComplete:
+    type: object
+    properties:
+      customerContactAuthenticationRecordReference:
+        type: string
+        example: CARR7235424
+        description: |
+          `status: Provisionally Registered`
+          bian-reference:  CustomerContactAuthentication
+      customerAuthenticationDeviceTestReference:
+        type: string
+        example: DETR724645
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      customerReference:
+        type: string
+        example: 159482637
+        description: |
+          `status: Provisionally Registered`
+          bian-reference:  CustomerContactPerson.RepresentedCustomer
+           general-info: Authentication subject can be identification as a customer
+      partyReference:
+        type: string
+        example: 481597263
+        description: |
+          `status: Registered`
+          iso-link: [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_EwTfUMTGEeChad0JzLk7QA_-1978180945/elements/_EwTfUcTGEeChad0JzLk7QA_434950303)
+          general-info: Authentication subject can be identified as a party or legal entity
+      authenticationType:
+        type: string
+        example: "QUESTION"
+        description: |
+          `status: Registered`
+          iso-link: [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_wcU_wA93EeGeV5vP7Mvdig_-374264443/elements/_FColdsTGEeChad0JzLk7QA_-1070387496)
+          general-info: E.g. by password, token etc.
+      authenticationDeviceReference:
+        type: string
+        example: "1g54g8fds964d54g8d61df5"
+        description: |
+          `status: Provisionally Registered`
+          bian-reference:  (asAuthentication).AuthenticationTool
+           general-info: Device being used for authentication
+      authenticationDevicePropertyValue:
+        type: string
+        example: "URL"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+          general-info: property of the device being used to authticate e.g. phone number, URL
+      issuedDeviceReference:
+        type: string  
+        example: "1g54g8fds964d54g8d61df5"
+        description: |
+          `status: Provisionally Registered`
+          bian-reference:  (asAuthentication).AuthenticationTool(asResource).CurrentAllocation
+           general-info: Registered customer device reference
+         
+      issuedDevicePropertyValue:
+        type: string
+        example: "{property1:value1,property2:value2}"
+        description: |
+          `status: Provisionally Registered`
+          bian-reference:  (asAuthentication).AuthenticationTool.StoredData.BinaryData
+          `status: Provisionally Registered`
+          bian-reference:  (asAuthentication).AuthenticationTool.StoredData.TextualData
+           general-info: Registered customer device properties  mainted by SDIssued Device Administration
+         
+      customerContactAuthenticationRecord:
+        type: object
+        description: |
+          `status: Provisionally Registered`
+          bian-reference:  CustomerContactAuthentication
+          `status: Provisionally Registered`
+          bian-reference:  CustomerContactAuthentication
+           general-info: record generated by authentication task
+           
+      customerContactAuthenticationLevel:
+        type: string
+        example: "level-1"
+        description: |
+          `status: Provisionally Registered`
+          bian-reference:  (asAuthentication).AuthenticationLevel
+           general-info: value returned as a result of the authentication task, defining the level of identity assurance achieved  valid for the duration of the current contact
+           
+      customerContactAuthenticationGrant:   
+        type: string
+        example: "Level-1-activities"
+        description: |
+            `status: Not Mapped`
+            core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+            general-info: description of allowed access/activities when appropriate
+  
+  PartyAuthenticationBehavioralComplete:
+    type: object
+    properties:
+      customerContactAuthenticationRecordReference:
+        type: string
+        example: CARR7235424
+        description: |
+          `status: Provisionally Registered`
+          bian-reference:  CustomerContactAuthentication
+      customerAuthenticationBehavioralTestReference:
+        type: string
+        example: CABTR123
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      customerReference:
+        type: string
+        example: 159482637
+        description: |
+          `status: Provisionally Registered`
+          bian-reference:  CustomerContactPerson.RepresentedCustomer
+            general-info: Authentication subject can be identification as a customer
+      partyReference:
+        type: string
+        example: 481597263
+        description: |
+          `status: Registered`
+          bian-reference:  CustomerContactPerson.RepresentedCustomer(asRole).Player(asParty)
+          iso-link:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_EwTfUMTGEeChad0JzLk7QA_-1978180945/elements/_EwTfUcTGEeChad0JzLk7QA_434950303)
+          general-info: Authentication subject can be identified as a party or legal entity
+      authenticationType:
+        type: string
+        example: "QUESTION"
+        description: |
+          `status: Registered`
+          bian-reference:  (asAuthentication).SubmittedAuthenticationData.AuthenticationDataScheme.AuthenticationMethod
+          iso-link:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_wcU_wA93EeGeV5vP7Mvdig_-374264443/elements/_FColdsTGEeChad0JzLk7QA_-1070387496)
+          general-info: E.g. by password, token etc.
+      authenticationBehavioralType:
+        type: string
+        example: "TYPE1"
+        description: |
+          `status: Provisionally Registered`
+            bian-reference:  (asAuthentication).SubmittedAuthenticationData.AuthenticationDataScheme(asGenericDataScheme).Format
+            general-info: Type of behavioral record being used
+      authenticationBehavioralRecord:
+        type: string
+        description: |
+          `status: Provisionally Registered`
+            bian-reference:  (asAuthentication).SubmittedAuthenticationData(asGenericData).BinaryData
+            general-info: Behavioral record submitted for authetication
+      registeredBehavioralReference:
+        type: string
+        example: "1g54g8fds964d54g8d61df5"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+          general-info: Registered customer behavioral record reference
+      registeredBehavioralRecord:
+        type: string
+        example: "4aa1-1g54g8fd-s964d54-g8d61df5"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+          general-info: Registered customer behavioral record  mainted by SDIssued Device Administration
+      customerContactAuthenticationRecord:
+        type: object
+        description: |
+          `status: Provisionally Registered`
+          bian-reference:  CustomerContactAuthentication
+          `status: Provisionally Registered`
+          bian-reference:  CustomerContactAuthentication
+            general-info: record generated by authentication task
+      customerContactAuthenticationLevel:
+        type: string
+        example: "level-1"
+        description: |
+          `status: Provisionally Registered`
+            bian-reference:  (asAuthentication).AuthenticationLevel
+            general-info: value returned as a result of the authentication task, defining the level of identity assurance achieved  valid for the duration of the current contact
+      customerContactAuthenticationGrant:   
+        type: string
+        example: "Level-1-activities"
+        description: |
+            `status: Not Mapped`
+            core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+            general-info: description of allowed access/activities when appropriate      
+  PartyAuthenticationBehavioralEvaluationResponse:
+    type: object
+    properties:
+      customerContactAuthenticationRecordReference:
+        type: string
+        example: CARR7235424
+        description: |
+          `status: Provisionally Registered`
+            bian-reference:  CustomerContactPerson.RepresentedCustomer
+            general-info:
+      customerAuthenticationBehavioralTestReference:
+        type: string
+        example: BETR7265425
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+          general-info:
+   
+      customerReference:
+        type: string
+        example: 159482637
+        description: |
+         `status: Provisionally Registered`
+          bian-reference:  CustomerContactPerson.RepresentedCustomer
+            general-info: Authentication subject can be identification as a customer
+      partyReference:
+        type: string
+        example: 481597263
+        description: |
+          `status: Registered`
+          bian-reference:  CustomerContactPerson.RepresentedCustomer(asRole).Player(asParty)
+          iso-link: [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_EwTfUMTGEeChad0JzLk7QA_-1978180945/elements/_EwTfUcTGEeChad0JzLk7QA_434950303)
+          general-info: Authentication subject can be identified as a party or legal entity
+      authenticationType:
+        type: string
+        example: "QUESTION"
+        description: |
+          `status: Registered`
+          bian-reference:  (asAuthentication).SubmittedAuthenticationData.AuthenticationDataScheme.AuthenticationMethod
+          iso-link: [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_wcU_wA93EeGeV5vP7Mvdig_-374264443/elements/_FColdsTGEeChad0JzLk7QA_-1070387496)
+          general-info: E.g. by password, token etc.
+      authenticationBehavioralType:
+        type: string
+        example: "TYPE1"
+        description: |
+          `status: Provisionally Registered`
+            bian-reference:  (asAuthentication).SubmittedAuthenticationData.AuthenticationDataScheme(asGenericDataScheme).Format
+            general-info: Type of behavioral record being used
+          
+      authenticationBehavioralRecord:
+        type: string
+        description: |
+          `status: Provisionally Registered`
+            bian-reference:  (asAuthentication).SubmittedAuthenticationData(asGenericData).BinaryData
+            general-info: Behavioral record submitted for authetication
+            
+      registeredBehavioralReference:
+        type: string
+        example: "1g54g8fds964d54g8d61df5"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+          general-info: Registered customer behavioral record reference
+        
+      registeredBehavioralRecord:
+        type: string
+        example: "4aa1-1g54g8fd-s964d54-g8d61df5"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+          general-info: Registered customer behavioral record  mainted by SDIssued Device Administration
+        
+      customerContactAuthenticationRecord:
+        type: object
+        description: |
+          `status: Provisionally Registered`
+            bian-reference:  CustomerContactAuthentication
+            general-info: record generated by authentication task
+      customerContactAuthenticationLevel:
+        type: string
+        example: "level-1"
+        description: |
+          `status: Provisionally Registered`
+            bian-reference:  (asAuthentication).AuthenticationLevel
+            general-info: value returned as a result of the authentication task, defining the level of identity assurance achieved  valid for the duration of the current contact
+      customerContactAuthenticationGrant:   
+        type: string
+        example: "Level-1-activities"
+        description: |
+            `status: Not Mapped`
+            core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+            general-info: description of allowed access/activities when appropriate
+      authenticationBehavioralEvaluationResult:
+        type: object
+        description: |
+            `status: Not Mapped`
+            core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+  PartyAuthenticationBehavioralBasic:
+    type: object
+    properties:
+      customerReference:
+        type: string
+        example: 159482637
+        description: |
+         `status: Provisionally Registered`
+          bian-reference:  CustomerContactPerson.RepresentedCustomer
+            general-info: Authentication subject can be identification as a customer
+      partyReference:
+        type: string
+        example: 481597263
+        description: |
+          `status: Registered`
+          bian-reference:  CustomerContactPerson.RepresentedCustomer(asRole).Player(asParty)
+          iso-link: [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_EwTfUMTGEeChad0JzLk7QA_-1978180945/elements/_EwTfUcTGEeChad0JzLk7QA_434950303)
+          general-info: Authentication subject can be identified as a party or legal entity
+      authenticationType:
+        type: string
+        example: "QUESTION"
+        description: |
+          `status: Registered`
+          bian-reference:  (asAuthentication).SubmittedAuthenticationData.AuthenticationDataScheme.AuthenticationMethod
+          iso-link: [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_wcU_wA93EeGeV5vP7Mvdig_-374264443/elements/_FColdsTGEeChad0JzLk7QA_-1070387496)
+          general-info: E.g. by password, token etc.
+      authenticationBehavioralType:
+        type: string
+        example: "TYPE1"
+        description: |
+          `status: Provisionally Registered`
+            bian-reference:  (asAuthentication).SubmittedAuthenticationData.AuthenticationDataScheme(asGenericDataScheme).Format
+            general-info: Type of behavioral record being used
+      authenticationBehavioralRecord:
+        type: string
+        description: |
+          `status: Provisionally Registered`
+            bian-reference:  (asAuthentication).SubmittedAuthenticationData(asGenericData).BinaryData
+            general-info: Behavioral record submitted for authetication
+      registeredBehavioralReference:
+        type: string
+        example: "1g54g8fds964d54g8d61df5"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+          general-info: Registered customer behavioral record reference
+      registeredBehavioralRecord:
+            type: string
+            example: "4aa1-1g54g8fd-s964d54-g8d61df5"
+            description: |
+              `status: Not Mapped`
+              core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+              general-info: Registered customer behavioral record  mainted by SDIssued Device Administration
+      customerContactAuthenticationRecord:
+        type: object
+        description: |
+          `status: Provisionally Registered`
+            bian-reference:  CustomerContactAuthentication
+            general-info: record generated by authentication task
+      customerContactAuthenticationLevel:
+        type: string
+        example: "level-1"
+        description: |
+          `status: Provisionally Registered`
+            bian-reference:  (asAuthentication).AuthenticationLevel
+            general-info: value returned as a result of the authentication task, defining the level of identity assurance achieved  valid for the duration of the current contact
+      customerContactAuthenticationGrant:   
+        type: string
+        example: "Level-1-activities"
+        description: |
+            `status: Not Mapped`
+            core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+            general-info: description of allowed access/activities when appropriate

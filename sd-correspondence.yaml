@@ -1,0 +1,1826 @@
+swagger: '2.0'
+info:
+  version: "4.0.0"
+  title: 'Service Domain - Correspondence'
+  description: >
+        ## Service Domain Role: 
+        
+        This service domain orchestrates the production of pre-formatted correspondence and batches of correspondence (e.g. mail shots). It can optimize correspondence 'bundling' and delivery channel/media selection. The service domain can also track for expected responses from correspondence sent to customers and handles the routing of all inbound messages.
+        
+        ## Example of Use:
+      
+        A mail shot is generated for a customer campaign with an identified list of candidate customers and using a standard sales message.
+
+        ## General Comments:
+        
+        This service domain handles the automated generation of batches of pre-formatted correspondence, typically integrating customer/product specific data within correspondence templates. It also handles the tracking of expected responses to sent out mail requests and handles the matching of the response and the onward routing of these and all unsolicited inbound correspondence
+
+# Added by API Auto Mocking Plugin
+host: virtserver.swaggerhub.com
+basePath: /BIAN/sd-correspondence/1.0.0
+schemes:
+ - https
+ 
+paths:
+  /correspondence/correspondence-operating-session/:
+    get:
+      tags: 
+      - retrieve
+      operationId: RetrieveCorrespondenceReferenceIds
+      summary: Retrieve Correspondence Control Record Ids
+      produces: 
+      - application/json
+      parameters: 
+      - name : collection-filter
+        in: query
+        description: Filter to refine the result set. ex- 'correspondenceServiceConfiguration = CSC567'
+        type: string 
+      responses:
+        200:
+          description: successful
+          schema:
+            type: array
+            items:
+              type: string
+            example: [PIR123, PIR345]
+            
+  /correspondence/correspondence-operating-session/behavior-qualifiers/:
+    get:
+      tags: 
+      - retrieve
+      operationId: RetrieveCorrespondenceBehaviorQualifiers
+      summary: Retrieve all Behaviour Qualifier names in the Correspondence Service Domain.
+      produces: 
+      - application/json
+      responses:
+        200:
+          description: successful
+          schema:
+            type: array
+            items:
+              type: string
+            example: [Outbound, OutboundResponse, Inbound, Block, Update] 
+            
+  /correspondence/correspondence-operating-session/{cr-reference-id}/{behavior-qualifier}/:
+    get:
+      tags: 
+      - retrieve
+      operationId: RetrieveBehaviorQualifierReferenceIds
+      summary: Retrieve Behaviour Qualifier Reference Ids for a given Behavior Qulifier.
+      produces: 
+      - application/json
+      parameters: 
+      - name : cr-reference-id
+        in: path
+        description: Correspondence Service Session Reference
+        required: true
+        type: string
+      - name : behavior-qualifier
+        in: path
+        description: Behavior Qualifier Name. ex- outbound
+        required: true
+        type: string
+      - name : collection-filter
+        in: query
+        description: Filter to refine the result set. ex- "correspondenceReference == 'CR77745'"
+        type: string
+      responses:
+        200:
+          description: successful
+          schema:
+            type: array
+            items:
+              type: string
+            example: [OR345, OR789, OR456] 
+            
+  /correspondence/correspondence-operating-session/{cr-reference-id}:
+    get:
+      tags: 
+      - retrieve
+      summary: Retrieve Correspondence Session Master Control Record data
+      operationId: retrieveCorrespondenceOperatingSession
+      produces: 
+      - application/json
+      parameters:
+      - in: path
+        name: cr-reference-id
+        description: Correspondence Service Session Reference
+        type: string
+        required: true
+      responses:
+        200:
+          description: Successfully retrieved correspondence operating session
+          schema:
+            $ref: '#/definitions/CorrespondenceResponse'
+  
+  /correspondence/correspondence-operating-session/{cr-reference-id}/outbounds/{bq-reference-id}:
+    get:
+      tags: 
+      - retrieve
+      summary: Retrieve an Outbound
+      operationId: retrieveCorrespondenceOperatingSessionOutboundResponse
+      produces: 
+      - application/json
+      parameters:
+      - in: path
+        name: cr-reference-id
+        description: Correspondence Service Session Reference
+        type: string
+        required: true
+      - name : bq-reference-id
+        in: path
+        description: Outbound Correspondence Task Reference
+        required: true
+        type: string
+      responses:
+        200:
+          description: Successfully retrieved correspondence operating session outbound
+          schema:
+            $ref: '#/definitions/CorrespondenceOutboundResponse'
+  
+  /correspondence/correspondence-operating-session/{cr-reference-id}/outbound-responses/{bq-reference-id}:
+    get:
+      tags: 
+      - retrieve
+      summary: Retrieve an Outbound with responses
+      operationId: retrieveCorrespondenceOperatingSessionOutboundWithResponse
+      produces: 
+      - application/json
+      parameters:
+      - in: path
+        name: cr-reference-id
+        description: Correspondence Service Session Reference
+        type: string
+        required: true
+      - name : bq-reference-id
+        in: path
+        description: Outbound Correspondence with Response Task Reference
+        required: true
+        type: string
+      responses:
+        200:
+          description: Successfully retrieved correspondence operating session outbounds with responses
+          schema:
+            $ref: '#/definitions/CorrespondenceOutboundWithResponseResponse'
+  
+  /correspondence/correspondence-operating-session/{cr-reference-id}/inbounds/{bq-reference-id}:
+    get:
+      tags: 
+      - retrieve
+      summary: Retrieve an Inbound
+      operationId: retrieveCorrespondenceOperatingSessionInbound
+      produces: 
+      - application/json
+      parameters:
+      - in: path
+        name: cr-reference-id
+        description: Correspondence Service Session Reference
+        type: string
+        required: true
+      - name : bq-reference-id
+        in: path
+        description: Inbound Correspondence Task Reference
+        required: true
+        type: string
+      responses:
+        200:
+          description: Successfully retrieved correspondence operating session inbound
+          schema:
+            $ref: '#/definitions/CorrespondenceInboundResponse'
+  
+  /correspondence/correspondence-operating-session/{cr-reference-id}/blocks/{bq-reference-id}:
+    get:
+      tags: 
+      - retrieve
+      summary: Retrieve a block
+      operationId: retrieveCorrespondenceOperatingSessionBlock
+      produces: 
+      - application/json
+      parameters:
+      - in: path
+        name: cr-reference-id
+        description: Correspondence Service Session Reference
+        type: string
+        required: true
+      - name : bq-reference-id
+        in: path
+        description: Block Correspondence Task Reference
+        required: true
+        type: string
+      responses:
+        200:
+          description: Successfully retrieved correspondence operating session block
+          schema:
+            $ref: '#/definitions/CorrespondenceBlockResponse'
+  
+  /correspondence/correspondence-operating-session/{cr-reference-id}/updates/{bq-reference-id}:
+    get:
+      tags: 
+      - retrieve
+      summary: Retrieve a session update
+      operationId: retrieveCorrespondenceOperatingSessionUpdate
+      produces: 
+      - application/json
+      parameters:
+      - in: path
+        name: cr-reference-id
+        description: Correspondence Service Session Reference
+        type: string
+        required: true
+      - name : bq-reference-id
+        in: path
+        description: Correspondence Update Task Reference
+        required: true
+        type: string
+      responses:
+        200:
+          description: Successfully retrieved correspondence operating session update
+          schema:
+            $ref: '#/definitions/CorrespondenceUpdateResponse'
+  
+  /correspondence/correspondence-operating-session/{cr-reference-id}/outbounds/{bq-reference-id}/execution:
+    put:
+      tags: 
+      - execute
+      summary: Execute an Outbound Update
+      operationId: executeCorrespondenceOperatingSessionOutboundUpdate
+      produces: 
+      - application/json
+      parameters:
+      - in: path
+        name: cr-reference-id
+        description: Correspondence Service Session Reference
+        type: string
+        required: true
+      - in: path
+        name: bq-reference-id
+        description: Correspondence Update Task Reference
+        type: string
+        required: true
+      - in: body
+        name: body
+        description: Outbound Correspondence data
+        schema:
+          $ref: '#/definitions/CorrespondenceOutboundRequest'
+      responses:
+        200:
+          description: Updated correspondence operating session outbound
+          schema:
+            $ref: '#/definitions/CorrespondenceOutboundResponse'
+            
+  /correspondence/correspondence-operating-session/{cr-reference-id}/outbounds/execution:
+    post:
+      tags: 
+      - execute
+      summary:  Execute an Outbound Creation
+      operationId: executeCorrespondenceOperatingSessionOutboundCreate
+      produces: 
+      - application/json
+      parameters:
+      - in: path
+        name: cr-reference-id
+        description: Correspondence Service Session Reference
+        type: string
+        required: true
+      - in: body
+        name: body
+        description: Outbound Correspondence data
+        schema:
+          $ref: '#/definitions/CorrespondenceOutboundRequest'
+      responses:
+        201:
+          description: Created correspondence operating session outbound
+          schema:
+            $ref: '#/definitions/CorrespondenceOutboundResponse'
+  
+  /correspondence/correspondence-operating-session/{cr-reference-id}/outbound-responses/{bq-reference-id}/execution:
+    put:
+      tags: 
+      - execute
+      summary: Execute an Outbound Response Update
+      operationId: executeCorrespondenceOperatingSessionOutboundWithResponseUpdate
+      produces: 
+      - application/json
+      parameters:
+      - in: path
+        name: cr-reference-id
+        description: Correspondence Service Session Reference
+        type: string
+        required: true
+      - in: path
+        name: bq-reference-id
+        description: Outbound Correspondence with Response Task Reference
+        type: string
+        required: true
+      - in: body
+        name: body
+        description: Outbound Response Correspondence data
+        schema:
+          $ref: '#/definitions/CorrespondenceOutboundResponseRequest'
+      responses:
+        200:
+          description: Updated correspondence operating session response
+          schema:
+            $ref: '#/definitions/CorrespondenceOutboundWithResponseResponse'
+  
+  /correspondence/correspondence-operating-session/{cr-reference-id}/outbound-responses/execution:
+    post:
+      tags: 
+      - execute
+      summary: Execute an Outbound Response Creation
+      operationId: executeCorrespondenceOperatingSessionOutboundWithResponseCreate
+      produces: 
+      - application/json
+      parameters:
+      - in: path
+        name: cr-reference-id
+        description: Correspondence Service Session Reference
+        type: string
+        required: true
+      - in: body
+        name: body
+        description: Outbound Response Correspondence data
+        schema:
+          $ref: '#/definitions/CorrespondenceOutboundResponseRequest'
+      responses:
+        201:
+          description: Created correspondence operating session response
+          schema:
+            $ref: '#/definitions/CorrespondenceOutboundWithResponseResponse'
+  
+  /correspondence/correspondence-operating-session/{cr-reference-id}/inbounds/{bq-reference-id}/execution:
+    put:
+      tags: 
+      - execute
+      summary: Execute an Inbound Update
+      operationId: executeCorrespondenceOperatingSessionInboundUpdate
+      produces: 
+      - application/json
+      parameters:
+      - in: path
+        name: cr-reference-id
+        description: Correspondence Service Session Reference
+        type: string
+        required: true
+      - in: path
+        name: bq-reference-id
+        description: Inbound Correspondence Task Reference
+        type: string
+        required: true
+      - in: body
+        name: body
+        description: Correspondence data
+        schema:
+          $ref: "#/definitions/CorrespondenceInboundRequest"
+      responses:
+        200:
+          description: Updated correspondence operating session inbound
+          schema:
+            $ref: '#/definitions/CorrespondenceInboundResponse'
+            
+  /correspondence/correspondence-operating-session/{cr-reference-id}/inbounds/execution:
+    post:
+      tags: 
+      - execute
+      summary: Execute an Inbound Creation
+      operationId: executeCorrespondenceOperatingSessionInboundCreate
+      produces: 
+      - application/json
+      parameters:
+      - in: path
+        name: cr-reference-id
+        description: Correspondence Service Session Reference
+        type: string
+        required: true
+      - in: body
+        name: body
+        description: Correspondence data
+        schema:
+          $ref: "#/definitions/CorrespondenceInboundRequest"
+      responses:
+        201:
+          description: Created correspondence operating session inbound
+          schema:
+            $ref: '#/definitions/CorrespondenceInboundResponse'
+  
+  /correspondence/correspondence-operating-session/{cr-reference-id}/blocks/{bq-reference-id}/requisition:
+    put:
+      tags: 
+      - request
+      summary: Request a Block Update
+      operationId: executeCorrespondenceOperatingSessionBlockRequestUpdate
+      produces: 
+      - application/json
+      parameters:
+      - in: path
+        name: cr-reference-id
+        description: Correspondence Service Session Reference
+        type: string
+        required: true
+      - in: path
+        name: bq-reference-id
+        description: Block Correspondence Task Reference
+        type: string
+        required: true
+      - in: body
+        name: body
+        description: Correspondence data
+        schema:
+          $ref: "#/definitions/CorrespondenceBlockRequest"
+      responses:
+        200:
+          description: Updated correspondence operating session block
+          schema:
+            $ref: '#/definitions/CorrespondenceBlockResponse'
+            
+  /correspondence/correspondence-operating-session/{cr-reference-id}/blocks/requisition:
+    post:
+      tags: 
+      - request
+      summary: Request a Block Creation
+      operationId: executeCorrespondenceOperatingSessionBlockRequestCreate
+      produces: 
+      - application/json
+      parameters:
+      - in: path
+        name: cr-reference-id
+        description: Correspondence Service Session Reference
+        type: string
+        required: true
+      - in: body
+        name: body
+        description: Correspondence data
+        schema:
+          $ref: "#/definitions/CorrespondenceBlockRequest"
+      responses:
+        201:
+          description: Created correspondence operating session block
+          schema:
+            $ref: '#/definitions/CorrespondenceBlockResponse'
+  
+  /correspondence/correspondence-operating-session/{cr-reference-id}/updates/{bq-reference-id}/requisition:
+    put:
+      tags: 
+      - request
+      summary: Request an Update on Correspondence Update
+      operationId: executeCorrespondenceOperatingSessionUpdateRequestUpdate
+      produces: 
+      - application/json
+      parameters:
+      - in: path
+        name: cr-reference-id
+        description: Correspondence Service Session Reference
+        type: string
+        required: true
+      - in: path
+        name: bq-reference-id
+        description: Correspondence Update Task Reference
+        type: string
+        required: true
+      - in: body
+        name: body
+        description: Correspondence data
+        schema:
+          $ref: "#/definitions/CorrespondenceUpdateRequest"
+      responses:
+        200:
+          description: Updated correspondence operating session update
+          schema:
+            $ref: '#/definitions/CorrespondenceUpdateResponse'
+            
+  /correspondence/correspondence-operating-session/{cr-reference-id}/updates/requisition:
+    post:
+      tags: 
+      - request
+      summary: Request a Creation on Correspondence Update
+      operationId: executeCorrespondenceOperatingSessionUpdateRequestCreate
+      produces: 
+      - application/json
+      parameters:
+      - in: path
+        name: cr-reference-id
+        description: Correspondence Service Session Reference
+        type: string
+        required: true
+      - in: body
+        name: body
+        description: Correspondence data
+        schema:
+          $ref: "#/definitions/CorrespondenceUpdateRequest"
+      responses:
+        201:
+          description: Created correspondence operating session update
+          schema:
+            $ref: '#/definitions/CorrespondenceUpdateResponse'
+  
+  /correspondence/correspondence-operating-session/{cr-reference-id}/recording:
+    post:
+      tags: 
+      - record
+      summary: Record a Correspondence session
+      operationId: executeCorrespondenceOperatingSessionRecordRequest
+      produces: 
+      - application/json
+      parameters:
+      - in: path
+        name: cr-reference-id
+        description: Correspondence Service Session Reference
+        type: string
+        required: true
+      - in: body
+        name: body
+        description: Correspondence data
+        schema:
+          $ref: "#/definitions/CorrespondenceRecordRequest"
+      responses:
+        201:
+          description: Recorded correspondence operating session
+          schema:
+            $ref: '#/definitions/CorrespondenceRecordResponse'
+  
+definitions:
+  CorrespondenceResponse:
+    description: The master record for an item of correspondence
+    type: object
+    properties:
+      correspondenceServiceSessionReference:
+        type: string
+        description: |
+          example: JIDH7DEA
+          general-info: bank reference - will be used to match responses
+          `status: Provisionally Registered`
+          bian-reference: Self
+      correspondenceServiceConfigurationOrSetUp:
+        type: string
+        description: |
+          example: Configuration 1
+          general-info: service configuration or set-up
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+  
+  CorrespondenceOutboundRequest:
+    description: handing outbound messages
+    type: object
+    properties:
+      outboundCorrespondenceTaskRecord:
+        type: string
+        description: |
+          example: CTR72456425
+          general-info: used to track processing/state of correspondence
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      correspondenceReference:
+        type: string
+        description: |
+          example: CR724575
+          general-info: bank reference - will be used to match responses
+          `status: Provisionally Registered`
+          bian-reference: PresentationManagementSystem.ManagedPresentation.Identification
+      correspondenceType:
+        type: string
+        description: |
+          example: Correspondence Type
+          general-info: |
+          `status: Registered`
+          isoLink1: "[click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_9lOqonltEeG7BsjMvd1mEw_-1685162102/elements/_-IizE3ltEeG7BsjMvd1mEw_1655223030)"
+          bian-reference: PresentationManagementSystem.ManagedPresentation.CommunicationMethod
+          `status: Registered`
+          isoLink2: "[click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_9lOqonltEeG7BsjMvd1mEw_-1685162102/elements/_prF7MLbpEeGAapiw3IODVw_2145476732)"
+          bian-reference: PresentationManagementSystem.ManagedPresentation.Medium
+      correspondenceTemplateReference:
+        type: string
+        description: |
+          example: CTR7246245
+          general-info: if text is place in a standard template
+          `status: Registered`
+          isoLink1: "[click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_9ju10HltEeG7BsjMvd1mEw_-739610260/elements/_9jSw9XltEeG7BsjMvd1mEw_947856562)"
+          bian-reference: PresentationManagementSystem.ManagedPresentation.PresentedUndertaking.ModelForm
+      correspondenceTemplateRecord:
+        type: string
+        description: |
+          example: template 1
+          general-info: the template definition used in correspondence assembly
+          `status: Registered`
+          isoLink1: "[click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_9ju10HltEeG7BsjMvd1mEw_-739610260/elements/_9jSw9XltEeG7BsjMvd1mEw_947856562)"
+          bian-reference: PresentationManagementSystem.ManagedPresentation.PresentedUndertaking.ModelForm
+      correspondenceContent:
+        type: string
+        description: |
+          example: content
+          general-info: |
+          `status: Registered`
+          isoLink1: "[click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_9lOqonltEeG7BsjMvd1mEw_-1685162102/elements/__mMdhGx4EeKmZJ0Ago--9g_-927157417)"
+          bian-reference: PresentationManagementSystem.ManagedPresentation.PresentedDocument
+          `status: Registered`
+          isoLink2: "[click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_9lOqonltEeG7BsjMvd1mEw_-1685162102/elements/__mMdg2x4EeKmZJ0Ago--9g_445499010)"
+          bian-reference: PresentationManagementSystem.ManagedPresentation.PresentedUndertaking
+      correspondenceMediaOrChannel:
+        type: string
+        description: |
+          example: EMAIL
+          general-info: |
+          `status: Registered`
+          isoLink1: "[click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_9lOqonltEeG7BsjMvd1mEw_-1685162102/elements/_-IizE3ltEeG7BsjMvd1mEw_1655223030)"
+          bian-reference: PresentatinManagementSystem.ManagedPresentation.CommunicationMethod
+          `status: Registered`
+          isoLink2: "[click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_9lOqonltEeG7BsjMvd1mEw_-1685162102/elements/_prF7MLbpEeGAapiw3IODVw_2145476732)"
+          bian-reference: PresentationManagementSystem.ManagedPresentation.Medium
+      correspondenceAddressee:
+        type: string
+        description: |
+          example: test@test.com
+          general-info: |
+          `status: Provisionally Registered`
+          bian-reference: PresentationManagementSystem.ManagedPresentation.PostalAddress
+          `status: Registered`
+          isoLink1: "[click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_9lOqonltEeG7BsjMvd1mEw_-1685162102/elements/_9lrWkHltEeG7BsjMvd1mEw_145099947)"
+          bian-reference: PresentationManagementSystem.ManagedPresentation.ElectronicPresentationAddress
+      customerReference:
+        type: string
+        example: CR159482637
+        description: |
+          general-info: if identified as customer with channel preferences for correspondence
+          `status: Provisionally Registered`
+          bian-reference: PresentationManagementSystem.ManagedPresentation.TargetCustomer
+      channelAccessPreferenceReference:
+        type: string
+        example: CH7DEA11
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      channelAccessPreferenceProfile:
+        type: string
+        description: |
+          general-info: overarching record combining items listed
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      channelAccessChannelOrDeviceType:
+        type: string
+        example: EMAIL
+        description: |
+          general-info: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+          `status: Registered`
+          isoLink1: "[click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_9lOqonltEeG7BsjMvd1mEw_-1685162102/elements/_-IizE3ltEeG7BsjMvd1mEw_1655223030)"
+          bian-reference: PresentationManagementSystem.ManagedPresentation.CommunicationMethod  
+      
+      channelAccessChannelOrDeviceTypePreference:
+        type: string
+        example: no paper correspondence
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      productOrServiceType:
+        type: string
+        description: |
+          general-info: associated product or service if appropriate
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text | BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Code
+      employeeBusinessUnitReference:
+        type: string
+        example: EBU852852147
+        description: |
+          general-info: sending entity within the bank
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      dateType:
+        type: string
+        example: generation date
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      date:
+        $ref: 'https://api.swaggerhub.com/domains/BIAN/Common-Model/1.0.0#/definitions/ISODate'
+      correspondenceState:
+        type: string
+        example: sent
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: PresentationManagementSystem.ManagedPresentation.Status
+      correspondenceRecord:
+        type: object
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+          general-info: combination of following fields    
+  CorrespondenceOutboundResponse:
+    description: handing outbound messages
+    type: object
+    properties:
+      correspondenceServiceSessionReference:
+        type: string
+        description: |
+          example: CSSR7DEA
+          general-info: bank reference - will be used to match responses
+          `status: Provisionally Registered`
+          bian-reference: Self
+      outboundCorrespondenceTaskReference:
+        type: string
+        example: OCTR7245624
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      outboundCorrespondenceTaskRecord:
+        type: object
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+          general-info: used to track processing/state of correspondence
+      correspondenceReference:
+        type: string
+        description: |
+          example: CR724575
+          general-info: bank reference - will be used to match responses
+          `status: Provisionally Registered`
+          bian-reference: PresentationManagementSystem.ManagedPresentation.Identification
+      correspondenceType:
+        type: string
+        description: |
+          example: Correspondence Type
+          general-info: |
+          `status: Registered`
+          isoLink1: "[click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_9lOqonltEeG7BsjMvd1mEw_-1685162102/elements/_-IizE3ltEeG7BsjMvd1mEw_1655223030)"
+          bian-reference: PresentationManagementSystem.ManagedPresentation.CommunicationMethod
+          `status: Registered`
+          isoLink2: "[click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_9lOqonltEeG7BsjMvd1mEw_-1685162102/elements/_prF7MLbpEeGAapiw3IODVw_2145476732)"
+          bian-reference: PresentationManagementSystem.ManagedPresentation.Medium
+      correspondenceTemplateReference:
+        type: string
+        description: |
+          example: CTR7246245
+          general-info: if text is place in a standard template
+          `status: Registered`
+          isoLink1: "[click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_9ju10HltEeG7BsjMvd1mEw_-739610260/elements/_9jSw9XltEeG7BsjMvd1mEw_947856562)"
+          bian-reference: PresentationManagementSystem.ManagedPresentation.PresentedUndertaking.ModelForm
+      correspondenceTemplateRecord:
+        type: string
+        description: |
+          example: template 1
+          general-info: the template definition used in correspondence assembly
+          `status: Registered`
+          isoLink1: "[click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_9ju10HltEeG7BsjMvd1mEw_-739610260/elements/_9jSw9XltEeG7BsjMvd1mEw_947856562)"
+          bian-reference: PresentationManagementSystem.ManagedPresentation.PresentedUndertaking.ModelForm
+      correspondenceContent:
+        type: string
+        description: |
+          example: content
+          general-info: |
+          `status: Registered`
+          isoLink1: "[click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_9lOqonltEeG7BsjMvd1mEw_-1685162102/elements/__mMdhGx4EeKmZJ0Ago--9g_-927157417)"
+          bian-reference: PresentationManagementSystem.ManagedPresentation.PresentedDocument
+          `status: Registered`
+          isoLink2: "[click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_9lOqonltEeG7BsjMvd1mEw_-1685162102/elements/__mMdg2x4EeKmZJ0Ago--9g_445499010)"
+          bian-reference: PresentationManagementSystem.ManagedPresentation.PresentedUndertaking
+      correspondenceMediaOrChannel:
+        type: string
+        description: |
+          example: EMAIL
+          general-info: |
+          `status: Registered`
+          isoLink1: "[click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_9lOqonltEeG7BsjMvd1mEw_-1685162102/elements/_-IizE3ltEeG7BsjMvd1mEw_1655223030)"
+          bian-reference: PresentatinManagementSystem.ManagedPresentation.CommunicationMethod
+          `status: Registered`
+          isoLink2: "[click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_9lOqonltEeG7BsjMvd1mEw_-1685162102/elements/_prF7MLbpEeGAapiw3IODVw_2145476732)"
+          bian-reference: PresentationManagementSystem.ManagedPresentation.Medium
+      correspondenceAddressee:
+        type: string
+        description: |
+          example: test@test.com
+          general-info: |
+          `status: Provisionally Registered`
+          bian-reference: PresentationManagementSystem.ManagedPresentation.PostalAddress
+          `status: Registered`
+          isoLink1: "[click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_9lOqonltEeG7BsjMvd1mEw_-1685162102/elements/_9lrWkHltEeG7BsjMvd1mEw_145099947)"
+          bian-reference: PresentationManagementSystem.ManagedPresentation.ElectronicPresentationAddress
+      customerReference:
+        type: string
+        example: CR159482637
+        description: |
+          general-info: if identified as customer with channel preferences for correspondence
+          `status: Provisionally Registered`
+          bian-reference: PresentationManagementSystem.ManagedPresentation.TargetCustomer
+      channelAccessPreferenceReference:
+        type: string
+        example: CH7DEA11
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      channelAccessPreferenceProfile:
+        type: string
+        description: |
+          general-info: overarching record combining items listed
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      channelAccessChannelOrDeviceType:
+        type: string
+        example: EMAIL
+        description: |
+          general-info: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+          `status: Registered`
+          isoLink1: "[click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_9lOqonltEeG7BsjMvd1mEw_-1685162102/elements/_-IizE3ltEeG7BsjMvd1mEw_1655223030)"
+          bian-reference: PresentationManagementSystem.ManagedPresentation.CommunicationMethod     
+      channelAccessChannelOrDeviceTypePreference:
+        type: string
+        example: no paper correspondence
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      productOrServiceType:
+        type: string
+        description: |
+          general-info: associated product or service if appropriate
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text | BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Code
+      employeeBusinessUnitReference:
+        type: string
+        example: EBU852852147
+        description: |
+          general-info: sending entity within the bank
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      dateType:
+        type: string
+        example: generation date
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      date:
+        $ref: 'https://api.swaggerhub.com/domains/BIAN/Common-Model/1.0.0#/definitions/ISODate'
+      correspondenceState:
+        type: string
+        example: sent
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: PresentationManagementSystem.ManagedPresentation.Status
+      correspondenceRecord:
+        type: object
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+          general-info: combination of following fields    
+          
+  CorrespondenceOutboundResponseRequest:
+    description: handling messages for which a response needs to be tracked and returned
+    type: object
+    properties:
+      outboundCorrespondenceWithResponseTaskRecord:
+        type: object
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+          general-info: used to track processing/state of correspondence
+      productOrServiceType:
+        type: string
+        description: |
+          example: LOAN
+          general-info: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text | BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Code
+      correspondenceReference:
+        type: string
+        description: |
+          example: CR724525
+          general-info: |
+          `status: Provisionally Registered`
+          bian-reference: PresentationManagementSystem.ManagedPresentation.Identification
+      correspondenceRecord:
+        type: object
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+          general-info: combination of following fields
+      correspondenceType:
+        type: string
+        description: |
+          example: Correspondence Type
+          general-info: |
+          `status: Registered`
+          isoLink1: "[click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_9lOqonltEeG7BsjMvd1mEw_-1685162102/elements/_-IizE3ltEeG7BsjMvd1mEw_1655223030)"
+          bian-reference: PresentationManagementSystem.ManagedPresentation.CommunicationMethod
+          `status: Registered`
+          isoLink2: "[click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_9lOqonltEeG7BsjMvd1mEw_-1685162102/elements/_prF7MLbpEeGAapiw3IODVw_2145476732)"
+          bian-reference: PresentationManagementSystem.ManagedPresentation.Medium
+      correspondenceTemplateReference:
+        type: string
+        description: |
+          example: TR7245254
+          general-info: if text is place in a standard template
+          `status: Registered`
+          isoLink1: "[click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_9ju10HltEeG7BsjMvd1mEw_-739610260/elements/_9jSw9XltEeG7BsjMvd1mEw_947856562)"
+          bian-reference:
+      correspondenceTemplateRecord:
+        type: object
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+          general-info: the template definition used in correspondence assembly
+      correspondenceContent:
+        type: string
+        description: |
+          example: content
+          general-info: |
+          `status: Registered`
+          isoLink1: "[click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_9lOqonltEeG7BsjMvd1mEw_-1685162102/elements/__mMdhGx4EeKmZJ0Ago--9g_-927157417)"
+          bian-reference: PresentationManagementSystem.ManagedPresentation.PresentedDocument
+          `status: Registered`
+          isoLink2: "[click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_9lOqonltEeG7BsjMvd1mEw_-1685162102/elements/__mMdg2x4EeKmZJ0Ago--9g_445499010)"
+          bian-reference: PresentationManagementSystem.ManagedPresentation.PresentedUndertaking
+      correspondenceMediaOrChannel:
+        type: string
+        description: |
+          example: EMAIL
+          general-info: |
+          `status: Registered`
+          isoLink1: "[click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_9lOqonltEeG7BsjMvd1mEw_-1685162102/elements/_-IizE3ltEeG7BsjMvd1mEw_1655223030)"
+          bian-reference: PresentationManagementSystem.ManagedPresentation.CommunicationMethod
+          `status: Registered`
+          isoLink2: "[click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_9lOqonltEeG7BsjMvd1mEw_-1685162102/elements/_prF7MLbpEeGAapiw3IODVw_2145476732)"
+          bian-reference: PresentationManagementSystem.ManagedPresentation.Medium
+          
+      correspondenceAddressee:
+        type: string
+        description: |
+          example: test@test.com
+          general-info: |
+          `status: Registered`
+          isoLink1: "[click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_FMxY5cTGEeChad0JzLk7QA_1264682665/elements/_Ex8eEMTGEeChad0JzLk7QA_15570301)"
+          bian-reference: PresentationManagementSystem.ManagedPresentation.InitialCorrespondence.ElectronicPresentationAddress(asContactPoint).ReturnAddress
+          `status: Registered`
+          isoLink2: "[click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_FMxY5cTGEeChad0JzLk7QA_1264682665/elements/_Ex8eEMTGEeChad0JzLk7QA_15570301)"
+          bian-reference: PresentationManagementSystem.ManagedPresentation.InitialCorrespondence.PostalAddress(asContactPoint).ReturnAddress
+          
+      customerReference:
+        type: string
+        example: CR159482637
+        description: |
+          general-info: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      channelAccessPreferenceReference:
+        type: string
+        example: CHA72345
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+          general-info: |
+      channelAccessPreferenceProfile:
+        type: string
+        description: |
+          general-info: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text | BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Code
+      channelAccessChannelOrDeviceType:
+        type: string
+        example: email
+        description: |
+          general-info: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+          `status: Registered`
+          isoLink1: "[click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_FMxY5cTGEeChad0JzLk7QA_1264682665/elements/_Ex8eEMTGEeChad0JzLk7QA_15570301)"
+          bian-reference: PresentationManagementSystem.ManagedPresentation.InitialCorrespondence.ElectronicPresentationAddress(asContactPoint).ReturnAddress
+          `status: Registered`
+          isoLink2: "[click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_FMxY5cTGEeChad0JzLk7QA_1264682665/elements/_Ex8eEMTGEeChad0JzLk7QA_15570301)"
+          bian-reference: PresentationManagementSystem.ManagedPresentation.InitialCorrespondence.PostalAddress(asContactPoint).ReturnAddress
+          
+          
+      channeAccessChannelOrDeviceTypePreference:
+        type: string
+        description: |
+          example: no paper correspondence
+          general-info: description of preference
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      employeeBusinessUnitReference:
+        type: string
+        example: EBU52852147
+        description: |
+          general-info: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      responseDueDate:
+        $ref: 'https://api.swaggerhub.com/domains/BIAN/Common-Model/1.0.0#/definitions/ISODate' 
+      dateType:
+        type: string
+        description: |
+          example: generation date
+          general-info: date type
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      date:
+        $ref: 'https://api.swaggerhub.com/domains/BIAN/Common-Model/1.0.0#/definitions/ISODate'
+      responseCorrespondenceReference:
+        type: string
+        description: |
+          example: RCR789456123
+          general-info: inbound correspondence reference matched
+          `status: Provisionally Registered`
+          bian-reference: PresentationManagementSystem.ManagedPresentation
+      responseCorrespondenceRecord:
+        type: object
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+          general-info: content of inbound corresponden
+          
+      correspondenceState:
+        type: string
+        description: |
+          example: sent pending response
+          general-info: |
+          `status: Provisionally Registered`
+          bian-reference: PresentationManagementSystem.ManagedPresentation.Status
+  
+  CorrespondenceOutboundWithResponseResponse:
+    description: handling messages for which a response needs to be tracked and returned
+    type: object
+    properties:
+      correspondenceServiceSessionReference:
+        type: string
+        description: |
+          example: CSSR724254
+          general-info: bank reference - will be used to match responses
+          `status: Provisionally Registered`
+          bian-reference: Self
+      outboundCorrespondencewithResponseTaskReference:
+        type: string
+        example: CSTR724255
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      outboundCorrespondenceWithResponseTaskRecord:
+        type: object
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+          general-info: used to track processing/state of correspondence
+          
+      correspondenceReference:
+        type: string
+        description: |
+          example: CR724525
+          general-info: |
+          `status: Provisionally Registered`
+          bian-reference: PresentationManagementSystem.ManagedPresentation.Identification
+      correspondenceRecord:
+        type: string
+        description: |
+          example: record
+          general-info: combination of following fields
+          `status: Provisionally Registered`
+          bian-reference: 
+      correspondenceType:
+        type: string
+        description: |
+          example: Correspondence Type
+          general-info: |
+          `status: Registered`
+          isoLink1: "[click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_9lOqonltEeG7BsjMvd1mEw_-1685162102/elements/_-IizE3ltEeG7BsjMvd1mEw_1655223030)"
+          bian-reference: PresentationManagementSystem.ManagedPresentation.CommunicationMethod
+          `status: Registered`
+          isoLink2: "[click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_9lOqonltEeG7BsjMvd1mEw_-1685162102/elements/_prF7MLbpEeGAapiw3IODVw_2145476732)"
+          bian-reference: PresentationManagementSystem.ManagedPresentation.Medium
+      correspondenceTemplateReference:
+        type: string
+        description: |
+          example: TR7245254
+          general-info: if text is place in a standard template
+          `status: Registered`
+          isoLink1: "[click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_9ju10HltEeG7BsjMvd1mEw_-739610260/elements/_9jSw9XltEeG7BsjMvd1mEw_947856562)"
+          bian-reference:
+      correspondenceTemplateRecord:
+        type: string
+        description: |
+          example: template 1
+          general-info: the template definition used in correspondence assembly
+          `status: Registered`
+          isoLink1: "[click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_9ju10HltEeG7BsjMvd1mEw_-739610260/elements/_9jSw9XltEeG7BsjMvd1mEw_947856562)"
+          bian-reference:
+      correspondenceContent:
+        type: string
+        description: |
+          example: content
+          general-info: |
+          `status: Registered`
+          isoLink1: "[click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_9lOqonltEeG7BsjMvd1mEw_-1685162102/elements/__mMdhGx4EeKmZJ0Ago--9g_-927157417)"
+          bian-reference: PresentationManagementSystem.ManagedPresentation.PresentedDocument
+          `status: Registered`
+          isoLink2: "[click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_9lOqonltEeG7BsjMvd1mEw_-1685162102/elements/__mMdg2x4EeKmZJ0Ago--9g_445499010)"
+          bian-reference: PresentationManagementSystem.ManagedPresentation.PresentedUndertaking
+      correspondenceMediaOrChannel:
+        type: string
+        description: |
+          example: EMAIL
+          general-info: |
+          `status: Registered`
+          isoLink1: "[click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_9lOqonltEeG7BsjMvd1mEw_-1685162102/elements/_-IizE3ltEeG7BsjMvd1mEw_1655223030)"
+          bian-reference: PresentationManagementSystem.ManagedPresentation.InitialCorrespondence.CommunicationMethod
+          `status: Registered`
+          isoLink2: "[click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_9lOqonltEeG7BsjMvd1mEw_-1685162102/elements/_prF7MLbpEeGAapiw3IODVw_2145476732)"
+          bian-reference: PresentationManagementSystem.ManagedPresentation.InitialCorrespondence.Medium
+          
+      correspondenceAddressee:
+        type: string
+        description: |
+          example: test@test.com
+          general-info: |
+          `status: Registered`
+          isoLink1: "[click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_FMxY5cTGEeChad0JzLk7QA_1264682665/elements/_Ex8eEMTGEeChad0JzLk7QA_15570301)"
+          bian-reference: PresentationManagementSystem.ManagedPresentation.InitialCorrespondence.ElectronicPresentationAddress(asContactPoint).ReturnAddress
+          `status: Registered`
+          isoLink2: "[click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_FMxY5cTGEeChad0JzLk7QA_1264682665/elements/_Ex8eEMTGEeChad0JzLk7QA_15570301)"
+          bian-reference: PresentationManagementSystem.ManagedPresentation.InitialCorrespondence.PostalAddress(asContactPoint).ReturnAddress
+      customerReference:
+        type: string
+        example: CR159482637
+        description: |
+          general-info: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      channelAccessPreferenceReference:
+        type: string
+        example: CHA72345
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+          general-info: |
+      channelAccessPreferenceProfile:
+        type: string
+        description: |
+          general-info: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text | BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Code
+      channelAccessChannelOrDeviceType:
+        type: string
+        example: email
+        description: |
+          general-info: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+          `status: Registered`
+          isoLink1: "[click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_FMxY5cTGEeChad0JzLk7QA_1264682665/elements/_Ex8eEMTGEeChad0JzLk7QA_15570301)"
+          bian-reference: PresentationManagementSystem.ManagedPresentation.InitialCorrespondence.ElectronicPresentationAddress(asContactPoint).ReturnAddress
+          `status: Registered`
+          isoLink2: "[click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_FMxY5cTGEeChad0JzLk7QA_1264682665/elements/_Ex8eEMTGEeChad0JzLk7QA_15570301)"
+          bian-reference: PresentationManagementSystem.ManagedPresentation.InitialCorrespondence.PostalAddress(asContactPoint).ReturnAddress
+      channeAccessChannelOrDeviceTypePreference:
+        type: string
+        description: |
+          example: no paper correspondence
+          general-info: description of preference
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      employeeBusinessUnitReference:
+        type: string
+        example: EBU52852147
+        description: |
+          general-info: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      productOrServiceType:
+        type: string
+        description: |
+          example: LOAN
+          general-info: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text | BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Code
+      responseDueDate:
+        $ref: 'https://api.swaggerhub.com/domains/BIAN/Common-Model/1.0.0#/definitions/ISODate' 
+      dateType:
+        type: string
+        description: |
+          example: generation date
+          general-info: date type
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      date:
+        $ref: 'https://api.swaggerhub.com/domains/BIAN/Common-Model/1.0.0#/definitions/ISODate'
+      responseCorrespondenceReference:
+        type: string
+        description: |
+          example: RCR789456123
+          general-info: inbound correspondence reference matched
+          `status: Provisionally Registered`
+          bian-reference: PresentationManagementSystem.ManagedPresentation
+      responseCorrespondenceRecord:
+        type: string
+        description: |
+          example: Current news
+          general-info: content of inbound corresponden
+          `status: Provisionally Registered`
+          bian-reference: PresentationManagementSystem.ManagedPresentation.InitialCorrespondence
+      correspondenceState:
+        type: string
+        description: |
+          example: sent pending response
+          general-info: |
+          `status: Provisionally Registered`
+          bian-reference: PresentationManagementSystem.ManagedPresentation.Status
+          
+  CorrespondenceInboundResponse:
+    description: handling in-bound messages
+    type: object
+    properties:
+      correspondenceServiceSessionReference:
+        type: string
+        description: |
+          example: CSSR7DEA74
+          general-info: bank reference - will be used to match responses
+          `status: Provisionally Registered`
+          bian-reference: Self
+      inboundCorrespondenceTaskReference:
+        type: string
+        description: |
+          example: CTR7246425
+          general-info: bank reference - will be used to match responses
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      inboundCorrespondenceTaskRecord:
+        type: object
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+          general-info: used to track processig/state of -Correspondence
+      correspondenceReference:
+        type: string
+        description: |
+          example: CR7245245
+          general-info: bank reference - will be used to match responses
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      correspondenceType:
+        type: string
+        description: |
+          example: unsolicited message
+          general-info: Correspondence Type
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text | BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Code
+      correspondenceContent:
+        type: string
+        description: |
+          example: content
+          general-info: message content - aligned to template as appropriate
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      correspondenceAddressee:
+        type: string
+        description: |
+          example: test@test.com
+          general-info: identified source of inbound message
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      customerReference:
+        type: string
+        example: CR159482637
+        description: |
+          general-info: if identification matched to existing customer or known party
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      employeeBusinessUnitReference:
+        type: string
+        example: EBU52852147
+        description: |
+          general-info: identified addressee within the bank
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      dateType:
+        type: string
+        description: |
+          general-info: addressee identification date
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text | BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Code
+      date:
+        $ref: 'https://api.swaggerhub.com/domains/BIAN/Common-Model/1.0.0#/definitions/ISODate'
+      correspondenceState:
+        type: string
+        description: |
+          example: received pending delivery
+          general-info: correspondende state
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+  
+  CorrespondenceBlockResponse:
+    description: Batch or block mailing
+    type: object
+    properties:
+      correspondenceServiceSessionReference:
+        type: string
+        description: |
+          example: CSSR7245275
+          general-info: bank reference - will be used to match responses
+          `status: Provisionally Registered`
+          bian-reference: Self
+      blockCorrespondenceTaskReference:
+        type: string
+        description: |
+          example: JCTR7245425
+          general-info: bank reference - will be used to match responses
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      blockCorrespondenceTaskRecord:
+        type: object
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+          general-info: used to track processig/state of block correspondence
+          
+      correspondenceBlockMailingReference:
+        type: string
+        description: |
+          example: MR63474
+          general-info: bank reference
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      correspondenceType:
+        type: string
+        description: |
+          example: email
+          general-info: Correspondence Type
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text | BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Code
+      correspondenceTemplateReference:
+        type: string
+        description: |
+          example: TR724525
+          general-info: if text is place in a standard template
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      correspondenceTemplateRecord:
+        type: object
+        description: |
+          `status: Not Mapped`  
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+          general-info: the template definition used in correspondence assembly
+      correspondenceContent:
+        type: string
+        description: |
+          example: content
+          general-info: message content - aligned to template as appropriate
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      correspondenceMediaOrChannel:
+        type: string
+        description: |
+          example: EMAIL
+          general-info: defines the media and channel for delivery of the message
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      correspondenceAddressee:
+        type: string
+        description: |
+          example: test@test.com
+          general-info: block of addresses to which message is to be delivered
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      customerReference:
+        type: string
+        example: CR159482637
+        description: |
+          general-info: block messages sent to known entities
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      channelAccessPreferenceReference:
+        type: string
+        description: |
+          general-info: CAPR74645
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      channelAccessPreferenceProfile:
+        type: string
+        description: |
+          general-info: overarching record combining items listed
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      channelAccessChannelOrDeviceType:
+        type: string
+        description: |
+          example: email
+          general-info: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Code | BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text 
+      channelAccessChannelOrDeviceTypePreference:
+        type: string
+        description: |
+          example: no paper
+          general-info: description of preference
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      employeeBusinessUnitReference:
+        type: string
+        example: EBU52852147
+        description: |
+          general-info: sending entity within the bank
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      dateType:
+        type: string
+        description: |
+          example: generation date
+          general-info: date type
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      date:
+        $ref: 'https://api.swaggerhub.com/domains/BIAN/Common-Model/1.0.0#/definitions/ISODate'
+      correspondenceState:
+        type: string
+        description: |
+          example: sent
+          general-info: state of block of correspondence items
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+  CorrespondenceUpdateResponse:
+    description: update, repair or retransmission of outbound messages
+    type: object
+    properties:
+      correspondenceServiceSessionReference:
+        type: string
+        description: |
+          example: CSSR7245252
+          general-info: bank reference - will be used to match responses
+          `status: Provisionally Registered`
+          bian-reference: Self
+      correspondenceUpdateTaskReference:
+        type: string
+        description: |
+          example: UTR72346452
+          general-info: refers to the update action
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      correspondenceUpdateTaskRecord:
+        type: string
+        description: |
+          example: record
+          general-info: refers to the update action
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      employeeBusinessUnitReference:
+        type: string
+        example: EBU52852147
+        description: |
+          general-info: identified employee or unit making change
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      correspondenceReference:
+        type: string
+        description: |
+          example: CR72645
+          general-info: bank reference - will be used to match responses
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      correspondenceType:
+        type: string
+        description: |
+          example: Correspondence Type
+          general-info: Correspondence Type
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text | BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Code
+      correspondenceTemplateReference:
+        type: string
+        example: TR456123
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+          general-info: if text is place in a standard template
+      
+      correspondenceTemplateRecord:
+        type: string
+        example: template 1
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+          general-info: the template definition used in correspondence assembly
+      
+      correspondenceContentUpdate:
+        type: string
+        description: |
+          example: Updated message
+          general-info: message content that is updated
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::DateTime
+      dateType:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text | BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Code
+      date:
+        $ref: 'https://api.swaggerhub.com/domains/BIAN/Common-Model/1.0.0#/definitions/ISODate'
+      
+      correspondenceState:
+        type: string
+        description: |
+          example: 
+          general-info: 
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+          
+      correspondenceUpdateTaskResult:
+        type: string
+        description: |
+          example: success
+          general-info: records the result of the update task
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+  CorrespondenceUpdateRequest:
+    description: update, repair or retransmission of outbound messages
+    type: object
+    properties:
+      correspondenceUpdateTaskRecord:
+        type: string
+        description: |
+          example: record
+          general-info: refers to the update action
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      employeeBusinessUnitReference:
+        type: string
+        example: EBU52852147
+        description: |
+          general-info: identified employee or unit making change
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      correspondenceReference:
+        type: string
+        description: |
+          example: CR72645
+          general-info: bank reference - will be used to match responses
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      correspondenceType:
+        type: string
+        description: |
+          example: Correspondence Type
+          general-info: Correspondence Type
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text | BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Code
+      correspondenceTemplateReference:
+        type: string
+        example: TR456123
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+          general-info: if text is place in a standard template
+          
+      correspondenceTemplateRecord:
+        type: string
+        example: template 1
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+          general-info: the template definition used in correspondence assembly
+      correspondenceContentUpdate:
+        type: string
+        description: |
+          example: Updated message
+          general-info: message content that is updated
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::DateTime
+      dateType:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text | BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Code
+      date:
+        $ref: 'https://api.swaggerhub.com/domains/BIAN/Common-Model/1.0.0#/definitions/ISODate'
+        
+      correspondenceState:
+        type: string
+        description: |
+          example: received pending delivery
+          general-info: received pending delivery, delivered, unassigned
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text  
+      correspondenceUpdateTaskResult:
+        type: string
+        description: |
+          example: success
+          general-info: records the result of the update task
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+  CorrespondenceInboundRequest:
+    description: handling in-bound messages
+    type: object
+    properties:
+      inboundCorrespondenceTaskRecord:
+        type: object
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+          general-info: used to track processig/state of -Correspondence
+      correspondenceReference:
+        type: string
+        description: |
+          example: CR458963
+          general-info: inbound mail item - new reference
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      correspondenceType:
+        type: string
+        description: |
+          example: Correspondence Type
+          general-info: unsolicited message, product/service related, complaint
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text | BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Code
+      correspondenceContent:
+        type: string
+        description: |
+          example: JIDTU1485
+          general-info: message content - aligned to template as appropriate
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      correspondenceAddressee:
+        type: string
+        description: |
+          example: test@test.com
+          general-info: identified source of inbound message
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      customerReference:
+        type: integer
+        example: 159482637
+        description: |
+          general-info: if identification matched to existing customer or known party
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      employeeBusinessUnitReference:
+        type: integer
+        example: 852852147
+        description: |
+          general-info: identified addressee within the bank
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      dateType:
+        type: string
+        description: |
+          general-info: receipt date, addressee identification date, delivery date
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text | BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Code
+      date:
+        $ref: 'https://api.swaggerhub.com/domains/BIAN/Common-Model/1.0.0#/definitions/ISODate'
+      correspondenceState:
+        type: string
+        description: |
+          example: received pending delivery
+          general-info: received pending delivery, delivered, unassigned
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+  
+  CorrespondenceRecordRequest:
+    type: object
+    properties:
+      recordingRecordType:
+        type: string
+        example: Behavior model performance feedback
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      recordingRecord:
+        type: object
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+      recordingRecordDateTime:
+        $ref: 'https://api.swaggerhub.com/domains/BIAN/Common-Model/1.0.0#/definitions/ISODateTime'
+      empolyeeBusinessUnitReference:
+        type: string
+        example: Ref6798
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+  
+  CorrespondenceRecordResponse:
+    type: object
+    properties:
+      recordingRecordReference:
+        type: string
+        example: RRR3456
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      recordingRecordStatus:
+        type: string
+        example: Applied
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+  
+  CorrespondenceBlockRequest:
+    description: Batch or block mailing
+    type: object
+    properties:
+      blockCorrespondenceTaskRecord:
+        type: string
+        description: |
+          example: record
+          general-info: used to track processig/state of block correspondence
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      correspondenceBlockMailingReference:
+        type: string
+        description: |
+          example: MR63474
+          general-info: bank reference
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      correspondenceType:
+        type: string
+        description: |
+          example: email
+          general-info: Correspondence Type
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+            | BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Code
+      correspondenceTemplateReference:
+        type: string
+        description: |
+          example: TR724525
+          general-info: if text is place in a standard template
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      correspondenceTemplateRecord:
+        type: string
+        description: |
+          example: template 1
+          general-info: the template definition used in correspondence assembly
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      correspondenceContent:
+        type: string
+        description: |
+          example: content
+          general-info: message content - aligned to template as appropriate
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      correspondenceMediaOrChannel:
+        type: string
+        description: |
+          example: EMAIL
+          general-info: defines the media and channel for delivery of the message
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      correspondenceAddressee:
+        type: string
+        description: |
+          example: test@test.com
+          general-info: block of addresses to which message is to be delivered
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      customerReference:
+        type: string
+        example: CR159482637
+        description: |
+          general-info: block messages sent to known entities
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      channelAccessPreferenceReference:
+        type: string
+        description: |
+          general-info: CAPR74645
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      channelAccessPreferenceProfile:
+        type: string
+        description: |
+          general-info: overarching record combining items listed
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      channelAccessChannelOrDeviceType:
+        type: string
+        description: |
+          example: email
+          general-info: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Code | BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      channelAccessChannelOrDeviceTypePreference:
+        type: string
+        description: |
+          example: no paper
+          general-info: description of preference
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      employeeBusinessUnitReference:
+        type: string
+        example: EBU52852147
+        description: |
+          general-info: sending entity within the bank
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      dateType:
+        type: string
+        description: |
+          example: generation date
+          general-info: date type
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text | BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Code
+      date:
+        $ref: 'https://api.swaggerhub.com/domains/BIAN/Common-Model/1.0.0#/definitions/ISODate'
+        
+      correspondenceState:
+        type: string
+        description: |
+          example: sent
+          general-info: state of block of correspondence items
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text

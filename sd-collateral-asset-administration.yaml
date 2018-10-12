@@ -1,0 +1,1351 @@
+swagger: '2.0'
+info:
+  version: "4.0.0"
+  title: 'Service Domain - Collateral Asset Administration'
+  description: >
+        ## Description: 
+      
+        This service domain maintains the status of a customers collateral assets, including scheduled and ad-hoc valuations and confirmation of the correct completion of scheduled maintenance tasks.
+
+        ## Example of use:
+        
+        A back office unit determines which collateral items are due for a valuation review and documentation check and schedules the activities accordingly.
+        
+        ## General comment:
+        
+        This service domain handles the oversight, administration and confirmation of maintenance tasks associated with different types of collateral items. This includes arranging for scheduled and ad-hoc collateral valuations, item status/documentation and title checks and tracking upkeep actions that the item owner is obliged to undertake (such as insuring a house).
+
+host: "virtserver.swaggerhub.com"
+basePath: "/BIAN/sd-collateral-asset-administration/4.0.0"
+schemes:
+- "https"
+paths:
+  /collateral-asset-administration/collateral-asset-administrative-plan/{cr-reference-id}/updation:
+    put:
+      tags: 
+      - update
+      summary: "Update Collateral asset administration"
+      operationId: updateCollateralAssetAdministrativePlan
+      produces: 
+      - application/json
+      parameters: 
+       - name : cr-reference-id
+         in: path
+         description: Collateral Asset Reference
+         required: true
+         type: string
+       - in: body
+         name: body
+         description: Update Collateral Asset Administration
+         required: true
+         schema: 
+           $ref: '#/definitions/CollateralAssetUpdateRequest'
+        
+      responses:
+        200:
+         schema:
+           $ref: '#/definitions/CollateralAssetUpdateResponse'
+         description: Successfully Updated Collateral Asset Administration Reporting. 
+           
+  
+  /collateral-asset-administration/collateral-asset-administrative-plan/{cr-reference-id}/recording:
+    post:
+      tags: 
+      - record
+      operationId: RecordCollateralAssetAdministrativePlan
+      summary: "Record activity/feedback"
+      description: Record activity/feedback relating to collateral asset administration
+      produces: 
+      - application/json
+      parameters: 
+      - name : cr-reference-id
+        in: path
+        description: Collateral Asset Reference
+        required: true
+        type: string
+      - in: body
+        name: body
+        description: Record Collateral Asset Administration
+        required: true
+        schema: 
+          $ref: '#/definitions/CollateralAssetAdministrationRecordRequest'
+        
+      responses:
+        201:
+          description: Created a new record
+          schema:
+            $ref: '#/definitions/CollateralAssetAdministrationRecordResponse'
+  /collateral-asset-administration/collateral-asset-administrative-plan/requisition:
+    post:
+      tags: 
+      - request
+      operationId: requestCollateralAssetAdministrativePlanCreate
+      summary: Create a handling request
+      description: Create a handling request for a collateral asset
+      produces: 
+      - application/json
+      parameters: 
+      - in: body
+        name: body
+        description: Collateral Asset Handling Request Payload
+        required: true
+        schema: 
+          $ref: '#/definitions/CollateralAssetBase'
+        
+      responses:
+        201:
+          description: successfully created a Collateral
+          schema:
+            $ref: '#/definitions/CollateralAssetBaseWithId'
+  
+  /collateral-asset-administration/collateral-asset-administrative-plan/{cr-reference-id}/requisition:
+    put:
+      tags: 
+      - request
+      operationId: requestCollateralAssetAdministrativePlanUpdate
+      summary: Update a handling request
+      description: Update a handling request for a collateral asset
+      produces: 
+      - application/json
+      parameters:
+      - name : cr-reference-id
+        in: path
+        description: Collateral Asset Reference
+        required: true
+        type: string
+      - in: body
+        name: body
+        description: Collateral Asset Handling Request Payload
+        required: true
+        schema: 
+          $ref: '#/definitions/CollateralAssetBase'
+      responses:
+        200:
+          description: Updated Collateral successfully 
+          schema:
+            $ref: '#/definitions/CollateralAssetBaseWithId'
+            
+  /collateral-asset-administration/collateral-asset-administrative-plan/{cr-reference-id}/valuations/requisition:
+    post:
+      tags: 
+      - request
+      operationId: requestCollateralAssetAdministrativePlanValuationCreate
+      summary: Create new collateral asset administration valuation
+      description: Create a new valuation
+      produces: 
+      - application/json
+      parameters: 
+      - name : cr-reference-id
+        in: path
+        description: Collateral Asset Reference
+        required: true
+        type: string
+      - in: body
+        name: body
+        description: Create Collateral Asset Administration Valuation Request Payload
+        required: true
+        schema: 
+          $ref: 'https://api.swaggerhub.com/domains/BIAN/model-1/1.0.0#/definitions/ValuationBase'
+        
+      responses:
+        201:
+          description: Created a valuation successfully 
+          schema:
+            $ref: 'https://api.swaggerhub.com/domains/BIAN/model-1/1.0.0#/definitions/ValuationBaseWithIdAndRoot'            
+  
+  /collateral-asset-administration/collateral-asset-administrative-plan/{cr-reference-id}/valuations/{bq-reference-id}/requisition:
+    put:
+      tags: 
+      - request
+      operationId: requestCollateralAssetAdministrativePlanValuationUpdate
+      summary: Update existing collateral asset administration valuation
+      description: Update an exising valuation
+      produces: 
+      - application/json
+      parameters: 
+      - name : cr-reference-id
+        in: path
+        description: Collateral Asset Reference
+        required: true
+        type: string
+      - name : bq-reference-id
+        in: path
+        description: Collateral Asset Valuation Reference
+        required: true
+        type: string
+      - in: body
+        name: body
+        description: Update Collateral Asset Administration Valuation Request Payload
+        required: true
+        schema: 
+          $ref: 'https://api.swaggerhub.com/domains/BIAN/model-1/1.0.0#/definitions/ValuationBase'
+        
+      responses:
+        200:
+          description: Updated a valuation successfully 
+          schema:
+            $ref: 'https://api.swaggerhub.com/domains/BIAN/model-1/1.0.0#/definitions/ValuationBaseWithIdAndRoot'
+  
+  /collateral-asset-administration/collateral-asset-administrative-plan/{cr-reference-id}/captures/requisition:
+    post:
+      tags: 
+      - request
+      operationId: requestCollateralAssetAdministrativePlanCaptureCreate
+      summary: Register collateral asset
+      description: The initial registration of the collateral asset
+      produces: 
+      - application/json
+      parameters: 
+      - name : cr-reference-id
+        in: path
+        description: Collateral Asset Reference
+        required: true
+        type: string
+      - in: body
+        name: body
+        description: Create a New Collateral Asset Administration Registration Request Payload
+        required: true
+        schema: 
+          $ref: '#/definitions/CaptureBase'
+        
+      responses:
+        201:
+          description: Created a Capture successfully. 
+          schema:
+            $ref: '#/definitions/CaptureBaseWithId'            
+  
+  /collateral-asset-administration/collateral-asset-administrative-plan/{cr-reference-id}/captures/{bq-reference-id}/requisition:
+    put:
+      tags: 
+      - request
+      operationId: requestCollateralAssetAdministrativePlanCaptureUpdate
+      summary: Register/capture details of asset
+      description: Update details of an existing asset
+      produces: 
+      - application/json
+      parameters: 
+      - name : cr-reference-id
+        in: path
+        description: Collateral Asset Reference
+        required: true
+        type: string
+      - name : bq-reference-id
+        in: path
+        description: Collateral Asset Capture Reference
+        required: true
+        type: string
+      - in: body
+        name: body
+        description: Capture/Update details of an existing asset Payload
+        required: true
+        schema: 
+          $ref: '#/definitions/CaptureBase'
+        
+      responses:
+        200:
+          description: Updated a Capture successfully 
+          schema:
+            $ref: '#/definitions/CaptureBaseWithId'
+  
+  /collateral-asset-administration/collateral-asset-administrative-plan/:
+    get:
+      tags: 
+      - retrieve
+      operationId: RetrieveCollateralAssetAdministrationReferenceIds
+      summary: Retrieve CR IDs
+      produces: 
+      - application/json
+      parameters: 
+      - name : collection-filter
+        in: query
+        description: Filter to refine the result set. ex- 'collateralAssetJurisdiction = CAJ123'
+        type: string 
+      responses:
+        200:
+          description: successful
+          schema:
+            type: array
+            items:
+              type: string
+            example: [CAR123, CAR345]
+            
+  /collateral-asset-administration/collateral-asset-administrative-plan/behavior-qualifiers/:
+    get:
+      tags: 
+      - retrieve
+      operationId: RetrieveCollateralAssetAdministrationBehaviorQualifiers
+      summary: Retrieve BQ names.
+      produces: 
+      - application/json
+      responses:
+        200:
+          description: successful
+          schema:
+            type: array
+            items:
+              type: string
+            example: [capture, maintenance, valuation, update, reporting] 
+            
+  /collateral-asset-administration/collateral-asset-administrative-plan/{cr-reference-id}/{behavior-qualifier}/:
+    get:
+      tags: 
+      - retrieve
+      operationId: RetrieveBehaviorQualifierReferenceIds
+      summary: Retrieve BQ Ids.
+      produces: 
+      - application/json
+      parameters: 
+      - name : cr-reference-id
+        in: path
+        description: Collateral Asset Reference
+        required: true
+        type: string
+      - name : behavior-qualifier
+        in: path
+        description: Behavior Qualifier Name. ex- valuations
+        required: true
+        type: string
+      - name : collection-filter
+        in: query
+        description: Filter to refine the result set. ex- 'collateralAssetValuation > 5000'
+        type: string
+      responses:
+        200:
+          description: successful
+          schema:
+            type: array
+            items:
+              type: string
+            example: [CAVR345, CAVR789, PTR456]           
+  /collateral-asset-administration/collateral-asset-administrative-plan/{cr-reference-id}/:
+    get:
+      tags: 
+        - retrieve
+      summary: "Retrieve Collateral asset administration reporting"
+      description: "Retrieve collateral administration activity reports"
+      operationId: retrieveCollateralAssetAdministrativePlan
+      parameters: 
+        - in: path
+          name: cr-reference-id
+          description: Collateral Asset Reference
+          required: true
+          type: string
+      responses:
+        200:
+          description: Successfully retrieved collateral asset administration activity reports. 
+          schema:
+            $ref: '#/definitions/RetrieveCollateralAssetAdministrationResponse'
+  
+  /collateral-asset-administration/collateral-asset-administrative-plan/{cr-reference-id}/captures/{bq-reference-id}:
+    get:
+      tags: 
+        - retrieve
+      summary: "Retrieve Collateral Asset Registration reporting"
+      description: "Retrieve Collateral asset Registration reporting"
+      operationId: retrieveCollateralAssetAdministrativePlanCapture
+      parameters: 
+        - in: path
+          name: cr-reference-id
+          required: true
+          type: string
+          description: Collateral Asset Reference
+        - in: path
+          name: bq-reference-id
+          required: true
+          type: string
+          description: Collateral Asset Capture Reference
+      responses:
+        200:
+          description: Successfully retrieved collateral asset administration registration information. 
+          schema:
+            $ref: '#/definitions/CollateralAssetCaptureBaseWithId'                    
+  /collateral-asset-administration/collateral-asset-administrative-plan/{cr-reference-id}/valuations/{bq-reference-id}:
+    get:
+      tags: 
+        - retrieve
+      summary: "Retrieve Collateral asset administration Valuation reporting"
+      description: "Retrieve collateral administration activity  Valuation reports"
+      operationId: retrieveCollateralAssetAdministrativePlanValuation
+      parameters: 
+        - in: path
+          name: cr-reference-id
+          required: true
+          type: string
+          description: Collateral Asset Reference
+        - in: path
+          name: bq-reference-id
+          required: true
+          type: string
+          description: Collateral Asset Valuation Reference
+      responses:
+        200:
+          description: Successfully retrieved collateral asset administration valuation information. 
+          schema:
+            $ref: '#/definitions/ValuationBaseWithIdAndRoot'          
+  /collateral-asset-administration/collateral-asset-administrative-plan/{cr-reference-id}/maintenances/{bq-reference-id}:
+   
+    get:
+      tags: 
+        - retrieve
+      summary: "Retrieve Collateral asset administration Maintenance reporting"
+      description: "Retrieve collateral administration activity Maintenance reports"
+      operationId: retrieveCollateralAssetAdministrativePlanMaintenance
+      parameters: 
+        - in: path
+          name: cr-reference-id
+          required: true
+          type: string
+          description: Collateral Asset Reference
+        - in: path
+          name: bq-reference-id
+          required: true
+          type: string
+          description: Collateral Asset Maintenance Service Reference
+      responses:
+        200:
+          description: Successfully retrieved collateral asset administration maintenance information. 
+          schema:
+            $ref: '#/definitions/MaintenanceWithIdAndRoot'
+  
+  /collateral-asset-administration/collateral-asset-administrative-plan/{cr-reference-id}/updates/{bq-reference-id}:
+   
+    get:
+      tags: 
+        - retrieve
+      summary: "Retrieve Collateral asset administration Update reporting"
+      description: "Retrieve collateral administration activity Update reports"
+      operationId: retrieveCollateralAssetAdministrativePlanUpdate
+      parameters: 
+        - in: path
+          name: cr-reference-id
+          required: true
+          type: string
+          description: Collateral Asset Reference
+        - in: path
+          name: bq-reference-id
+          required: true
+          type: string
+          description: Collateral Asset Update Reference
+          
+      responses:
+        200:
+          description: Successfully retrieved collateral asset administration update information. 
+          schema:
+            $ref: 'https://api.swaggerhub.com/domains/BIAN/model-1/1.0.0#/definitions/UpdateBaseWithIdAndRoot'
+  
+  /collateral-asset-administration/collateral-asset-administrative-plan/{cr-reference-id}/reportings/{bq-reference-id}:
+   
+    get:
+      tags: 
+        - retrieve
+      summary: "Retrieve Collateral asset administration reporting"
+      description: "Retrieve collateral administration activity Reporting"
+      operationId: retrieveCollateralAssetAdministrativePlanReporting
+      parameters: 
+        - in: path
+          name: cr-reference-id
+          required: true
+          type: string
+          description: Collateral Asset Reference
+        - in: path
+          name: bq-reference-id
+          required: true
+          type: string
+          description: Collateral Asset Reporting Service Reference
+      responses:
+        200:
+          description: Successfully retrieved collateral asset administration reporting. 
+          schema:
+            $ref: '#/definitions/CollateralAssetAdministrationReportingResponse'
+
+definitions:
+    CollateralAssetAdministrationRecordRequest:
+      type: object
+      properties:
+        recordingRecordType:
+          type: string
+          example: Behavior Model Performance Feedback
+          description: |
+            `status: Not Mapped`
+            core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text      
+        recordingRecord:
+          type: object
+          description: |
+            `status: Not Mapped`
+            core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+        recordingRecordDateTime:
+          type: string
+          example: "2018-08-28T09:00:00"
+          description: |
+            `status: Not Mapped`
+            core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::DateTime      
+        empolyeeBusinessUnitReference:
+          type: string
+          example: EBUR6798
+          description: |
+            `status: Not Mapped`
+            core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier      
+        
+    CollateralAssetAdministrationRecordResponse:
+      type: object
+      properties:
+        recordingRecordReference:
+          type: string
+          example: RRR59821735
+          description: |
+            `status: Not Mapped`
+            core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier      
+        recordingRecordStatus:
+          type: string
+          example: Applied
+          description: |
+            `status: Not Mapped`
+            core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text      
+          
+    CollateralAssetAdministrationReportingResponse:
+      type: object
+      properties:
+        collateralAssetReference:
+          type: string
+          example: ER34967
+          description: |
+            `status: Not Mapped`
+            core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier      
+        collateralAssetReportingServiceReference:
+          type: string
+          example: GF87248
+          description: |
+            `status: Not Mapped`
+            core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier      
+        collateralAssetType:
+          type: string
+          example: Residential
+          description: |
+            `status: Not Mapped`
+            core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text     
+        collateralAssetProperties:
+          type: string
+          example: UnderConstruction
+          description: |
+            `status: Not Mapped`
+            core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text     
+        collateralAssetDescription:
+          type: string
+          example: DomesticResidence
+          description: |
+            `status: Not Mapped`
+            core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text     
+        collateralAssetTitle:
+          type: string
+          example: Blossom Inc
+          description: |
+            `status: Not Mapped`
+            core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text     
+        collateralAssetLocation:
+          type: string
+          example: 221B Baker Street Kingston NewYork United States
+          description: |
+            `status: Not Mapped`
+            core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text     
+        collateralAssetJurisdiction:
+          type: string
+          example: NewYork United States
+          description: |
+            `status: Not Mapped`
+            core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text     
+        collateralAssetDocumentReference:
+          type: string
+          example: CADR8734
+          description: |
+            `status: Not Mapped`
+            core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier     
+        collateralAssetDocumentType:
+          type: string
+          example: SecurityAgreement
+          description: |
+            `status: Not Mapped`
+            core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text     
+        collateralAssetOwnership:
+          type: string
+          example: Sole
+          description: |
+            `status: Not Mapped`
+            core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Name
+        collateralAssetInterestedParties:
+          type: string
+          example: Custodian/Insurer
+          description: |
+            `status: Not Mapped`
+            core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Name     
+        collateralAssetValuationHistory:
+          type: string
+          example: "2018-$150000/2017-$100000"
+          description: |
+            `status: Not Mapped`
+            core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Value     
+        collateralAssetReportingResult:
+          type: string
+          example: Report Result
+          description: |
+            `status: Not Mapped`
+            core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text     
+         
+    MaintenanceWithIdAndRoot: 
+      type: object
+      properties:
+        collateralAssetReference:
+          type: string
+          example: CARE2215
+          description: |
+            `status: Not Mapped`
+            core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier       
+        collateralAssetMaintenanceTaskReference:
+          type: string
+          example: CF2209
+          description: |
+            `status: Not Mapped`
+            core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier         
+        collateralAssetMaintenanceTaskRecord:
+          type: string
+          example: record of the maintenance work done
+          description: |
+            `status: Not Mapped`
+            core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text       
+        collateralAssetMaintenanceType:
+          type: string
+          example: InsuranceCoverage
+          description: |
+            `status: Not Mapped`
+            core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text       
+        collateralAssetMaintenanceServiceProviderReference:
+          type: string
+          example: CAMR4534
+          description: |
+            `status: Not Mapped`
+            core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier        
+        collateralAssetMaintenanceSchedule:
+          type: string
+          example: Monthly
+          description: |
+            `status: Not Mapped`
+            core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Duration       
+        collateralAssetVerificationAndComplianceReference:
+          type: string
+          example: CACR3426 
+          description: |
+            `status: Not Mapped`
+            core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier      
+        collateralAssetMaintenanceSafekeepingFees:
+          type: string
+          example: $200
+          description: |
+            `status: Not Mapped`
+            core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Amount       
+           
+    RetrieveCollateralAssetAdministrationResponse:
+      type: object
+      properties:
+        collateralAssetReference:
+          type: string
+          example: CARE2215
+          description: |
+            `status: Not Mapped`
+            core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier       
+        collateralAssetType:
+          type: string
+          example: Residential
+          description: |
+            `status: Not Mapped`
+            core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text     
+        collateralAssetProperties:
+          type: string
+          example: UnderConstruction
+          description: |
+            `status: Not Mapped`
+            core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text     
+        collateralAssetDescription:
+          type: string
+          example: DomesticResidence
+          description: |
+            `status: Not Mapped`
+            core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text     
+        collateralAssetTitle:
+          type: string
+          example: Blossom Inc
+          description: |
+            `status: Not Mapped`
+            core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Name     
+        collateralAssetLocation:
+          type: string
+          example: 221B Baker Street Kingston NewYork United States
+          description: |
+            `status: Not Mapped`
+            core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Name     
+        collateralAssetJurisdiction:
+          type: string
+          example: NewYork United States
+          description: |
+            `status: Not Mapped`
+            core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Name     
+        collateralAssetDocumentReference:
+          type: string
+          example: CADR8734
+          description: |
+            `status: Not Mapped`
+            core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier     
+        collateralAssetDocumentType:
+          type: string
+          example: SecurityAgreement
+          description: |
+            `status: Not Mapped`
+            core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text     
+        collateralAssetOwnership:
+          type: string
+          example: Sole
+          description: |
+            `status: Not Mapped`
+            core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Name     
+        collateralAssetInterestedParties:
+          type: string
+          example: Custodian
+          description: |
+            `status: Not Mapped`
+            core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Name     
+        collateralAssetInsuranceReference: 
+          type: string
+          example: CAIR7480
+          description: |
+            `status: Not Mapped`
+            core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier     
+        collateralAssetPledgedDate: 
+          type: string
+          example: "2018-08-01"
+          description: |
+            `status: Not Mapped`
+            core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Date     
+        collateralAssetValuationHistory:
+          type: string
+          example: "2018-$150000/2017-$100000"
+          description: |
+            `status: Not Mapped`
+            core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Value     
+         
+    CollateralAssetUpdateRequest:
+      type: object
+      properties:
+        collateralAssetType:
+          type: string
+          example: Residential
+          description: |
+            `status: Not Mapped`
+            core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text     
+        collateralAssetProperties:
+          type: string
+          example: UnderConstruction
+          description: |
+            `status: Not Mapped`
+            core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text       
+        collateralAssetDescription:
+          type: string
+          example: DomesticResidence
+          description: |
+            `status: Not Mapped`
+            core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text     
+        collateralAssetTitle:
+          type: string
+          example: Blossom Inc
+          description: |
+            `status: Not Mapped`
+            core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Name     
+        collateralAssetLocation:
+          type: string
+          example: 221B Baker Street Kingston NewYork United States
+          description: |
+            `status: Not Mapped`
+            core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Name     
+        collateralAssetJurisdiction:
+          type: string
+          example: NewYork United States
+          description: |
+            `status: Not Mapped`
+            core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Name     
+        collateralAssetDocumentReference:
+          type: string
+          example: CADR8734
+          description: |
+            `status: Not Mapped`
+            core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier       
+        collateralAssetDocumentType:
+          type: string
+          example: SecurityAgreement
+          description: |
+            `status: Not Mapped`
+            core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text     
+        collateralAssetOwnership:
+          type: string
+          example: Sole
+          description: |
+            `status: Not Mapped`
+            core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Name     
+        collateralAssetInterestedParties:
+          type: string
+          example: Custodian
+          description: |
+            `status: Not Mapped`
+            core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Name     
+         
+    CollateralAssetUpdateResponse:
+      type: object
+      properties:
+        collateralAssetReference:
+          type: string
+          example: CARE2215
+          description: |
+            `status: Not Mapped`
+            core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier       
+        collateralAssetUpdateReference:
+          type: string
+          example: CA75329
+          description: |
+            `status: Not Mapped`
+            core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier        
+        collateralAssetType:
+          type: string
+          example: Residential
+          description: |
+            `status: Not Mapped`
+            core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text     
+        collateralAssetProperties:
+          type: string
+          example: UnderConstruction
+          description: |
+            `status: Not Mapped`
+            core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text     
+        collateralAssetDescription:
+          type: string
+          example: DomesticResidence
+          description: |
+            `status: Not Mapped`
+            core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text     
+        collateralAssetTitle:
+          type: string
+          example: Blossom Inc
+          description: |
+            `status: Not Mapped`
+            core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Name     
+        collateralAssetLocation:
+          type: string
+          example: 221B Baker Street Kingston NewYork United States
+          description: |
+            `status: Not Mapped`
+            core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Name       
+        collateralAssetJurisdiction:
+          type: string
+          example: NewYork United States
+          description: |
+            `status: Not Mapped`
+            core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Name       
+        collateralAssetDocumentReference:
+          type: string
+          example: CADR8734
+          description: |
+            `status: Not Mapped`
+            core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier       
+        collateralAssetDocumentType:
+          type: string
+          example: SecurityAgreement
+          description: |
+            `status: Not Mapped`
+            core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text     
+        collateralAssetOwnership:
+          type: string
+          example: Sole
+          description: |
+            `status: Not Mapped`
+            core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Name     
+        collateralAssetInterestedParties:
+          type: string
+          example: Custodian
+          description: |
+            `status: Not Mapped`
+            core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Name     
+        collateralAssetUpdateResult: 
+          type: string
+          example: Success
+          description: |
+            `status: Not Mapped`
+            core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text     
+         
+    CaptureBase:
+      type: object
+      properties:
+        collateralAssetType:
+          type: string
+          example: Residential
+          description: |
+            `status: Not Mapped`
+            core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text   
+        collateralAssetProperties:
+          type: string
+          example: UnderConstruction
+          description: |
+            `status: Not Mapped`
+            core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text     
+        collateralAssetDescription:
+          type: string
+          example: DomesticResidence
+          description: |
+            `status: Not Mapped`
+            core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text     
+        collateralAssetTitle:
+          type: string
+          example: Blossom Inc
+          description: |
+            `status: Not Mapped`
+            core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Name     
+        collateralAssetLocation:
+          type: string
+          example: 221B Baker Street Kingston NewYork United States
+          description: |
+            `status: Not Mapped`
+            core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Name     
+        collateralAssetJurisdiction:
+          type: string
+          example: NewYork United States
+          description: |
+            `status: Not Mapped`
+            core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Name     
+        collateralAssetDocumentReference:
+          type: string
+          example: CADR8734
+          description: |
+            `status: Not Mapped`
+            core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier     
+        collateralAssetDocumentType:
+          type: string
+          example: SecurityAgreement
+          description: |
+            `status: Not Mapped`
+            core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text     
+        collateralAssetOwnership:
+          type: string
+          example: Sole
+          description: |
+            `status: Not Mapped`
+            core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Name     
+        collateralAssetInterestedParties:
+          type: string
+          example: Custodian
+          description: |
+            `status: Not Mapped`
+            core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Name     
+        collateralAssetInsuranceReference: 
+          type: string
+          example: CAIR7480
+          description: |
+            `status: Not Mapped`
+            core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier     
+        collateralAssetPledgedDate: 
+          type: string
+          example: "2018-08-01"
+          description: |
+            `status: Not Mapped`
+            core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Date     
+    
+    CaptureBaseWithId:
+      type: object
+      properties:
+        collateralAssetReference:
+          type: string
+          example: CA773434
+          description: |
+            `status: Not Mapped`
+            core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier     
+        collateralAssetCaptureReference:
+          type: string
+          example: SG727424
+          description: |
+            `status: Not Mapped`
+            core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier     
+        collateralAssetType:
+          type: string
+          example: Residential
+          description: |
+            `status: Not Mapped`
+            core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text     
+        collateralAssetProperties:
+          type: string
+          example: UnderConstruction
+          description: |
+            `status: Not Mapped`
+            core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text     
+        collateralAssetDescription:
+          type: string
+          example: DomesticResidence
+          description: |
+            `status: Not Mapped`
+            core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text     
+        collateralAssetTitle:
+          type: string
+          example: Blossom Inc
+          description: |
+            `status: Not Mapped`
+            core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Name     
+        collateralAssetLocation:
+          type: string
+          example: 221B Baker Street Kingston NewYork United States
+          description: |
+            `status: Not Mapped`
+            core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Name     
+        collateralAssetJurisdiction:
+          type: string
+          example: NewYork United States
+          description: |
+            `status: Not Mapped`
+            core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Name     
+        collateralAssetDocumentReference:
+          type: string
+          example: CADR8734
+          description: |
+            `status: Not Mapped`
+            core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier     
+        collateralAssetDocumentType:
+          type: string
+          example: SecurityAgreement
+          description: |
+            `status: Not Mapped`
+            core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text     
+        collateralAssetOwnership:
+          type: string
+          example: Sole
+          description: |
+            `status: Not Mapped`
+            core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Name     
+        collateralAssetInterestedParties:
+          type: string
+          example: Custodian
+          description: |
+            `status: Not Mapped`
+            core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Name     
+        collateralAssetInsuranceReference: 
+          type: string
+          example: CAIR7480
+          description: |
+            `status: Not Mapped`
+            core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier     
+        collateralAssetPledgedDate: 
+          type: string
+          example: "2018-08-01"
+          description: |
+            `status: Not Mapped`
+            core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Date  
+     
+    CollateralAssetBase:
+      type: object
+      properties:
+        collateralAssetType:
+          type: string
+          example: Residential
+          description: |
+            `status: Not Mapped`
+            core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text     
+        collateralAssetProperties:
+          type: string
+          example: UnderConstruction
+          description: |
+            `status: Not Mapped`
+            core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text     
+        collateralAssetDescription:
+          type: string
+          example: DomesticResidence
+          description: |
+            `status: Not Mapped`
+            core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text     
+        collateralAssetTitle:
+          type: string
+          example: Blossom Inc
+          description: |
+            `status: Not Mapped`
+            core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Name     
+        collateralAssetLocation:
+          type: string
+          example: 221B Baker Street Kingston NewYork United States
+          description: |
+            `status: Not Mapped`
+            core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Name     
+        collateralAssetJurisdiction:
+          type: string
+          example: NewYork United States
+          description: |
+            `status: Not Mapped`
+            core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Name     
+        collateralAssetDocumentReference:
+          type: string
+          example: CADR8734
+          description: |
+            `status: Not Mapped`
+            core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier     
+        collateralAssetDocumentType:
+          type: string
+          example: SecurityAgreement
+          description: |
+            `status: Not Mapped`
+            core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text     
+        collateralAssetOwnership:
+          type: string
+          example: Sole
+          description: |
+            `status: Not Mapped`
+            core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Name     
+        collateralAssetInterestedParties:
+          type: string
+          example: Custodian
+          description: |
+            `status: Not Mapped`
+            core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Name     
+        collateralAssetInsuranceReference: 
+          type: string
+          example: CAIR7480
+          description: |
+            `status: Not Mapped`
+            core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier     
+        collateralAssetPledgedDate: 
+          type: string
+          example: "2018-08-01"
+          description: |
+            `status: Not Mapped`
+            core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Date     
+        collateralAssetValuationHistory: 
+          type: string
+          example: includes loan to value ratios
+          description: |
+            `status: Not Mapped`
+            core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Value     
+    
+    CollateralAssetBaseWithId:
+      type: object
+      properties:
+        collateralAssetReference:
+          type: string
+          example: CA773434
+          description: |
+            `status: Not Mapped`
+            core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier     
+        collateralAssetType:
+          type: string
+          example: Residential
+          description: |
+            `status: Not Mapped`
+            core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text     
+        collateralAssetProperties:
+          type: string
+          example: UnderConstruction
+          description: |
+            `status: Not Mapped`
+            core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text     
+        collateralAssetDescription:
+          type: string
+          example: DomesticResidence
+          description: |
+            `status: Not Mapped`
+            core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text     
+        collateralAssetTitle:
+          type: string
+          example: Blossom Inc
+          description: |
+            `status: Not Mapped`
+            core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Name     
+        collateralAssetLocation:
+          type: string
+          example: 221B Baker Street Kingston NewYork United States
+          description: |
+            `status: Not Mapped`
+            core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Name     
+        collateralAssetJurisdiction:
+          type: string
+          example: NewYork United States
+          description: |
+            `status: Not Mapped`
+            core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Name     
+        collateralAssetDocumentReference:
+          type: string
+          example: CADR8734
+          description: |
+            `status: Not Mapped`
+            core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier     
+        collateralAssetDocumentType:
+          type: string
+          example: SecurityAgreement
+          description: |
+            `status: Not Mapped`
+            core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text     
+        collateralAssetOwnership:
+          type: string
+          example: Sole
+          description: |
+            `status: Not Mapped`
+            core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Name     
+        collateralAssetInterestedParties:
+          type: string
+          example: Custodian
+          description: |
+            `status: Not Mapped`
+            core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Name     
+        collateralAssetInsuranceReference: 
+          type: string
+          example: CAIR7480
+          description: |
+            `status: Not Mapped`
+            core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier     
+        collateralAssetPledgedDate: 
+          type: string
+          example: "2018-08-01"
+          description: |
+            `status: Not Mapped`
+            core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Date     
+        collateralAssetValuationHistory: 
+          type: string
+          example: includes loan to value ratios
+          description: |
+            `status: Not Mapped`
+            core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Value     
+     
+    CollateralAssetCaptureBaseWithId:
+      type: object
+      properties:
+        collateralAssetReference:
+          type: string
+          example: CA773434
+          description: |
+            `status: Not Mapped`
+            core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier     
+        collateralAssetCaptureReference:
+          type: string
+          example: CACR723747
+          description: |
+            `status: Not Mapped`
+            core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier     
+        collateralAssetType:
+          type: string
+          example: Residential
+          description: |
+            `status: Not Mapped`
+            core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text     
+        collateralAssetProperties:
+          type: string
+          example: UnderConstruction
+          description: |
+            `status: Not Mapped`
+            core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text     
+        collateralAssetDescription:
+          type: string
+          example: DomesticResidence
+          description: |
+            `status: Not Mapped`
+            core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text     
+        collateralAssetTitle:
+          type: string
+          example: Blossom Inc
+          description: |
+            `status: Not Mapped`
+            core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Name     
+        collateralAssetLocation:
+          type: string
+          example: 221B Baker Street Kingston NewYork United States
+          description: |
+            `status: Not Mapped`
+            core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Name     
+        collateralAssetJurisdiction:
+          type: string
+          example: NewYork United States
+          description: |
+            `status: Not Mapped`
+            core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Name     
+        collateralAssetDocumentReference:
+          type: string
+          example: CADR8734
+          description: |
+            `status: Not Mapped`
+            core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier     
+        collateralAssetDocumentType:
+          type: string
+          example: SecurityAgreement
+          description: |
+            `status: Not Mapped`
+            core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text     
+        collateralAssetOwnership:
+          type: string
+          example: Sole
+          description: |
+            `status: Not Mapped`
+            core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Name     
+        collateralAssetInterestedParties:
+          type: string
+          example: Custodian
+          description: |
+            `status: Not Mapped`
+            core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Name     
+        collateralAssetInsuranceReference: 
+          type: string
+          example: CAIR7480
+          description: |
+            `status: Not Mapped`
+            core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier     
+        collateralAssetPledgedDate: 
+          type: string
+          example: "2018-08-01"
+          description: |
+            `status: Not Mapped`
+            core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Date     
+         
+    ValuationBaseWithIdAndRoot: 
+      type: object
+      properties: 
+        collateralAssetReference:
+          type: string
+          example: CARE2215
+          description: |
+            `status: Not Mapped`
+            core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier     
+        collateralAssetValuationReference:
+          type: string
+          example: CSVR4395
+          description: |
+            `status: Not Mapped`
+            core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier       
+        collateralAssetValuationType:
+          type: string
+          example: PriceEaringsRatios
+          description: |
+            `status: Not Mapped`
+            core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text     
+        collateralAssetValuationServiceReference:
+          type: string
+          example: CAVR4594
+          description: |
+            `status: Not Mapped`
+            core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier       
+        collateralAssetValuationSchedule:
+          type: string
+          example: Quarter
+          description: |
+            `status: Not Mapped`
+            core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Duration     
+        collateralAssetLoanToValueRatio:
+          type: string
+          example: 2:1
+          description: |
+            `status: Not Mapped`
+            core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Ratio     
+        collateralAssetValuation:
+          type: string
+          example: $3000000 
+          description: |
+            `status: Not Mapped`
+            core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Value     
+        collateralAssetValuationDate: 
+          type: string
+          example: "2018-07-31"
+          description: |
+            `status: Not Mapped`
+            core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Date

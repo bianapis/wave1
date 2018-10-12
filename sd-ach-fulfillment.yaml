@@ -1,0 +1,1483 @@
+swagger: "2.0"
+info:
+  version: "4.0.0"
+  title: 'Service Domain - ACH Fulfillment'
+  description: >
+        ## Service Domain Role:
+        
+        This service domain operates the Automated Clearing House (ACH) access gateway between the bank and the ACH service provider.
+        
+        ## Example of Use:
+        
+        A payment is made between two customers of different banks. The payment is processed via an automated clearing house.
+        
+        ## General Comments:
+        
+        This service domain handles the operational interface with an external automated clearing house (ACH) service. It handles the sending and receipt of batched transactions, servicing reporting and executes the schedule of service operations.
+
+host: "virtserver.swaggerhub.com"
+basePath: "/BIAN/sd-ach-fulfillment/4.0.0"
+schemes:
+- "https"
+paths:
+  /ach-fulfillment/ach-fulfillment-operating-session/{cr-reference-id}/inbound-achs/{bq-reference-id}/execution:
+    put:
+      tags:
+      - execute
+      summary: 'Update inbound payments'
+      description: Update an existing inbound-achs
+      operationId: executeACHFulfillmentOperatingSessionInboundUpdate
+      produces:
+      - application/json
+      parameters:
+      - name: cr-reference-id
+        in: path
+        description: ACH Access Service Session Reference
+        required: true
+        type: string
+      - name: bq-reference-id
+        in: path
+        description: ACH Transaction Batch Reference
+        required: true
+        type: string
+      - in: body
+        name: inbound-ach
+        required: false
+        schema:
+          $ref: '#/definitions/InboundACHBase'
+      responses:
+        200:
+          description: Inbound ACH Payment Processing Updated Successfully
+          schema:
+            $ref: '#/definitions/RetrieveACHFulfillmentInboundACH'
+            
+  /ach-fulfillment/ach-fulfillment-operating-session/{cr-reference-id}/inbound-achs/execution:
+    post:
+      tags:
+      - execute
+      summary: 'Create inbound payments'
+      description: Create a new innound-achs
+      operationId: executeACHFulfillmentOperatingSessionInboundCreate
+      produces:
+      - application/json
+      parameters:
+      - name: cr-reference-id
+        in: path
+        description: ACH Access Service Session Reference
+        required: true
+        type: string
+      - in: body
+        name: inbound-ach
+        required: false
+        schema:
+          $ref: '#/definitions/InboundACHBase'
+      responses:
+        201:
+          description: Inbound ACH Payment Processing created Successfully
+          schema:
+            $ref: '#/definitions/RetrieveACHFulfillmentInboundACH'
+            
+  /ach-fulfillment/ach-fulfillment-operating-session/{cr-reference-id}/outbound-achs/{bq-reference-id}/execution:
+    put:
+      tags:
+      - execute
+      summary: ACH payment update
+      description: Update an existing outbound-achs
+      operationId: executeACHFulfillmentOperatingSessionOutboundUpdate
+      produces:
+      - application/json
+      parameters:
+      - name: cr-reference-id
+        in: path
+        description: ACH Access Service Session Reference
+        required: true
+        type: string
+      - name: bq-reference-id
+        in: path
+        description: ACH Transaction Batch Reference
+        required: true
+        type: string
+      - in: body
+        name: outbound-ach
+        required: false
+        schema:
+          $ref: '#/definitions/OutboundACHBase'
+      responses:
+        200:
+          description: Outbound ACH Payment Processing Successfully Updated
+          schema:
+            $ref: '#/definitions/RetrieveACHFulfillmentOutboundACH'
+            
+  /ach-fulfillment/ach-fulfillment-operating-session/{cr-reference-id}/outbound-achs/execution:
+    post:
+      tags:
+      - execute
+      summary: create ACH payment processing 
+      description: create a new outbound-achs
+      operationId: executeACHFulfillmentOperatingSessionOutboundCreate
+      produces:
+      - application/json
+      parameters:
+      - name: cr-reference-id
+        in: path
+        description: ACH Access Service Session Reference
+        required: true
+        type: string
+      - in: body
+        name: outbound-ach
+        required: false
+        schema:
+          $ref: '#/definitions/OutboundACHBase'
+      responses:
+        201:
+          description: Outbound ACH Payment Processing Creation Successful
+          schema:
+            $ref: '#/definitions/RetrieveACHFulfillmentOutboundACH'
+            
+  /ach-fulfillment/ach-fulfillment-operating-session/{cr-reference-id}/recording:
+    post:
+      tags:
+      - record
+      summary: 'Record correspondent bank activity'
+      description: Record feedback/activity against the ACH Fulfillment operating session process
+      operationId: recordACHFulfillmentOperatingSession
+      produces:
+      - application/json
+      parameters:
+      - name: cr-reference-id
+        in: path
+        description: ACH Access Service Session Reference
+        required: true
+        type: string
+      - in: body
+        name: body
+        description: Record ACHFulfillment Control Record Payload
+        required: true
+        schema:
+          $ref: '#/definitions/ACHFulfillmentRecordRequest'
+      responses:
+        201:
+          description: ACH Fulfillment Operating Session Record Created
+          schema:
+            $ref: '#/definitions/ACHFulfillmentRecordResponse'
+            
+  /ach-fulfillment/ach-fulfillment-operating-session/{cr-reference-id}/warehousings/{bq-reference-id}/requisition:
+    put:
+      tags:
+      - request
+      summary: Update Warehousing Payment.
+      description: Update an exising warehousing
+      operationId: requestACHFulfillmentOperatingSessionWarehousingUpdate
+      produces:
+      - application/json
+      parameters:
+      - name: cr-reference-id
+        in: path
+        description: ACH Access Service Session Reference
+        required: true
+        type: string
+      - name: bq-reference-id
+        in: path
+        description: ACH Transaction Batch Reference
+        required: true
+        type: string
+      - in: body
+        name: body
+        description: Update ACH Outbound Payment Warehousing
+        required: true
+        schema:
+          $ref: '#/definitions/ACHWarehousing'
+      responses:
+        200:
+          description: successful
+          schema:
+            $ref: '#/definitions/RetrieveACHFulfillmentWarehousing'
+            
+  /ach-fulfillment/ach-fulfillment-operating-session/{cr-reference-id}/warehousings/requisition:
+    post:
+      tags:
+      - request
+      summary: Create Warehousing Payment.
+      description: Create a new warehousing
+      operationId: requestACHFulfillmentOperatingSessionWarehousingCreate
+      produces:
+      - application/json
+      parameters:
+      - name: cr-reference-id
+        in: path
+        description: ACH Access Service Session Reference
+        required: true
+        type: string
+      - in: body
+        name: body
+        description: Create ACH Outbound Payment Warehousing
+        required: true
+        schema:
+          $ref: '#/definitions/ACHWarehousing'
+      responses:
+        201:
+          description: ACH Outbound Payment Warehousing Created Successfully
+          schema:
+            $ref: '#/definitions/RetrieveACHFulfillmentWarehousing'
+            
+  /ach-fulfillment/ach-fulfillment-operating-session/{cr-reference-id}/reconciliations/{bq-reference-id}/requisition:
+    put:
+      tags:
+      - request
+      summary: Update reconciliation activity
+      description: Update an existing reconciliation
+      operationId: requestACHFulfillmentOperatingSessionReconciliationUpdate
+      produces:
+      - application/json
+      parameters:
+      - name: cr-reference-id
+        in: path
+        description: ACH Access Service Session Reference
+        required: true
+        type: string
+      - name: bq-reference-id
+        in: path
+        description: ACH Reconciliation Task Reference
+        required: true
+        type: string
+      - in: body
+        name: body
+        description: Update Reconciliation Request Payload
+        required: true
+        schema:
+          $ref: '#/definitions/ReconciliationBaseWithId'
+      responses:
+        200:
+          description: Successful
+          schema:
+            $ref: '#/definitions/RetrieveACHFulfillmentReconciliation'
+            
+  /ach-fulfillment/ach-fulfillment-operating-session/{cr-reference-id}/reconciliations/requisition:
+    post:
+      tags:
+      - request
+      summary: Create reconciliation activity
+      description: Create a new reconciliation
+      operationId: requestACHFulfillmentOperatingSessionReconciliationCreate
+      produces:
+      - application/json
+      parameters:
+      - name: cr-reference-id
+        in: path
+        description: ACH Access Service Session Reference
+        required: true
+        type: string
+      - in: body
+        name: body
+        description: Create Reconciliation Request Payload
+        required: true
+        schema:
+          $ref: '#/definitions/ReconciliationBaseWithId'
+      responses:
+        201:
+          description: Created Successfully
+          schema:
+            $ref: '#/definitions/RetrieveACHFulfillmentReconciliation'
+            
+  /ach-fulfillment/ach-fulfillment-operating-session/:
+    get:
+      tags: 
+      - retrieve
+      operationId: RetrieveACHFulfillmentReferenceIds
+      summary: Retrieve CR Ids.
+      produces: 
+      - application/json
+      parameters: 
+      - name : collection-filter
+        in: query
+        description: Filter to refine the result set. ex- 'ACH Access Service Session Reference = ASSR4891'
+        type: string 
+      responses:
+        200:
+          description: successful
+          schema:
+            type: array
+            items:
+              type: string
+            example: [ASSR4891, ASSR1318]
+  
+  /ach-fulfillment/ach-fulfillment-operating-session/behavior-qualifiers/:
+    get:
+      tags: 
+      - retrieve
+      operationId: RetrieveACHFulfillmentBehaviorQualifiers
+      summary: Retrieve Behaviour Qualifiers.
+      produces: 
+      - application/json
+      responses:
+        200:
+          description: successful retrieved
+          schema:
+            type: array
+            items:
+              type: string
+            example: [inboundACH, outboundACH, warehousing, clearing & settlement, reconciliation, update, reporting]
+            
+  /ach-fulfillment/ach-fulfillment-operating-session/{cr-reference-id}/{behavior-qualifier}/:
+    get:
+      tags: 
+      - retrieve
+      operationId: RetrieveBehaviorQualifierReferenceIds
+      summary: Retrieve BQ Reference Ids.
+      produces: 
+      - application/json
+      parameters: 
+      - name : cr-reference-id
+        in: path
+        description: ACH Access Service Session Reference
+        required: true
+        type: string
+      - name : behavior-qualifier
+        in: path
+        description: Behavior Qualifier Name. ex- inboundACH
+        required: true
+        type: string
+      - name : collection-filter
+        in: query
+        description: Filter to refine the result set. ex- 'amount > $5000'
+        type: string
+      responses:
+        200:
+          description: successful
+          schema:
+            type: array
+            items:
+              type: string
+            example: [BQREFID1237, BQREFID4562, BQREFID7893]
+            
+  /ach-fulfillment/ach-fulfillment-operating-session/{cr-reference-id}/:
+    get:
+      tags:
+      - retrieve
+      summary: 'Retrieve ACH Fulfillment Session'
+      description: Retrieve ACH fulfillment operating session data
+      operationId: retrieveACHFulfillmentOperatingSession
+      produces:
+      - application/json
+      parameters:
+      - name: cr-reference-id
+        in: path
+        description: ACH Access Service Session Reference
+        required: true
+        type: string
+      responses:
+        200:
+          description: successful
+          schema:
+            $ref: '#/definitions/RetrieveACHFulfillmentOperatingSession'
+            
+  /ach-fulfillment/ach-fulfillment-operating-session/{cr-reference-id}/inbound-achs/{bq-reference-id}:
+    get:
+      tags:
+      - retrieve
+      summary: 'Retrieve ACH BQ data'
+      description: Retrieve ACHFulfillment InboundACH data
+      operationId: retrieveACHFulfillmentOperatingSessionInboundACH
+      produces:
+      - application/json
+      parameters:
+      - name: cr-reference-id
+        in: path
+        description: ACH Access Service Session Reference
+        required: true
+        type: string
+      - name: bq-reference-id
+        in: path
+        description: ACH Transaction Batch Reference
+        required: true
+        type: string
+      responses:
+        200:
+          description: successful
+          schema:
+            $ref: '#/definitions/RetrieveACHFulfillmentInboundACH'
+            
+  /ach-fulfillment/ach-fulfillment-operating-session/{cr-reference-id}/outbound-achs/{bq-reference-id}:
+    get:
+      tags:
+      - retrieve
+      summary: Retrieve BQ attributes.
+      operationId: retrieveACHFulfillmentOperatingSessionOutboundACH
+      produces:
+      - application/json
+      parameters:
+      - name: cr-reference-id
+        in: path
+        description: ACH Access Service Session Reference
+        required: true
+        type: string
+      - name: bq-reference-id
+        in: path
+        description: ACH Transaction Batch Reference
+        required: true
+        type: string
+      responses:
+        200:
+          description: successful
+          schema:
+            $ref: '#/definitions/RetrieveACHFulfillmentOutboundACH'
+            
+  /ach-fulfillment/ach-fulfillment-operating-session/{cr-reference-id}/warehousings/{bq-reference-id}:
+    get:
+      tags:
+      - retrieve
+      summary: Retrieve Warehousing BQ attributes.
+      operationId: retrieveACHFulfillmentOperatingSessionWarehousing
+      produces:
+      - application/json
+      parameters:
+      - name: cr-reference-id
+        in: path
+        description: ACH Access Service Session Reference
+        required: true
+        type: string
+      - name: bq-reference-id
+        in: path
+        description: ACH Transaction Batch Reference
+        required: true
+        type: string
+      responses:
+        200:
+          description: successful
+          schema:
+            $ref: '#/definitions/RetrieveACHFulfillmentWarehousing'
+            
+  /ach-fulfillment/ach-fulfillment-operating-session/{cr-reference-id}/clearingandsettlements/{bq-reference-id}:
+    get:
+      tags:
+      - retrieve
+      summary: Retrieve Clearing And Settlement BQ attributes.
+      operationId: retrieveACHFulfillmentOperatingSessionClearingAndSettlement
+      produces:
+      - application/json
+      parameters:
+      - name: cr-reference-id
+        in: path
+        description: ACH Access Service Session Reference
+        required: true
+        type: string
+      - name: bq-reference-id
+        in: path
+        description: ACH Clearing and Settlement Task Reference
+        required: true
+        type: string
+      responses:
+        200:
+          description: successful
+          schema:
+            $ref: '#/definitions/RetrieveACHFulfillmentClearingAndSettlement'
+            
+  /ach-fulfillment/ach-fulfillment-operating-session/{cr-reference-id}/reconciliations/{bq-reference-id}:
+    get:
+      tags:
+      - retrieve
+      summary: Retrieve Reconciliation BQ attributes.
+      operationId: retrieveACHFulfillmentOperatingSessionReconciliation
+      produces:
+      - application/json
+      parameters:
+      - name: cr-reference-id
+        in: path
+        description: ACH Access Service Session Reference
+        required: true
+        type: string
+      - name: bq-reference-id
+        in: path
+        description: ACH Reconciliation Task Reference
+        required: true
+        type: string
+      responses:
+        200:
+          description: successful
+          schema:
+            $ref: '#/definitions/RetrieveACHFulfillmentReconciliation'
+            
+  /ach-fulfillment/ach-fulfillment-operating-session/{cr-reference-id}/updaterepairs/{bq-reference-id}:
+    get:
+      tags:
+      - retrieve
+      summary: Retrieve Update BQ attributes.
+      operationId: retrieveACHFulfillmentOperatingSessionUpdateRepair
+      produces:
+      - application/json
+      parameters:
+      - name: cr-reference-id
+        in: path
+        description: ACH Access Service Session Reference
+        required: true
+        type: string
+      - name: bq-reference-id
+        in: path
+        description: ACH Payment Transaction Update Reference
+        required: true
+        type: string
+      responses:
+        200:
+          description: successful
+          schema:
+            $ref: '#/definitions/RetrieveACHFulfillmentUpdateRepair'
+            
+  /ach-fulfillment/ach-fulfillment-operating-session/{cr-reference-id}/reportings/{bq-reference-id}:
+    get:
+      tags:
+      - retrieve
+      summary: 'Retrieve Reporting'
+      description: Retrieve ACH Fulfillment operating session reporting
+      operationId: retrieveACHFulfillmentOperatingSessionReporting
+      produces:
+      - application/json
+      parameters:
+      - name: cr-reference-id
+        in: path
+        description: ACH Access Service Session Reference
+        required: true
+        type: string
+      - name: bq-reference-id
+        in: path
+        description: ACH Reporting Service Reference
+        required: true
+        type: string
+      responses:
+        200:
+          description: successful
+          schema:
+            $ref: '#/definitions/ACHFulfillmentReportingResponse'
+definitions:
+  InboundACHBase:
+    type: object
+    properties:
+      achAccessSchedule:
+        type: string
+        example: Daily
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Duration         
+      paymentTransactionInitiatorReference:
+        type: string
+        example: PTIR2320
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier         
+      payerReference:
+        type: string
+        example: PYRE5345
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier         
+      payerBankReference:
+        type: string
+        example: PYBR1093
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier    
+      payeeReference:
+        type: string
+        example: PAEE5007
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier    
+      payeeProductInstanceReference:
+        type: string
+        example: PAIR7456
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier    
+      payeeBankReference:
+        type: string
+        example: PEBR2783
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier    
+      specialInstructions:
+        type: string
+        example: ClearingInstructions
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text    
+      amount:
+        type: string
+        example: 500
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Amount    
+      currency:
+        type: string
+        example: USD
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text    
+      dateType:
+        type: string
+        example: Order
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text    
+      date:
+        type: string
+        example: "2018-08-28"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Date    
+    
+  RetrieveACHFulfillmentInboundACH:
+    type: object
+    properties:
+      achAccessServiceSessionReference:
+        type: string
+        example: ASSR7685
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier    
+      achAccessSchedule:
+        type: string
+        example: Daily
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Duration    
+      achTransactionBatchReference:
+        type: string
+        example: ATBR5928
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier    
+      achPaymentTransactionReference:
+        type: string
+        example: APTR1068
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier    
+      paymentTransactionInitiatorReference:
+        type: string
+        example: PTIR2320
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier    
+      payerReference:
+        type: string
+        example: PYRE5345
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier      
+      payerBankReference:
+        type: string
+        example: PYBR1093
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier      
+      payeeReference:
+        type: string
+        example: PAEE5007
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier      
+      payerProductInstanceReference:
+        type: string
+        example: PARR6400
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier  
+      payeeProductInstanceReference:
+        type: string
+        example: PAIR7456
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier      
+      payeeBankReference:
+        type: string
+        example: PEBR2783
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier      
+      specialInstructions:
+        type: string
+        example: ClearingInstructions
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text    
+      amount:
+        type: string
+        example: 5000
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Amount    
+      currency:
+        type: string
+        example: USD
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text    
+      dateType:
+        type: string
+        example: Order
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text    
+      date:
+        type: string
+        example: "2018-09-10"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Date    
+    
+  OutboundACHBase:
+    type: object
+    properties:
+      achAccessSchedule:
+        type: string
+        example: Daily
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Duration    
+      achPaymentTransactionReference:
+        type: string
+        example: APTR567
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier      
+      paymentTransactionInitiatorReference:
+        type: string
+        example: PTIR2320
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier      
+      payerReference:
+        type: string
+        example: PYRE5345
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier      
+      payerBankReference:
+        type: string
+        example: PYBR1093
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier      
+      payeeReference:
+        type: string
+        example: PAEE5007
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier      
+      payeeProductInstanceReference:
+        type: string
+        example: PAIR7456
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier      
+      payeeBankReference:
+        type: string
+        example: PEBR2783
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier      
+      specialInstructions:
+        type: string
+        example: ClearingInstructions
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text    
+      amount:
+        type: string
+        example: 5000
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Amount    
+      currency:
+        type: string
+        example: USD
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text    
+      dateType:
+        type: string
+        example: Order
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text    
+      date:
+        type: string
+        example: "2018-09-10"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Date    
+    
+  RetrieveACHFulfillmentOutboundACH:
+    type: object
+    properties:
+      achAccessServiceSessionReference:
+        type: string
+        example: ASSR7685
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier      
+      achAccessSchedule:
+        type: string
+        example: Daily
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Duration    
+      achTransactionBatchReference:
+        type: string
+        example: ATBR5928
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier      
+      achPaymentTransactionReference:
+        type: string
+        example: APTR1068
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier      
+      paymentTransactionInitiatorReference:
+        type: string
+        example: PTIR2320
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier      
+      payerReference:
+        type: string
+        example: PYRE5345
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier      
+      payerBankReference:
+        type: string
+        example: PYBR1093
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier      
+      payerProductInstanceReference:
+        type: string
+        example: PARR6400
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier      
+      payeeReference:
+        type: string
+        example: PAEE5007
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier      
+      payeeProductInstanceReference:
+        type: string
+        example: PAIR7456
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier      
+      payeeBankReference:
+        type: string
+        example: PEBR2783
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier      
+      specialInstructions:
+        type: string
+        example: ClearingInstructions
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text    
+      amount:
+        type: string
+        example: 5000
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Amount    
+      currency:
+        type: string
+        example: USD
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text    
+      dateType:
+        type: string
+        example: Order
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text    
+      date:
+        type: string
+        example: "2018-09-10"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Date    
+    
+  ACHFulfillmentRecordRequest:
+    type: object
+    properties:
+      recordingRecordType:
+        type: string
+        example: Behavior Model Performance Feedback
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text    
+      recordingRecord:
+        type: object
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+      recordingRecordDateTime:
+        type: string
+        example: "2018-08-28T09:00:00"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::DateTime      
+      empolyeeBusinessUnitReference:
+        type: string
+        example: EBUR6798
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier      
+  ACHFulfillmentRecordResponse:
+    type: object
+    properties:
+      recordingRecordReference:
+        type: string
+        example: RRR59821735
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier      
+      recordingRecordStatus:
+        type: string
+        example: Applied
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text    
+  ACHFulfillmentReportingResponse:
+    type: object
+    properties:
+      achAccessServiceSessionReference:
+        type: string
+        example: ASSR7685
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier      
+      achAccessSchedule:
+        type: string
+        example: PYSR9423
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Duration    
+      achReportingServiceReference:
+        type: string
+        example: ARSR9423
+      achTransactionBatchReference:
+        type: string
+        example: ATBR5928
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier      
+      achPaymentTransactionReference:
+        type: string
+        example: APTR1068
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier      
+      paymentTransactionInitiatorReference:
+        type: string
+        example: PTIR2320
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier      
+      payerReference:
+        type: string
+        example: PYRE5345
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier      
+      payerBankReference:
+        type: string
+        example: PYBR1093
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier      
+      payerProductInstanceReference:
+        type: string
+        example: PARR6400
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier      
+      payeeReference:
+        type: string
+        example: PAEE5007
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier      
+      payeeProductInstanceReference:
+        type: string
+        example: PAIR7456
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier      
+      payeeBankReference:
+        type: string
+        example: PEBR2783
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier      
+      amount:
+        type: string
+        example: 5000
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Amount    
+      currency:
+        type: string
+        example: USD
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text    
+      dateType:
+        type: string
+        example: Order
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text    
+      date:
+        type: string
+        example: "2018-09-10"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Date    
+      paymentOrderStatus:
+        type: string
+        example: Initiated
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text    
+      achReportingServiceResult:
+        type: string
+        example: Success
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text    
+  ACHWarehousing:
+    properties:
+      achTransactionBatchReference:
+        type: string
+        example: ATBR5928
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier      
+      scheduleReleaseDateTime:
+        type: string
+        example: "2018-09-05T05:00:00"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::DateTime    
+      payerReference:
+        type: string
+        example: PYRE5345
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier      
+      payerBankReference:
+        type: string
+        example: PYBR1093
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier      
+      payeeReference:
+        type: string
+        example: PAEE5007
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier      
+      payeeBankReference:
+        type: string
+        example: PEBR2783
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier      
+      payeeProductInstanceReference:
+        type: string
+        example: PAIR7456
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier      
+      specialInstructions:
+        type: string
+        example: ClearingInstructions
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text    
+      amount:
+        type: string
+        example: 5000
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Amount    
+      currency:
+        type: string
+        example: USD
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text    
+      dateType:
+        type: string
+        example: Order
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text    
+      date:
+        type: string
+        example: "2018-09-10"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Date    
+  RetrieveACHFulfillmentWarehousing:
+    properties:
+      achAccessServiceSessionReference:
+        type: string
+        example: AASSR567
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier      
+      achTransactionBatchReference:
+        type: string
+        example: ATBR5928
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier      
+      scheduleReleaseDateTime:
+        type: string
+        example: "2018-09-05T05:00:00"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::DateTime    
+      achPaymentTransactionReference:
+        type: string
+        example: APTR1068
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier      
+      paymentTransactionInitiatorReference:
+        type: string
+        example: PTIR2320
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier      
+      payerReference:
+        type: string
+        example: PYRE5345
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier      
+      payerBankReference:
+        type: string
+        example: PYBR1093
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier      
+      payerProductInstanceReference:
+        type: string
+        example: PARR6400
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier      
+      payeeReference:
+        type: string
+        example: PAEE5007
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier      
+      payeeBankReference:
+        type: string
+        example: PEBR2783
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier      
+      payeeProductInstanceReference:
+        type: string
+        example: PAIR7456
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier      
+      specialInstructions:
+        type: string
+        example: ClearingInstructions
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text    
+      amount:
+        type: string
+        example: 5000
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Amount    
+      currency:
+        type: string
+        example: USD
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text    
+      dateType:
+        type: string
+        example: Order
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text    
+      date:
+        type: string
+        example: "2018-09-10"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Date    
+  ReconciliationBaseWithId:
+    type: object
+    properties:
+      achAccessServiceSessionReference:
+        type: string
+        example: ASSR7685
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier      
+      achTransactionBatchReference:
+        type: string
+        example: ATBR5928
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier      
+      achPaymentTransactionReference:
+        type: string
+        example: APTR1068
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier      
+      correspondentBankReference:
+        type: string
+        example: CBRE0423
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier      
+      achTransactionReconciliationTaskReference:
+        type: string
+        example: ATTR3491
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier      
+      mirrorNostroAccountReference:
+        type: string
+        example: MNAR0300
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier      
+  RetrieveACHFulfillmentReconciliation:
+    type: object
+    properties:
+      achAccessServiceSessionReference:
+        type: string
+        example: ASSR7685
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier      
+      achAccessSchedule:
+        type: string
+        example: Daily
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Duration  
+      achReconciliationTaskReference:
+        type: string
+        example: ARTR1089
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier      
+      achTransactionReconciliationTaskReference:
+        type: string
+        example: ATTR3491
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier      
+      achPaymentTransactionReference:
+        type: string
+        example: APTR1068
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier      
+      achTransactionBatchReference:
+        type: string
+        example: ATBR5928
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier      
+      correspondentBankReference:
+        type: string
+        example: CBRE0423
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier      
+      mirrorNostroAccountReference:
+        type: string
+        example: MNAR0300
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier      
+      achReconciliationTaskResult:
+        type: string
+        example: Success
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text    
+  RetrieveACHFulfillmentOperatingSession:
+    type: object
+    properties:
+      achReference:
+        type: string
+        example: ACHR5443
+      achAccessServiceSessionReference:
+        type: string
+        example: ASSR7685
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier      
+      achAccessSchedule:
+        type: string
+        example: ACAS4685
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Duration    
+        
+  RetrieveACHFulfillmentClearingAndSettlement:
+    type: object
+    properties:
+      achAccessServiceSessionReference:
+        type: string
+        example: ASSR7685
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier      
+      achClearingAndSettlementTaskReference:
+        type: string
+        example: ACSTR453
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier      
+      correspondentBankReference:
+        type: string
+        example: CBRE0423
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier      
+      correspondentBankClearingAgreementClearingInstructions:
+        type: string
+        example: ClearingInstructions
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text    
+      correspondentBankClearingAgreementSettlementInstructions:
+        type: string
+        example: DefaultInstructions
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text    
+      correspondentBankClearingAgreementReference:
+        type: string
+        example: CBAR7655
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier      
+      mirrorNostroAccountReference:
+        type: string
+        example: MNAR0300
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier      
+        
+  RetrieveACHFulfillmentUpdateRepair:
+    type: object
+    properties:
+      achPaymentTransactionReference:
+        type: string
+        example: APTR1068
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier      
+      achPaymentTransactionUpdateDescription:
+        type: string
+        example: TransactionDescription
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text    
+      paymentTransactionInitiatorReference:
+        type: string
+        example: PTIR2320
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier      
+      achPaymentTransactionUpdateReference:
+        type: string
+        example: ATUR3032
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier      
+      payerReference:
+        type: string
+        example: PYRE5345
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier      
+      payerBankReference:
+        type: string
+        example: PYBR1093
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier      
+      payerProductInstanceReference:
+        type: string
+        example: PARR6400
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier      
+      payeeReference:
+        type: string
+        example: PAEE5007
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier      
+      payeeProductInstanceReference:
+        type: string
+        example: PAIR7456
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier      
+      payeeBankReference:
+        type: string
+        example: PEBR2783
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier      
+      amount:
+        type: string
+        example: 5000
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Amount    
+      currency:
+        type: string
+        example: USD
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text    
+      dateType:
+        type: string
+        example: Booking
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text    
+      date:
+        type: string
+        example: "2018-09-10"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Date    
+      paymentTransactionUpdateResult:
+        type: string
+        example: Success
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text

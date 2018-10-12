@@ -1,0 +1,2114 @@
+---
+swagger: "2.0"
+info:
+  description: |
+    ## Description:
+    Fulfill a savings account
+    ## Example of use:
+    A customer transfers money from a current account to savings account in order to obtain a better rate of interest.
+    ## General comment:
+    A savings account does not have the full facilities of a current account e.g. checking.
+  version: "4.0.0"
+  title: Service Domain - Savings Account
+host: virtserver.swaggerhub.com
+basePath: /BIAN/sd-savings-account/4.0.0
+schemes:
+- https
+paths: 
+  /savings-account/savings-account-fulfillment-arrangement/initiation:
+    post:
+        tags:
+        - "initiate"
+        summary: "Initiate/Setup a new Savings Account Facility"
+        operationId: "initiateSavingsAccountFulfillmentArrangement"
+        produces:
+        - "application/json"
+        parameters:
+        - in: "body"
+          name: "body"
+          description: "Initiate Savings Account Setup request payload"
+          required: true
+          schema:
+            $ref: "#/definitions/SavingsAccount"
+        responses:
+          201:
+            description: "A new savings account fulfillment arrangement is created"
+            schema:
+              $ref: "#/definitions/SavingsAccountWithIdAndStatus"
+              
+  /savings-account/savings-account-fulfillment-arrangement/{cr-reference-id}/updation:
+    put:
+      tags:
+      - "update"
+      summary: "Update an existing Savings Account Record"
+      operationId: "updateSavingsAccountFulfillmentArrangement"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "cr-reference-id"
+        in: "path"
+        description: "Savings Account Reference"
+        required: true
+        type: string
+      - in: "body"
+        name: "body"
+        description: "Update Savings Account request payload"
+        required: true
+        schema:
+          $ref: "#/definitions/SavingsAccountWithStatus"
+      responses:
+        200:
+          description: "successful"
+          schema:
+            $ref: "#/definitions/SavingsAccountWithIdAndStatus"
+            
+  /savings-account/savings-account-fulfillment-arrangement/{cr-reference-id}/recording:
+    post:
+      tags:
+      - "record"
+      summary: "Records a Current Account"
+      operationId: "RecordCurrentAccount"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "cr-reference-id"
+        in: "path"
+        description: "Product Instance Reference"
+        required: true
+        type: string
+      - in: "body"
+        name: "body"
+        description: "Record control record request payload"
+        required: true
+        schema:
+          $ref: '#/definitions/SavingsAccountRecordRequest'
+      responses:
+        201:
+          description: "A new Record is created"
+          schema:
+            $ref: "#/definitions/SavingsAccountRecordResponse"
+            
+  /savings-account/savings-account-fulfillment-arrangement/{cr-reference-id}/deposits/{bq-reference-id}/execution:
+    put:
+      tags:
+      - "execute"
+      summary: "Update a deposit transaction against the account"
+      description: "Update an exising Deposit"
+      operationId: "executeSavingsAccountFulfillmentArrangementDepositUpdate"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "cr-reference-id"
+        in: "path"
+        description: "Product Instance Reference"
+        required: true
+        type: string
+      - name: "bq-reference-id"
+        in: "path"
+        description: "Deposit Transaction Reference"
+        required: true
+        type: string
+      - in: "body"
+        name: "body"
+        description: "Execute deposit request payload"
+        required: true
+        schema:
+          $ref: "#/definitions/SavingsAccountDeposit"
+      responses:
+        200:
+          description: "successful"
+          schema:
+            $ref: "#/definitions/SavingsAccountDepositWithIdAndRoot"
+            
+  /savings-account/savings-account-fulfillment-arrangement/{cr-reference-id}/deposits/execution:
+    post:
+      tags:
+      - "execute"
+      summary: "Make a new deposit to the savings  account"
+      description: "Create a new Deposit"
+      operationId: "executeSavingsAccountFulfillmentArrangementDepositCreate"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "cr-reference-id"
+        in: "path"
+        description: "Product Instance Reference"
+        required: true
+        type: string
+      - in: "body"
+        name: "body"
+        description: "Create deposit request payload"
+        required: true
+        schema:
+          $ref: "#/definitions/SavingsAccountDeposit"
+      responses:
+        200:
+          description: "successful"
+          schema:
+            $ref: "#/definitions/SavingsAccountDepositWithIdAndRoot"
+            
+  /savings-account/savings-account-fulfillment-arrangement/{cr-reference-id}/payments/{bq-reference-id}/execution:
+    put:
+      tags:
+      - "execute"
+      summary: "Update a Payment Transaction Against the Savings Account"
+      description: "Update an exising Payment Transaction"
+      operationId: "executeSavingsAccountFulfillmentArrangementPaymentUpdate"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "cr-reference-id"
+        in: "path"
+        description: "Product Instance Reference"
+        required: true
+        type: string
+      - name: "bq-reference-id"
+        in: "path"
+        description: "Payment Instruction Reference"
+        required: true
+        type: string
+      - in: "body"
+        name: "body"
+        description: "Execute payments request payload"
+        required: true
+        schema:
+          $ref: "#/definitions/SavingsAccountPayment"
+      responses:
+        200:
+          description: "Successfully Updated Payment Transaction"
+          schema:
+            $ref: "#/definitions/SavingsAccountPaymentWithIdAndRoot"
+            
+  /savings-account/savings-account-fulfillment-arrangement/{cr-reference-id}/payments/execution:
+    post:
+      tags:
+      - "execute"
+      summary: "Create a Payment Transaction Against the Savings Account"
+      description: "Create a new Payment"
+      operationId: "executeSavingsAccountFulfillmentArrangementPaymentCreate"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "cr-reference-id"
+        in: "path"
+        description: "Product Instance Reference"
+        required: true
+        type: string
+      - in: "body"
+        name: "body"
+        description: "Execute payments request payload"
+        required: true
+        schema:
+          $ref: "#/definitions/SavingsAccountPayment"
+      responses:
+        201:
+          description: "Creted a Payment successfully"
+          schema:
+            $ref: "#/definitions/SavingsAccountPaymentWithIdAndRoot"
+            
+  /savings-account/savings-account-fulfillment-arrangement/{cr-reference-id}/standing-orders/{bq-reference-id}/requisition:
+    put:
+      tags:
+      - "request"
+      summary: "Request the set-up/amendment of a standing order"
+      description: "Update an exising Standing order"
+      operationId: "requestSavingsAccountFulfillmentArrangementStandingOrderUpdate"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "cr-reference-id"
+        in: "path"
+        description: "Product Instance Reference"
+        required: true
+        type: string
+      - name: "bq-reference-id"
+        in: "path"
+        description: "Standing Order Facility Reference"
+        required: true
+        type: string
+      - in: "body"
+        name: "body"
+        description: "Request standing order request payload"
+        required: true
+        schema:
+          $ref: "#/definitions/SavingsAccountStandingOrder"
+      responses:
+        200:
+          description: "Successfully Updated Standing order"
+          schema:
+            $ref: "#/definitions/SavingsAccountStandingOrderWithIdAndRoot"
+            
+  /savings-account/savings-account-fulfillment-arrangement/{cr-reference-id}/standing-orders/requisition:
+    post:
+      tags:
+      - "request"
+      summary: "Request the set-up/amendment of a standing order"
+      description: "Create a new Standing order"
+      operationId: "requestSavingsAccountFulfillmentArrangementStandingOrderCreate"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "cr-reference-id"
+        in: "path"
+        description: "Product Instance Reference"
+        required: true
+        type: string
+      - in: "body"
+        name: "body"
+        description: "Request standing order request payload"
+        required: true
+        schema:
+          $ref: "#/definitions/SavingsAccountStandingOrder"
+      responses:
+        201:
+          description: "Created a standing order successfully"
+          schema:
+            $ref: "#/definitions/SavingsAccountStandingOrderWithIdAndRoot"
+            
+  /savings-account/savings-account-fulfillment-arrangement/{cr-reference-id}/direct-debits/{bq-reference-id}/requisition:
+    put:
+      tags:
+      - "request"
+      summary: "Request the set-up/amendment of a direct debit"
+      description: "Update an exising Direct Debit"
+      operationId: "requestSavingsAccountFulfillmentArrangementDirectDebitUpdate"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "cr-reference-id"
+        in: "path"
+        description: "Product Instance Reference"
+        required: true
+        type: string
+      - name: "bq-reference-id"
+        in: "path"
+        description: "Direct Debit Facility Reference"
+        required: true
+        type: string
+      - in: "body"
+        name: "body"
+        description: "direct debits set-up/amendment request payload"
+        required: true
+        schema:
+          $ref: "#/definitions/SavingsAccountDirectDebit"
+      responses:
+        200:
+          description: "Successfully Updated Direct Debit transaction record"
+          schema:
+            $ref: "#/definitions/SavingsAccountDirectDebitWithIdAndRoot"
+            
+  /savings-account/savings-account-fulfillment-arrangement/{cr-reference-id}/direct-debits/requisition:
+    post:
+      tags:
+      - "request"
+      summary: "Request the set-up/amendment of a direct debit"
+      description: "Create a new Direct Debit"
+      operationId: "requestSavingsAccountFulfillmentArrangementDirectDebitCreate"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "cr-reference-id"
+        in: "path"
+        description: "Product Instance Reference"
+        required: true
+        type: string
+      - in: "body"
+        name: "body"
+        description: "New direct debit request payload"
+        required: true
+        schema:
+          $ref: "#/definitions/SavingsAccountDirectDebit"
+      responses:
+        201:
+          description: "Created a direct debit request successfully"
+          schema:
+            $ref: "#/definitions/SavingsAccountDirectDebitWithIdAndRoot"
+            
+  /savings-account/savings-account-fulfillment-arrangement/{cr-reference-id}/sweeps/{bq-reference-id}/requisition:
+    put:
+      tags:
+      - "request"
+      summary: "Request the set-up/amendment of an account sweep arrangement"
+      description: "Update an exising account sweep arrangement"
+      operationId: "requestSavingsAccountFulfillmentArrangementSweepUpdate"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "cr-reference-id"
+        in: "path"
+        description: "Product Instance Reference"
+        required: true
+        type: string
+      - name: "bq-reference-id"
+        in: "path"
+        description: "Sweep Facility Reference"
+        required: true
+        type: string
+      - in: "body"
+        name: "body"
+        description: "Request sweeps request payload"
+        required: true
+        schema:
+          $ref: "#/definitions/SavingsAccountSweep"
+      responses:
+        200:
+          description: "Successfully Updated exising account sweep arrangement"
+          schema:
+            $ref: "#/definitions/SavingsAccountSweepWithIdAndRoot"
+            
+  /savings-account/savings-account-fulfillment-arrangement/{cr-reference-id}/sweeps/requisition:
+    post:
+      tags:
+      - "request"
+      summary: "Request the set-up/amendment of an account sweep arrangement"
+      description: "Create a new Sweep"
+      operationId: "requestSavingsAccountFulfillmentArrangementSweepCreate"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "cr-reference-id"
+        in: "path"
+        description: "Product Instance Reference"
+        required: true
+        type: string
+      - in: "body"
+        name: "body"
+        description: "Request sweeps request payload"
+        required: true
+        schema:
+          $ref: "#/definitions/SavingsAccountSweep"
+      responses:
+        201:
+          description: "Created Sweep successfully"
+          schema:
+            $ref: "#/definitions/SavingsAccountSweepWithIdAndRoot"    
+            
+  /savings-account/savings-account-fulfillment-arrangement/{cr-reference-id}/inventories/{bq-reference-id}/requisition:
+    put:
+      tags:
+      - "request"
+      summary: "Request the issuance of product inventory (cheque book, plastic, etc)"
+      description: "Update an exising Inventory"
+      operationId: "requestSavingsAccountFulfillmentArrangementInventoryUpdate"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "cr-reference-id"
+        in: "path"
+        description: "Product Instance Reference"
+        required: true
+        type: string
+      - name: "bq-reference-id"
+        in: "path"
+        description: "Product Inventory Reference"
+        required: true
+        type: string
+      - in: "body"
+        name: "body"
+        description: "Request inventories request payload"
+        required: true
+        schema:
+          $ref: "#/definitions/SavingsAccountInventory"
+      responses:
+        200:
+          description: "Successfully Updated an Exising Inventory"
+          schema:
+            $ref: "#/definitions/SavingsAccountInventoryWithIdAndRoot"
+            
+  /savings-account/savings-account-fulfillment-arrangement/{cr-reference-id}/inventories/requisition:
+    post:
+      tags:
+      - "request"
+      summary: "Request the issuance of product inventory (cheque book, plastic, etc)"
+      description: "Create a new Inventory"
+      operationId: "requestSavingsAccountFulfillmentArrangementInventoryCreate"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "cr-reference-id"
+        in: "path"
+        description: "Product Instance Reference"
+        required: true
+        type: string
+      - in: "body"
+        name: "body"
+        description: "Request inventories request payload"
+        required: true
+        schema:
+          $ref: "#/definitions/SavingsAccountInventory"
+      responses:
+        201:
+          description: "Created an inventory successfully"
+          schema:
+            $ref: "#/definitions/SavingsAccountInventoryWithIdAndRoot"
+            
+  /savings-account/savings-account-fulfillment-arrangement/{cr-reference-id}/liens/{bq-reference-id}/requisition:
+    put:
+      tags:
+      - "request"
+      summary: "Request the set-up/update of an account lien"
+      description: "Update an exising Lien"
+      operationId: "requestSavingsAccountFulfillmentArrangementLienUpdate"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "cr-reference-id"
+        in: "path"
+        description: "Product Instance Reference"
+        required: true
+        type: string
+      - name: "bq-reference-id"
+        in: "path"
+        description: "Lien Facility Reference"
+        required: true
+        type: string
+      - in: "body"
+        name: "body"
+        description: "Update liens request payload"
+        required: true
+        schema:
+          $ref: "#/definitions/SavingsAccountLien"
+      responses:
+        200:
+          description: "Successfully Updated Lien Record"
+          schema:
+            $ref: "#/definitions/SavingsAccountLienWithIdAndRoot"
+            
+  /savings-account/savings-account-fulfillment-arrangement/{cr-reference-id}/liens/requisition:
+    post:
+      tags:
+      - "request"
+      summary: "Request the set-up/update of an account lien"
+      description: "Create a new Lien"
+      operationId: "requestSavingsAccountFulfillmentArrangementLienCreate"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "cr-reference-id"
+        in: "path"
+        description: "Product Instance Reference"
+        required: true
+        type: string
+      - in: "body"
+        name: "body"
+        description: "Create new lien request payload"
+        required: true
+        schema:
+          $ref: "#/definitions/SavingsAccountLien"
+      responses:
+        201:
+          description: "Created a Lien successfully"
+          schema:
+            $ref: "#/definitions/SavingsAccountLienWithIdAndRoot"
+            
+  /savings-account/savings-account-fulfillment-arrangement:
+    get:
+      tags:
+      - "retrieve"
+      summary: "Retrieve Savings Account Control Record Ids available within the Service Domain."
+      operationId: "retrieveSavingsAccountReferenceIds"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "collection-filter"
+        in: "query"
+        description: "Filter to refine the result set. ex- 'customerReference == CR123'"
+        required: false
+        type: string
+      responses:
+        200:
+          description: "successful"
+          schema:
+            type: "array"
+            items:
+              type: string
+            example: ["CAR123", "CAR345"]
+            
+  /savings-account/savings-account-fulfillment-arrangement/behavior-qualifiers:
+    get:
+      tags:
+      - "retrieve"
+      summary: "Retrieve all Behaviour Qualifier names in the Savings Account Service\
+        \ Domain."
+      operationId: "retrieveSavingsAccountBehaviorQualifiers"
+      produces:
+      - "application/json"
+      responses:
+        200:
+          description: "successful"
+          schema:
+            type: "array"
+            items:
+              type: string
+            example: ["deposits", "payments", "standing-orders", "direct-debits", "sweeps", "inventories", "liens", "statements", "interests", "fees", "reports" ]
+            
+  /savings-account/savings-account-fulfillment-arrangement/{cr-reference-id}/{behavior-qualifier}:
+    get:
+      tags:
+      - "retrieve"
+      summary: "Retrieve Behaviour Qualifier Reference Ids of the given Behavior Qulifier."
+      operationId: "retrieveBehaviorQualifierReferenceIds"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "cr-reference-id"
+        in: "path"
+        description: "Product Instance Reference"
+        required: true
+        type: string
+      - name: "behavior-qualifier"
+        in: "path"
+        description: "Behavior Qualifier Name. ex- deposit"
+        required: true
+        type: string
+      - name: "collection-filter"
+        in: "query"
+        description: "Filter to refine the result set. ex- 'amount> $5000'"
+        required: false
+        type: string
+      responses:
+        200:
+          description: "successful"
+          schema:
+            type: "array"
+            items:
+              type: string
+            example: ["DEP345", "DEP789"]
+
+            
+  /savings-account/savings-account-fulfillment-arrangement/{cr-reference-id}:
+    get:
+      tags:
+      - "retrieve"
+      summary: "Retrieve Savings Account Record"
+      operationId: "retrieveSavingsAccountFulfillmentArrangement"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "cr-reference-id"
+        in: "path"
+        description: "Product Instance Reference"
+        required: true
+        type: string
+      responses:
+        200:
+          description: "Successfully Retrieved Savings Account Deposit Record"
+          schema:
+            $ref: "#/definitions/SavingsAccountWithIdAndStatus"
+    delete:
+      tags:
+      - "terminate"
+      summary: "Termination request for an in force savings account"
+      operationId: "terminateSavingsAccountFulfillmentArrangement"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "cr-reference-id"
+        in: "path"
+        description: "Product Instance Reference"
+        required: true
+        type: string
+      responses:
+        204:
+          description: "Successfully terminated savings account"
+          
+  /savings-account/savings-account-fulfillment-arrangement/{cr-reference-id}/deposits/{bq-reference-id}:
+    get:
+      tags:
+      - "retrieve"
+      summary: "Retrieve Savings Account Deposit Record"
+      operationId: "retrieveSavingsAccountDeposit"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "cr-reference-id"
+        in: "path"
+        description: "Product Instance Reference"
+        required: true
+        type: string
+      - name: "bq-reference-id"
+        in: "path"
+        description: "Deposit Transaction Reference"
+        required: true
+        type: string
+      responses:
+        200:
+          description: "Successfully Retrieved Savings Account Deposit Record"
+          schema:
+            $ref: "#/definitions/SavingsAccountDepositWithIdAndRoot"
+            
+  /savings-account/savings-account-fulfillment-arrangement/{cr-reference-id}/payments/{bq-reference-id}:
+    get:
+      tags:
+      - "retrieve"
+      summary: "Retrieve Savings Account Payment Record"
+      operationId: "retrieveSavingsAccountPayment"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "cr-reference-id"
+        in: "path"
+        description: "Product Instance Reference"
+        required: true
+        type: string
+      - name: "bq-reference-id"
+        in: "path"
+        description: "Payment Instruction Reference"
+        required: true
+        type: string
+      responses:
+        200:
+          description: "Successfully Retrieved Savings Account Payment Record"
+          schema:
+            $ref: "#/definitions/SavingsAccountPaymentWithIdAndRoot"
+            
+  /savings-account/savings-account-fulfillment-arrangement/{cr-reference-id}/standing-orders/{bq-reference-id}:
+    get:
+      tags:
+      - "retrieve"
+      summary: "Retrieve Savings Account Standing Order Record"
+      operationId: "retrieveSavingsAccountStandingOrder"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "cr-reference-id"
+        in: "path"
+        description: "Product Instance Reference"
+        required: true
+        type: string
+      - name: "bq-reference-id"
+        in: "path"
+        description: "Standing Order Facility Reference"
+        required: true
+        type: string
+      responses:
+        200:
+          description: "Successfully Retrieved Savings Account Standing Order Record"
+          schema:
+            $ref: "#/definitions/SavingsAccountStandingOrderWithIdAndRoot"
+            
+  /savings-account/savings-account-fulfillment-arrangement/{cr-reference-id}/direct-debits/{bq-reference-id}:
+    get:
+      tags:
+      - "retrieve"
+      summary: "Retrieved Savings Account Direct Debit Record"
+      operationId: "retrieveSavingsAccountDirectDebit"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "cr-reference-id"
+        in: "path"
+        description: "Product Instance Reference"
+        required: true
+        type: string
+      - name: "bq-reference-id"
+        in: "path"
+        description: "Direct Debit Facility Reference"
+        required: true
+        type: string
+      responses:
+        200:
+          description: "Successfully Retrieved Savings Account Direct Debit Record"
+          schema:
+            $ref: "#/definitions/SavingsAccountDirectDebitWithIdAndRoot"
+            
+  /savings-account/savings-account-fulfillment-arrangement/{cr-reference-id}/sweeps/{bq-reference-id}:
+    get:
+      tags:
+      - "retrieve"
+      summary: "Retrieved Savings Account Sweeps Record"
+      operationId: "retireveSavingsAccountSweep"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "cr-reference-id"
+        in: "path"
+        description: "Product Instance Reference"
+        required: true
+        type: string
+      - name: "bq-reference-id"
+        in: "path"
+        description: "Sweep Facility Reference"
+        required: true
+        type: string
+      responses:
+        200:
+          description: "Successfully Retrieved Savings Account Sweeps Record"
+          schema:
+            $ref: "#/definitions/SavingsAccountSweepWithIdAndRoot"
+            
+  /savings-account/savings-account-fulfillment-arrangement/{cr-reference-id}/inventories/{bq-reference-id}:
+    get:
+      tags:
+      - "retrieve"
+      summary: "Retrieved Savings Account Inventory Record"
+      operationId: "retrieveSavingsAccountInventory"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "cr-reference-id"
+        in: "path"
+        description: "Product Instance Reference"
+        required: true
+        type: string
+      - name: "bq-reference-id"
+        in: "path"
+        description: "Product Inventory Reference"
+        required: true
+        type: string
+      responses:
+        200:
+          description: "Successfully Retrieved Savings Account Inventory Record"
+          schema:
+            $ref: "#/definitions/SavingsAccountInventoryWithIdAndRoot"
+            
+  /savings-account/savings-account-fulfillment-arrangement/{cr-reference-id}/liens/{bq-reference-id}:
+    get:
+      tags:
+      - "retrieve"
+      summary: "Retrieved Savings Account Liens Record"
+      operationId: "retrieveSavingsAccountLien"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "cr-reference-id"
+        in: "path"
+        description: "Product Instance Reference"
+        required: true
+        type: string
+      - name: "bq-reference-id"
+        in: "path"
+        description: "Lien Facility Reference"
+        required: true
+        type: string
+      responses:
+        200:
+          description: "Successfully Retrieved Savings Account Liens Record"
+          schema:
+            $ref: "#/definitions/SavingsAccountLienWithIdAndRoot"
+            
+  /savings-account/savings-account-fulfillment-arrangement/{cr-reference-id}/interests/{bq-reference-id}:
+    get:
+      tags:
+      - "retrieve"
+      summary: "Retrieve Savings Account Interests Rates Record"
+      operationId: "retrieveSavingsAccountInterest"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "cr-reference-id"
+        in: "path"
+        description: "Product Instance Reference"
+        required: true
+        type: string
+      - name: "bq-reference-id"
+        in: "path"
+        description: "Interest Rate Transaction Reference"
+        required: true
+        type: string
+      responses:
+        200:
+          description: "successfully Retrieved Savings Account Interest Rates Record"
+          schema:
+            $ref: '#/definitions/SavingsAccountInterestWithIdAndRoot'
+            
+  /savings-account/savings-account-fulfillment-arrangement/{cr-reference-id}/fees/{bq-reference-id}:
+    get:
+      tags:
+      - "retrieve"
+      summary: "Retrieve Savings Account Fees Record"
+      operationId: "retrieveSavingsAccountFee"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "cr-reference-id"
+        in: "path"
+        description: "Product Instance Reference"
+        required: true
+        type: string
+      - name: "bq-reference-id"
+        in: "path"
+        description: "Fee Transaction Reference"
+        required: true
+        type: string
+      responses:
+        200:
+          description: "Successfully Retrieved Savings Account Fees Record"
+          schema:
+            $ref: '#/definitions/SavingsAccountFeeWithIdAndRoot'
+            
+  /savings-account/savings-account-fulfillment-arrangement/{cr-reference-id}/statements/{bq-reference-id}:
+    get:
+      tags:
+      - "retrieve"
+      summary: "Retrieve Savings Account Statements Record"
+      operationId: "retrieveSavingsAccountStatement"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "cr-reference-id"
+        in: "path"
+        description: "Product Instance Reference"
+        required: true
+        type: string
+      - name: "bq-reference-id"
+        in: "path"
+        description: "Balance Type"
+        required: true
+        type: string
+      responses:
+        200:
+          description: "Successfully Retrieved Savings Account Statements Record"
+          schema:
+            $ref: '#/definitions/SavingsAccountStatementWithIdAndRoot'
+            
+  /savings-account/savings-account-fulfillment-arrangement/{cr-reference-id}/reports/{bq-reference-id}:
+    get:
+      tags:
+      - "retrieve"
+      summary: "Retrieve Savings Account Reports Record"
+      operationId: "retrieveSavingsAccountReport"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "cr-reference-id"
+        in: "path"
+        description: "Product Instance Reference"
+        required: true
+        type: string
+      - name: "bq-reference-id"
+        in: "path"
+        description: "Report Instance Reference"
+        required: true
+        type: string
+      responses:
+        200:
+          description: "Successfully Retrieved Savings Account Reports Record"
+          schema:
+            $ref: '#/definitions/SavingsAccountReportWithIdAndRoot'
+
+definitions:
+  SavingsAccount:
+    type: object
+    properties:
+      savingsAccountNumber:
+        $ref: 'https://api.swaggerhub.com/domains/BIAN/Common-Model/1.0.0#/definitions/IBANIdentifier'
+      customerReference:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+        example: "CR6789"
+      bankBranchLocationReference:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+          general-info: 'for booking purposes'
+        example: "BLR7364646"
+      dateType:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+        example: "open"
+      date:
+        $ref: 'https://api.swaggerhub.com/domains/BIAN/Common-Model/1.0.0#/definitions/ISODate'
+      involvedPartyReference:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+        example: "cosigner"
+      involvedPartyObligationEntitlement:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+        example: "partyEntitilement"
+      partyReference:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+        example: "PR73644"
+      accountType:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+        example: "current"
+      accountCurrency:
+        $ref: 'https://api.swaggerhub.com/domains/BIAN/Common-Model/1.0.0#/definitions/CurrencyCode'
+      accountLimitType:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+        example: "netting"
+      accountLimit:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Amount
+        example: "50000"
+      allowedAccess:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+          general-info: 'allowed roles and actions against the product'
+        example: "admin"
+      optionType:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+        example: "Email Statements"
+      option:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+          general-info: 'settings for the realization of the selected product option'
+      taxReference:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+          general-info: 'Tax-Id associated with the customer/account'
+        example: "taxid00001"
+      customerCommentary:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+        example: "commentary"
+
+  SavingsAccountWithStatus:
+    type: "object"
+    properties:
+      savingsAccountNumber:
+        $ref: 'https://api.swaggerhub.com/domains/BIAN/Common-Model/1.0.0#/definitions/IBANIdentifier'
+      customerReference:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+        example: "CR6789"
+      bankBranchLocationReference:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+          general-info: 'for booking purposes'
+        example: "BLR7364646"
+      dateType:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+        example: "open"
+      date:
+        $ref: 'https://api.swaggerhub.com/domains/BIAN/Common-Model/1.0.0#/definitions/ISODate'
+      involvedPartyReference:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+        example: "cosigner"
+      involvedPartyObligationEntitlement:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+        example: "partyEntitilement"
+      partyReference:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+        example: "PR73644"
+      accountType:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+        example: "current"
+      accountCurrency:
+        $ref: 'https://api.swaggerhub.com/domains/BIAN/Common-Model/1.0.0#/definitions/CurrencyCode'
+      accountLimitType:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+        example: "netting"
+      accountLimit:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Amount
+        example: "50000"
+      allowedAccess:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+          general-info: 'allowed roles and actions against the product'
+        example: "admin"
+      optionType:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+        example: "Email Statements"
+      option:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+          general-info: 'settings for the realization of the selected product option'
+      taxReference:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+          general-info: 'Tax-Id associated with the customer/account'
+        example: "taxid00001"
+      accountStatus:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+          general-info: 'e.g. pre-opened, active, dormant, pending for closing, blocked'
+        example: "active"
+      customerCommentary:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+        example: "commentary"
+
+  SavingsAccountWithIdAndStatus:
+    type: "object"
+    properties:
+      productInstanceReference:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+          general-info: 'savings account number'
+        example: "PIR7374646"
+      savingsAccountNumber:
+        $ref: 'https://api.swaggerhub.com/domains/BIAN/Common-Model/1.0.0#/definitions/IBANIdentifier'
+      customerReference:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+        example: "CR6789"
+      bankBranchLocationReference:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+          general-info: 'for booking purposes'
+        example: "BLR7364646"
+      dateType:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+        example: "open"
+      date:
+        $ref: 'https://api.swaggerhub.com/domains/BIAN/Common-Model/1.0.0#/definitions/ISODate'
+      involvedPartyReference:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+        example: "cosigner"
+      involvedPartyObligationEntitlement:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+        example: "partyEntitilement"
+      partyReference:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+        example: "PR73644"
+      accountType:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+        example: "current"
+      accountCurrency:
+        $ref: 'https://api.swaggerhub.com/domains/BIAN/Common-Model/1.0.0#/definitions/CurrencyCode'
+      accountLimitType:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+        example: "netting"
+      accountLimit:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Amount
+        example: "50000"
+      allowedAccess:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+          general-info: 'allowed roles and actions against the product'
+        example: "admin"
+      optionType:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+        example: "Email Statements"
+      option:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+          general-info: 'settings for the realization of the selected product option'
+      taxReference:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+          general-info: 'Tax-Id associated with the customer/account'
+        example: "taxid00001"
+      accountStatus:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+          general-info: 'e.g. pre-opened, active, dormant, pending for closing, blocked'
+        example: "active"
+      customerCommentary:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+        example: "commentary"
+
+  SavingsAccountRecordRequest:
+    type: "object"
+    properties:
+      recordingRecordType:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+        example: "Behavior model performance feedback"
+      recordingRecord:
+        type: "object"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+        properties: {}
+      recordingRecordDateTime:
+        $ref: 'https://api.swaggerhub.com/domains/BIAN/Common-Model/1.0.0#/definitions/ISODateTime'
+      employeeBusinessUnitReference:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+        example: "REF456"
+
+  SavingsAccountRecordResponse:
+    type: "object"
+    properties:
+      recordingRecordReference:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+        example: "RRR4678"
+      recordingRecordStatus:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+
+  SavingsAccountDeposit:
+    type: "object"
+    properties:
+      customerReference:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+          general-info: 'Account Holder'
+        example: "CR6789"
+      payeeReference:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+        example: "PR73646"
+      payeeProductInstanceReference:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+          general-info: 'payee account reference'
+        example: "PPIR736466"
+      payeeBankReference:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+        example: "PBR736464"
+      amount:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Amount
+        example: "200000"
+      currency:
+        $ref: 'https://api.swaggerhub.com/domains/BIAN/Common-Model/1.0.0#/definitions/CurrencyCode'
+      valueDate:
+        $ref: 'https://api.swaggerhub.com/domains/BIAN/Common-Model/1.0.0#/definitions/ISODate'
+
+  SavingsAccountDepositWithIdAndRoot:
+    type: "object"
+    properties:
+      productInstanceReference:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+          general-info: 'savings account number'
+        example: "PIR7274664"
+      depositTransactionReference:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+        example: "DTR7376464"
+      customerReference:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+          general-info: 'Account Holder'
+        example: "CR6789"
+      payeeReference:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+        example: "PR73646"
+      payeeProductInstanceReference:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+          general-info: 'payee account reference'
+        example: "PPIR736466"
+      payeeBankReference:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+        example: "PBR736464"
+      accountLimitType:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+          general-info: 'e.g. transaction credit/debit, netting, position'
+      accountLimit:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Amount
+        example: "200000"
+      amount:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Amount
+        example: "200000"
+      currency:
+        $ref: 'https://api.swaggerhub.com/domains/BIAN/Common-Model/1.0.0#/definitions/CurrencyCode'
+      valueDate:
+        $ref: 'https://api.swaggerhub.com/domains/BIAN/Common-Model/1.0.0#/definitions/ISODate'
+
+  SavingsAccountPayment:
+    type: "object"
+    properties:
+      customerReference:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+          general-info: 'Account Holder'
+        example: "CR6789"
+      payeeReference:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+        example: "PR73646"
+      payeeProductInstanceReference:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+          general-info: 'payee account reference'
+        example: "PPIR736466"
+      payeeBankReference:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+        example: "PBR736464"
+      amount:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Amount
+        example: "200000"
+      currency:
+        $ref: 'https://api.swaggerhub.com/domains/BIAN/Common-Model/1.0.0#/definitions/CurrencyCode'
+      valueDate:
+        $ref: 'https://api.swaggerhub.com/domains/BIAN/Common-Model/1.0.0#/definitions/ISODate'
+      paymentMechanism:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+        example: "Cash"
+
+  SavingsAccountPaymentWithIdAndRoot:
+    type: "object"
+    properties:
+      productInstanceReference:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+          general-info: 'savings account number'
+      paymentInstructionReference:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+        example: "PAIR7364647"
+      customerReference:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+          general-info: 'Account Holder'
+        example: "CR6789"
+      payeeReference:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+        example: "PR73646"
+      payeeProductInstanceReference:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+          general-info: 'payee account reference'
+        example: "PPIR736466"
+      payeeBankReference:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+        example: "PBR736464"
+      accountLimitType:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+          general-info: 'e.g. transaction credit/debit, netting, position'
+      accountLimit:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Amount
+        example: "200000"
+      amount:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Amount
+        example: "200000"
+      currency:
+        $ref: 'https://api.swaggerhub.com/domains/BIAN/Common-Model/1.0.0#/definitions/CurrencyCode'
+      valueDate:
+        $ref: 'https://api.swaggerhub.com/domains/BIAN/Common-Model/1.0.0#/definitions/ISODate'
+      paymentMechanism:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+        example: "Cash"
+
+  SavingsAccountStandingOrder:
+    type: "object"
+    description: "if allowed, standing orders processed from the savings account"
+    properties:
+      standingOrderPurpose:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+        example: "for compliance reporting"
+      customerReference:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+          general-info: 'Account Holder'
+        example: "CR6789"
+      payeeReference:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+        example: "PR73646"
+      payeeProductInstanceReference:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+          general-info: 'payee account reference'
+        example: "PPIR736466"
+      payeeBankReference:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+        example: "PBR736464"
+      amount:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Amount
+        example: "200000"
+      currency:
+        $ref: 'https://api.swaggerhub.com/domains/BIAN/Common-Model/1.0.0#/definitions/CurrencyCode'
+      paymentSchedule:
+        type: object
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+          general-info: 'e.g.start date, end, period, num cycles'
+
+  SavingsAccountStandingOrderWithIdAndRoot:
+    type: "object"
+    properties:
+      productInstanceReference:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+          general-info: 'savings account number'
+        example: "PIR7274664"
+      standingOrderFacilityReference:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+        example: "SFR7236464"
+      standingOrderPurpose:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+        example: "for compliance reporting"
+      customerReference:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+          general-info: 'Account Holder'
+        example: "CR6789"
+      payeeReference:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+        example: "PR73646"
+      payeeProductInstanceReference:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+          general-info: 'payee account reference'
+        example: "PPIR736466"
+      payeeBankReference:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+        example: "PBR736464"
+      amount:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Amount
+        example: "200000"
+      currency:
+        $ref: 'https://api.swaggerhub.com/domains/BIAN/Common-Model/1.0.0#/definitions/CurrencyCode'
+      paymentSchedule:
+        type: object
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+          general-info: 'e.g.start date, end, period, num cycles'
+
+  SavingsAccountDirectDebit:
+    type: "object"
+    properties:
+      directDebitMandateReference:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+          general-info: 'payee'
+        example: "DDMR7366464"
+      directDebitPurpose:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+        example: "for compliance reporting"
+      directDebitServiceConfiguration:
+        type: object
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+        example: "limits/schedules"
+      customerReference:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+        example: "CR6789"
+      bankBranchLocationReference:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+          general-info: 'for booking purposes'
+        example: "BLR7364646"
+      payeeReference:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+        example: "PR73646"
+      payeeProductInstanceReference:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+          general-info: 'payee account reference'
+        example: "PPIR736466"
+      payeeBankReference:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+        example: "PBR736464"
+      amount:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Amount
+        example: "200000"
+      currency:
+        $ref: 'https://api.swaggerhub.com/domains/BIAN/Common-Model/1.0.0#/definitions/CurrencyCode'
+
+  SavingsAccountDirectDebitWithIdAndRoot:
+    type: "object"
+    properties:
+      productInstanceReference:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+          general-info: 'savings account number'
+        example: "PIR7374646"
+      directDebitFacilityReference:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+        example: "DDFR7635464"
+      directDebitMandateReference:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+          general-info: 'payee'
+        example: "DDMR7366464"
+      directDebitPurpose:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+        example: "for compliance reporting"
+      directDebitServiceConfiguration:
+        type: object
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+        example: "limits/schedules"
+      customerReference:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+        example: "CR6789"
+      bankBranchLocationReference:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+          general-info: 'for booking purposes'
+        example: "BLR7364646"
+      payeeReference:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+        example: "PR73646"
+      payeeProductInstanceReference:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+          general-info: 'payee account reference'
+        example: "PPIR736466"
+      payeeBankReference:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+        example: "PBR736464"
+      amount:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Amount
+        example: "200000"
+      currency:
+        $ref: 'https://api.swaggerhub.com/domains/BIAN/Common-Model/1.0.0#/definitions/CurrencyCode'
+
+  SavingsAccountSweep:
+    type: "object"
+    properties:
+      customerReference:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+          general-info: 'Account Holder'
+        example: "CR6789"
+      payeeReference:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+          general-info: 'sweep-account-owner'
+        example: "PR73646"
+      payeeProductInstanceReference:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+          general-info: 'sweep account reference'
+        example: "PPIR736466"
+      sweepServiceConfiguration:
+        type: object
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+          general-info: 'e.g. threshold/frequency'
+
+  SavingsAccountSweepWithIdAndRoot:
+    type: "object"
+    properties:
+      productInstanceReference:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+          general-info: 'savings account number'
+        example: "PIR7374646"
+      customerReference:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+          general-info: 'Account Holder'
+        example: "CR6789"
+      payeeReference:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+          general-info: 'sweep-account-owner'
+        example: "PR73646"
+      payeeProductInstanceReference:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+          general-info: 'sweep account reference'
+        example: "PPIR736466"
+      sweepServiceConfiguration:
+        type: object
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+          general-info: 'e.g. threshold/frequency'
+
+  SavingsAccountInventory:
+    type: "object"
+    properties:
+      inventoryItemType:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+        example: "pay-in slip"
+      inventoryItemProperties:
+        type: object
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+          general-info: 'e.g. sequence numbers'
+      inventoryItemStatus:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+        example: "cancelled"
+
+  SavingsAccountInventoryWithIdAndRoot:
+    type: "object"
+    properties:
+      productInstanceReference:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+          general-info: 'savings account number'
+        example: "PIR7374646"
+      productInventoryReference:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+        example: "PINVR7366464"
+      inventoryItemType:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+        example: "pay-in slip"
+      inventoryItemProperties:
+        type: object
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+          general-info: 'e.g. sequence numbers'
+      inventoryItemStatus:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+        example: "cancelled"
+
+  SavingsAccountLien:
+    type: "object"
+    properties:
+      lienType:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+        example: "final"
+      lienOriginator:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      lienStartDate:
+        $ref: 'https://api.swaggerhub.com/domains/BIAN/Common-Model/1.0.0#/definitions/ISODate'
+      lienExpiryDate:
+        $ref: 'https://api.swaggerhub.com/domains/BIAN/Common-Model/1.0.0#/definitions/ISODate'
+      lienStatus:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      lienServiceConfiguration:
+        type: object
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+
+  SavingsAccountLienWithIdAndRoot:
+    type: "object"
+    properties:
+      productInstanceReference:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+          general-info: 'savings account number'
+        example: "PIR7374646"
+      lienFacilityReference:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+        example: "LFR73464664"
+      lienType:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+        example: "final"
+      lienOriginator:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      lienStartDate:
+        $ref: 'https://api.swaggerhub.com/domains/BIAN/Common-Model/1.0.0#/definitions/ISODate'
+      lienExpiryDate:
+        $ref: 'https://api.swaggerhub.com/domains/BIAN/Common-Model/1.0.0#/definitions/ISODate'
+      lienStatus:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      lienServiceConfiguration:
+        type: object
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+
+  SavingsAccountInterestWithIdAndRoot:
+    type: "object"
+    properties:
+      productInstanceReference:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+          general-info: 'savings account number'
+      interestRateTransactionReference:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+        example: "IRTR736464"
+      rateRateConfiguration:
+        type: object
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+          general-info: 'service domain level structure'
+      applicableInterestRate:
+        $ref: 'https://api.swaggerhub.com/domains/BIAN/Common-Model/1.0.0#/definitions/PercentageRate'
+      rateApplicationSchedule:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+        example: "Weekly"
+      accuredInterestAmount:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Amount
+        example: "20"
+
+  SavingsAccountFeeWithIdAndRoot:
+    type: "object"
+    properties:
+      productInstanceReference:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+          general-info: 'savings account number'
+        example: "PIR7374646"
+      feeTransactionReference:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+        example: "FTR736454"
+      feeConfiguration:
+        type: object
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+          general-info: 'customer level fee structure'
+      feeType:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      feeCharge:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Amount
+        example: "100"
+      feeProjectionsCommitments:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      feeAccrualAmount:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Amount
+        example: "200"
+
+  SavingsAccountStatementWithIdAndRoot:
+    type: "object"
+    properties:
+      productInstanceReference:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+          general-info: 'savings account number'
+        example: "PIR7374646"
+      balanceType:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+          general-info: 'e.g. booked, available, closing, pending block'
+        example: "available"
+      balance:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Amount
+        example: "1000"
+      statementInstanceReference:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+        example: "SIR736646"
+      statementType:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+          general-info: 'e.g. balance/mini-statement/annual'
+        example: "balance"
+      statementTrasactionType:
+        type: object
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      statementPeriod:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Duration
+        example: "01/08/2018 - 31/08/2018"
+      transactionRecordReference:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+        example: "TTR457464"
+      transactionType:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+        example: "credit"
+      transactionPrincipleAmount:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Amount
+        example: "2456"
+      transactionCounterparty:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+          general-info: 'e.g. payee, merchant'
+        example: "payee"
+      transactionObligation:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+        example: "purchased service/product"
+      transactionDateTime:
+        $ref: 'https://api.swaggerhub.com/domains/BIAN/Common-Model/1.0.0#/definitions/ISODateTime'
+
+  SavingsAccountReportWithIdAndRoot:
+    type: "object"
+    properties:
+      productInstanceReference:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+          general-info: 'savings account number'
+        example: "PIR7374646"
+      reportInstanceReference:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+        example: "RIR736464"
+      reportType:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+        example: "2"
+      reportOptionsSelectionCriteria:
+        type: object
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+          general-info: 'defines content'
+      reportPeriod:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Duration
+        example: "07/01/2018 - 07/31/2018"
+      reportFormatTemplate:
+        type: object
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+          general-info: 'defines presentation'

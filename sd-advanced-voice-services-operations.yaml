@@ -1,0 +1,924 @@
+swagger: '2.0'
+info:
+  version: '4.0.0'
+  title: 'Service Domain - Advanced Voice Services Operations'
+  description: >
+        
+        ## Description:
+        
+        This service domain operates the telephone channel infrastructure, including the IVR and any other automated devices as appropriate. This includes handling default routing rules and intra-day/session adjustments to deal with peak load or other operational variations
+
+        ## Example of use:
+        
+        The numeric menu is adjusted to increase self serve activity during a period of peak loading (this could be implemented in the IVR in a more sophisticated set-up
+        
+        ## General comment:
+        
+        This service domain handles the operation of the PBX/telephony infrastructure which can include embedded IVR capabilities. The PBX system will have close integration with the call center and E-Branch capabilities depending on the degree of computer telephony integration (CTI) and cross channel support
+        
+# Added by API Auto Mocking Plugin
+host: virtserver.swaggerhub.com
+basePath: /BIAN/sd-advanced-voice-services-operations/4.0.0
+schemes:
+ - https
+
+paths:
+  /advanced-voice-service-operations/voice-channel-operating-session/{cr-reference-id}/recording:
+    post:
+      tags:
+      - record
+      summary: "Record activity/feedback against the operating session"
+      operationId: recordVoiceChannelOperatingSession
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - in: path
+        name: cr-reference-id
+        type: string
+        description: "VChannel Operating Session Reference"
+        required: true
+      - in: body
+        name: body
+        description: Record control record request payload
+        required: true
+        schema:
+          $ref: "#/definitions/AdvancedVoiceServiceOperationsRecordRequest"
+      responses:
+        201:
+          description: "A new Record is created"
+          schema:
+            $ref: '#/definitions/AdvancedVoiceServiceOperationsRecordResponse'
+
+  /advanced-voice-service-operations/voice-channel-operating-session/{cr-reference-id}/inbounds/{bq-reference-id}/execution:
+    put:
+      tags:
+      - execute
+      summary: "Updates a inbound access record"
+      operationId: executeVoiceChannelOperatingSessionInboundVoiceAccessUpdate
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - in: path
+        name: cr-reference-id
+        description: "VChannel Operating Session Reference"
+        type: string
+        required: true
+      - in: path
+        name: bq-reference-id
+        description: "VChannel Inbound Connection Reference"
+        type: string
+        required: true
+      - in: body
+        name: body
+        description: "Inbound Access Update Request Model"
+        required: true
+        schema:
+          $ref: "#/definitions/AdvancedVoiceServiceOperationsInboundBasic"
+      responses:
+        200:
+          description: "Successfully Updated a inbound access record"
+          schema:
+            $ref: '#/definitions/AdvancedVoiceServiceOperationsInboundComplete'
+
+  /advanced-voice-service-operations/voice-channel-operating-session/{cr-reference-id}/inbounds/execution:
+    post:
+      tags:
+      - execute
+      summary: "Created a inbound access record"
+      operationId: executeVoiceChannelOperatingSessionInboundVoiceAccessCreate
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - in: path
+        name: cr-reference-id
+        description: "VChannel Operating Session Reference"
+        type: string
+        required: true
+      - in: body
+        name: body
+        description: "Inbound Access Create Request Model"
+        required: true
+        schema:
+          $ref: "#/definitions/AdvancedVoiceServiceOperationsInboundBasic"
+      responses:
+        201:
+          description: "Successfully Created a inbound access record"
+          schema:
+            $ref: '#/definitions/AdvancedVoiceServiceOperationsInboundComplete'
+
+  /advanced-voice-service-operations/voice-channel-operating-session/{cr-reference-id}/outbounds/{bq-reference-id}/execution:
+    put:
+      tags:
+      - execute
+      summary: "Updates a outbound access record"
+      operationId: executeEBranchChannelOperatingSessionOutboundWebAccessUpdate
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - in: path
+        name: cr-reference-id
+        description: "VChannel Operating Session Reference"
+        type: string
+        required: true
+      - in: path
+        name: bq-reference-id
+        description: "VChannel Outbound Connection Reference"
+        type: string
+        required: true
+      - in: body
+        name: body
+        description: "Oubound Access Update Request Model"
+        required: true
+        schema:
+          $ref: "#/definitions/AdvancedVoiceServiceOperationsOutboundBasic"
+      responses:
+        200:
+          description: "Updated Outbound web access successfully"
+          schema:
+            $ref: '#/definitions/AdvancedVoiceServiceOperationsOutboundComplete'
+
+  /advanced-voice-service-operations/voice-channel-operating-session/{cr-reference-id}/outbounds/execution:
+    post:
+      tags:
+      - execute
+      summary: "Creates a channel outbound web access"
+      operationId: executeEBranchChannelOperatingSessionOutboundWebAccessCreate
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - in: path
+        name: cr-reference-id
+        description: "VChannel Operating Session Reference"
+        type: string
+        required: true
+      - in: body
+        name: body
+        description: "Outbound Access Create Request Model"
+        required: true
+        schema:
+          $ref: "#/definitions/AdvancedVoiceServiceOperationsOutboundBasic"
+      responses:
+        201:
+          description: "Created a Outbound  web access successfully"
+          schema:
+            $ref: '#/definitions/AdvancedVoiceServiceOperationsOutboundComplete'
+
+  /advanced-voice-service-operations/voice-channel-operating-session/{cr-reference-id}/issues/{bq-reference-id}/requisition:
+    put:
+      tags:
+      - request
+      summary: "Updates a issues record"
+      operationId: requestVoiceChannelOperatingSessionUpdate
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - in: path
+        name: cr-reference-id
+        description: "VChannel Operating Session Reference Id"
+        type: string
+        required: true
+      - name: bq-reference-id
+        in: path
+        description: "VChannel Service Issue Reference"
+        required: true
+        type: string
+      - in: body
+        name: body
+        required: true
+        schema:
+          $ref: "#/definitions/AdvancedVoiceServiceOperationsIssuesBasic"
+      responses:
+        200:
+          description: "Successfully Updated issues record"
+          schema:
+            $ref: '#/definitions/AdvancedVoiceServiceOperationsIssuesComplete'
+
+  /advanced-voice-service-operations/voice-channel-operating-session/{cr-reference-id}/issues/requisition:
+    post:
+      tags:
+      - request
+      description: Create a issues record
+      summary: "Request specific work tasks provided by the voice operation facility creation"
+      operationId: requestVoiceChannelOperatingSessionCreate
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - in: path
+        name: cr-reference-id
+        description: "VChannel Operating Session Reference Id"
+        required: true
+        type: string
+      - in: body
+        name: body
+        required: true
+        schema:
+          $ref: "#/definitions/AdvancedVoiceServiceOperationsIssuesBasic"
+      responses:
+        201:
+          description: "Successfully Created issues record"
+          schema:
+            $ref: '#/definitions/AdvancedVoiceServiceOperationsIssuesComplete'
+
+  /advanced-voice-service-operations/voice-channel-operating-session:
+    get:
+      tags:
+      - retrieve
+      operationId: retrieveVoiceChannelOperatingSessionReferenceIds
+      summary: "Retrieve Operating Session Control Record Ids available within the Service Domain."
+      produces:
+      - application/json
+      parameters:
+      - name: collection-filter
+        in: query
+        description: "Filter to refine the result set. ex- 'vChannelCustomerMenuReference == VCCMR736464'"
+        type: string
+      responses:
+        200:
+          description: "Retrieved Voice Channel Operating Session ids"
+          schema:
+            type: array
+            items:
+              type: string
+            example: [VCOSR123, VCOSR345]
+
+  
+  /advanced-voice-service-operations/voice-channel-operating-session/behavior-qualifiers:
+    get:
+      tags:
+      - retrieve
+      operationId: retrieveVoiceChannelOperatingSessionReferenceNames
+      summary: "Retrieve all Behaviour Qualifier names in the Operating Session"
+      produces:
+      - application/json
+      responses:
+        200:
+          description: "Retrieved Voice Channel Operating Session BQ names"
+          schema:
+            type: array
+            items:
+              type: string
+            example: ['inbound', 'outbound', 'issues', 'reporting'] 
+       
+  /advanced-voice-service-operations/voice-channel-operating-session/{cr-reference-id}/{behavior-qualifier}:
+    get:
+      tags:
+      - retrieve
+      operationId: retrieveVoiceChannelOperatingSessionBehaviorQualifierReferenceIds
+      summary: "Retrieve Behaviour Qualifier Reference Ids of the given Behavior Qualifier."
+      produces:
+      - application/json
+      parameters:
+      - name: cr-reference-id
+        in: path
+        description: "VChannel Operating Session Reference"
+        required: true
+        type: string
+      - name: behavior-qualifier
+        in: path
+        description: "Behavior Qualifier Name e.g. inbound"
+        required: true
+        type: string
+      - name: collection-filter
+        in: query
+        description: "Filter to refine the result set. ex- 'vChannelDevicePropertyValue = ANI'"
+        type: string
+      responses:
+        200:
+          description: "Retrieved Voice Channel Operating Session BQ IDs"
+          schema:
+            type: array
+            items:
+              type: string
+            example: [VCICR345, VCICR789] 
+            
+  /advanced-voice-service-operations/voice-channel-operating-session/{cr-reference-id}:
+    get:
+      tags:
+      - retrieve
+      summary: "Retrieve Voice Channel Operating Session Record"
+      operationId: retrieveVoiceChannelOperatingSession
+      produces:
+      - application/json
+      parameters:
+      - in: path
+        type: string
+        required: true
+        name: cr-reference-id
+        description: "VChannel Operating Session Reference"
+      responses:
+        200:
+          description: "Retrieved Voice Channel Operating Session Record"
+          schema:
+            $ref: '#/definitions/AdvancedVoiceServiceOperationsConfiguration'
+
+  /advanced-voice-service-operations/voice-channel-operating-session/{cr-reference-id}/inbounds/{bq-reference-id}:
+    get:
+      tags:
+      - retrieve
+      summary: "Retrieve Voice Channel Operating Inbound Session Record"
+      operationId: retrieveVoiceChannelOperatingSessionInbound
+      produces:
+      - application/json
+      parameters:
+      - in: path
+        type: string
+        required: true
+        name: cr-reference-id
+        description: "VChannel Operating Session Reference"
+      - name: bq-reference-id
+        in: path
+        description: "VChannel Inbound Connection Reference"
+        required: true
+        type: string
+      responses:
+        200:
+          description: "Successfully Retrieved Voice Channel Operating Inbound Session Record"
+          schema:
+            $ref: '#/definitions/AdvancedVoiceServiceOperationsInboundComplete'
+
+  /advanced-voice-service-operations/voice-channel-operating-session/{cr-reference-id}/outbounds/{bq-reference-id}:
+    get:
+      tags:
+      - retrieve
+      summary: "Retrieve Voice Channel Operating Outbound Session Record"
+      operationId: retrieveVoiceChannelOperatingSessionOutbound
+      produces:
+      - application/json
+      parameters:
+      - in: path
+        type: string
+        required: true
+        name: cr-reference-id
+        description: "VChannel Operating Session Reference"
+      - name: bq-reference-id
+        in: path
+        description: "VChannel Outbound Connection Reference"
+        required: true
+        type: string
+      responses:
+        200:
+          description: "Successfully Retrieved Voice Channel Operating Outbound Session Record"
+          schema:
+            $ref: '#/definitions/AdvancedVoiceServiceOperationsOutboundComplete'
+
+  /advanced-voice-service-operations/voice-channel-operating-session/{cr-reference-id}/issues/{bq-reference-id}:
+    get:
+      tags:
+      - retrieve
+      summary: "Retrieve Voice Channel Operating Session Issues Record"
+      operationId: retrieveVoiceChannelOperatingSessionIssue
+      produces:
+      - application/json
+      parameters:
+      - in: path
+        type: string
+        required: true
+        name: cr-reference-id
+        description: "VChannel Operating Session Reference"
+      - name: bq-reference-id
+        in: path
+        description: "VChannel Service Issue Reference"
+        required: true
+        type: string
+      responses:
+        200:
+          description: "Successfully Retrieved Voice Channel Operating Session Issues Record"
+          schema:
+            $ref: '#/definitions/AdvancedVoiceServiceOperationsIssuesComplete'
+
+  /advanced-voice-service-operations/voice-channel-operating-session/{cr-reference-id}/reportings/{bq-reference-id}:
+    get:
+      tags:
+      - retrieve
+      summary: "Retrieve Voice Channel Operating Session Reporting Record"
+      operationId: retrieveVoiceChannelOperatingSessionReporting
+      produces:
+      - application/json
+      parameters:
+      - in: path
+        type: string
+        required: true
+        name: cr-reference-id
+        description: "VChannel Service Issue Reference"
+      - name: bq-reference-id
+        in: path
+        description: "VChannel Service Report Reference"
+        required: true
+        type: string
+      responses:
+        200:
+          description: "Successfully Retrieved Voice Channel Operating Session Reporting Record"
+          schema:
+            $ref: '#/definitions/AdvancedVoiceServiceOperationsReportingComplete'
+
+definitions:
+
+  AdvancedVoiceServiceOperationsConfiguration:
+    type: object
+    properties:
+      vChannelServiceReference:
+        type: string
+        example: "VCSR548679123"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier 
+          general-info: "Refers to the service"
+      vChannelOperatingSessionReference:
+        type: string
+        example: "VCOSR214563789"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier 
+          general-info: "Refers to active service session"
+      vChannelServiceConfigurationParameterType:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+          general-info: "E.g. security setting, menu options"
+        example: "MENU_OPTIONS"
+      vChannelServiceConfigurationParameter:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+          general-info: "The setting/value for a service parameter"
+        example: "PARAMETER_VALUE"
+      vChannelCustomerMenuReference:
+        type: string
+        example: "514851457"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier 
+      vChannelCustomerMenuDefinition:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+          general-info: "Lists the channel customer selection menu - selection is configurable"
+
+  AdvancedVoiceServiceOperationsInboundBasic:
+    type: object
+    properties:
+      vChannelDeviceReference:
+        type: string
+        example: "VCDR789456123"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier 
+          general-info: "Device being used for access"
+      vChannelDevicePropertyValue:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+          general-info: "Property of the device e.g. ANI phone number"
+        example: "ANI"
+      vChannelInboundConnectionStartTime:
+        type: string
+        example: "01-01-1970 00:00:00" # DD-MM-YYYY HH24:MI:SS UTC
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::DateTime
+      vChannelInboundConnectionDuration:
+        type: string
+        example: "01:42:59" # HH24:MI:SS UTC
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Duration
+      vChannelInboundConnectionContactReference:
+        type: string
+        example: "VICCR654789321"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier 
+          general-info: "Retuned by SD contact Handler for reference"
+      vChannelServiceSessionStatistics:
+        type: object
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+          general-info: "Maintained service activity statistics"
+
+  AdvancedVoiceServiceOperationsInboundComplete:
+    type: object
+    properties:
+      vChannelServiceReference:
+        type: string
+        example: "VCSR548679123"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier 
+          general-info: "Refers to the service"
+      vChannelOperatingSessionReference:
+        type: string
+        example: "VCOSR214563789"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier 
+          general-info: "Refers to active service session"
+      vChannelInboundConnectionReference:
+        type: string
+        example: "VICR321654987"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier 
+          general-info: "Refers to the inbound connection"
+      vChannelDeviceReference:
+        type: string
+        example: "VCDR789456123"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier 
+          general-info: "Device being used for access"
+      vChannelDevicePropertyValue:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+          general-info: "Property of the device e.g. ANI phone number"
+        example: "ANI"
+      vChannelInboundConnectionStartTime:
+        type: string
+        example: "01-01-1970 00:00:00" # DD-MM-YYYY HH24:MI:SS UTC
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::DateTime
+      vChannelInboundConnectionDuration:
+        type: string
+        example: "01:42:59" # HH24:MI:SS UTC
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Duration
+      vChannelInboundConnectionContactReference:
+        type: string
+        example: "VICCR654789321"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier 
+          general-info: "Retuned by SD contact Handler for reference"
+      vChannelServiceSessionStatistics:
+        type: object
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+          general-info: "Maintained service activity statistics"
+
+  AdvancedVoiceServiceOperationsOutboundBasic:
+    type: object
+    properties:
+      empolyeeBusinessUnitReference:
+        type: string
+        example: "EBU456321987"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier 
+          general-info: "Source of outbound contact"
+      customerContactRecordReference:
+        type: string
+        example: "CCRR321521448"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier 
+          general-info: "Customer contact record accessing outbound channel"
+      customerContactRecord:
+        type: object
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+          general-info: "Contact details - see SD contact Handler for definition"
+      vChannelCustomerDeviceReference:
+        type: string
+        example: "VCDR312456987"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier 
+          general-info: "Device being accessed"
+      vChannelOutboundConnectionStartTime:
+        type: string
+        example: "01-01-1970 00:00:00" # DD-MM-YYYY HH24:MI:SS UTC
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::DateTime
+      vChannelOutboundConnectionDuration:
+        type: string
+        example: "01:42:59" # HH24:MI:SS UTC
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Duration
+      vChannelServiceSessionStatistics:
+        type: object
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+          general-info: "Maintained service activity statistics"
+
+  AdvancedVoiceServiceOperationsOutboundComplete:
+    type: object
+    properties:
+      vChannelServiceReference:
+        type: string
+        example: "VCSR548679123"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier 
+          general-info: "Refers to the service"
+      vChannelOperatingSessionReference:
+        type: string
+        example: "VCOSR214563789"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier 
+          general-info: "Refers to active service session"
+      vChannelOutboundConnectionReference:
+        type: string
+        example: "VCOCR321654987"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier 
+          general-info: "Refers to the inbound connection"
+      empolyeeBusinessUnitReference:
+        type: string
+        example: "EBU456321987"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier 
+          general-info: "Source of outbound contact"
+      customerContactRecordReference:
+        type: string
+        example: "CCRR321521448"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier 
+          general-info: "Customer contact record accessing outbound channel"
+      customerContactRecord:
+        type: object
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+          general-info: "Contact details - see SD contact Handler for definition"
+      vChannelCustomerDeviceReference:
+        type: string
+        example: "VCDR312456987"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier 
+          general-info: "Device being accessed"
+      vChannelOutboundConnectionStartTime:
+        type: string
+        example: "01-01-1970 00:00:00" # DD-MM-YYYY HH24:MI:SS UTC
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::DateTime
+      vChannelOutboundConnectionDuration:
+        type: string
+        example: "01:42:59" # HH24:MI:SS UTC
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Duration
+      vChannelServiceSessionStatistics:
+        type: object
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+          general-info: "Maintained service activity statistics"
+
+  AdvancedVoiceServiceOperationsIssuesBasic:
+    type: object
+    properties:
+      empolyeeBusinessUnitReference:
+        type: string
+        example: "EBU456321987"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier 
+          general-info: "Issue reported by"
+      customerContactRecordReference:
+        type: string
+        example: "CCRR321521448"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier 
+          general-info: "Customer contact where issue occurred"
+      productionIssueType:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+          general-info: "Type of event/error being recorded e.g. network failure"
+        example: "NETWORK_FAILURE"
+      productionIssueDescription:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+          general-info: "Description of the event error"
+        example: "Err1: Description to explain"
+      productionIssueDiagnosis:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+          general-info: "Evaluation of the event cause and impact"
+        example: "SEVERAL"
+      productionIssueResolutionTask:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+          general-info: "Description of corrective action"
+        example: "Err1: Explanation of actions to fix the problem"
+      productionIssueRecord:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+          general-info: "Detail of the issue, response and interested parties"
+      productionIssueStatus:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+          general-info: "Tracking the state of resolution of a reported issue"
+
+  AdvancedVoiceServiceOperationsIssuesComplete:
+    type: object
+    properties:
+      vChannelServiceReference:
+        type: string
+        example: "VCSR548679123"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier 
+          general-info: "Refers to the service"
+      vChannelOperatingSessionReference:
+        type: string
+        example: "VCOSR214563789"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier 
+          general-info: "Refers to active service session"
+      vChannelServiceIssueReference:
+        type: string
+        example: "VCSIR321654987"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier 
+          general-info: "Refers to active service session"
+      empolyeeBusinessUnitReference:
+        type: string
+        example: "EBU456321987"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier 
+          general-info: "Issue reported by"
+      customerContactRecordReference:
+        type: string
+        example: "CCRR321521448"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier 
+          general-info: "Customer contact where issue occurred"
+      productionIssueType:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+          general-info: "Type of event/error being recorded e.g. network failure"
+        example: "NETWORK_FAILURE"
+      productionIssueDescription:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+          general-info: "Description of the event error"
+        example: "Err1: Description to explain"
+      productionIssueDiagnosis:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+          general-info: "Evaluation of the event cause and impact"
+        example: "SEVERAL"
+      productionIssueResolutionTask:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+          general-info: "Description of corrective action"
+        example: "Err1: Explanation of actions to fix the problem"
+      productionIssueRecord:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+          general-info: "Detail of the issue, response and interested parties"
+      productionIssueStatus:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+          general-info: "Tracking the state of resolution of a reported issue"
+        example: "resolved"
+
+  AdvancedVoiceServiceOperationsReportingComplete:
+    type: object
+    properties:
+      vChannelOperatingSessionReference:
+        type: string
+        example: "VCOSR214563789"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier 
+          general-info: "Refers to active service session"
+      vChannelServiceReportReference:
+        type: string
+        example: "VCSRR214563789"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier 
+          general-info: "Refers to the service report"
+      vChannelServiceSessionReportType:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+          general-info: "E.g. real-time status, session statistics"
+        example: "REALTIME_STATUS"
+      vChannelServiceSessionStatistics:
+        type: object
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+          general-info: "Maintained service activity statistics"
+      vChannelServiceConfigurationParameter:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+          general-info: "The setting/value for a service parameter"
+        example: "PARAMETER_VALUE"
+      vChannelServiceSessionReport:
+        type: object
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+          general-info: "The session activity report"
+
+  AdvancedVoiceServiceOperationsRecordRequest:
+    type: object
+    properties:
+      recordingRecordType:
+        type: string
+        example: "Behavior model performance feedback"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      recordingRecord:
+        type: object
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+      recordingRecordDateTime:
+        type: string
+        example: "2012-12-20T17:25:32"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::DateTime
+      empolyeeBusinessUnitReference:
+        type: string
+        example: "456321987"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier 
+          general-info: "Employee or unit assigned to the servicing position"
+
+  AdvancedVoiceServiceOperationsRecordResponse:
+    type: object
+    properties:
+      recordingRecordReference:
+        type: string
+        example: "789456321"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier 
+      recordingRecordStatus:
+        type: string
+        example: "APPLIED"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text

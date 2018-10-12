@@ -1,0 +1,430 @@
+---
+swagger: "2.0"
+info:
+  description: |
+    ## Description:
+    Analyze internal and external market information sources as necessary to develop specific market insights
+    ## Example of use:
+    Market analysts, define and develop insights into the market to support different aspects of the banks business development
+    ## General comment:
+    This service domain supports the range of market research analysis needed to support business management decisions. It draws on external market research and internally generated business information as necessary. It is used to develop insights into market trends and potential and to evaluate key events that might impact business directly or that of important customers and customer segments
+  version: "4.0.0"
+  title: Service Domain - Market Analysis
+host: virtserver.swaggerhub.com
+basePath: /BIAN/sd-market-analysis/2.0.0
+schemes:
+- https
+paths:
+  /market-analysis/general-market-research-analysis:
+    get:
+      tags:
+      - "retrieve"
+      summary: "Retrieve available Market Analysis Control Record Ids."
+      operationId: "RetrieveMarketAnalysisReferenceIds"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "collection-filter"
+        in: "query"
+        description: "Filter to refine the result set. ex- 'marketAnalysisAlgorthimReference = MAAR12345'"
+        required: false
+        type: "string"
+      responses:
+        200:
+          description: "successfully retrieved Market Analysis Control Record IDs"
+          schema:
+            type: "array"
+            items:
+              type: "string"
+            example: ["MAAR12345", "MAAR345677"]
+
+  /market-analysis/general-market-research-analysis/behavior-qualifiers:
+    get:
+      tags:
+      - "retrieve"
+      summary: "Retrieve all BQ names in the Market Analysis Service Domain."
+      operationId: "RetrieveMarketAnalysisBehaviorQualifiers"
+      produces:
+      - "application/json"
+      responses:
+        200:
+          description: "Successful retrieved behavior qualifiers for the Market Analysis Service Domain"
+          schema:
+            type: "array"
+            items:
+              type: "string"
+            example: ["algorithm"]
+
+  /market-analysis/general-market-research-analysis/{cr-reference-id}/{behavior-qualifier}:
+    get:
+      tags:
+      - "retrieve"
+      summary: "Retrieve BQ Reference Ids of the given Behavior Qualifier."
+      operationId: "RetrieveBehaviorQualifierReferenceIds"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "cr-reference-id"
+        in: "path"
+        description: "Market Analysis Request Reference"
+        required: true
+        type: "string"
+      - name: "behavior-qualifier"
+        in: "path"
+        description: "Behavior Qualifier Name. ex- algorithm"
+        required: true
+        type: "string"
+      - name: "collection-filter"
+        in: "query"
+        description: "Filter to refine the result set. ex- 'marketAnalysisAlgorithmType = genetic'"
+        required: false
+        type: "string"
+      responses:
+        200:
+          description: "Successfully retrieved Behavior Qualifier reference IDs"
+          schema:
+            type: "array"
+            items:
+              type: "string"
+            example: ["ALG345" ,"ALG789"]
+
+
+  /market-analysis/general-market-research-analysis/{cr-reference-id}:
+    get:
+      tags:
+      - "retrieve"
+      summary: "Retrieve Market Analysis Master Control Record data"
+      operationId: "retrieveGeneralMarketResearchAnalysis"
+      produces: 
+      - "application/json"
+      parameters: 
+      - name: "cr-reference-id"
+        in: "path"
+        description: "Market Analysis Request Reference"
+        required: true
+        type: "string"
+      responses:
+        200:
+          description: "Successfully retrieved Market Research Analysis record"
+          schema:
+            $ref: "#/definitions/MarketAnalysisBaseWithId"
+
+
+  /market-analysis/general-market-research-analysis/{cr-reference-id}/algorithms/{bq-reference-id}:
+    get:
+      tags:
+      - "retrieve"
+      summary: "Retrieve Market Analysis Algorithm data"
+      operationId: "retrievegeneralMarketResearchAnalysisAlgorithm"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "cr-reference-id"
+        in: "path"
+        description: "Market Analysis Request Reference"
+        required: true
+        type: "string"
+      - name: "bq-reference-id"
+        in: "path"
+        description: "Market Analysis Algorithm Reference"
+        required: true
+        type: "string"
+      responses:
+        200:
+          description: "Successfully retrieved Market Analysis Algorithm"
+          schema:
+            $ref: "#/definitions/MarketAnalysisAlgorithmBaseWithIdAndRoot"
+            
+  /market-analysis/general-market-research-analysis/{cr-reference-id}/recording:
+    post:
+      tags:
+      - "record"
+      summary: "Record activity/feedback relating to market analysis activity"
+      operationId: "recordGeneralMarketResearchAnalysis"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "cr-reference-id"
+        in: "path"
+        description: "Market Analysis Request Reference"
+        required: true
+        type: "string"
+      - in: "body"
+        name: "body"
+        description: "Record control record request payload"
+        required: true
+        schema:
+          $ref: "#/definitions/MarketAnalysisRecordRequest"
+      responses:
+        201:
+          description: "A new Record is created"
+          schema:
+            $ref: "#/definitions/MarketAnalysisRecordResponse"
+
+  /market-analysis/general-market-research-analysis/{cr-reference-id}/requisition:
+    put:
+      tags:
+      - "request"
+      summary: "Update an existing Market Analysis"
+      description: "Update an exising Market Analysis"
+      operationId: "requestGeneralMarketResearchAnalysisUpdate"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "cr-reference-id"
+        in: "path"
+        description: "Market Analysis Request Reference"
+        required: true
+        type: "string"
+      - in: "body"
+        name: "body"
+        description: "Request Market Analysis request payload"
+        required: true
+        schema:
+          $ref: "#/definitions/MarketAnalysisBase"
+      responses:
+        200:
+          description: "Successfully updated Market Analysis report"
+          schema:
+            $ref: "#/definitions/MarketAnalysisBaseWithId"
+
+  /market-analysis/general-market-research-analysis/requisition:
+    post:
+      tags:
+      - "request"
+      summary: "Create a new Market Analysis"
+      description: "Create a new Market Analysis"
+      operationId: "requestGeneralMarketResearchAnalysisCreate"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "Request Market Analysis request payload"
+        required: true
+        schema:
+          $ref: "#/definitions/MarketAnalysisBase"
+      responses:
+        201:
+          description: "Created a standing order successfully"
+          schema:
+            $ref: "#/definitions/MarketAnalysisBaseWithId"
+
+definitions:
+  MarketAnalysisBase:
+    type: "object"
+    properties:
+      marketAnalysisRequest:
+        type: "object"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+          general-info: 'details the request in terms of subject area, type of analysis, period, time/budget etc.'
+      employeeBusinessUnitReference:
+        type: "string"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+          general-info: 'employee and/or business unit requesting the market analysis'
+        example: "EBU1234"
+      marketAnalysisRequestPlan:
+        type: "object"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+          general-info: 'details work done in terms of planned/actual effort, research sources/costs, timing'
+      marketAnalysisAlgorithmReference:
+        type: "string"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+          general-info: 'refers to the market analysis algorithm used in the analysis'
+        example: "ALG987"
+      marketAnalysisReportReference:
+        type: "string"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+          general-info: 'refers to the market analysis report'
+        example: "MAR378"
+      marketAnalysisReport:
+        type: "object"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+          general-info: 'Market analysis report'
+
+  MarketAnalysisBaseWithId:
+    type: "object"
+    properties:
+      marketAnalysisRequestReference:
+        type: "string"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+          general-info: 'refers to a market research request - master record'
+        example: "MA123"
+      marketAnalysisRequest:
+        type: "object"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+          general-info: 'details the request in terms of subject area, type of analysis, period, time/budget etc.'
+      employeeBusinessUnitReference:
+        type: "string"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+          general-info: 'employee and/or business unit requesting the market analysis'
+        example: "EBU1234"
+      marketAnalysisRequestPlan:
+        type: "object"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+          general-info: 'details work done in terms of planned/actual effort, research sources/costs, timing'
+      marketAnalysisAlgorithmReference:
+        type: "string"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+          general-info: 'refers to the market analysis algorithm used in the analysis'
+        example: "ALG987"
+      marketAnalysisReportReference:
+        type: "string"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+          general-info: 'refers to the market analysis report'
+        example: "MAR378"
+      marketAnalysisReport:
+        type: "object"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+          general-info: 'Market analysis report'
+
+  MarketAnalysisAlgorithmBaseWithIdAndRoot:
+    type: "object"
+    properties:
+      marketAnalysisRequestReference:
+        type: "string"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+          general-info: 'refers to a market research request - master record'
+        example: "MA123"
+      marketAnalysisAlgorithmReference:
+        type: "string"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+          general-info: 'refers to the market analysis algorithm used in the analysis'
+        example: "ALG987"
+      marketAnalysisAlgorithmType:
+        type: "string"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+          general-info: 'refers to range of available types of market analysis - potentially a wide range of options'
+        example: "genetic"
+      marketAnalysisAlgorithm:
+        type: "object"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+          general-info: 'specification of the analysis algorithm'
+      marketResearchSourceReference:
+        type: "string"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+          general-info: 'reference to different sources of market research reports and databases used by the algorithm'
+        example: "MRS2399"
+      productServiceActivityReportReference:
+        type: "string"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+          general-info: 'internal bank activity report - used by the algorithm'
+        example: "SAR5823"
+      marketAnalysisAlgorithmUsage:
+        type: "object"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+          general-info: 'records number of production deployments and frequency of execution'
+      marketAnalysisAlgorithmImpact:
+        type: "object"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+          general-info: 'reported impact/accuracy of algorithm'
+      marketAnalysisAlgorithmFeedbackRecord:
+        type: "object"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+          general-info: 'user provided feedback/suggestions'
+      marketAnalysisAlgorithmSpecification:
+        type: "object"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+          general-info: 'design - inputs - external and internal data, calculations, outputs'
+      marketAnalysisAlgorithmUsageGuidelines:
+        type: "string"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+          general-info: 'guidance on usage and analysis interpretation'
+        example: "example guidelines"
+
+  MarketAnalysisRecordRequest:
+    type: "object"
+    properties:
+      recordingRecordType:
+        type: "string"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+          general-info: 'the layout/type of the feedback provided'
+        example: "BehaviorModelPerformanceFeedback"
+      recordingRecord:
+        type: "object"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+          general-info: 'the feedback'
+        properties: {}
+      recordingRecordDateTime:
+        type: "string"
+        format: "date-time"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::DateTime
+        example: "2018-09-20T17:17:25.107Z"
+      employeeBusinessUnitReference:
+        type: "string"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+          general-info: 'employee and/or business unit requesting the market analysis'
+        example: "EBU1234"
+
+  MarketAnalysisRecordResponse:
+    type: "object"
+    properties:
+      recordingRecordReference:
+        type: "string"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+          general-info: 'reference to the feedback'
+        example: "REC0983"
+      recordingRecordStatus:
+        type: "string"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+        example: "applied"

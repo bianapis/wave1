@@ -1,0 +1,518 @@
+swagger: '2.0'
+info:
+  version: "4.0.0"
+  title: 'Service Domain - Transaction Authorization'
+  description: >
+        ## Description:
+
+        A capability to provide a risk based authorization for interactive customer transactions. This can combine the context (channel) transaction and customer details and recent activity analysis as appropriate. The authorization may require a specific level of party/customer authentication to get approval.
+
+        ## Example of use:
+
+        A customer is authenticated making contact through a channel
+
+        ## General comment:
+
+        Required authorization levels may be defined and interpreted by different fulfillment service domains that may be involved in the interactive transaction completion. This service domain is used to mitigate transaction risk for interactive product and service access fulfillment and works in collaboration with customer identity authentication services.
+
+host: virtserver.swaggerhub.com
+basePath: /BIAN/sd-transaction-authorization/2.0.1
+schemes:
+ - https
+paths:
+  /transaction-authorization/interactive-transaction-assessment/authorization:
+    post:
+      tags:
+      - authorize
+      operationId: authorizeInteractiveTransactionAssessment
+      summary: Authorize Transaction Assessment
+      produces: 
+      - application/json
+      parameters:
+      - in: body
+        name: body
+        description: Authorize control record request payload
+        required: true
+        schema: 
+          $ref: '#/definitions/Authorization'
+      responses:
+        200:
+          description: successful
+          schema:
+            $ref: '#/definitions/AuthorizationWithIds'
+
+  /transaction-authorization/interactive-transaction-assessment/requisition:
+    post:
+      tags: 
+      - request
+      operationId: requestInteractiveTransactionAssessmentCreate
+      description: Create a new Guideline
+      summary: Requests Transaction Assessment
+      produces: 
+      - application/json
+      parameters: 
+      - in: body
+        name: body
+        description: Request Interactive Transaction Assessment request payload
+        required: true
+        schema: 
+          $ref: '#/definitions/Authorization'
+      responses:
+        201:
+          description: Created successfully
+          schema:
+            $ref: '#/definitions/AuthorizationWithIds'
+            
+  /transaction-authorization/interactive-transaction-assessment/{cr-reference-id}/requisition:
+    put:
+      tags: 
+      - request
+      operationId: requestInteractiveTransactionAssessmentUpdate
+      description: Update an exising Interactive Transaction Assessment
+      summary: Requests Transaction Assessment
+      produces: 
+      - application/json
+      parameters: 
+      - name : cr-reference-id
+        in: path
+        description: Transaction Authorization Reference
+        required: true
+        type: string
+      - in: body
+        name: body
+        description: Request Interactive Transaction Assessment request payload
+        required: true
+        schema: 
+          $ref: '#/definitions/Authorization'
+      responses:
+        200:
+          description: successful
+          schema:
+            $ref: '#/definitions/AuthorizationWithIds'
+            
+  /transaction-authorization/interactive-transaction-assessment/:
+    get:
+      tags: 
+      - retrieve
+      operationId: RetrieveInteractiveTransactionAssessmentReferenceIds
+      summary: Retrieve cr-reference-ids
+      produces: 
+      - application/json
+      parameters: 
+      - name : collection-filter
+        in: query
+        description: Filter to refine the result set. ex- 'productInstanceReference = 4562332'
+        type: string 
+      responses:
+        200:
+          description: successful
+          schema:
+            type: array
+            items:
+              type: string
+            example: [CRR32512, CRR5475]
+            
+  /transaction-authorization/interactive-transaction-assessment/{cr-reference-id}:
+    get:
+      tags: 
+      - retrieve
+      operationId: retrieveInteractiveTransactionAssessmentAssessment
+      summary: Retrieve Interactive Transaction Assessment Master Control Record data
+      produces: 
+      - application/json
+      parameters: 
+      - name : cr-reference-id
+        in: path
+        description: Transaction Authorization Reference
+        required: true
+        type: string
+      responses:
+        200:
+          description: successful
+          schema:
+            $ref: '#/definitions/AuthorizationWithIds'
+            
+definitions:
+  Authorization:
+    type: object
+    properties:
+      transactionAuthorizationGuidance:
+        type: string
+        example: System error please try again.
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+          general-info: in case of failure, explains reason and provides guidance if additional information can be considered
+      customerReference:
+        type: string
+        example: REF1234
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      productReference:
+        type: string
+        example: REF1234
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      productInstanceReference:
+        type: string
+        example: REF1234
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+          general-info: the product to be accessed by the proposed transaction
+      proposedTransactionType:
+        type: string
+        example: balance report
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+          general-info: the type of action proposed - e.g. balance report, payment, change of address
+      proposedTransactionValue:
+        type: string
+        example: 7653
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Value
+          general-info: key values such as amount for a payment, dates for reporting, counterparties
+      customerContactRecordReference:
+        type: string
+        example: REF1234
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      customerContactRecord:
+        type: object
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+          general-info: this record combines the listed elements
+      customerContactRecordCustomerReference:
+        type: string
+        example: REF1234
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+          general-info: as provided by customer
+      customerContactRecordMenuSelection:
+        type: string
+        example: New transaction
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+          general-info: as indicated by customer when initiating contact
+      customerContactRecordContactDevice:
+        type: string
+        example: Cell phone
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+          general-info: as detected by voice/data network operations
+      customerContactRecordAuthenticationLevel:
+        type: string
+        example: Level 3
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+          general-info: as obtained by SD-Contact Handler
+      customerContactRecordContactDialogueRecord:
+        type: object
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+          general-info: any session records created during the contact
+      contactDialogueRecordCustomerReference:
+        type: string
+        example: REF1234
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      contactDialogueRecordEmployeeReference:
+        type: string
+        example: REF1234
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+          general-info: the servicing resource for assisted customer exchanges
+      contactDialogueRecordServicingPositionReference:
+        type: string
+        example: REF1234
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+          general-info: the servicing location/desk for assisted customer exchanges
+      contactDialogueRecordSessionMechanism:
+        type: string
+        example: web
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Name
+          general-info: e.g. web, phone, chat, video, VOIP, face to face at a branch - note there can be concurrent sessions within a single customer contact
+      contactDialogueRecordSessionStartEndTime:
+        type: string
+        example: "07:24:33+00:00 - 17:24:33+00:00"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Duration
+      contactDialogueRecordContactDialogueType:
+        type: string
+        example: verified customer
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+          general-info: e.g. verified customer, anonymous contact, topic - used to structure/script dialogue
+      contactDialogueRecordContactDialogueScript:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+          general-info: a prompt provided to structure the interaction for self-service and assisted interactions
+      contactDialogueRecordContactDialogueLogReference:
+        type: string
+        example: REF1234
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      contactDialogueRecordContactDialogueLog:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Video
+          general-info: click-stream, video/audio recording
+      customerContactActivityRecord:
+        type: object
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+          general-info: records actions performed during contact, including all sessions
+      customerContactFromTo:
+        type: string
+        example: "01/01/2018 - 01/10/2018"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Duration
+          general-info: start and duration of contact
+      customerContactResult:
+        type: string
+        example: success
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      channelActivityHistoryReportReference:
+        type: string
+        example: REF1234
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      channelActivityHistoryReportFromTo:
+        type: string
+        example: "01/01/2018 - 01/01/2019"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Duration
+          general-info: recent channel activity is provided to support authorization
+      channelActivityHistoryReport:
+        type: object
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+          general-info: report extracting recent channel activity records to support authorization
+        
+  AuthorizationWithIds:
+    type: object
+    properties:
+      transactionAuthorizationReference:
+        type: string
+        example: REF1234
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      transactionAuthorizationGuidance:
+        type: string
+        example: System error please try again.
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+          general-info: in case of failure, explains reason and provides guidance if additional information can be considered
+      customerReference:
+        type: string
+        example: REF1234
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      productReference:
+        type: string
+        example: REF1234
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      productInstanceReference:
+        type: string
+        example: REF1234
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+          general-info: the product to be accessed by the proposed transaction
+      proposedTransactionType:
+        type: string
+        example: balance report
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+          general-info: the type of action proposed - e.g. balance report, payment, change of address
+      proposedTransactionValue:
+        type: string
+        example: 7653
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Value
+          general-info: key values such as amount for a payment, dates for reporting, counterparties
+      customerContactRecordReference:
+        type: string
+        example: REF1234
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      customerContactRecord:
+        type: object
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+          general-info: this record combines the listed elements
+      customerContactRecordCustomerReference:
+        type: string
+        example: REF1234
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+          general-info: as provided by customer
+      customerContactRecordMenuSelection:
+        type: string
+        example: New transaction
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+          general-info: as indicated by customer when initiating contact
+      customerContactRecordContactDevice:
+        type: string
+        example: Cell phone
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+          general-info: as detected by voice/data network operations
+      customerContactRecordAuthenticationLevel:
+        type: string
+        example: Level 3
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+          general-info: as obtained by SD-Contact Handler
+      customerContactRecordContactDialogueRecord:
+        type: object
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+          general-info: any session records created during the contact
+      contactDialogueRecordCustomerReference:
+        type: string
+        example: REF1234
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      contactDialogueRecordEmployeeReference:
+        type: string
+        example: REF1234
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+          general-info: the servicing resource for assisted customer exchanges
+      contactDialogueRecordServicingPositionReference:
+        type: string
+        example: REF1234
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+          general-info: the servicing location/desk for assisted customer exchanges
+      contactDialogueRecordSessionMechanism:
+        type: string
+        example: web
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Name
+          general-info: e.g. web, phone, chat, video, VOIP, face to face at a branch - note there can be concurrent sessions within a single customer contact
+      contactDialogueRecordSessionStartEndTime:
+        type: string
+        example: "07:24:33+00:00 - 17:24:33+00:00"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Duration
+      contactDialogueRecordContactDialogueType:
+        type: string
+        example: verified customer
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+          general-info: e.g. verified customer, anonymous contact, topic - used to structure/script dialogue
+      contactDialogueRecordContactDialogueScript:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+          general-info: a prompt provided to structure the interaction for self-service and assisted interactions
+      contactDialogueRecordContactDialogueLogReference:
+        type: string
+        example: REF4573
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      contactDialogueRecordContactDialogueLog:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Video
+          general-info: click-stream, video/audio recording
+      customerContactActivityRecord:
+        type: object
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+          general-info: records actions performed during contact, including all sessions
+      customerContactFromTo:
+        type: string
+        example: "01/01/2018 - 01/10/2018"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Duration
+          general-info: start and duration of contact
+      customerContactResult:
+        type: string
+        example: success
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      channelActivityHistoryReportReference:
+        type: string
+        example: REF2456
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      channelActivityHistoryReportFromTo:
+        type: string
+        example: "01/01/2018 - 01/01/2019"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Duration
+          general-info: recent channel activity is provided to support authorization
+      channelActivityHistoryReport:
+        type: object
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+          general-info: report extracting recent channel activity records to support authorization
+      transactionAuthorizationResult:
+        type: object
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+          general-info: indicates success or failure or required authentication level to be acquired for authorization

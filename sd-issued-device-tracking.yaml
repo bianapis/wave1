@@ -1,0 +1,744 @@
+swagger: '2.0'
+info:
+  version: "4.0.0"
+  title: 'Service Domain - Issued Device Tracking'
+  description: >
+        ## Description: 
+      
+        This service domain handles operational access to issued device tracking services. Services report on the status of devices such as cards, fobs, etc. that have been issued to customers. Service notifications include fraud warnings/alerts and device cancellation.
+      
+        ## Example of use:
+      
+        A tracking service notifies the bank that one of its issued authentication devices has been detected in a fraudulent transaction. The bank suspends the device and initiates a fraud case to diagnose and resolve the situation.
+
+        ## General comment:
+      
+        This service domain tracks and reports on the state (e.g. suspended, flagged for possible fraud, cancelled) for all issued devices. This covers credit/debit cards and can include other identification devices such as keychain fobs and virtual authentication devices such as electronic signatures, passwords and keys. It may use an external service provider to obtain notifications and is responsible for providing notifications to external services when the bank detects problems with its own issued devices.
+        
+host: "virtserver.swaggerhub.com"
+basePath: "/BIAN/sd-issued-device-tracking/4.0.0"
+schemes:
+ - "https"        
+
+paths:
+  /issued-device-tracking/issued-device-measurement/{cr-reference-id}/cancellations/{bq-reference-id}/recording:
+    post:
+      tags: 
+       - record
+      summary: "Record suspend item"
+      operationId: recordIssuedDeviceMeasurementCancellationInstruction
+      produces: 
+      - application/json
+      parameters:
+      - name : cr-reference-id
+        in: path
+        description: Product Instance Reference
+        required: true
+        type: integer
+      - name : bq-reference-id
+        in: path
+        description: Issued Device Reference
+        required: true
+        type: integer  
+      - in: body
+        name: body
+        description: Record instruction to cancel
+        required: true
+        schema: 
+          $ref: '#/definitions/IssuedDeviceCancellationRecordRequest'
+        
+      responses:
+        201:
+          description: Successfully recorded instruction to terminate a monitored item. 
+          schema:
+            $ref: '#/definitions/IssuedDeviceCancellationRecordResponse'
+            
+  /issued-device-tracking/issued-device-measurement/{cr-reference-id}/updates/{bq-reference-id}/recording:
+    post:
+      tags: 
+       - record
+      summary: "Record status"
+      operationId: recordIssuedDeviceMeasurementUpdateInstruction
+      produces: 
+      - application/json
+      parameters:
+      - name : cr-reference-id
+        in: path
+        description: Product Instance Reference
+        required: true
+        type: integer
+      - name : bq-reference-id
+        in: path
+        description: Issued Device Reference
+        required: true
+        type: integer    
+      - in: body
+        name: body
+        description: Record details updating status
+        required: true
+        schema: 
+          $ref: '#/definitions/IssuedDeviceUpdateRecordRequest'
+        
+      responses:
+        201:
+          description: Successfully recorded details updating the status of a monitored item.
+          schema:
+            $ref: '#/definitions/IssuedDeviceUpdateRecordResponse'
+            
+  /issued-device-tracking/issued-device-measurement/{cr-reference-id}/requisition:
+    put:
+      tags: 
+       - request
+      summary: "Request Refreshed Item"
+      operationId: requestIssuedDeviceMeasurementUpdate
+      produces: 
+      - application/json
+      parameters:
+      - name: cr-reference-id
+        in: path
+        description: Tracking Service Session Reference 
+        required: true
+        type: integer
+      - in: body
+        name: body
+        description: Request the Values are Checked/Refreshed
+        required: true
+        schema: 
+          $ref: '#/definitions/IssuedDeviceTrackingServiceWithOutId'
+        
+      responses:
+        200:
+          description: Successfully updated monitored item values.
+          schema:
+            $ref: '#/definitions/IssuedDeviceTrackingServiceWithId'        
+  
+  /issued-device-tracking/issued-device-measurement/requisition:
+    post:
+      tags: 
+       - request
+      summary: "Request Refreshed Item"
+      operationId: requestIssuedDeviceMeasurementCreate
+      produces: 
+      - application/json
+      parameters:
+      - in: body
+        name: body
+        description: Request the Values are Checked/Refreshed
+        required: true
+        schema: 
+          $ref: '#/definitions/IssuedDeviceTrackingServiceWithOutId'
+        
+      responses:
+        201:
+          description: Successfully created monitored item.
+          schema:
+            $ref: '#/definitions/IssuedDeviceTrackingServiceWithId' 
+  
+  /issued-device-tracking/issued-device-measurement/{cr-reference-id}:
+    get:
+      tags: 
+       - retrieve
+      summary: "Retrieve status report"
+      operationId: retrieveIssuedDeviceMeasurement
+      produces:
+      - application/json
+      parameters:
+        - in: path
+          name: cr-reference-id
+          required: true
+          type: string
+          description: Tracking Service Session Reference
+        - name: party-reference-id
+          in: query
+          description: party reference id
+          type: integer
+        - name: customer-reference-id
+          in: query
+          description: customer reference id
+          type: integer 
+        - name : entity-reference-id
+          in: query
+          description: entity reference id
+          type: integer
+        
+      responses:
+        200:
+          description: Successfully retrieved monitored item status report. 
+          schema:
+            $ref: '#/definitions/RetrieveIssuedDeviceTrackingResponse'
+
+  /issued-device-tracking/issued-device-measurement/{cr-reference-id}/cancellations/{bq-reference-id}:
+    get:
+      tags: 
+       - retrieve
+      summary: "Retreive instruction to suspend item"
+      operationId: retrieveIssuedDeviceCancellation
+      produces:
+      - application/json
+      parameters:
+        - in: path
+          name: cr-reference-id
+          description: Tracking Service Session Reference
+          required: true
+          type: integer
+        - in: path  
+          name: bq-reference-id
+          required: true
+          type: string
+        - name: party-reference-id
+          in: query
+          description: party reference id
+          type: integer
+        - name: customer-reference-id
+          in: query
+          description: customer reference id
+          type: integer 
+        - name : entity-reference-id
+          in: query
+          description: entity reference id
+          type: integer
+        
+      responses:
+        200:
+          description: Successfully retrieved instruction to terminate/suspend a monitored item 
+          schema:
+            $ref: '#/definitions/IssuedDeviceCancellationWithId'
+  
+  /issued-device-tracking/issued-device-measurement/{cr-reference-id}/updates/{bq-reference-id}:
+    get:
+      tags: 
+       - retrieve
+      summary: "Retreive update status"
+      operationId: retrieveIssuedDeviceUpdate
+      produces:
+      - application/json
+      parameters:
+        - in: path
+          name: cr-reference-id
+          description: Tracking Service Session Reference
+          required: true
+          type: integer
+        - in: path  
+          name: bq-reference-id
+          required: true
+          type: string
+        - name: party-reference-id
+          in: query
+          description: party reference id
+          type: integer
+        - name: customer-reference-id
+          in: query
+          description: customer reference id
+          type: integer 
+        - name : entity-reference-id
+          in: query
+          description: entity reference id
+          type: integer
+        
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: '#/definitions/IssuedDeviceUpdateWithId'
+
+definitions:
+
+  RetrieveIssuedDeviceTrackingResponse:
+    type: object
+    properties:
+      trackingService:
+        $ref: '#/definitions/IssuedDeviceTrackingServiceWithId'
+      cancellation:
+        $ref: '#/definitions/IssuedDeviceCancellationWithId'
+      update:
+        $ref: '#/definitions/IssuedDeviceUpdateWithId'
+        
+  RequestIssuedDeviceTrackingRequest:
+    type: object
+    properties:
+      trackingService:
+        $ref: '#/definitions/IssuedDeviceTrackingServiceWithOutId'
+      cancellation:
+        $ref: '#/definitions/IssuedDeviceCancellationWithoutId'
+      update:
+        $ref: '#/definitions/IssuedDeviceUpdateWithOutId'
+        
+  RequestIssuedDeviceTrackingResponse:
+    type: object
+    properties:
+      cancellation:
+        $ref: '#/definitions/IssuedDeviceCancellationWithId'
+      update:
+        $ref: '#/definitions/IssuedDeviceUpdateWithId'      
+      
+  IssuedDeviceTrackingServiceWithOutId:
+    type: object
+    properties:
+      trackingServiceSchedule:
+       type: string
+       example: 15mins/30mins/60mins
+       description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::DateTime     
+      trackingServiceReport:
+       type: object
+       description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary     
+          
+  IssuedDeviceTrackingServiceWithId:
+    type: object
+    properties:
+      trackingServiceSessionReference:
+       type: string
+       example: TSSR9472
+       description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier     
+      trackingServiceSchedule:
+       type: string
+       example: 15mins/30mins/60mins
+       description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Duration     
+      trackingServiceReportReference:
+       type: string
+       example: TSRR4718
+       description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier     
+      trackingServiceReport:
+       type: object
+       description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary     
+
+
+  IssuedDeviceCancellationWithoutId:
+    type: object
+    properties:
+      issuedDeviceType:
+       type: string
+       example: Physical/Virtual
+       description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text     
+      validFromToDate:
+       type: string
+       example: "2018-07-01 To 2018-07-31"
+       description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Duration     
+      issuedDeviceStatus:
+       type: string
+       example: Active/Inactive
+       description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text  
+  
+  IssuedDeviceCancellationWithId:
+    type: object
+    properties:
+      issuedDeviceReference:
+       type: string
+       example: IDRE4940
+       description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier     
+      issuedDeviceType:
+       type: string
+       example: Physical/Virtual
+       description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text     
+      customerReference:
+       type: string
+       example: CSRE3456
+       description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier     
+      productInstanceReference:
+       type: string
+       example: PRIR5859
+       description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier     
+      validFromToDate:
+       type: string
+       example: "2018-07-01 To 2018-07-31"
+       description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Duration     
+      issuedDeviceStatus:
+       type: string
+       example: Active/Inactive
+       description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text  
+  
+  IssuedDeviceUpdate:
+    type: object
+    properties:
+      issuedDeviceType:
+       type: string
+       example: Physical/Virtual
+       description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text     
+      issuedDeviceSerialNumber:
+       type: string
+       example: IDSN2730
+       description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier     
+      versionNumber:
+       type: string
+       example: Ver 1.2
+       description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier     
+      customerReference:
+       type: string
+       example: CSRE3456
+       description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier     
+      customerCustomizationReference:
+       type: string
+       example: CCZR0942
+       description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier     
+      associatedPermissions:
+       type: string
+       example: City/State/National/International
+       description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Code     
+      issueLocation:
+       type: string
+       example: Austin/Chicago/Dallas/Seattle
+       description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Name     
+      validFromToDate:
+       type: string
+       example: "2018-07-01 To 2018-07-31"
+       description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Duration     
+      issuedDeviceConfiguration:
+       type: string
+       example: BillingOptions/TransactionProcessingOptions
+       description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text     
+      issuedDeviceTemplate:
+       type: string
+       example: General/Secured
+       description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text     
+      sequenceNumber:
+       type: string
+       example: SQNM3309
+       description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier     
+      passwordValue:
+       type: string
+       example: SecondaryPassword/SecurityQuestion
+       description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text     
+      accessLog:
+       type: string
+       example: LoginLogReport
+       description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text     
+      usageLog:
+       type: string
+       example: SessionLogReport
+       description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text     
+      issuedDeviceStatus:
+       type: string
+       example: Active/Inactive
+       description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text     
+  
+  IssuedDeviceUpdateWithOutId:
+    type: object
+    properties:
+      issuedDeviceType:
+       type: string
+       example: Physical/Virtual
+       description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text     
+      #issuedDeviceSerialNumber:
+       #type: string
+       #example: IDSN2730
+       #description: |
+          #`status: Not Mapped`
+          #core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier     
+      versionNumber:
+       type: string
+       example: Ver 1.2
+       description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier     
+      associatedPermissions:
+       type: string
+       example: City/State/National/International
+       description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Code     
+      issueLocation:
+       type: string
+       example: Austin/Chicago/Dallas/Seattle
+       description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Name     
+      validFromToDate:
+       type: string
+       example: "2018-07-01 To 2018-07-31"
+       description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Duration     
+      issuedDeviceConfiguration:
+       type: string
+       example: BillingOptions/TransactionProcessingOptions
+       description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text     
+      issuedDeviceTemplate:
+       type: string
+       example: General/Secured
+       description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text     
+      sequenceNumber:
+       type: string
+       example: SQNM3309
+       description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier     
+      passwordValue:
+       type: string
+       example: SecondaryPassword/SecurityQuestion
+       description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text     
+      accessLog:
+       type: string
+       example: LoginLogReport
+       description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text     
+      usageLog:
+       type: string
+       example: SessionLogReport
+       description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text     
+      #issuedDeviceStatus:
+       #type: string
+       #example: Active/Inactive
+       #description: |
+          #`status: Not Mapped`
+          #core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text     
+       
+  IssuedDeviceUpdateWithId:
+    type: object
+    properties:
+      issuedDeviceReference:
+       type: string
+       example: IDRE4940
+       description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier     
+      issuedDeviceType:
+       type: string
+       example: Physical/Virtual
+       description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text     
+      issuedDeviceSerialNumber:
+       type: string
+       example: IDSN2730
+       description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier     
+      versionNumber:
+       type: string
+       example: Ver 1.2
+       description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier     
+      customerReference:
+       type: string
+       example: CSRE3456
+       description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier     
+      customerCustomizationReference:
+       type: string
+       example: CCZR0942
+       description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier     
+      productInstanceReference:
+       type: string
+       example: PRIR5859
+       description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier     
+      associatedPermissions:
+       type: string
+       example: City/State/National/International
+       description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Code     
+      issueLocation:
+       type: string
+       example: Austin/Chicago/Dallas/Seattle
+       description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Name     
+      validFromToDate:
+       type: string
+       example: "2018-07-01 To 2018-07-31"
+       description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Duration     
+      issuedDeviceConfiguration:
+       type: string
+       example: BillingOptions/TransactionProcessingOptions
+       description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text     
+      issuedDeviceTemplate:
+       type: string
+       example: General/Secured
+       description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text     
+      sequenceNumber:
+       type: string
+       example: SQNM3309
+       description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier     
+      passwordValue:
+       type: string
+       example: SecondaryPassword/SecurityQuestion
+       description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text     
+      accessLog:
+       type: string
+       example: LoginLogReport
+       description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text     
+      usageLog:
+       type: string
+       example: SessionLogReport
+       description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text     
+      issuedDeviceStatus:
+       type: string
+       example: Active/Inactive
+       description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text     
+       
+  IssuedDeviceCancellationRecordRequest: 
+    type: object
+    properties:
+      cancellationRecordingRecordType: 
+        type: string
+        example: BehaviorModelPerformanceFeedback
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text    
+      cancellationRecordingRecord:
+        type: object
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary    
+      recordingRecordDateTime:
+        type: string
+        example: "2018-08-28T09:00:00"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::DateTime    
+      empolyeeBusinessUnitReference:
+        type: string
+        example: EBUR6798
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier    
+  
+  IssuedDeviceCancellationRecordResponse: 
+    type: object
+    properties:
+      cancellationRecordingRecordReference:
+        type: object
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier    
+      recordingRecordStatus:
+        type: string
+        example: Applied/InProcess/Pending
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text    
+    
+  IssuedDeviceUpdateRecordRequest: 
+    type: object
+    properties:
+      updateRecordingRecordType: 
+        type: string
+        example: BehaviorModelPerformanceFeedback
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text    
+      updateRecordingRecord:
+        type: object
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary    
+      recordingRecordDateTime:
+        type: string
+        example: "2018-08-28T09:00:00"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::DateTime    
+      empolyeeBusinessUnitReference:
+        type: string
+        example: EBUR6798
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier    
+  
+  IssuedDeviceUpdateRecordResponse: 
+    type: object
+    properties:
+      updateRecordingRecordReference:
+        type: string
+        example: CRRR3456
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier    
+      recordingRecordStatus:
+        type: string
+        example: Applied/InProcess/Pending
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text

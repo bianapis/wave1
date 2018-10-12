@@ -1,0 +1,432 @@
+swagger: '2.0'
+info:
+  version: "4.0.0"
+  title: 'Service Domain - Party Life-Cycle Management'
+  description: >
+
+        ## Description: 
+      
+        This service domain tracks the state of a party relationship with the bank from the initial checks made during the establishment of a new party connection and subsequently maintained as necessary over the duration of the relationship. The checks and the maintenance requirements will vary by party type and jurisdiction. The checks cover bank specific and legal and regulatory considerations and may be updated based on a standard schedule or by request in specific circumstances.
+      
+        ## Example of use:
+      
+        A prospective customer has been identified and the bank undertakes a collection of checks to confirm this is a new relationship and to verify the relationship in compliance with bank, legal and regulatory requirements. Note that for different customer types (non consumer in particular) many different checks will be required.
+
+        ## General comment:
+      
+        This service domain tracks the state of a party relationship with the bank from the initial checks made when establishing a new business relationship with a customer or partner and then that are performed as necessary over the duration of the relationship. The checks and the maintenance requirements will vary by party type (e.g. individual, company, partner) and jurisdiction. The checks cover bank specific and legal and regulatory considerations and may be updated based on a standard schedule or by request in specific circumstances.
+            
+# Added by API Auto Mocking Plugin
+host: virtserver.swaggerhub.com
+basePath: /BIAN/sd-party-life-cycle-management/4.0.0
+
+schemes:
+ - https
+
+paths:
+  
+  /party-life-cycle-management/party-life-cycle-procedure/{cr-reference-id}/updation:
+    put:
+      tags: 
+      - update
+      summary: "Update details of an active prospect"
+      operationId: updateProspectProcedure
+      consumes: 
+      - application/json
+      produces: 
+      - application/json
+      parameters:
+      - in: path
+        name: cr-reference-id
+        type: integer
+        description: "Party Life-cycle Status Record Reference Id"
+        required: true
+      - in: body
+        name: body
+        description: Update control record request payload
+        required: true
+        schema: 
+          $ref: "#/definitions/PartyLifeCycleBasic"
+      responses:
+        200:
+          description: "Details updated successfully"
+          schema:
+            $ref: '#/definitions/PartyLifeCycleWithIDAndRoot'
+
+  /party-life-cycle-management/party-life-cycle-procedure/{cr-reference-id}/recording:
+    post:
+      tags: 
+      - record
+      summary: "Record information against an active prospect"
+      operationId: recordProspectProcedure
+      consumes: 
+      - application/json
+      produces: 
+      - application/json
+      parameters:
+      - in: path
+        name: cr-reference-id
+        type: integer
+        description: "Party Life-cycle Status Record Reference Id"
+        required: true
+      - in: body
+        name: body
+        description: "Record control record request payload"
+        required: true
+        schema: 
+          $ref: "#/definitions/RecordRequest"
+      responses:
+        201:
+          description: "A new Record is created"
+          schema:
+            $ref: '#/definitions/RecordResponse'
+
+  /party-life-cycle-management/party-life-cycle-procedure/{cr-reference-id}/execution:
+    put:
+      tags: 
+      - execute
+      summary: "Updates Prospect details capture (for subsequent local processing)"
+      operationId: executeProspectProcedureUpdate
+      consumes: 
+      - application/json
+      produces: 
+      - application/json
+      parameters:
+      - in: path
+        type: integer
+        required: true
+        name: cr-reference-id
+        description: "Party Life-cycle Status Record Reference Id"
+      - in: body
+        name: body
+        required: true
+        schema:
+          $ref: "#/definitions/PartyLifeCycleBasic"
+      responses:
+        200:
+          description: "Prospect details updated successfully"
+          schema:
+            $ref: '#/definitions/PartyLifeCycleWithIDAndRoot'
+
+  /party-life-cycle-management/party-life-cycle-procedure/execution:
+    post:
+      tags: 
+      - execute
+      summary: "Creates Prospect details capture (for subsequent local processing)"
+      operationId: executeProspectProcedureCreate
+      consumes: 
+      - application/json
+      produces: 
+      - application/json
+      parameters:
+      - in: body
+        name: body
+        required: true
+        schema:
+          $ref: "#/definitions/PartyLifeCycleBasic"
+      responses:
+        201:
+          description: "Prospect details created successfully"
+          schema:
+            $ref: '#/definitions/PartyLifeCycleWithIDAndRoot'
+
+  /party-life-cycle-management/party-life-cycle-procedure:
+    get:
+      tags: 
+      - retrieve
+      summary: "Retrieve prospect procedure Session ids"
+      operationId: retrieveProspectProcedureCRIDs
+      produces: 
+      - application/json
+      parameters:
+      - name: collection-filter
+        in: query
+        description: "Filter to refine the result set"
+        type: string
+      responses:
+        200:
+          description: "Retrieved Prospect procedure Session ids"
+          schema:
+            $ref: '#/definitions/RetrieveControlRecordIDs'
+
+  /party-life-cycle-management/party-life-cycle-procedure/behavior-qualifiers:
+    get:
+      tags: 
+      - retrieve
+      summary: "Retrieve prospect procedure report"
+      operationId: retrieveProspectProcedureBQNames
+      produces: 
+      - application/json
+      parameters:
+      - name: collection-filter
+        in: query
+        description: "Filter to refine the result set"
+        type: string
+      responses:
+        200:
+          description: "Retrieved Prospect procedure BQ names"
+          schema:
+            $ref: '#/definitions/BehaviorQualifierNames'
+
+  /party-life-cycle-management/party-life-cycle-procedure/{cr-reference-id}:
+    get:
+      tags: 
+      - retrieve
+      summary: "Retrieve prospect procedure report"
+      operationId: retrieveProspectProcedure
+      produces: 
+      - application/json
+      parameters:
+      - in: path
+        name: cr-reference-id
+        type: integer
+        description: "Party Life-cycle Status Record Reference Id"
+        required: true
+      responses:
+        200:
+          description: "Prospect procedure retrieved successfully"
+          schema:
+            $ref: '#/definitions/PartyLifeCycleWithIDAndRoot'
+
+  /party-life-cycle-management/party-life-cycle-procedure/{cr-reference-id}/{behavior-qualifier}:
+    get:
+      tags: 
+      - retrieve
+      summary: "Retrieve Behaviour Qualifier Reference Ids of the given Behavior Qualifier."
+      operationId: retrieveProspectProcedureBQIDs
+      produces: 
+      - application/json
+      parameters:
+      - in: path
+        name: cr-reference-id
+        type: integer
+        description: "Party Life-cycle Status Record Reference Id"
+        required: true
+      - name: behavior-qualifier
+        in: path
+        description: "Behavior Qualifier Name"
+        required: true
+        type: string
+      - name: collection-filter
+        in: query
+        description: "Filter to refine the result set"
+        type: string
+      responses:
+        200:
+          description: "Retrieved Prospect procedure BQ IDs successfully"
+          schema:
+            $ref: '#/definitions/RetrieveBehaviorQualifierIDs'
+
+  /party-life-cycle-management/party-life-cycle-procedure/{cr-reference-id}/reportings/{bq-reference-id}:
+    get:
+      tags: 
+      - retrieve
+      summary: "Retrieve Reporting prospect procedure report"
+      operationId: retrieveProspectProcedureReporting
+      produces: 
+      - application/json
+      parameters:
+      - in: path
+        name: cr-reference-id
+        type: integer
+        description: "Party Life-cycle Status Record Reference Id"
+        required: true
+      - in: path
+        name: bq-reference-id
+        type: integer
+        description: "Reporting Reference Id"
+        required: true
+      responses:
+        200:
+          description: "Reporting retrieved successfully"
+          schema:
+            $ref: '#/definitions/Reporting'
+
+definitions:
+  PartyLifeCycleBasic:
+    type: object
+    properties:
+      partyLifeCycleStatusRecord:
+        type: object
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: PartyRelationship.LifecyclePhase
+          general-info: "Party Life-cycle Status Record (master record - details the party relationship standing)"
+      customerReference:
+        type: string
+        example: "378163745142"
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: PartyRelationship.RoleInRelationship.Player(as Party)
+          general-info: "Refers to the individual/organization"
+      partyReference:
+        type: string
+        example: "4815972631451"
+        description: |
+          `status: Registered`
+          bian-reference: PartyRelationship.RoleInRelationship.Player(as Party).Identification.LEI
+          iso-link: [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_FEHzNMTGEeChad0JzLk7QA_-1382123937/elements/_yagFILl5EeOpCN0IL2Swqw)
+          general-info: "Refers to the associated legal entity"
+      partyRelationshipType:
+        type: string
+        example: "TYPE1"
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: PartyRelationship.PartyRelationshipType
+          general-info: "Defines the nature of the bank association"
+      partyLifeCycleStatus:
+        type: string
+        example: "PROSPECT"
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: PartyRelationship.LifecyclePhase.Status
+          general-info: "Party Life-cycle Status (prospect, on-board, under review, in-resolution, inactive etc.)"
+
+  PartyLifeCycleWithIDAndRoot:
+    type: object
+    properties:
+      partyLifeCycleStatusRecordReference:
+        type: string
+        example: "1ANC6H774"
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: PartyRelationship
+      partyLifeCycleStatusRecord:
+        type: object
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: PartyRelationship.LifecyclePhase
+          general-info: "Party Life-cycle Status Record (master record - details the party relationship standing)"
+      customerReference:
+        type: string
+        example: "378163745142"
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: PartyRelationship.RoleInRelationship.Player(as Party)
+          general-info: "Refers to the individual/organization"
+      partyReference:
+        type: string
+        example: "4815972631451"
+        description: |
+          `status: Registered`
+          bian-reference: PartyRelationship.RoleInRelationship.Player(as Party).Identification.LEI
+          iso-link: [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_FEHzNMTGEeChad0JzLk7QA_-1382123937/elements/_yagFILl5EeOpCN0IL2Swqw)
+          general-info: "Refers to the associated legal entity"
+      partyRelationshipType:
+        type: string
+        example: "TYPE1"
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: PartyRelationship.PartyRelationshipType
+          general-info: "Defines the nature of the bank association"
+      partyLifeCycleStatus:
+        type: string
+        example: "PROSPECT"
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: PartyRelationship.LifecyclePhase.Status
+          general-info: "Party Life-cycle Status (prospect, on-board, under review, in-resolution, inactive etc.)"
+          
+  Reporting:
+    type: object
+    properties:
+      partyLifeCycleStatusReference:
+        type: string
+        example: "21354687987"
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: PartyRelationship
+      partyLifeCycleReportingTaskReference:
+        type: string
+        example: "27481581548"
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: PartyRelationship.RelationshipAgreement.MaterialisingDocument.DocumentHandlingSessionEvent.TriggeredDocumentHandlingAction.ExecutingSystemService
+      partyLifeCycleStatusRecord:
+        type: object
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: PartyRelationship.LifecyclePhase
+          general-info: "Details the party relationship standing"
+      customerReference:
+        type: string
+        example: "378163745142"
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: PartyRelationship.RoleInRelationship.Player(as Party)
+          general-info: "Refers to the individual/organization"
+      partyReference:
+        type: string
+        example: "4815972631451"
+        description: |
+          `status: Registered`
+          bian-reference: PartyRelationship.RoleInRelationship.Player(as Party).Identification.LEI
+          iso-link: [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_FEHzNMTGEeChad0JzLk7QA_-1382123937/elements/_yagFILl5EeOpCN0IL2Swqw)
+          general-info: "Refers to the associated legal entity"
+      partyRelationshipType:
+        type: string
+        example: "TYPE1"
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: PartyRelationship.PartyRelationshipType
+          general-info: "Defines the nature of the bank association"
+      partyLifeCycleReport:
+        type: object
+        description: |
+          `status: Provisionally Registered`
+          general-info: "The report on the Party Life-cycle Status Record"
+      partyLifeCycleStatus:
+        type: string
+        example: "ON-BOARD"
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: PartyRelationship.LifecyclePhase.Status
+          general-info: "Party Life-cycle Status (prospect, on-board, under review, in-resolution, inactive etc.)"
+  RecordRequest:
+    type: object
+    properties:
+      recordingRecordType:
+        type: string
+        example: "Behavior model performance feedback"
+        description: |
+          `status: Provisionally Registered`
+      recordingRecord:
+        type: object
+        description: |
+          `status: Provisionally Registered`
+      recordingRecordDateTime:
+        $ref: 'https://api.swaggerhub.com/domains/BIAN/Common-Model/1.0.0#/definitions/ISODateTime'
+      empolyeeBusinessUnitReference:
+        type: string
+        example: "456321987"
+        description: |
+          `status: Provisionally Registered`
+          general-info: "Employee or unit assigned to the servicing position"
+  RecordResponse:
+    type: object
+    properties:
+      recordingRecordReference:
+        type: string
+        example: "789456321"
+        description: |
+          `status: Provisionally Registered`
+      recordingRecordStatus:
+        type: string
+        example: "APPLIED"
+        description: |
+          `status: Provisionally Registered`
+  BehaviorQualifierNames:
+    type: array
+    items:
+      type: string
+      example: ["authentication","qualification","documentation","life-cycle","reporting"]
+  RetrieveControlRecordIDs:
+    type: array
+    items:
+      type: string
+      example: ["123456789","987654321","369852147"]
+  RetrieveBehaviorQualifierIDs:
+    type: array
+    items:
+      type: string
+      example: ["123456789","987654321","369852147"]

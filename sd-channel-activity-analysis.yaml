@@ -1,0 +1,717 @@
+swagger: "2.0"
+info:
+  version: "4.0.0"
+  title: 'Service Domain - Channel Activity Analysis'
+  description: >
+
+    ## Description: 
+
+    This service domain tracks and analyzes channel activity to support relationship development, to detect unwanted behavior, possible fraud, and to constrain channel use as necessary (for example tracking usage frequency and cumulative transaction amounts within a period)
+
+    ## Example of use:
+
+    A customer attempts to self-serve a product sale but gives up. Later they call the contact center and their recent attempt is used to route the contact to a sales rep who is prompted to continue the product application
+    
+    ## General comment:
+    
+    Channel activity analysis provides a range of analytical insights into channel use to support access controls, relationship sales and development approaches and to help detect possible fraudulent activity
+        
+# Added by API Auto Mocking Plugin
+host: virtserver.swaggerhub.com
+basePath: /BIAN/sd-channel-activity-analysis/4.0.0
+schemes:
+- https
+
+paths:
+
+  /channel-activity-analysis/channel-activity-analysis:
+    get:
+      tags:
+      - retrieve
+      summary: Retrieved channel activity analysis ids
+      operationId: retrieveChannelActivityAnalysisIds
+      produces:
+      - application/json
+      parameters:
+      - name: collection-filter
+        in: query
+        description: Filter to refine the result set. ex - 'channelType=TYPE 1'
+        required: false
+        type: string
+      responses:
+        200:
+          description: Successfully retrieved channel activity analysis
+          schema:
+            type: array
+            items:
+              type: string
+            example: [CAR123, CAR345]
+            
+  /channel-activity-analysis/channel-activity-analysis/behavior-qualifiers:
+    get:
+      tags:
+      - retrieve
+      summary: Retrieved channel activity analysis behavior qualifiers
+      operationId: retrieveChannelActivityAnalysisBQNames
+      produces:
+      - application/json
+      parameters: []
+      responses:
+        200:
+          description: Successfully retrieved channel activity analysis behavior qualifier names
+          schema:
+            type: array
+            items:
+              type: string
+            example: [CustomerFraud, MerchantFraud, CustomerBehavior, MerchantBehavior, Bot, DeviceError] 
+            
+  /channel-activity-analysis/channel-activity-analysis/{cr-reference-id}/{behavior-qualifier}:
+    get:
+      tags:
+      - retrieve
+      summary: Retrieved channel activity analysis behavior qualifiers ids
+      operationId: retrieveChannelActivityAnalysisBQIds
+      produces:
+      - application/json
+      parameters:
+      - name: cr-reference-id
+        in: path
+        description: Analysis reference Id
+        required: true
+        type: string
+      - name: behavior-qualifier
+        in: path
+        description: Behavior Qualifier Name ex- MerchantFraud
+        required: true
+        type: string
+      - name: collection-filter
+        in: query
+        description: Filter to refine the result set. ex - 'channelActivityMerchantFraudAnalysisReference = CAMFAR123'
+        required: false
+        type: string
+      responses:
+        200:
+          description: Successfully retrieved channel activity analysis behavior qualifiers ids
+          schema:
+            type: array
+            items:
+              type: string
+            example: [CHMF345, CHMF789, CAMF456] 
+            
+  /channel-activity-analysis/channel-activity-analysis/{cr-reference-id}:
+    get:
+      tags:
+      - retrieve
+      summary: Retrieved channel activity analysis
+      operationId: retrieveChannelActivityAnalysis
+      produces:
+      - application/json
+      parameters:
+      - name: cr-reference-id
+        in: path
+        description: Channel Activity Analysis Reference
+        required: true
+        type: string
+      responses:
+        200:
+          description: Successfully retrieved channel activity analysis
+          schema:
+            $ref: '#/definitions/ChannelActivityAnalysisBaseWithId'
+  /channel-activity-analysis/channel-activity-analysis/{cr-reference-id}/customers-frauds/{bq-reference-id}:
+    get:
+      tags:
+      - retrieve
+      summary: Retrieved channel activity analysis customer fraud
+      operationId: retrieveChannelActivityAnalysisCustomerFraud
+      produces:
+      - application/json
+      parameters:
+      - name: cr-reference-id
+        in: path
+        description: Channel Activity Analysis Reference
+        required: true
+        type: string
+      - name: bq-reference-id
+        in: path
+        description: Channel Activity Customer Fraud Analysis Algorithm Reference
+        required: true
+        type: string
+      responses:
+        200:
+          description: Successfully retrieved channel activity analysis customer fraud
+          schema:
+            $ref: '#/definitions/ChannelActivityAnalysisCustomerFraudBaseWithId'
+  /channel-activity-analysis/channel-activity-analysis/{cr-reference-id}/merchants-frauds/{bq-reference-id}:
+    get:
+      tags:
+      - retrieve
+      summary: Retrieved channel activity analysis merchant fraud
+      operationId: retrieveChannelActivityAnalysisMerchantFraud
+      produces:
+      - application/json
+      parameters:
+      - name: cr-reference-id
+        in: path
+        description: Channel Activity Analysis Reference
+        required: true
+        type: string
+      - name: bq-reference-id
+        in: path
+        description: Channel Activity Merchant Fraud Analysis Algorithm Reference
+        required: true
+        type: string
+      responses:
+        200:
+          description: Successfully retrieved channel activity analysis merchant fraud
+          schema:
+            $ref: '#/definitions/ChannelActivityAnalysisMerchantFraudBaseWithId'
+  /channel-activity-analysis/channel-activity-analysis/{cr-reference-id}/customers-behaviors/{bq-reference-id}:
+    get:
+      tags:
+      - retrieve
+      summary: Retrieved channel activity analysis customer behavior
+      operationId: retrieveChannelActivityAnalysisCustomerBehavior
+      produces:
+      - application/json
+      parameters:
+      - name: cr-reference-id
+        in: path
+        description: Channel Activity Analysis Reference
+        required: true
+        type: string
+      - name: bq-reference-id
+        in: path
+        description: Channel Activity Customer Behavior Analysis Algorithm Reference
+        required: true
+        type: string
+      responses:
+        200:
+          description: Successfully retrieved channel activity analysis customer behaviors
+          schema:
+            $ref: '#/definitions/ChannelActivityAnalysisCustomerBehaviorBaseWIthId'
+  /channel-activity-analysis/channel-activity-analysis/{cr-reference-id}/merchants-behaviors/{bq-reference-id}:
+    get:
+      tags:
+      - retrieve
+      summary: Retrieved channel activity analysis merchant behavior
+      operationId: retrieveChannelActivityAnalysisMerchantBehavior
+      produces:
+      - application/json
+      parameters:
+      - name: cr-reference-id
+        in: path
+        description: Channel Activity Analysis Reference
+        required: true
+        type: string
+      - name: bq-reference-id
+        in: path
+        description: Channel Activity Merchant Behavior Analysis Algorithm Reference
+        required: true
+        type: string
+      responses:
+        200:
+          description: Successfully retrieved channel activity analysis merchant behavior
+          schema:
+            $ref: '#/definitions/ChannelActivityAnalysisMerchantBehaviorBaseWithId'
+  /channel-activity-analysis/channel-activity-analysis/{cr-reference-id}/bots/{bq-reference-id}:
+    get:
+      tags:
+      - retrieve
+      summary: Retrieved channel activity analysis bot
+      operationId: retrieveChannelActivityAnalysisBot
+      produces:
+      - application/json
+      parameters:
+      - name: cr-reference-id
+        in: path
+        description: Channel Activity Analysis Reference
+        required: true
+        type: string
+      - name: bq-reference-id
+        in: path
+        description: Channel Activity Bot Detection Analysis Algorithm Reference
+        required: true
+        type: string
+      responses:
+        200:
+          description: Successfully retrieved channel activity analysis bot
+          schema:
+            $ref: '#/definitions/ChannelActivityAnalysisBotBaseWIthId'
+  /channel-activity-analysis/channel-activity-analysis/{cr-reference-id}/devices-errors/{bq-reference-id}:
+    get:
+      tags:
+      - retrieve
+      summary: Retrieved channel activity analysis device error
+      operationId: retrieveChannelActivityAnalysisDeviceError
+      produces:
+      - application/json
+      parameters:
+      - name: cr-reference-id
+        in: path
+        description: Channel Activity Analysis Reference
+        required: true
+        type: string
+      - name: bq-reference-id
+        in: path
+        description: Channel Activity Device Error Detection Analysis Algorithm Reference
+        required: true
+        type: string
+      responses:
+        200:
+          description: Successfully retrieved channel activity analysis device error
+          schema:
+            $ref: '#/definitions/ChannelActivityAnalysisDeviceErrorBaseWIthId'
+  /channel-activity-analysis/channel-activity-analysis/{cr-reference-id}/recording:
+    post:
+      tags:
+      - record
+      summary: Create channel activity analysis
+      operationId: recordChannelActivityAnalysis
+      produces:
+      - application/json
+      parameters:
+      - name: cr-reference-id
+        in: path
+        description: Channel Activity Analysis Reference
+        required: true
+        type: string
+      - in: body
+        name: body
+        description: Record control record request payload
+        required: true 
+        schema:
+          $ref: '#/definitions/GenericRecordActionRequest'
+      responses:
+        201:
+          description: A new Record is created
+          schema:
+            $ref: '#/definitions/GenericRecordActionResponse'
+  /channel-activity-analysis/channel-activity-analysis/{cr-reference-id}/requisition:
+    post:
+      tags:
+      - request
+      summary: Create channel activity analysis
+      operationId: requestChannelActivityAnalysisCreate
+      produces:
+      - application/json
+      parameters:
+      - name: cr-reference-id
+        in: path
+        description: Channel Activity Analysis Reference
+        required: true
+        type: string
+      - in: body
+        name: body
+        description: Record control record request payload
+        required: true
+        schema:
+          $ref: '#/definitions/ChannelActivityAnalysisBase'
+      responses:
+        201:
+          description: Created channel activity analysis
+          schema:
+            $ref: '#/definitions/ChannelActivityAnalysisBaseWithId'
+    put:
+      tags:
+      - request
+      summary: Update channel activity analysis
+      operationId: requestChannelActivityAnalysisUpdate
+      produces:
+      - application/json
+      parameters:
+      - name: cr-reference-id
+        in: path
+        description: Channel Activity Analysis Reference
+        required: true
+        type: string
+      - in: body
+        name: body
+        description: Record control record request payload
+        required: true
+        schema:
+          $ref: '#/definitions/ChannelActivityAnalysisBase'
+      responses:
+        200:
+          description: Updated channel activity analysis
+          schema:
+            $ref: '#/definitions/ChannelActivityAnalysisBaseWithId'
+definitions:
+
+  ChannelActivityAnalysisBase:
+    type: object
+    properties:
+      channelType:
+        type: string
+        example: Type-1
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      channelActivityFromToAnalysis:
+        type: string
+        example: '[10-12-2018, 31-12-2022]'
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Date
+      channelActivityAnalysisType:
+        type: string
+        example: customer fraud, merchant fraud
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      channelActivityAnalysisResult:
+        type: string
+        example: '[analysis 1, anlysis 2]'
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+          general-info: Refers to results from any type of analysis listed below
+      channelActivityAnalysisRecord:
+        type: object
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+          general-info: combines results of analysis in a single record
+      channelActivityHistoryReport:
+        type: object
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+          general-info: Report extracting channel activity records for analysis retrieved from SD-Channel Activity History
+
+  ChannelActivityAnalysisBaseWithId:
+    type: object
+    properties:
+      channelActivityAnalysisReference:
+        type: string
+        example: "CAAR123"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      channelType:
+        type: string
+        example: Type 1
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      channelActivityFromToAnalysis:
+        type: string
+        example: '[10-12-2018, 31-12-2022]'
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Date
+      channelActivityAnalysisType:
+        type: string
+        example: customer fraud, merchant fraud
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      channelActivityAnalysisResult:
+        type: string
+        example: '[analysis 1, anlysis 2]'
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+          general-info: Refers to results from any type of analysis listed below
+      channelActivityAnalysisRecord:
+        type: object
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+          general-info: combines results of analysis in a single record
+      channelActivityHistoryReport:
+        type: object
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+          general-info: Report extracting channel activity records for analysis retrieved from SD-Channel Activity History
+
+
+  ChannelActivityAnalysisCustomerFraudBaseWithId:
+    type: object
+    properties:
+      channelActivityAnalysisReference:
+        type: string
+        example: "CAAR123"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      channelActivityCustomerFraudAnalysisAlgorithmReference:
+        type: string
+        example: "654987321"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      channelActivityCustomerFraudAnalysisAlgorithmSpecification:
+        type: string
+        example: Channel analysis required
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+          general-info: Defines required data and results
+      channelActivityCustomerFraudAnalysisReference:
+        type: string
+        example: "741258963"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+          general-info: Reference to analysis performed
+      channelActivityCustomerFraudAnalysisResult:
+        type: string
+        example: potential customer fraud
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+          general-info: output from the applied algorithm
+
+  ChannelActivityAnalysisMerchantFraudBaseWithId:
+    type: object
+    properties:
+      channelActivityAnalysisReference:
+        type: string
+        example: "CAAR123"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      channelActivityServiceReference:
+        type: string
+        example: "123456879"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      channelActivityMerchantFraudAnalysisAlgorithmReference:
+        type: string
+        example: "951753258"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      channelActivityMerchantFraudAnalysisAlgorithmSpecification:
+        type: string
+        example: Algorithm analysis required
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+          general-info: Defines required data and results
+      channelActivityMerchantFraudAnalysisReference:
+        type: string
+        example: "564889765"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+          general-info: Reference to analysis performed
+      channelActivityMerchantFraudAnalysisResult:
+        type: string
+        example: possible merchant fraud
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+          general-info: output from the applied algorithm
+
+  ChannelActivityAnalysisCustomerBehaviorBaseWIthId:
+    type: object
+    properties:
+      channelActivityAnalysisReference:
+        type: string
+        example: "CAAR123"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      channelActivityServiceReference:
+        type: string
+        example: "123456879"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      channelActivityCustomerBehaviorAnalysisAlgorithmReference:
+        type: string
+        example: "666555444"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      channelActivityCustomerBehaviorAnalysisAlgorithmSpecification:
+        type: string
+        example: Algorithm analysis required
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+          general-info: Defines required data and results
+      channelActivityCustomerBehaviorAnalysisReference:
+        type: string
+        example: "564889765"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+          general-info: Reference to analysis performed
+      channelActivityCustomerBehaviorAnalysisResult:
+        type: string
+        example: pattern customer activity
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+          general-info: output from the applied algorithm
+
+  ChannelActivityAnalysisMerchantBehaviorBaseWithId:
+    type: object
+    properties:
+      channelActivityAnalysisReference:
+        type: string
+        example: "CAAR123"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      channelActivityServiceReference:
+        type: string
+        example: "123456879"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      channelActivityCustomerBehaviorAnalysisAlgorithmReference:
+        type: string
+        example: "110066887"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      channelActivityMerchantBehaviorAnalysisAlgorithmSpecification:
+        type: string
+        example: Algorithm analysis required
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+          general-info: Defines required data and results
+      channelActivityMerchantBehaviorAnalysisReference:
+        type: string
+        example: "564889765"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+          general-info: Reference to analysis performed
+      channelActivityMerchantBehaviorAnalysisResult:
+        type: string
+        example: pattern merchant activity
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+          general-info: output from the applied algorithm
+
+  ChannelActivityAnalysisBotBaseWIthId:
+    type: object
+    properties:
+      channelActivityAnalysisReference:
+        type: string
+        example: "CAAR123"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      channelActivityServiceReference:
+        type: string
+        example: "123456879"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      channelActivityBotAnalysisAlgorithmReference:
+        type: string
+        example: "110069987"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      channelActivityBotAnalysisAlgorithmSpecification:
+        type: string
+        example: Algorithm analysis required
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+          general-info: Defines required data and results
+      channelActivityBotAnalysisReference:
+        type: string
+        example: "564889765"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+          general-info: Reference to analysis performed
+      channelActivityBotAnalysisResult:
+        type: string
+        example: detect unwanted (ro)bot access
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+          general-info: output from the applied algorithm
+
+  ChannelActivityAnalysisDeviceErrorBaseWIthId:
+    type: object
+    properties:
+      channelActivityAnalysisReference:
+        type: string
+        example: "CAAR123"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      channelActivityDeviceErrorAnalysisAlgorithmReference:
+        type: string
+        example: "166699987"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      channelActivityDeviceErrorAnalysisAlgorithmSpecification:
+        type: string
+        example: Algorithm analysis required
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+          general-info: Defines required data and results
+      channelActivityDeviceErrorAnalysisReference:
+        type: string
+        example: "564889765"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+          general-info: Reference to analysis performed
+      channelActivityDeviceErrorAnalysisResult:
+        type: string
+        example: possible channel/communication device errors
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+          general-info: output from the applied algorithm
+
+  GenericRecordActionRequest:
+    type: object
+    properties:
+      recordingRecordType:
+        type: string
+        example: Behavior model performance feedback
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      recordingRecord:
+        type: object
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+      recordingRecordDateTime:
+        type: string
+        example: "2012-12-20T17:25:32"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::DateTime
+      empolyeeBusinessUnitReference:
+        type: string
+        example: "456321987"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+          general-info: Employee or unit assigned to the servicing position
+
+  GenericRecordActionResponse:
+    type: object
+    properties:
+      recordingRecordReference:
+        type: string
+        example: "789456321"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      recordingRecordStatus:
+        type: string
+        example: APPLIED
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text

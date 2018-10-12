@@ -1,0 +1,691 @@
+swagger: '2.0'
+info:
+  version: "4.0.0"
+  title: 'Service Domain - Servicing Order'
+  description: |
+    ## Description:
+    Handle the processing of a customer servicing order or request - handles a predefined procedure that is followed for many different servicing requirements. A check can be made that the servicing order is covered by the necessary agreements and mandates for more sophisticated implementations
+
+    ## Example of use:
+    A customer changes address and requests all products and service arrangements are updated
+
+    ## General comment:
+    The concept of a servicing order introduces a distribution service that can span multiple products and services and may involve cycles and possibly fees/charges. There may be several types of 'order' type facility developed over time
+
+host: virtserver.swaggerhub.com
+basePath: /BIAN/sd-servicing-order/2.0.0
+schemes:
+ - https
+paths:
+  /servicing-order/servicing-order-procedure/:
+    get:
+      tags:
+      - retrieve
+      operationId: RetrieveServicingOrderReferenceIds
+      summary: Retrieve Servicing Order cr-reference-ids
+      produces:
+      - application/json
+      parameters:
+      - name: collection-filter
+        in: query
+        description: Filter to refine the result set; ex - "servicingOrderServiceReportType = type-1"
+        type: string
+      responses:
+        200:
+          description: Successfully retrieved Servicing Order Control Record IDs.
+          schema:
+            type: array
+            items:
+              type: string
+            example: [SOR123, SOR324]
+
+  /servicing-order/servicing-order-procedure/behavior-qualifiers/:
+    get:
+      tags:
+      - retrieve
+      operationId: RetrieveServicingOrderBehaviorQualifiers
+      summary: Retrieve Behavior Qualifier names
+      produces:
+      - application/json
+      responses:
+        200:
+          description: Successfully retrieved all Behavior Qualifier names in the Servicing Order Service Domain.
+          schema:
+            type: array
+            items:
+              type: string
+            example: [approvals, tasks, record]
+
+  /servicing-order/servicing-order-procedure/{cr-reference-id}/{behavior-qualifier}:
+    get:
+      tags:
+      - retrieve
+      operationId: RetrieveServicingOrderBQIds
+      summary: Retrieve bq-reference-ids
+      produces:
+      - application/json
+      parameters:
+      - name: cr-reference-id
+        in: path
+        description: Servicing Order Reference
+        required: true
+        type: string
+      - name: behavior-qualifier
+        in: path
+        description: Behavior Qualifier Name; ex. - "task"
+        required: true
+        type: string
+      - name: collection-filter
+        in: query
+        description: Filter to refine the result set; ex. - "servicingOrderType = change of address"
+        type: string
+      responses:
+        200:
+          description: Successfully retrieved Servicing Order Behavior Qualifier reference IDs.
+          schema:
+            type: array
+            items:
+              type: string
+            example: [BQREF345, BQREF789, BQREF456]
+            
+  /servicing-order/servicing-order-procedure/{cr-reference-id}:
+    get:
+      tags:
+      - retrieve
+      operationId: RetrieveServicingOrder
+      summary: Retrieve Servicing Order
+      produces:
+      - application/json
+      parameters:
+      - name: cr-reference-id
+        in: path
+        description: Servicing Order Reference
+        required: true
+        type: string
+      responses:
+        200:
+          description: Successfully retrieved Servicing Order Master Control Record data.
+          schema:
+            $ref: "#/definitions/ServicingOrderBaseWithId"
+
+  # bq=approvals
+  /servicing-order/servicing-order-procedure/{cr-reference-id}/approvals/{bq-reference-id}:
+    get:
+      tags:
+      - retrieve
+      operationId: RetrieveServicingOrderApprovals
+      summary: Retrieve Approval
+      produces:
+      - application/json
+      parameters:
+      - name: cr-reference-id
+        in: path
+        description: Servicing Order Reference
+        required: true
+        type: string
+      - name: bq-reference-id
+        in: path
+        description: Servicing Order Approvals Reference
+        required: true
+        type: string
+      responses:
+        200:
+          description: Successfully retrieved Approvals Behavior Qualifier with all its attributes.
+          schema:
+            $ref: "#/definitions/ServicingOrderApprovalBaseWithIdAndRoot"
+
+  # bq=tasks
+  /servicing-order/servicing-order-procedure/{cr-reference-id}/tasks/{bq-reference-id}:
+    get:
+      tags:
+      - retrieve
+      operationId: RetrieveTasks
+      summary: Retrieve Task
+      produces:
+      - application/json
+      parameters:
+      - name: cr-reference-id
+        in: path
+        description: Servicing Order Reference
+        required: true
+        type: string
+      - name: bq-reference-id
+        in: path
+        description: Work Task Reference
+        required: true
+        type: string
+      responses:
+        200:
+          description: Successfully retrieved Tasks Behavior Qualifier with all its attributes.
+          schema:
+            $ref: "#/definitions/ServicingOrderTaskBaseWithIdAndRoot"
+            
+  /servicing-order/servicing-order-procedure/{cr-reference-id}/records/{bq-reference-id}:
+    get:
+      tags:
+      - retrieve
+      operationId: RetrieveServicingOrderRecord
+      summary: Retrieve Record
+      produces:
+      - application/json
+      parameters:
+      - name: cr-reference-id
+        in: path
+        description: Servicing Order Reference
+        required: true
+        type: string
+      - name: bq-reference-id
+        in: path
+        description: Recording Record Reference
+        required: true
+        type: string
+      responses:
+        200:
+          description: Successfully retrieved Record Behavior Qualifier with all its attributes.
+          schema:
+            $ref: "#/definitions/ServicingOrderRecordBaseWithIdAndRoot"
+
+  /servicing-order/servicing-order-procedure/{cr-reference-id}/records/recording:
+    post:
+      tags:
+      - record
+      operationId: recordServicingOrder
+      summary: Records a Servicing Order
+      produces:
+      - application/json
+      parameters:
+      - name: cr-reference-id
+        in: path
+        description: Servicing Order Reference (the servicing order being processed)
+        required: true
+        type: string
+      - in: body
+        name: body
+        description: Record control record request payload
+        required: true
+        schema:
+          $ref: "#/definitions/ServicingOrderRecordRequest"
+      responses:
+        201:
+          description: A new Servicing Order Record is created.
+          schema:
+            $ref: "#/definitions/ServicingOrderRecordResponse"
+
+  /servicing-order/servicing-order-procedure/{cr-reference-id}/updation:
+    put:
+      tags:
+      - update
+      operationId: updateServicingOrder
+      description: Update an existing servicing order
+      summary: Update a Servicing Order
+      produces:
+      - application/json
+      parameters:
+      - name: cr-reference-id
+        in: path
+        description: Servicing Order Reference
+        required: true
+        type: string
+      - in: body
+        name: body
+        description: Update servicing order control record request payload
+        required: true
+        schema:
+          $ref: "#/definitions/ServicingOrderBase"
+      responses:
+        200:
+          description: Successfully updated execution of servicing order.
+          schema:
+            $ref: "#/definitions/ServicingOrderBaseWithId"
+
+  /servicing-order/servicing-order-procedure/{cr-reference-id}/execution:
+    put:
+      tags:
+      - execute
+      operationId: executeServicingOrderUpdate
+      description: Update an existing servicing order
+      summary: Execute an automation on a Servicing Order
+      produces:
+      - application/json
+      parameters:
+      - name: cr-reference-id
+        in: path
+        description: Servicing Order Reference
+        required: true
+        type: string
+      - in: body
+        name: body
+        description: Execute servicing order request payload
+        required: true
+        schema:
+          $ref: "#/definitions/ServicingOrderBase"
+      responses:
+        200:
+          description: Successfully updated execution of servicing order.
+          schema:
+            $ref: "#/definitions/ServicingOrderBaseWithId"
+
+  /servicing-order/servicing-order-procedure/execution:
+    post:
+      tags:
+      - execute
+      operationId: executeServicingOrderCreate
+      description: Create a new servicing order
+      summary: Execute an automation on a Servicing Order
+      produces:
+      - application/json
+      parameters:
+      - in: body
+        name: body
+        description: Execute servicing order request payload
+        required: true
+        schema:
+          $ref: "#/definitions/ServicingOrderBase"
+      responses:
+        201:
+          description: Successfully created new servicing order.
+          schema:
+            $ref: "#/definitions/ServicingOrderBaseWithId"
+
+  /servicing-order/servicing-order-procedure/{cr-reference-id}/requisition:
+    put:
+      tags:
+      - request
+      operationId: requestServicingOrderUpdate
+      description: Update an existing servicing order
+      summary: Requests a Servicing Order
+      produces:
+      - application/json
+      parameters:
+      - name: cr-reference-id
+        in: path
+        description: Servicing Order Reference (the servicing order being processed)
+        required: true
+        type: string
+      - in: body
+        name: body
+        description: Request servicing order request payload
+        required: true
+        schema:
+          $ref: "#/definitions/ServicingOrderBase"
+      responses:
+        200:
+          description: Successfully updated requisition of servicing order.
+          schema:
+            $ref: "#/definitions/ServicingOrderBaseWithId"
+
+  /servicing-order/servicing-order-procedure/requisition:
+    post:
+      tags:
+      - request
+      operationId: requestServicingOrderCreate
+      description: Create a new servicing order
+      summary: Request a Servicing Order
+      produces:
+      - application/json
+      parameters:
+      - in: body
+        name: body
+        description: Request servicing order request payload
+        required: true
+        schema:
+          $ref: "#/definitions/ServicingOrderBase"
+      responses:
+        201:
+          description: Successfully created new requisition of servicing order.
+          schema:
+            $ref: "#/definitions/ServicingOrderBaseWithId"
+
+definitions:
+
+  ServicingOrderBase:
+    type: object
+    properties:
+      customerReference:
+        type: string
+        example: CUSREF123
+        description: | 
+          general-info: Customer Reference
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      employeeBusinessUnitReference:
+        type: string
+        example: EBUR123
+        description: | 
+          general-info: Employee Business Unit Reference
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      servicingOrderType:
+        type: string
+        example: change of address
+        description: | 
+          general-info: Servicing Order Type
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      servicingOrderRecord:
+        type: object
+        properties: {}
+        description: | 
+          general-info: Servicing Order Record
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+      dateType:
+        type: string
+        example: start date
+        description: | 
+          general-info: Date Type
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      date:
+        type: string
+        example: "09/20/2018"
+        description: | 
+          general-info: Date
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Date
+      servicingOrderStatus:
+        type: string
+        example: pending
+        description: | 
+          general-info: Servicing Order Status
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      servicingOrderResult:
+        type: string
+        example: success
+        description: | 
+          general-info: Servicing Order Result
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+
+  ServicingOrderBaseWithId:
+    type: object
+    properties:
+      servicingOrderReference:
+        type: string
+        example: SOR28321983
+        description: | 
+          general-info: Servicing Order Reference
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      customerReference:
+        type: string
+        example: CUSREF123
+        description: | 
+          general-info: Customer Reference
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      employeeBusinessUnitReference:
+        type: string
+        example: EBR23
+        description: | 
+          general-info: Employee Business Unit Reference
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      servicingOrderType:
+        type: string
+        example: change of address
+        description: | 
+          general-info: Servicing Order Type
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      servicingOrderRecord:
+        type: object
+        properties: {}
+        description: | 
+          general-info: Servicing Order Record
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+      dateType:
+        type: string
+        example: start date
+        description: | 
+          general-info: Date Type
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      date:
+        type: string
+        example: "25-09-2018"
+        description: | 
+          general-info: Date
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Date
+      servicingOrderStatus:
+        type: string
+        example: pending
+        description: | 
+          general-info: Servicing Order Status
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      servicingOrderResult:
+        type: string
+        example: success
+        description: | 
+          general-info: Servicing Order Result
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+
+  ServicingOrderApprovalBaseWithIdAndRoot:
+    type: object
+    properties:
+      servicingOrderReference:
+        type: string
+        example: SOR123
+        description: | 
+          general-info: Servicing Order Reference
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      servicingOrderApprovalsReference:
+        type: string
+        example: SOAR98787
+        description:  |
+          general-info: Servicing Order Approvals Reference
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      customerReference:
+        type: string
+        example: Request Order
+        description: | 
+          general-info: Customer Reference
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      customerProductServiceEntitlement:
+        type: object
+        properties: {}
+        description: | 
+          general-info: Customer Product Service Entitlement
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+      thirdPartyReference:
+        type: string
+        example: Third Party
+        description:  |
+          general-info: Third Party Reference
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      thirdPartyServicingMandateReference:
+        type: string
+        example: Thired Party vendor
+        description: | 
+          general-info: Third Party Servicing Mandate Reference
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      thirdPartyServicingMandate:
+        type: object
+        properties: {}
+        description: | 
+          general-info: Third Party Servicing Mandate
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+      servicingOrderApprovalsRecord:
+        type: object
+        properties: {}
+        description: | 
+          general-info: Servicing Order Approvals Record
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+
+  ServicingOrderTaskBaseWithIdAndRoot:
+    type: object
+    properties:
+      servicingOrderReference:
+        type: string
+        example: SOREF8439
+        description: | 
+          general-info: Servicing Order Reference
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      servicingOrderType:
+        type: string
+        example: Change Address
+        description: | 
+          general-info: Servicing Order Type
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      servicingOrderDescription:
+        type: object
+        properties: {}
+        description: |
+          general-info: Servicing Order Description
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+      workTaskReference:
+        type: string
+        example: WTREF823928
+        description: | 
+          general-info: Work Task Reference
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      workTaskType:
+        type: string
+        example: Document check
+        description: |
+          general-info: Work Task Type
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      workTaskDescription:
+        type: object
+        properties: {}
+        description: | 
+          general-info: Work Task Description
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+      workTaskRecord:
+        type: object
+        properties: {}
+        description: | 
+          general-info: Work Task Record
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+      servicingOrderRecord:
+        type: object
+        properties: {}
+        description: | 
+          general-info: Servicing Order Record
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+
+  ServicingOrderRecordRequest:
+    type: object
+    properties:
+      servicingOrderType:
+        type: string
+        example: type-1
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      recordingRecordType:
+        type: string
+        example: Behavior model performance feedback
+        description: | 
+          general-info: the layout type of the feedback provided
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      recordingRecord:
+        type: object
+        properties: {}
+        description: | 
+          general-info: The feedback
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+      recordingRecordDateTime:
+        type: string
+        example: "2018-09-06T09:00:00"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::DateTime
+      employeeBusinessUnitReference:
+        type: string
+        example: REF456
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+
+  ServicingOrderRecordResponse:
+    type: object
+    properties:
+      recordingRecordReference:
+        type: string
+        example: "RRR4678"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      recordingRecordStatus:
+        type: string
+        example: "Applied"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+        
+  ServicingOrderRecordBaseWithIdAndRoot:
+    type: object
+    properties:
+      servicingOrderReference:
+        type: string
+        example: SOREF8293
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      servicingOrderType:
+        type: string
+        example: Change of Employment
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      recordingRecordReference:
+        type: string
+        example: "RRR4678"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      recordingRecordType:
+        type: string
+        example: "Behavior model performance feedback"
+        description: |
+          general-info: the layout/type of the feedback provided
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      recordingRecord:
+        type: object
+        description: | 
+          general-info: the feedback
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+      recordingRecordDateTime:
+        type: string
+        example: "2018-09-06T09:00:00"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::DateTime
+      recordingRecordStatus:
+        type: string
+        example: "Applied"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      employeeBusinessUnitReference:
+        type: string
+        example: REF456
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier

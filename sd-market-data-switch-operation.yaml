@@ -1,0 +1,674 @@
+---
+swagger: "2.0"
+info:
+  description: |
+    ## Description:
+    Administer the internal information distribution 'switch' with external and external market information feeds and associated employee access rights. Note this can include 'brokering' information access on a first come first serve basis for limited active user number feed services
+    ## Example of use:
+    A new employee is provided with the standard access to information feed at their trading desk
+    ## General comment:
+    This is an internal data/page management capability for external data feeds and optionally formatted internally published information 'pages'. It is specific to trading type activity where a trader will configure a collection market new/analysis/price/trading related feeds to support the deal formulation activity. Note that the nature and relevance of this Service Domain is channel specific and may evolve with changes in market information dissemination practices
+  version: "4.0.0"
+  title: Service Domain - Market Data Switch Operation
+host: virtserver.swaggerhub.com
+basePath: /BIAN/sd-market-data-switch-operation/4.0.0
+schemes:
+- https
+paths:
+  /market-data-switch-operation/information-feed-switch-operating-session:
+    get:
+      tags:
+      - retrieve
+      operationId: retrieveInformationFeedSwitchOperatingSessionReferenceIds
+      summary: "Retrieve available Market Data Switch Operation Control Record IDs"
+      produces:
+      - application/json
+      parameters:
+      - name : collection-filter
+        in: query
+        description: " Filter to refine the result set. ex- 'marketDataSwitchAccessRightsRecordReference = MDSWRR324'"
+        type: string
+      responses:
+        200:
+          description: " Successfully retrieved Market Data Switch Operation Control Record IDs available within the Service Domain"
+          schema:
+            type: array
+            items:
+              type: string
+            example: ["MDSOSR1456", "MDSOSR1456"]
+  
+  /market-data-switch-operation/information-feed-switch-operating-session/behavior-qualifiers:
+    get:
+      tags:
+      - retrieve
+      operationId: retrieveInformationFeedSwitchOperatingSessionBqNames
+      summary: "Retrieve all BQ names in the Market Data Switch Operation Service Domain"
+      produces:
+      - application/json
+      responses:
+        200:
+          description: "Successfully retrieved all Behavior Qualifier names in the Market Data Switch Operation Service Domain"
+          schema:
+            type: array
+            items:
+              type: string
+            example: ["feed-upload", "publish", "distribution", "reporting"]
+    
+  /market-data-switch-operation/information-feed-switch-operating-session/{cr-reference-id}/{behavior-qualifier}:
+    get:
+      tags:
+      - retrieve
+      operationId: retrieveInformationFeedSwitchOperatingSessionBQIds
+      summary: "Retrieve BQ Reference IDs of the given Market Data Switch Operation Behavior Qualifier"
+      produces:
+      - application/json
+      parameters:
+      - name : cr-reference-id
+        in: path
+        description: "Market Data Switch Operating Session Reference"
+        required: true
+        type: string
+      - name : behavior-qualifier
+        in: path
+        description: "Behavior Qualifier Name (ex. 'feed-upload')"
+        required: true
+        type: string
+      - name : collection-filter
+        in: query
+        description: " Filter to refine the result set (ex. 'marketInformationFeedServiceReference = MIF4235')"
+        type: string
+      responses:
+        200:
+          description: "Successfully retrieved Market Data Switch Operation Behavior Qualifier reference IDs"
+          schema:
+            type: array
+            items:
+              type: string
+            example: ["MDSUIFSSR4526", "MDSSUSRR478526", "MDSSUSRR478426"]
+    
+  /market-data-switch-operation/information-feed-switch-operating-session/{cr-reference-id}:
+    get:
+      tags:
+      - retrieve
+      operationId: retrieveInformationFeedSwitchOperatingSession
+      summary: "Retrieve Market Data Switch Operation Master Control Record data"
+      produces:
+      - application/json
+      parameters:
+      - name: cr-reference-id
+        in: path
+        description: "Market Data Switch Operating Session Reference"
+        required: true
+        type: string
+      responses:
+        200:
+          description: "Successfully retrieved Market Data Switch Operation Master Control Record data."
+          schema:
+            $ref: "#/definitions/OperatingSessionBaseWithId"
+
+  # bq=feed-upload
+  /market-data-switch-operation/information-feed-switch-operating-session/{cr-reference-id}/feed-uploads/{bq-reference-id}:
+    get:
+      tags:
+      - retrieve
+      operationId: retrieveInformationFeedSwitchOperatingSessionFeedUpload
+      summary: "Retrieve a Feed Upload"
+      produces:
+      - application/json
+      parameters:
+      - name: cr-reference-id
+        in: path
+        description: "Market Data Switch Operating Session Reference"
+        required: true
+        type: string
+      - name: bq-reference-id
+        in: path
+        description: "Market Data Switch Upload Information Feed Service Session Reference"
+        required: true
+        type: string
+      responses:
+        200:
+          description: "Successfully retrieved Feed Upload Behavior Qualifier with all its attributes."
+          schema:
+            $ref: "#/definitions/FeedUploadBaseWithIdAndRoot"
+
+  # bq=publish
+  /market-data-switch-operation/information-feed-switch-operating-session/{cr-reference-id}/publishes/{bq-reference-id}:
+    get:
+      tags:
+      - retrieve
+      operationId: retrieveInformationFeedSwitchOperatingSessionPublish
+      summary: "Retrieve a publication."
+      produces:
+      - application/json
+      parameters:
+      - name: cr-reference-id
+        in: path
+        description: "Market Data Switch Operating Session Reference"
+        required: true
+        type: string
+      - name: bq-reference-id
+        in: path
+        description: "Market Data Switch Internal Information Feed Service Session Reference"
+        required: true
+        type: string
+      responses:
+        200:
+          description: "Successfully retrieved Publish Behavior Qualifier with all its attributes."
+          schema:
+            $ref: "#/definitions/PublishBaseWithIdAndRoot"
+
+  # bq=distribution
+  /market-data-switch-operation/information-feed-switch-operating-session/{cr-reference-id}/distributions/{bq-reference-id}:
+    get:
+      tags:
+      - retrieve
+      operationId: retrieveInformationFeedSwitchOperatingSessionDistribution
+      summary: "Retrieve a distribution"
+      produces:
+      - application/json
+      parameters:
+      - name: cr-reference-id
+        in: path
+        description: "Market Data Switch Operating Session Reference"
+        required: true
+        type: string
+      - name: bq-reference-id
+        in: path
+        description: "Market Data Switch Service User Session Record Reference (refers to a user's market switch access session - where they receive the information as per their registered access rights)"
+        required: true
+        type: string
+      responses:
+        200:
+          description: "Successfully retrieved Distribution Behavior Qualifier with all its attributes."
+          schema:
+            $ref: "#/definitions/DistributionBaseWithIdAndRoot"
+
+  # bq=reporting
+  /market-data-switch-operation/information-feed-switch-operating-session/{cr-reference-id}/reportings/{bq-reference-id}:
+    get:
+      tags:
+      - retrieve
+      operationId: retrieveInformationFeedSwitchOperatingSessionReporting
+      summary: "Retrieve a report"
+      produces:
+      - application/json
+      parameters:
+      - name: cr-reference-id
+        in: path
+        description: "Market Data Switch Operating Session Reference"
+        required: true
+        type: string
+      - name: bq-reference-id
+        in: path
+        description: "Market Data Switch Operating Session Report Reference (refers to the service report)"
+        required: true
+        type: string
+      responses:
+        200:
+          description: "Successfully retrieved Reporting Behavior Qualifier with all its attributes."
+          schema:
+            $ref: "#/definitions/ReportingBaseWithIdAndRoot"
+
+  /market-data-switch-operation/information-feed-switch-operating-session/{cr-reference-id}/recording:
+    post:
+      tags:
+      - record
+      operationId: recordInformationFeedSwitchOperatingSession
+      summary: "Records a Market Data Switch Operation"
+      produces:
+      - application/json
+      parameters:
+      - name: cr-reference-id
+        in: path
+        description: "Market Data Switch Operating Session Reference"
+        required: true
+        type: string
+      - in: body
+        name: body
+        description: "Record control record request payload"
+        required: true
+        schema:
+          $ref: "#/definitions/MarketDataSwitchOperationRecordRequest"
+      responses:
+        201:
+          description: "A new Record is created."
+          schema:
+            $ref: "#/definitions/MarketDataSwitchOperationRecordResponse"
+
+  # bq=distribution
+  /market-data-switch-operation/information-feed-switch-operating-session/{cr-reference-id}/distributions/{bq-reference-id}/execution:
+    put:
+      tags:
+      - execute
+      operationId: executeInformationFeedSwitchOperatingSessionUpdate
+      description: "Update an existing Distribution"
+      summary: "Executes a Distribution. This can be used to initiate, update or delete a Distribution."
+      produces:
+      - application/json
+      parameters:
+      - name : cr-reference-id
+        in: path
+        description: "Market Data Switch Operating Session Reference"
+        required: true
+        type: string
+      - name : bq-reference-id
+        in: path
+        description: "Market Data Switch Service User Session Record Reference"
+        required: true
+        type: string
+      - in: body
+        name: body
+        description: "Execute distributions request payload"
+        required: true
+        schema:
+          $ref: '#/definitions/DistributionBase'
+      responses:
+        200:
+          description: "Successfully updated execution of a distribution."
+          schema:
+            $ref: '#/definitions/DistributionBaseWithIdAndRoot'
+
+  /market-data-switch-operation/information-feed-switch-operating-session/{cr-reference-id}/distributions/execution:
+    post:
+      tags:
+      - execute
+      operationId: executeInformationFeedSwitchOperatingSessionCreate
+      description: "Create a new Distribution"
+      summary: "Executes a Distribution."
+      produces:
+      - application/json
+      parameters:
+      - name : cr-reference-id
+        in: path
+        description: "Market Data Switch Operating Session Reference"
+        required: true
+        type: string
+      - in: body
+        name: body
+        description: "Execute distributions request payload"
+        required: true
+        schema:
+          $ref: '#/definitions/DistributionBase'
+      responses:
+        200:
+          description: "Successfully executed distribution."
+          schema:
+            $ref: '#/definitions/DistributionBaseWithIdAndRoot'
+
+  /market-data-switch-operation/information-feed-switch-operating-session/{cr-reference-id}/requisition:
+    put:
+      tags:
+      - request
+      operationId: requestrequestInformationFeedSwitchOperatingSessionUpdate
+      description: "Update an existing market data switch operating session."
+      summary: "Requests an operating session update"
+      produces:
+      - application/json
+      parameters:
+      - name : cr-reference-id
+        in: path
+        description: "Market Data Switch Operating Session Reference"
+        required: true
+        type: string
+      - in: body
+        name: body
+        description: "Request operating session request payload"
+        required: true
+        schema:
+          $ref: '#/definitions/OperatingSessionBase'
+      responses:
+        200:
+          description: "Successfully requested distribution update."
+          schema:
+            $ref: '#/definitions/OperatingSessionBaseWithId'
+
+  /market-data-switch-operation/information-feed-switch-operating-session/requisition:
+    post:
+      tags:
+      - request
+      operationId: requestrequestInformationFeedSwitchOperatingSessionCreate
+      description: "Create a new market data switch operating session."
+      summary: "Requests an operating session"
+      produces:
+      - application/json
+      parameters:
+      - in: body
+        name: body
+        description: "Request operating session request payload"
+        required: true
+        schema:
+          $ref: '#/definitions/OperatingSessionBase'
+      responses:
+        200:
+          description: "Successfully requested distribution creation."
+          schema:
+            $ref: '#/definitions/OperatingSessionBaseWithId'
+definitions:
+
+  OperatingSessionBase:
+    type: object
+    properties:
+      marketDataSwitchServiceConfigurationRecordReference:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+          general-info: 'Market Data Switch Service Configuration Record Reference (used to access/update the service configuration)'
+        example: "MDSSCRR78456"
+      marketDataSwitchServiceConfigurationRecord:
+        type: object
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+          general-info: 'defines how the operational facility is set-up, including the offered external market information feeds/services and internal information records'
+      marketDataSwitchUserAccessRightsRecordReference:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+          general-info: 'Market Data Switch Access Rights Record Reference'
+        example: "MDSUARRR48785"
+      marketDataSwitchUserAccessRightsRecord:
+        type: object
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+          general-info: 'Market Data Switch Access Rights Record (this captures the users that are registered to access different services/information made available through the switch - it is used to control access)'
+
+  OperatingSessionBaseWithId:
+    type: object
+    properties:
+      marketDataSwitchOperatingSessionReference:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+          general-info: 'Market Data Switch Operating Session Reference'
+        example: "MDSOSR4563"
+      marketDataSwitchServiceConfigurationRecordReference:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+          general-info: 'Market Data Switch Service Configuration Record Reference (used to access/update the service configuration)'
+        example: "MDSSCRR78456"
+      marketDataSwitchServiceConfigurationRecord:
+        type: object
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+          general-info: 'defines how the operational facility is set-up, including the offered external market information feeds/services and internal information records'
+      marketDataSwitchUserAccessRightsRecordReference:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+          general-info: 'Market Data Switch Access Rights Record Reference'
+        example: "MDSUARRR48785"
+      marketDataSwitchUserAccessRightsRecord:
+        type: object
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+          general-info: 'Market Data Switch Access Rights Record (this captures the users that are registered to access different services/information made available through the switch - it is used to control access)'
+
+  FeedUploadBaseWithIdAndRoot:
+    type: object
+    properties:
+      marketDataSwitchUploadInformationFeedServiceSessionReference:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+          general-info: 'Market Data Switch Upload Information Feed Service Session Reference (Refers to the ongoing exchange of information records provided by an information provider - note there may be many providers active during a switch operating session).'
+        example: "MDSUIFSSR45896"
+      marketDataSwitchOperatingSessionReference:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+          general-info: 'Market Data Switch Operating Session Reference'
+        example: "MDSOSR4563"
+      marketDataSwitchServiceConfigurationRecord:
+        type: object
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+          general-info: 'defines how the operational facility is set-up, including the offered external market information feeds/services and internal information records'
+      marketInformationFeedServiceReference:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+          general-info: 'Market Information Feed Service Reference (this refers to the market feed service.Note- service operated by SD Information Provider Operation)'
+        example: "MIFSR78456"
+      marketInformationFeedServiceProfile:
+        type: object
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+          general-info: 'this sets out the range of information services/pages available - possibly with some form of selection menu'
+      marketInformationFeedServiceRecordReference:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+          general-info: 'Market Information Feed Service Record Reference(this refers to packets of information/records provided, perhaps with real-time updates)'
+        example: "MIFSRR47856"
+      marketInformationFeedServiceRecord:
+        type: object
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+          general-info: 'Market Information Feed Service Record (this is the market information that is distributed over the switch - its content is updated dynamically during the session)'
+
+  PublishBaseWithIdAndRoot:
+    type: object
+    properties:
+      marketDataSwitchInternalInformationFeedServiceSessionReference:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+          general-info: 'refers to the ongoing exchange of information records provided by an internal bank source'
+        example: "MDSIIFSSR78456"
+      marketDataSwitchOperatingSessionReference:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+          general-info: 'Market Data Switch Operating Session Reference'
+        example: "MDSOSR78456"
+      marketDataSwitchServiceConfigurationRecord:
+        type: object
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+          general-info: 'defines how the operational facility is set-up, including the offered external market information feeds/services and internal information records'
+      internalInformationFeedServiceReference:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+          general-info: 'this refers to internal sources of published information e.g. bank rates'
+        example: "IIFSR78569"
+      internalInformationFeedServiceProfile:
+        type: object
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+          general-info: 'this sets out the range of internally published information services/pages'
+      internalInformationFeedServiceRecordReference:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+          general-info: 'this refers to internal pages of information published'
+        example: "IIFSRR78456"
+      internalInformationFeedServiceRecord:
+        type: object
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+          general-info: 'this is the internally generated information that is distributed over the switch'
+
+  DistributionBase:
+    type: object
+    properties:
+      marketDataSwitchServiceUserSessionRecordReference:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+          general-info: 'Market Data Switch Service User Session Record Reference (refers to a user's market switch access session - where they receive the information as per their registered access rights)'
+        example: "MDSSURR78456"
+      marketDataSwitchServiceUserSessionRecord:
+        type: object
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+          general-info: 'Market Data Switch Switch Service User Session Record (defines the switch service - content - that the user will receive for this session - reflecting their user access rights)'
+      marketDataSwitchServiceConfigurationRecord:
+        type: object
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+          general-info: 'defines how the operational facility is set-up, including the offered external market information feeds/services and internal information records'
+      marketDataSwitchUserAccessRightsRecordReference:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+          general-info: 'Market Data Switch Access Rights Record Reference'
+      marketDataSwitchUserAccessRightsRecord:
+        type: object
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+          general-info: 'Market Data Switch Access Rights Record (this captures the users that are registered to access different services/information made available through the switch - it is used to control access)'
+
+  DistributionBaseWithIdAndRoot:
+    type: object
+    properties:
+      marketDataSwitchServiceUserSessionRecordReference:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+          general-info: 'Market Data Switch Service User Session Record Reference (refers to a user's market switch access session - where they receive the information as per their registered access rights)'
+        example: "MDSSURR78456"
+      marketDataSwitchServiceUserSessionRecord:
+        type: object
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+          general-info: 'Market Data Switch Switch Service User Session Record (defines the switch service - content - that the user will receive for this session - reflecting their user access rights)'
+      marketDataSwitchOperatingSessionReference:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+          general-info: 'Market Data Switch Operating Session Reference'
+        example: "MDSOSR4563"
+      marketDataSwitchServiceConfigurationRecord:
+        type: object
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+          general-info: 'defines how the operational facility is set-up, including the offered external market information feeds/services and internal information records'
+      marketDataSwitchUserAccessRightsRecordReference:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+          general-info: 'Market Data Switch Access Rights Record Reference'
+        example: "MDSUARRR48785"
+      marketDataSwitchUserAccessRightsRecord:
+        type: object
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+          general-info: 'Market Data Switch Access Rights Record (this captures the users that are registered to access different services/information made available through the switch - it is used to control access)'
+
+  ReportingBaseWithIdAndRoot:
+    type: object
+    properties:
+      marketDataSwitchOperatingSessionReference:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+          general-info: 'Market Data Switch Operating Session Reference'
+        example: "MDSOSR4563"
+      marketDataSwitchOperatingSessionReportReference:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+          general-info: 'Market Data Switch Operating Session Report Reference (refers to the service report)'
+        example: "MDSOSRR78456"
+      marketDataSwitchOperatingSessionReportType:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+          general-info: 'Market Data Switch Operating Session Report Type (e.g. real-time status, session statistics)'
+        example: "real-time status"
+      marketDataSwitchOperatingSessionStatistics:
+        type: object
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+          general-info: 'Market Data Switch Operating Session Statistics(maintained service activity statistic)'
+      marketDataSwitchOperatingSessionReport:
+        type: object
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+          general-info: 'Market Data Switch Operating Session Report (the session activity report)'
+
+  MarketDataSwitchOperationRecordRequest:
+    type: object
+    properties:
+      recordingRecordType:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+          general-info: 'the layout/type of the feedback provided'
+        example: "Behavior model performance feedback"
+      recordingRecord:
+        type: object
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+          general-info: 'the feedback'
+      recordingRecordDateTime:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::DateTime
+        example: "2018-09-06T09:00:00"
+      employeeBusinessUnitReference:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+        example: "REF45456"
+
+  MarketDataSwitchOperationRecordResponse:
+    type: object
+    properties:
+      recordingRecordReference:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+        example: "RRR4678"
+      recordingRecordStatus:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+        example: "Applied"

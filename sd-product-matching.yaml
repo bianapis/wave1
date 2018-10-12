@@ -1,0 +1,505 @@
+swagger: "2.0"
+info:
+  version: "4.0.0"
+  title: Service Domain - Product Matching
+  description: >
+
+    ## Description:
+
+      Record, index, classify, scan, store and retrieve any document in any media as appropriate. Includes electronic and physical distribution services
+
+    ## Example of use:
+
+      A corporate customer relationship manager provides general advice to a customer seeking to invest a short term cash excess. The manager uses customer details and product features to isolate the most appropriate product
+
+    ## General comment:
+
+      This function provides an interactive mapping of available products (and product combinations) to a customer based on customer type/characteristics, the context for the request and desired product/service features. The matching mechanism can prompt for additional details as may be necessary to isolate a product and/or confirm the eligibility of the customer for a specific product and/or associated terms and pricing levels. A more sophisticated matching capability can be sensitive to other factors such as business preferences/strategy and prevailing business/market conditions when selecting products to maximize sales, relationship and product profitability and influence customer retention
+
+host: virtserver.swaggerhub.com
+basePath: /BIAN/sd-product-matching/4.0.0
+
+schemes:
+- https
+
+paths:
+
+  /product-matching/product-customer-combination-assessment/evaluation:
+    post:
+      tags:
+      - evaluate
+      operationId: evaluateProduct/CustomerCombinationAssessment
+      summary: "Evaluate the given Product/Customer Combination Assessment Control Record."
+      produces: 
+      - application/json
+      parameters:
+      - in: body
+        name: body
+        description: Evaluate control record request payload
+        required: true
+        schema: 
+          $ref: '#/definitions/NextBest'
+      responses:
+        201:
+          description: successful
+          schema:
+            $ref: '#/definitions/NextBestWithIds'
+              
+  /product-matching/product-customer-combination-assessment/authorization:
+    post:
+      tags:
+      - authorize
+      operationId: authorizeProduct/CustomerCombinationAssessment
+      summary: "Authorize the given Product/Customer Combination Assessment Control Record."
+      produces: 
+      - application/json
+      parameters:
+      - in: body
+        name: body
+        description: Authorize control record request payload
+        required: true
+        schema: 
+          $ref: '#/definitions/NextBest'
+      responses:
+        201:
+          description: successful
+          schema:
+            $ref: '#/definitions/NextBestWithIds'
+
+  /product-matching/product-customer-combination-assessment/{cr-reference-id}/guidelines/requisition:
+    post:
+      tags: 
+      - request
+      operationId: requestProduct/CustomerCombinationAssessmentCreate
+      description: Create a new Guidelines
+      summary: "Requests a Guidelines. This can be used to initiate, update or delete a Guidelines. "
+      produces: 
+      - application/json
+      parameters: 
+      - name : cr-reference-id
+        in: path
+        description: Product Matching Assessment Reference
+        required: true
+        type: string
+      - in: body
+        name: body
+        description: Request Guidelines request payload
+        required: true
+        schema: 
+          $ref: '#/definitions/Guidelines'
+      responses:
+        201:
+          description: Created successfully
+          schema:
+            $ref: '#/definitions/GuidelinesWithIds'
+              
+  /product-matching/product-customer-combination-assessment/{cr-reference-id}/guidelines/{bq-reference-id}/requisition:
+    put:
+      tags: 
+      - request
+      operationId: requestProduct/CustomerCombinationAssessmentUpdate
+      description: Update an exising Guidelines
+      summary: "Requests Guidelines. This can be used to initiate, update or delete Guidelines."
+      produces: 
+      - application/json
+      parameters: 
+      - name : cr-reference-id
+        in: path
+        description: Product Matching Assessment Reference
+        required: true
+        type: string
+      - in: path
+        name: bq-reference-id
+        description: "Guidelines Reference"
+        type: string
+        required: true
+      - in: body
+        name: body
+        description: Request Guidelines request payload
+        required: true
+        schema: 
+          $ref: '#/definitions/Guidelines'
+      responses:
+        200:
+          description: successful
+          schema:
+            $ref: '#/definitions/GuidelinesWithIds'
+              
+  /product-matching/product-customer-combination-assessment/:
+    get:
+      tags: 
+      - retrieve
+      operationId: RetrieveProduct/CustomerCombinationAssessmentReferenceIds
+      summary: "Retrieve Product/Customer Combination Assessment Control Record Ids available within the Service Domain."
+      produces: 
+      - application/json
+      parameters: 
+      - name : collection-filter
+        in: query
+        description: Filter to refine the result set. ex- 'customerReference = 4562332'
+        type: string 
+      responses:
+        200:
+          description: successful
+          schema:
+            type: array
+            items:
+              type: string
+            example: [CRR32512, CRR5475]
+            
+  /product-matching/product-customer-combination-assessment/{cr-reference-id}:
+    get:
+      tags: 
+      - retrieve
+      operationId: retrieveProduct/CustomerCombinationAssessment
+      summary: "Retrieve Product/Customer Combination Assessment Master Control Record data"
+      produces: 
+      - application/json
+      parameters: 
+      - name : cr-reference-id
+        in: path
+        description: Product Matching Assessment Reference
+        required: true
+        type: string
+      responses:
+        200:
+          description: successful
+          schema:
+            $ref: '#/definitions/NextBestWithIds'
+              
+definitions:
+  NextBest:
+    type: object
+    properties:
+      customerReference:
+        type: string
+        example: 1466578
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      customerProductserviceProfile:
+        type: string
+        example: 87632
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+          general-info: "Customer's current use and eligibility for products/services - retrieved from SD-Customer Product/Service Eligibility using Customer Reference"
+      customerReferenceDataRecord:
+        type: object
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+          general-info: "Consolidated record of reference details"
+      productserviceType:
+        type: string
+        example: T3
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+          general-info: "Sought product category/indication of type"
+      productserviceProperties:
+        type: string
+        example: PS1
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+          general-info: "Indicated desired product features"
+      matchingContextIndicator:
+        type: string
+        example: solicitation
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+          general-info: "e.g. solicitation, cross/up-sell, retention, relationship review"
+      customerInsightType:
+        type: string
+        example: propensity to buy
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+          general-info: "Bank maintained indicators e.g. propensity to buy, priority..."
+      customerInsightValue:
+        type: string
+        example: 753245
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+          general-info: "Indicator value/grade"
+      customerProductserviceUtilization:
+        type: string
+        example: U1
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+          general-info: "Usage volume/frequency for in-force products"
+      bankProductWeightingspriorities:
+        type: string
+        example: P1
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+          general-info: "Can influence selection to favor bank preferences"
+      productMatchingAssessmentResult:
+        type: string
+        example: success
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+          general-info: "Next best product, product prioritized list"
+      productMatchingAuthorizationCode:
+        type: string
+        example: 3462342
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Code
+          general-info: "Used when the match requires authorization"
+        
+  NextBestWithIds:
+    type: object
+    properties:
+      productMatchingAssessmentReference:
+        type: string
+        example: 76439839
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      customerReference:
+        type: string
+        example: 1466578
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      customerProductserviceProfile:
+        type: string
+        example: 87632
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+          general-info: "Customer's current use and eligibility for products/services - retrieved from SD-Customer Product/Service Eligibility using Customer Reference"
+      customerReferenceDataRecord:
+        type: object
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+          general-info: "Consolidated record of reference details"
+      productserviceType:
+        type: string
+        example: T3
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+          general-info: "Sought product category/indication of type"
+      productserviceProperties:
+        type: string
+        example: PS1
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+          general-info: "Indicated desired product features"
+      matchingContextIndicator:
+        type: string
+        example: solicitation
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+          general-info: "e.g. solicitation, cross/up-sell, retention, relationship review"
+      customerInsightType:
+        type: string
+        example: propensity to buy
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+          general-info: "Bank maintained indicators e.g. propensity to buy, priority..."
+      customerInsightValue:
+        type: string
+        example: 753245
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+          general-info: "Indicator value/grade"
+      customerProductserviceUtilization:
+        type: string
+        example: U1
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+          general-info: "Usage volume/frequency for in-force products"
+      bankProductWeightingspriorities:
+        type: string
+        example: P1
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+          general-info: "Can influence selection to favor bank preferences"
+      productMatchingAssessmentResult:
+        type: string
+        example: success
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+          general-info: "Next best product, product prioritized list"
+      productMatchingAuthorizationCode:
+        type: string
+        example: 3462342
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Code
+          general-info: "Used when the match requires authorization"
+
+  Guidelines:
+    type: object
+    properties:
+      customerReference:
+        type: string
+        example: 1466578
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      customerProductserviceProfile:
+        type: string
+        example: 87632
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+          general-info: "Customer's current use and eligibility for products/services - retrieved from SD-Customer Product/Service Eligibility using Customer Reference"
+      customerReferenceDataRecord:
+        type: object
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+          general-info: "Consolidated record of reference details"
+      productserviceType:
+        type: string
+        example: T3
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+          general-info: "Sought product category/indication of type"
+      productserviceProperties:
+        type: string
+        example: PS1
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+          general-info: "Indicated desired product features"
+      matchingContextIndicator:
+        type: string
+        example: solicitation
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+          general-info: "e.g. solicitation, cross/up-sell, retention, relationship review"
+      customerInsightType:
+        type: string
+        example: propensity to buy
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+          general-info: "Bank maintained indicators e.g. propensity to buy, priority..."
+      customerInsightValue:
+        type: string
+        example: 753245
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+          general-info: "Indicator value/grade"
+      customerProductserviceUtilization:
+        type: string
+        example: U1
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+          general-info: "Usage volume/frequency for in-force products"
+      bankProductWeightingspriorities:
+        type: string
+        example: P1
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+          general-info: "Can influence selection to favor bank preferences"
+      productMatchingGuidelines:
+        type: string
+        example: 658333
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+
+  GuidelinesWithIds:
+    type: object
+    properties:
+      productMatchingAssessmentReference:
+        type: string
+        example: 76439839
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      customerReference:
+        type: string
+        example: 1466578
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      customerProductserviceProfile:
+        type: string
+        example: 87632
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+          general-info: "Customer's current use and eligibility for products/services - retrieved from SD-Customer Product/Service Eligibility using Customer Reference"
+      customerReferenceDataRecord:
+        type: object
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+          general-info: "Consolidated record of reference details"
+      productserviceType:
+        type: string
+        example: T3
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+          general-info: "Sought product category/indication of type"
+      productserviceProperties:
+        type: string
+        example: PS1
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+          general-info: "Indicated desired product features"
+      matchingContextIndicator:
+        type: string
+        example: solicitation
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+          general-info: "e.g. solicitation, cross/up-sell, retention, relationship review"
+      customerInsightType:
+        type: string
+        example: propensity to buy
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+          general-info: "Bank maintained indicators e.g. propensity to buy, priority..."
+      customerInsightValue:
+        type: string
+        example: 672344
+      customerProductserviceUtilization:
+        type: string
+        example: U1
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+          general-info: "Usage volume/frequency for in-force products"
+      bankProductWeightingspriorities:
+        type: string
+        example: P1
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+          general-info: "Can influence selection to favor bank preferences"
+      productMatchingGuidelines:
+        type: string
+        example: 658333
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
