@@ -57,7 +57,7 @@ paths:
       - execute
       summary: "Update an existing ebranch operation details for inbound qualifier"
       description: Update an existing ebranch operation details for inbound
-      operationId: executeEbranchChannelOperatingSessionUpdate
+      operationId: executeEBranchChannelOperatingSessionInboundUpdate
       produces:
       - application/json
       parameters:
@@ -89,7 +89,7 @@ paths:
       - execute
       summary: "Create a new ebranch operations detail for inbound"
       description: Create a new ebranch operations inbound
-      operationId: executeEbranchChannelOperatingSessionCreate
+      operationId: executeEBranchChannelOperatingSessionInboundCreate
       produces:
       - application/json
       parameters:
@@ -116,7 +116,7 @@ paths:
       - execute
       summary: "Update a channel outbound web access of E-Branch operations"
       description: Update an existing ebranch operation details for outbound
-      operationId: executeEbranchChannelInboundUpdate
+      operationId: executeEBranchChannelOperatingSessionOutboundUpdate
       produces:
       - application/json
       parameters:
@@ -148,7 +148,7 @@ paths:
       - execute
       summary: "Create a new ebranch operations detail for outbound"
       description: Create a new ebranch operations outbound
-      operationId: executeEbranchChannelOutboundCreate
+      operationId: executeEBranchChannelOperatingSessionOutboundCreate
       produces:
       - application/json
       parameters:

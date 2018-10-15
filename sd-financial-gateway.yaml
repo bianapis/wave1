@@ -755,11 +755,7 @@ definitions:
           core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
           general-info: the feedback
       recordingRecordDateTime:
-        type: string
-        example: "2018-09-06T09:00:00"
-        description: |
-          `status: Not Mapped`
-          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::DateTime
+        $ref: 'https://api.swaggerhub.com/domains/BIAN/Common-Model/1.0.0#/definitions/ISODateTime'
       employeeBusinessUnitReference:
         type: string
         example: REF456

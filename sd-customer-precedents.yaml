@@ -366,12 +366,7 @@ definitions:
           core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
         example: "non-resident"
       customerPrecedentValueDate:
-        type: string
-        description: |
-          `status: Not Mapped`
-          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Date
-          general-info: 'Date when precedent value last checked/confirmed'
-        example: "09/01/2016"
+        $ref: 'https://api.swaggerhub.com/domains/BIAN/Common-Model/1.0.0#/definitions/ISODateTime'
 
   CustomerPrecedentMaintenanceBaseWithIds:
     type: object
@@ -403,12 +398,7 @@ definitions:
           general-info: 'The reference to this Customer Precedent'
         example: "CPR67890"
       customerPrecedentMaintenanceSchedule:
-        type: string
-        description: |
-          `status: Not Mapped`
-          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::DateTime
-          general-info: 'Timing for maintenance/confirmation'
-        example: "2018-08-28T09:00:00"
+        $ref: 'https://api.swaggerhub.com/domains/BIAN/Common-Model/1.0.0#/definitions/ISODateTime'
       customerPrecedentMaintenanceTaskReference:
         type: string
         description: |
@@ -477,12 +467,7 @@ definitions:
           core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
         example: "non-resident"
       customerPrecedentValueDate:
-        type: string
-        description: |
-          `status: Not Mapped`
-          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Date
-          general-info: 'Date when precedent value last checked/confirmed'
-        example: "09/01/2016"
+        $ref: 'https://api.swaggerhub.com/domains/BIAN/Common-Model/1.0.0#/definitions/ISODateTime'
 
   CustomerPrecedentCaptureBaseWIthIds:
     type: object
@@ -534,12 +519,7 @@ definitions:
           core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
         example: "non-resident"
       customerPrecedentValueDate:
-        type: string
-        description: |
-          `status: Not Mapped`
-          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Date
-          general-info: 'Date when precedent value last checked/confirmed'
-        example: "09/01/2016"
+        $ref: 'https://api.swaggerhub.com/domains/BIAN/Common-Model/1.0.0#/definitions/ISODateTime'
 
   CustomerPrecedentsRecordRequest:
     type: object
@@ -570,11 +550,7 @@ definitions:
           `status: Not Mapped`
           core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
       recordingRecordDateTime:
-        type: string
-        description: |
-          `status: Not Mapped`
-          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::DateTime
-        example: "2018-08-28T09:00:00"
+        $ref: 'https://api.swaggerhub.com/domains/BIAN/Common-Model/1.0.0#/definitions/ISODateTime'
       empolyeeBusinessUnitReference:
         type: string
         description: |
@@ -635,12 +611,7 @@ definitions:
           core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
         example: "non-resident"
       customerPrecedentValueDate:
-        type: string
-        description: |
-          `status: Not Mapped`
-          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Date
-          general-info: 'Date when precedent value last checked/confirmed'
-        example: "09/01/2016"
+        $ref: 'https://api.swaggerhub.com/domains/BIAN/Common-Model/1.0.0#/definitions/ISODateTime'
 
   RetrieveCustomerPrecedentRecord:
     type: object
@@ -684,11 +655,7 @@ definitions:
           `status: Not Mapped`
           core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
       recordingRecordDateTime:
-        type: string
-        description: |
-          `status: Not Mapped`
-          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::DateTime
-        example: "2018-08-28T09:00:00"
+        $ref: 'https://api.swaggerhub.com/domains/BIAN/Common-Model/1.0.0#/definitions/ISODateTime'
       recordingRecordStatus:
         type: string
         description: |

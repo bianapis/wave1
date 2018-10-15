@@ -579,13 +579,13 @@ definitions:
         type: object
         example: 436234
         description: |
-          `status: Supplied`
+          `status: Not Mapped`
           core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
       servicingPositionActivityStatistics:
         type: string
         example: average contact time
         description: |
-          `status: Supplied`
+          `status: Not Mapped`
           core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text 
         
   AssistedWithIds:
@@ -741,13 +741,13 @@ definitions:
         type: string
         example: "documents/forms"
         description: |
-          `status: Supplied`
+          `status: Not Mapped`
           core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text 
       servicingPositionInventoryRecord:
         type: object
         example: 67456
         description: |
-          `status: Supplied`
+          `status: Not Mapped`
           core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
       servicingInventoryTransactionRecordReference:
         type: string

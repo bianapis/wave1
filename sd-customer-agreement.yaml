@@ -1,0 +1,819 @@
+swagger: '2.0'
+info:
+  version: "4.0.0"
+  title: 'Service Domain - Customer Agreement'
+  description: >
+  
+        ## Service Domain Role :
+        
+        This service domain maintains the master customer agreement/legal contract. Note that a customer can be a complex corporate entity with many subsidiaries operating in different geopolitical areas. The customer agreement is linked to as many Sales Product Agreements as needed for all in-force products.
+
+        
+        ## Example of use:
+        
+        An new customer's master agreement is established prior to negotiating and setting up the underlying product specific agreements
+        
+        ## General comment:
+        
+        The Customer Agreement service domain captures and maintains the master legal terms of conditions in force for a customer (which as noted can be a complex multinational with many underlying product and service specific agreements).
+
+# Added by API Auto Mocking Plugin
+host: virtserver.swaggerhub.com
+basePath: /BIAN/sd-customer-agreement/2.0.1
+schemes:
+  - https
+consumes: 
+- application/json
+produces: 
+- application/json
+
+paths:
+  /customer-agreement/customer-agreement/initiation:
+    post:
+      tags:
+      - initiate
+      operationId: initiateCustomerAgreement
+      summary: Initiates a new Customer Agreement Control Record.
+      produces: 
+      - application/json
+      parameters:
+      - in: body
+        name: body
+        description: Initiate control record request payload
+        required: true
+        schema: 
+          $ref: '#/definitions/Agreement'
+      responses:
+        201:
+          description: A new Customer Agreement is created
+          schema:
+            $ref: '#/definitions/AgreementWithIds'
+
+  /customer-agreement/customer-agreement/{cr-reference-id}/legal-terms/initiation:
+    post:
+      tags:
+      - initiate
+      operationId: initiateCustomerAgreementLegalTerms
+      summary: Initiates a new Customer Agreement Legal Terms BQ
+      produces: 
+      - application/json
+      parameters:
+      - name : cr-reference-id
+        in: path
+        description: Customer Agreement Reference
+        required: true
+        type: string
+      - in: body
+        name: body
+        description: Initiate control record request payload
+        required: true
+        schema: 
+          $ref: '#/definitions/LegalTerms'
+      responses:
+        201:
+          description: A new Customer Agreement Legal Terms successfully created
+          schema:
+            $ref: '#/definitions/LegalTermsWithIds'
+            
+  /customer-agreement/customer-agreement/{cr-reference-id}/regulatory-terms/initiation:
+    post:
+      tags:
+      - initiate
+      operationId: initiateCustomerAgreementRegulatoryTerms
+      summary: Initiates a new Customer Agreement Regulatory Terms BQ
+      produces: 
+      - application/json
+      parameters:
+      - name : cr-reference-id
+        in: path
+        description: Customer Agreement Reference
+        required: true
+        type: string
+      - in: body
+        name: body
+        description: Initiate control record request payload
+        required: true
+        schema: 
+          $ref: '#/definitions/RegulatoryTerms'
+      responses:
+        201:
+          description: A new Customer Agreement Regulatory Terms successfully created
+          schema:
+            $ref: '#/definitions/RegulatoryTermsWithIds'
+
+  /customer-agreement/customer-agreement/{cr-reference-id}/policy-terms/initiation:
+    post:
+      tags:
+      - initiate
+      operationId: initiateCustomerAgreementPolicyTerms
+      summary: Initiates a new Customer Agreement Policy Terms BQ
+      produces: 
+      - application/json
+      parameters:
+      - name : cr-reference-id
+        in: path
+        description: Customer Agreement Reference
+        required: true
+        type: string
+      - in: body
+        name: body
+        description: Initiate control record request payload
+        required: true
+        schema: 
+          $ref: '#/definitions/PolicyTerms'
+      responses:
+        201:
+          description: A new Customer Agreement Policy Terms successfully created
+          schema:
+            $ref: '#/definitions/PolicyTermsWithIds'
+ 
+  /customer-agreement/customer-agreement/{cr-reference-id}/updation: 
+    put: 
+      tags: 
+      - update
+      operationId: updateCustomerAgreement
+      summary:  Update customer agreement details
+      parameters: 
+      - name : cr-reference-id
+        in: path
+        description: Customer Agreement Reference
+        required: true
+        type: string
+      - in: body
+        name: body
+        description: Customer Agreement Request Payload
+        required: true
+        schema: 
+          $ref: '#/definitions/Agreement'
+      responses: 
+        200: 
+          description: successful
+          schema: 
+            $ref: '#/definitions/AgreementWithIds'
+ 
+  /customer-agreement/customer-agreement/{cr-reference-id}/evaluation: 
+    post: 
+      tags: 
+      - evaluate
+      operationId: evaluateCustomerAgreement
+      summary:  Evaluate whether a proposed action is covered by the agreement terms
+      parameters:
+      - name : cr-reference-id
+        in: path
+        description: Customer Agreement Reference
+        required: true
+        type: string
+      - in: body
+        name: body
+        description: Customer Agreement Request Payload
+        required: true
+        schema:
+          $ref: '#/definitions/Agreement'
+      responses:
+        201:
+          description: Successful
+          schema:
+            $ref: '#/definitions/AgreementWithIdsAndEvaluationResult'
+            
+  /customer-agreement/customer-agreement/{cr-reference-id}/requisition: 
+    put: 
+      tags: 
+      - request
+      operationId: requestCustomerAgreementUpdate
+      summary:  Request that the agreement is reviewed/refreshed
+      description: Update an existing customer agreement
+      parameters:
+      - name : cr-reference-id
+        in: path
+        description: Customer Agreement Reference
+        required: true
+        type: string
+      - in: body
+        name: body
+        description: Customer Agreement Request Payload
+        required: true
+        schema: 
+          $ref: '#/definitions/Agreement'
+      responses: 
+        200: 
+          description: successful
+          schema: 
+            $ref: '#/definitions/AgreementWithIds'
+
+  /customer-agreement/customer-agreement/requisition: 
+    post: 
+      tags: 
+      - request
+      operationId: requestCustomerAgreementCreate
+      summary:  Request that the agreement is reviewed/refreshed
+      description: Create a new customer agreement
+      parameters: 
+      - in: body
+        name: body
+        description: Customer Agreement Request Payload
+        required: true
+        schema: 
+          $ref: '#/definitions/Agreement'
+      responses: 
+        201: 
+          description: Created a new customer agreement
+          schema: 
+            $ref: '#/definitions/AgreementWithIds'
+ 
+  /customer-agreement/customer-agreement/:
+    get:
+      tags: 
+      - retrieve
+      operationId: retrieveCustomerAgreementMeasurementReferenceIds
+      summary: Retrieve customer agreement report
+      parameters: 
+      - name: collection-filter
+        in: query
+        description: Filter to refine the result set. ex- 'customerReference = CR123'
+        type: string 
+      responses:
+        200:
+          description: successful
+          schema:
+            type: array
+            items:
+              type: string
+            example: [CRR4388, CRR3246243]
+            
+  /customer-agreement/customer-agreement/behavior-qualifiers/:
+    get:
+      tags: 
+      - retrieve
+      operationId: retrieveCustomerAgreementMeasurementBehaviorQualifiers
+      summary: Retrieve customer agreement report
+      responses:
+        200:
+          description: successful
+          schema:
+            type: array
+            items:
+              type: string
+            example: [legal-terms, regulatory-terms, policy-terms] 
+            
+  /customer-agreement/customer-agreement/{cr-reference-id}/{behavior-qualifier}:
+    get:
+      tags: 
+      - retrieve
+      operationId: RetrieveBehaviorQualifierReferenceIds
+      summary: Retrieve Behaviour Qualifier Reference Ids of the given Behavior Qulifier.
+      parameters: 
+      - name : cr-reference-id
+        in: path
+        description: Customer Agreement Reference
+        required: true
+        type: string
+      - name: behavior-qualifier
+        in: path
+        description: Behavior Qualifier Name. ex- Legal Terms
+        required: true
+        type: string
+      - name: collection-filter
+        in: query
+        description: Filter to refine the result set. ex- 'ApplicableLawReference = ALR123'
+        type: string
+      responses:
+        200:
+          description: successful
+          schema:
+            type: array
+            items:
+              type: string
+            example: [BQR3465346, BQR4563, BQR45687] 
+  
+  /customer-agreement/customer-agreement/{cr-reference-id}: 
+    get: 
+      tags: 
+      - retrieve
+      operationId: retrieveCustomerAgreement
+      summary:  Retrieve customer agreement report
+      parameters: 
+      - name : cr-reference-id
+        in: path
+        description: Customer Agreement Reference
+        required: true
+        type: string
+      responses: 
+        200: 
+          description: successful
+          schema: 
+            $ref: '#/definitions/AgreementWithIds'
+            
+    delete: 
+      tags: 
+      - terminate
+      operationId: terminateCustomerAgreement
+      summary:  Initiate the termination processing of the customer agreement
+      parameters: 
+      - name : cr-reference-id
+        in: path
+        description: Customer Agreement Reference
+        required: true
+        type: string
+      responses: 
+        204: 
+          description: No Content
+         
+  /customer-agreement/customer-agreement/{cr-reference-id}/legal-terms/{bq-reference-id}:
+    get:
+      tags: 
+      - retrieve
+      operationId: retrieveLegalTerms
+      summary: Retrieve customer agreement report
+      parameters: 
+      - name : cr-reference-id
+        in: path
+        description: Customer Agreement Reference
+        required: true
+        type: string
+      - name: bq-reference-id
+        in: path
+        description: Customer Agreement Legal Term Reference
+        required: true
+        type: string
+      responses:
+        200:
+          description: successful
+          schema:
+            $ref: '#/definitions/LegalTermsWithIds'
+
+  /customer-agreement/customer-agreement/{cr-reference-id}/regulatory-terms/{bq-reference-id}:
+    get:
+      tags: 
+      - retrieve
+      operationId: retrieveRegulatoryTerms
+      summary: Retrieve customer agreement report
+      parameters: 
+      - name : cr-reference-id
+        in: path
+        description: Customer Agreement Reference
+        required: true
+        type: string
+      - name: bq-reference-id
+        in: path
+        description: Customer Agreement Regulatory Term Reference
+        required: true
+        type: string
+      responses:
+        200:
+          description: successful
+          schema:
+            $ref: '#/definitions/RegulatoryTermsWithIds'
+ 
+  /customer-agreement/customer-agreement/{cr-reference-id}/policy-terms/{bq-reference-id}:
+    get:
+      tags: 
+      - retrieve
+      operationId: retrievePolicyTerms
+      summary: Retrieve customer agreement report
+      parameters:
+      - name : cr-reference-id
+        in: path
+        description: Customer Agreement Reference
+        required: true
+        type: string
+      - name: bq-reference-id
+        in: path
+        description: Customer Agreement Policy Term Reference
+        required: true
+        type: string
+      responses:
+        200:
+          description: successful
+          schema:
+            $ref: '#/definitions/PolicyTermsWithIds'
+
+definitions:
+  Agreement:
+    type: object
+    properties:
+      customerReference:
+        type: string
+        example: 47654676
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      legalEntityReference:
+        type: string
+        example: 64865
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      agreementType:
+        type: string
+        example: T2
+        description: |
+         `status: Not Mapped`
+         core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      agreementJurisdiction:
+        type: string
+        example: 8064
+        description: |
+         `status: Not Mapped`
+         core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      agreementValidFromToDate:
+        $ref: 'https://api.swaggerhub.com/domains/BIAN/Common-Model/1.0.0#/definitions/DateTimePeriod'
+        # type: string
+        # example: "01/01/2018 - 01/01/2019"
+        # description: |
+        # `status: Not Mapped`
+        # core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Duration
+      agreementSignaturiesResponsibleParties:
+        type: string
+        example: 6
+        description: |
+         `status: Not Mapped`
+         core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      documentReference:
+        type: string
+        example: 23478
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      salesProductAgreementReference:
+        type: string
+        example: 0964
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      partyLifecycleManagementReference:
+        type: string
+        example: 3568
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      customerPrecedentsReference:
+        type: string
+        example: 0874
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      customerAgreementRecord:
+        type: string
+        example: 2357
+        description: |
+         `status: Not Mapped`
+         core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+        
+  AgreementWithIds:
+    type: object
+    properties:
+      customerAgreementReference:
+        type: string
+        example: 76439839
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      customerReference:
+        type: string
+        example: 47654676
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      legalEntityReference:
+        type: string
+        example: 64865
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      agreementType:
+        type: string
+        example: T2
+        description: |
+         `status: Not Mapped`
+         core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      agreementJurisdiction:
+        type: string
+        example: 8064
+        description: |
+         `status: Not Mapped`
+         core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      agreementValidFromToDate:
+        $ref: 'https://api.swaggerhub.com/domains/BIAN/Common-Model/1.0.0#/definitions/DateTimePeriod'
+        # type: string
+        # example: "01/01/2018 - 01/01/2019"
+        # description: |
+        # `status: Not Mapped`
+        # core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Duration
+      agreementSignaturiesResponsibleParties:
+        type: string
+        example: 6
+        description: |
+         `status: Not Mapped`
+         core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      documentReference:
+        type: string
+        example: 23478
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      salesProductAgreementReference:
+        type: string
+        example: 0964
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      partyLifecycleManagementReference:
+        type: string
+        example: 3568
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      customerPrecedentsReference:
+        type: string
+        example: 0874
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      customerAgreementRecord:
+        type: string
+        example: 2357
+        description: |
+         `status: Not Mapped`
+         core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+  LegalTerms:
+    type: object
+    properties:
+      customerAgreementLegalTermRecord:
+        type: string
+        example: 387954
+        description: |
+         `status: Not Mapped`
+         core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+      jurisdiction:
+        type: string
+        example: J6
+        description: |
+         `status: Not Mapped`
+         core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      applicableLawReference:
+        type: string
+        example: 99565
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      applicableLawInterpretation:
+        type: string
+        example: LI6
+        description: |
+         `status: Not Mapped`
+         core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+
+  LegalTermsWithIds:
+    type: object
+    properties:
+      customerAgreementReference:
+        type: string
+        example: CAR123
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      customerAgreementLegalTermReference:
+        type: string
+        example: 76439839
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      customerAgreementLegalTermRecord:
+        type: object
+        example: 387954
+        description: |
+         `status: Not Mapped`
+         core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+      jurisdiction:
+        type: string
+        example: J6
+        description: |
+         `status: Not Mapped`
+         core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      applicableLawReference:
+        type: string
+        example: 99565
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      applicableLawInterpretation:
+        type: string
+        example: LI6
+        description: |
+         `status: Not Mapped`
+         core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+
+  RegulatoryTerms:
+    type: object
+    properties:
+      customerAgreementRegulatoryTermRecord:
+        type: object
+        example: 25466
+        description: |
+         `status: Not Mapped`
+         core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+      regulatoryAuthority:
+        type: string
+        example: 8754
+        description: |
+         `status: Not Mapped`
+         core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      applicableRegulationReference:
+        type: string
+        example: 65775
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      applicableRegulationInterpretation:
+        type: string
+        example: LI6
+        description: |
+         `status: Not Mapped`
+         core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+
+  RegulatoryTermsWithIds:
+    type: object
+    properties:
+      customerAgreementReference:
+        type: string
+        example: CAR123
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      customerAgreementRegulatoryTermReference:
+        type: string
+        example: 76439839
+      customerAgreementRegulatoryTermRecord:
+        type: object
+        example: 25466
+        description: |
+         `status: Not Mapped`
+         core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+      regulatoryAuthority:
+        type: string
+        example: 8754
+        description: |
+         `status: Not Mapped`
+         core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      applicableRegulationReference:
+        type: string
+        example: 65775
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      applicableRegulationInterpretation:
+        type: string
+        example: LI6
+        description: |
+         `status: Not Mapped`
+         core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+
+  PolicyTerms:
+    type: object
+    properties:
+      customerAgreementPolicyTermRecord:
+        type: object
+        example: 65473
+        description: |
+         `status: Not Mapped`
+         core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+      bankPolicyGuidelineType:
+        type: string
+        example: T5
+        description: |
+         `status: Not Mapped`
+         core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      applicableBankPolicyRuleReference:
+        type: string
+        example: 2566
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      applicableBankPolicyRuleInterpretation:
+        type: string
+        example: LI6
+        description: |
+         `status: Not Mapped`
+         core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+
+  PolicyTermsWithIds:
+    type: object
+    properties:
+      customerAgreementReference:
+        type: string
+        example: CAR123 
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      customerAgreementPolicyTermReference:
+        type: string
+        example: 76439839
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      customerAgreementPolicyTermRecord:
+        type: object
+        example: 65473
+        description: |
+         `status: Not Mapped`
+         core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+      bankPolicyGuidelineType:
+        type: string
+        example: T5
+        description: |
+         `status: Not Mapped`
+         core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      applicableBankPolicyRuleReference:
+        type: string
+        example: 2566
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      applicableBankPolicyRuleInterpretation:
+        type: string
+        example: LI6
+        description: |
+         `status: Not Mapped`
+         core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+        
+  AgreementWithIdsAndEvaluationResult:
+    type: object
+    properties:
+      customerAgreementReference:
+        type: string
+        example: 76439839
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      customerReference:
+        type: string
+        example: 47654676
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      legalEntityReference:
+        type: string
+        example: 64865
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      agreementType:
+        type: string
+        example: T2
+        description: |
+         `status: Not Mapped`
+         core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      agreementJurisdiction:
+        type: string
+        example: 8064
+        description: |
+         `status: Not Mapped`
+         core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      agreementValidFromToDate:
+        $ref: 'https://api.swaggerhub.com/domains/BIAN/Common-Model/1.0.0#/definitions/DateTimePeriod'
+        # type: string
+        # example: "01/01/2018 - 01/01/2019"
+        # description: |
+        # `status: Not Mapped`
+        # core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Duration
+      agreementSignaturiesResponsibleParties:
+        type: string
+        example: 6
+        description: |
+         `status: Not Mapped`
+         core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      documentReference:
+        type: string
+        example: 23478
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      salesProductAgreementReference:
+        type: string
+        example: 0964
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      partyLifecycleManagementReference:
+        type: string
+        example: 3568
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      customerPrecedentsReference:
+        type: string
+        example: 0874
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      customerAgreementRecord:
+        type: object
+        example: 2357
+        description: |
+         `status: Not Mapped`
+         core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+      agreementEvaluationResult:
+        type: string
+        description: |
+         `status: Not Mapped`
+         core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text

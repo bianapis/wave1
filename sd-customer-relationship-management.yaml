@@ -1,0 +1,620 @@
+---
+swagger: "2.0"
+info:
+  # description: "## Description: \nDevelop, maintain and execute a customer plan to\
+  #   \ maintain and build a customer relationship. Activities include maintaining customer\
+  #   \ contact, tracking internal and external events and activity of interest and\
+  #   \ relevance, product and service matching and sales, processing ad-hoc queries,\
+  #   \ trouble shooting and issue resolution including the initial phases of troubled\
+  #   \ account recovery\n## Example of use:\nA corporate customer relationship manager\
+  #   \ reviews recent activity for a customer and notices that levels of activity are\
+  #   \ trending lower. Possible external (market) and internal (servicing/ fulfillment)\
+  #   \ activities are reviewed for possible causes. A meeting is scheduled to determine\
+  #   \ the reason and if any banking products/ services could help or are at further\
+  #   \ risk\n## General comment:\nThis function handles managed customer relationships.\
+  #   \ There can be a customer development plan and budget in more sophisticated implementations.\
+  #   \ The facility draws on external market insights and internal product and service\
+  #   \ fulfillment to track performance and sometimes trigger contact. The relationship\
+  #   \ manager can be a key source of business development providing a product/service\
+  #   \ matching and awareness role, is a single point of contact for sales and servicing\
+  #   \ channels, can help in issue resolution and trouble shooting. Relationship management\
+  #   \ applies to corporate and high net worth clients. More advanced automated knowledge\
+  #   \ based facilities can be considered for some relationship management functions\
+  #   \ at the consumer banking level, in particular for sales and marketing\n"
+  # 
+  
+  description: >
+       ## Service Domain Role: 
+     
+       This service domain develops and executes a customer plan to maintain and build a customer relationship. Activities include ongoing customer contact, tracking internal and external events and activity of interest and relevance, product and service matching and sales, processing ad-hoc queries, trouble shooting and issue resolution including the initial phases of troubled account recovery.
+
+    
+       ## Example of use:
+      
+       A corporate customer relationship manager reviews recent activity for a customer and notices that levels of activity are trending lower. Possible external (market) and internal (servicing/ fulfillment) activities are reviewed for possible causes. A meeting is scheduled to determine the reason and if any banking products/ services could help or are at further risk
+       
+       ## General comment:
+       
+       This function handles managed customer relationships. There will typically be a customer development plan and budget/targets for higher value customers. The function may draw on external market insights as well as internal product and service fulfillment to track performance and trigger contact when appropriate. The function is a key source of business development providing product/service matching and awareness. As the primary point of contact the relationship manager can help in issue resolution and trouble shooting. Relationship management applies to corporate and high net-worth clients. Automated knowledge-based facilities may offer some relationship management functions at the consumer banking level in particular for sales and marketing
+
+
+  version: "4.0.0"
+  title: Service Domain - Customer Relationship Management
+host: virtserver.swaggerhub.com
+basePath: /BIAN/sd-customer-relationship-management/2.0.1
+schemes:
+- https
+
+consumes:
+- application/json
+produces:
+- application/json
+
+paths:
+  /customer-relationship-management/customer-relationship-management-plan/{cr-reference-id}/recording:
+    post:
+      tags:
+      - record
+      operationId: recordCustomerRelationshipManagementPlan
+      description: Record information against a relationship managed activity
+      summary: Record information against a relationship managed activity
+      parameters:
+      - name: cr-reference-id
+        in: path
+        description: Customer Relationship Plan Reference
+        required: true
+        type: string
+      - in: body
+        name: body
+        description: Record control record request payload
+        required: true
+        schema:
+          $ref: '#/definitions/RelationshipPlanRecordRequest'
+      responses:
+        201:
+          description: A new record is created
+          schema:
+            $ref: '#/definitions/RelationshipPlanRecordResponse'
+            
+  /customer-relationship-management/customer-relationship-management-plan/{cr-reference-id}/requisition:
+    put:
+      tags:
+      - request
+      operationId: requestCustomerRelationshipManagementPlanUpdate
+      description: Update an existing incident
+      summary: Request relationship management support/troubleshooting assistance 
+      parameters:
+      - name: cr-reference-id
+        in: path
+        description: Customer Relationship Plan Reference
+        required: true
+        type: string
+      - in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/IncidentBase'
+      responses:
+        200:
+          description: Successfully Updated Incident Record
+          schema:
+            $ref: '#/definitions/IncidentBaseWithIdAndRoot'
+            
+  /customer-relationship-management/customer-relationship-management-plan/requisition:
+    post:
+      tags:
+      - request
+      operationId: requestCustomerRelationshipManagementPlanCreate
+      description: Create new incident
+      summary: Request relationship management support/troubleshooting assistance 
+      parameters:
+      - in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/IncidentBase'
+      responses:
+        201:
+          description: Successfully Created New Incident Record
+          schema:
+            $ref: '#/definitions/IncidentBaseWithIdAndRoot'
+            
+  #Retrieve
+  /customer-relationship-management/customer-relationship-management-plan:
+    get:
+      tags: 
+      - retrieve
+      operationId: RetrieveCustomerRelationshipManagementReferenceIds
+      summary: Retrieve Customer Relationship Management Control Record Ids available within the Service Domain.
+      parameters: 
+      - name : collection-filter
+        in: query
+        description: Filter to refine the result set. ex- 'customerReference == "CR763254"'
+        type: string
+      responses:
+        200:
+          description: successful
+          schema:
+            type: array
+            items:
+              type: string
+            example: [CRM123, CRM345]
+            
+  /customer-relationship-management/customer-relationship-management-plan/behavior-qualifiers:
+    get:
+      tags: 
+      - retrieve
+      operationId: RetrieveCustomerRelationshipManagementBehaviorQualifiers
+      summary: Retrieve all Behaviour Qualifier names in the Customer Relationship Management Service Domain.
+      responses:
+        200:
+          description: successful
+          schema:
+            type: array
+            items:
+              type: string
+            example: [development, incident, contact]
+
+  /customer-relationship-management/customer-relationship-management-plan/{cr-reference-id}/{behavior-qualifier}:
+    get:
+      tags: 
+      - retrieve
+      operationId: RetrieveBehaviorQualifierReferenceIds
+      summary: Retrieve Behaviour Qualifier Reference Ids of the given Behavior Qulifier.
+      parameters: 
+      - name: cr-reference-id
+        in: path
+        description: Customer Relationship Plan Reference
+        required: true
+        type: string
+      - name : behavior-qualifier
+        in: path
+        description: Behavior Qualifier Name. ex- development
+        required: true
+        type: string
+      - name : collection-filter
+        in: query
+        description: Filter to refine the result set. i.e. 'customerReference == "CR763254"'
+        type: string
+      responses:
+        200:
+          description: successful
+          schema:
+            type: array
+            items:
+              type: string
+            example: [DEV345, DEV789, DEV456] 
+            
+  /customer-relationship-management/customer-relationship-management-plan/{cr-reference-id}:
+    get:
+      tags: 
+      - retrieve
+      operationId: RetrieveCustomerRelationshipManagement
+      summary: Retrieve Customer Relationship Management Relationship Plan Record
+      parameters: 
+      - name: cr-reference-id
+        in: path
+        description: Customer Relationship Plan Reference
+        required: true
+        type: string
+      responses:
+        200:
+          description: Successfully Retrieved Customer Relationship Management Relationship Plan Record
+          schema:
+            $ref: '#/definitions/RetrieveCustomerRelationshipManagementPlanResponse'
+
+  /customer-relationship-management/customer-relationship-management-plan/{cr-reference-id}/developments/{bq-reference-id}:
+    get:
+      tags:
+      - retrieve
+      summary: Retrieve Customer Relationship Management Plan Development Record
+      operationId: retrieveDevelopment
+      parameters:
+      - name: cr-reference-id
+        in: path
+        description: Customer Relationship Plan Reference
+        required: true
+        type: string
+      - name: bq-reference-id
+        in: path
+        description: Customer Development Task Reference
+        required: true
+        type: string
+      responses:
+        200:
+          description: Successful
+          schema:
+            $ref: '#/definitions/DevelopmentBaseWithIdAndRoot'
+            
+  /customer-relationship-management/customer-relationship-management-plan/{cr-reference-id}/incidents/{bq-reference-id}:
+    get:
+      tags:
+      - retrieve
+      summary: Retrieve Customer Relationship Management Plan Incident Record
+      operationId: retrieveIncident
+      parameters:
+      - name: cr-reference-id
+        in: path
+        description: Customer Relationship Plan Reference
+        required: true
+        type: string
+      - name: bq-reference-id
+        in: path
+        description: Customer Incident Reference
+        required: true
+        type: string
+      responses:
+        200:
+          description: Successfully Retrieved Customer Relationship Management Plan Incident Record
+          schema:
+            $ref: '#/definitions/IncidentBaseWithIdAndRoot'
+            
+  /customer-relationship-management/customer-relationship-management-plan/{cr-reference-id}/contacts/{bq-reference-id}:
+    get:
+      tags:
+      - retrieve
+      summary: Retrieve Customer Relationship Management Plan Contact Record
+      operationId: retrieveContact
+      parameters:
+      - name: cr-reference-id
+        in: path
+        description: Customer Relationship Plan Reference
+        required: true
+        type: string
+      - name: bq-reference-id
+        in: path
+        description: Customer Relationship Plan Reference
+        required: true
+        type: string
+      responses:
+        200:
+          description: Successfully Retrieved Customer Relationship Management Plan Contact Record
+          schema:
+            $ref: '#/definitions/ContactBaseWithIdAndRoot'
+
+definitions:
+  DevelopmentBaseWithIdAndRoot:
+    type: object
+    properties:
+        customerDevelopmentTaskReference:
+          type: string
+          example: CDTR346479
+          description: |
+            `status: Not Mapped`
+            core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+        customerRelationshipPlanReference:
+          type: string
+          example: CRPR635479
+          description: |
+            `status: Not Mapped`
+            core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+        customerDevelopmentTaskType:
+          type: string
+          example: up-sell
+          description: |
+            `status: Not Mapped`
+            core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+        customerDevelopmentTaskDescription:
+          type: string
+          example: Customer Development Task Description
+          description: |
+            `status: Not Mapped`
+            core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+        customerReference:
+          type: string
+          example: CR736464
+          description: |
+            `status: Not Mapped`
+            core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+        employeeBusinessUnitReference:
+          type: string
+          example: EBU7454748
+          description: |
+            `status: Not Mapped`
+            core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+        customerSalesPlan:
+          type: string
+          example: Customer Sales Plan
+          description: |
+            `status: Not Mapped`
+            core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+        customerRelationshipContactReference:
+          type: string
+          example: CRCR726464
+          description: |
+            `status: Not Mapped`
+            core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+        customerDevelopmentTaskResult:
+          type: string
+          example: Success
+          description: |
+            `status: Not Mapped`
+            core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+  ContactBaseWithIdAndRoot:
+    type: object
+    properties:
+      customerRelationshipPlanReference:
+        type: string
+        example: 8Z232342
+        description: |
+            `status: Not Mapped`
+            core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      customerContactReference:
+        type: string
+        example: 8Z232342
+        description: |
+            `status: Not Mapped`
+            core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      customerReference:
+        type: string
+        example: 8Z232342
+        description: |
+            `status: Not Mapped`
+            core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      customerRelationshipContactHistory:
+        type: string
+        example: Customer Relationship Contact History
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      customerRelationshipContactSchedule:
+        type: string
+        example: CustomerRelationshipContact Schedule
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      customerRelationshipContactDateTimeLocation:
+        type: string
+        example: "2018-09-02 16:34:00 EST New York USA"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::DateTime
+      employeeReference:
+        type: string
+        example: 8Z232342
+        description: |
+            `status: Not Mapped`
+            core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      customerRelationshipContactType:
+        type: string
+        example: type/purpose of contact
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      customerRelationshipContactRecord:
+        type: object
+        example: log of contact
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+      customerRelationshipContactResult:
+        type: string
+        example: Customer Relationship Contact Result
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+  RetrieveCustomerRelationshipManagementPlanResponse:
+    type: object
+    properties:
+      customerRelationshipPlanReference:
+        type: string
+        example: CRPR762542
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      customerRelationshipPlan:
+        type: string
+        example: details planned and actual product coverage and profitability and relationship development and trouble-shooting 
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      customerReference:
+        type: string
+        example: CRM4658
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      employeeBusinessUnitReference:
+        type: string
+        example: EBU7264424
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      customerRelationshipRatingType:
+        type: string
+        example: credit
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      customerRelationshipRating:
+        type: string
+        example: customer Relationship Rating
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      customerInsightType:
+        type: string
+        example: retention candidate
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      customerInsightDescription:
+        type: string
+        example: Customer Insight Description
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      customerBudget:
+        type: string
+        example: arget income and allowed expenses/discounts
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      customerProductCoverage:
+        type: string
+        example: product/service coverage
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      customerProductUsage:
+        type: string
+        example: product activity
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      customerProductEligibilityProfile:
+        type: string
+        example: unsold/eligible products
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      customerSalesPlan:
+        type: string
+        example: target product sales and associated contact schedule
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      customerProfitability:
+        type: string
+        example: assessment of net business impact of relationship
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Measure
+      customerRelationshipContactHistory:
+        type: string
+        example: Customer Relationship Contact History
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+  RelationshipPlanRecordRequest:
+    type: object
+    properties:
+      recordingRecordType:
+        type: string
+        example: "Behavior model performance feedback"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      recordingRecord:
+        type: object
+        example: "the feedback"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+      recordingRecordDateTime:
+        type: string
+        example: "2018-09-02"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::DateTime
+      employeeBusinessUnitReference:
+        type: string
+        example: EBU7623524
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+  RelationshipPlanRecordResponse:
+    type: object
+    properties:
+      recordingRecordReference:
+        type: string
+        example: RRR59821735
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      recordingRecordStatus:
+        type: string
+        example: Applied
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+  IncidentBase:
+    type: object
+    properties:
+      customerReference:
+        type: string
+        example: CR736235
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      employeeBusinessUnitReference:
+        type: string
+        example: EMP4678
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      productServiceActivityReference:
+        type: string
+        example: SAR72365425
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      customerIncidentType:
+        type: string
+        example: Customer Incident Type
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      customerIncidentDescription :
+        type: string
+        example: narrative of cause/impact
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      customerIncidentResolution:
+        type: string
+        example: narrative of resolution actions
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+  IncidentBaseWithIdAndRoot:
+    type: object
+    properties:
+      customerIncidentReference:
+        type: string
+        example: CIR7235244
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      customerRelationshipPlanReference:
+        type: string
+        example: CRPR72546
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      customerReference:
+        type: string
+        example: CR736235
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      employeeBusinessUnitReference:
+        type: string
+        example: EMP4678
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      productServiceActivityReference:
+        type: string
+        example: SAR72365425
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      customerIncidentType:
+        type: string
+        example: Customer Incident Type
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      customerIncidentDescription :
+        type: string
+        example: narrative of cause/impact
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      customerIncidentResolution:
+        type: string
+        example: narrative of resolution actions
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text

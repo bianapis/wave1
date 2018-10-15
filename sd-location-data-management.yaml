@@ -166,6 +166,31 @@ paths:
           description: Successfully retrieved Location Occupancy report
           schema:
             $ref: '#/definitions/OccupancyBaseWithIdAndRoot'
+            
+  /location-data-management/location-directory/{cr-reference-id}/directories/{bq-reference-id}:
+    get:
+      tags: 
+       - retrieve
+      summary: Retrieve Directory report
+      operationId: retrieveLocationDirectories
+      produces:
+      - application/json
+      parameters:
+        - in: path
+          name: cr-reference-id
+          required: true
+          type: string
+          description: Location Data Directory Entry Reference
+        - in: path
+          name: bq-reference-id
+          required: true
+          type: string
+          description: Directory Entry Reference
+      responses:
+        200:
+          description: Successfully retrieved Location Directory report
+          schema:
+            $ref: '#/definitions/OccupancyBaseWithIdAndRoot'          
 
   /location-data-management/location-directory/{cr-reference-id}/recording: 
     post:
@@ -225,7 +250,7 @@ paths:
         201:
           description: Successfully Registered a new Directory Entry
           schema: 
-            $ref: '#/definitions/DirectoryEntry'
+            $ref: '#/definitions/LocationDataDirectoryBase'
   
   /location-data-management/location-directory/{cr-reference-id}/locations/registration: 
     post:
@@ -766,14 +791,57 @@ definitions:
         example: Refreshed
         description: |
           `status: Not Mapped`
-          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Indicator    
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Text    
   
-  DirectoryEntry:
+  LocationDataDirectoryBase: 
     type: object
-    properties:
-      locationDataDirectoryEntryReference:
+    properties: 
+      locationDataDirectoryVersion:
         type: string
-        example: LDDER123
         description: |
           `status: Not Mapped`
-          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text	
+      locationDataDirectoryConfiguration: 
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text		
+      locationDataDirectoryReportReference: 
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier	
+      locationDataDirectoryReport: 
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+          
+  LocationDataDirectoryWithID: 
+      type: object
+      properties: 
+        locationDataDirectoryReference: 
+          type: string
+          description: |
+            `status: Not Mapped`
+            core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier	
+        locationDataDirectoryVersion:
+          type: string
+          description: |
+            `status: Not Mapped`
+            core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text	
+        locationDataDirectoryConfiguration: 
+          type: string
+          description: |
+            `status: Not Mapped`
+            core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text		
+        locationDataDirectoryReportReference: 
+          type: string
+          description: |
+            `status: Not Mapped`
+            core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier	
+        locationDataDirectoryReport: 
+          type: string
+          description: |
+            `status: Not Mapped`
+            core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text

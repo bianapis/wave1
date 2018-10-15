@@ -139,7 +139,7 @@ paths:
     delete:
       tags:
       - termination
-      summary: Initiate the termination processing of the servicing mandate for a customer
+      summary: Winding up a customer's servicing mandate
       operationId: terminateServicingMandateAgreementCustomerTerms
       produces:
       - application/json
@@ -184,7 +184,7 @@ paths:
       tags:
       - initiate
       summary: Initialize/set-up the service mandate/terms for a customer
-      operationId: InitiateServicingMandateAgreementCustomerTerms
+      operationId: initiateServicingMandateAgreementCustomerTerms
       produces:
       - application/json
       parameters:
@@ -236,7 +236,7 @@ paths:
       tags:
       - update
       summary: Update the in-force servicing mandate for a customer
-      operationId: UpdateServicingMandateAgreementCustomerTerms
+      operationId: updateServicingMandateAgreementCustomerTerms
       produces:
       - application/json
       parameters:
@@ -286,7 +286,7 @@ paths:
         200:
           description: Successfully evaluated Customer Terms
           schema:
-            $ref: '#/definitions/CustomerTermsBaseWithIdAndRoot'
+            $ref: '#/definitions/CustomerTermsBaseWithIdAndRootAndEvaluationResult'
 
   /servicing-mandate/servicing-mandate-agreement/{cr-reference-id}/requisition:
     put:
@@ -339,12 +339,7 @@ definitions:
           `status: Not Mapped`
           core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
       servicingMandateAgreementValidFromToDate:
-        type: string
-        example: "01/01/2016 - 06/01/2018"
-        description: |
-          generalInfo: the commencement and term/duration of the agreement
-          `status: Not Mapped`
-          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Duration
+        $ref: 'https://api.swaggerhub.com/domains/BIAN/Common-Model/1.0.0#/definitions/DateTimePeriod'
       servicingMandateAgreementSignaturesResponsibleParties:
         type: string
         description: |
@@ -419,12 +414,7 @@ definitions:
           `status: Not Mapped`
           core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
       servicingMandateAgreementValidFromToDate:
-        type: string
-        example: "01/01/2016 - 06/01/2018"
-        description: |
-          generalInfo: the commencement and term/duration of the agreement
-          `status: Not Mapped`
-          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Duration
+        $ref: 'https://api.swaggerhub.com/domains/BIAN/Common-Model/1.0.0#/definitions/DateTimePeriod'
       servicingMandateAgreementSignaturesResponsibleParties:
         type: string
         description: |
@@ -463,6 +453,7 @@ definitions:
           generalInfo: defines if and under what terms a product/service is accessable under the mandate
           `status: Not Mapped`
           core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+          
   CustomerTermsBase:
     type: object
     description: details the specific servicing mandate terms applicable to an individual customer
@@ -559,7 +550,69 @@ definitions:
           generalInfo: records the usage of products/service under the mandate for control purposes
           `status: Not Mapped`
           core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
-  
+
+  CustomerTermsBaseWithIdAndRootAndEvaluationResult:
+    type: object
+    description: details the specific servicing mandate terms applicable to an individual customer
+    properties:
+      servicingMandateAgreementCustomerProductServiceProfileReference:
+        type: string
+        example: CPSP734
+        description: |
+          generalInfo: refers to the terms in force for a specific customer covered by the mandate
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      customerReference:
+        type: string
+        example: CR93278
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      servicingMandateAgreementReference:
+        type: string
+        example: SMA1234
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      servicingMandateAgreementRecord:
+        type: object
+        description: |
+          generalInfo: all listed terms combined for the complete agreement record
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+      servicingMandateAgreementCustomerProductServiceProfile:
+        type: string
+        description: |
+          generalInfo: this details the specific customer access allowed under the mandate
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      productServiceType:
+        type: string
+        example: credit card
+        description: |
+          generalInfo: defines all available products/services
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      servicingMandateAgreementCustomerProductServiceTypeAccess:
+        type: string
+        description: |
+          generalInfo: defines if and under what terms a product/service can be accessed for this customer under the mandate
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      servicingMandateAgreementCustomerProductServiceTypeUsage:
+        type: string
+        description: |
+          generalInfo: records the usage of products/service under the mandate for control purposes
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      evaluationResult:
+        type: string
+        description: |
+          generalInfo: evaluation result information
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+        example: success
+        
   ServicingMandateRefreshResponse:
     type: object
     properties:

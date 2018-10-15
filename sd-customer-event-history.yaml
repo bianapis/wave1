@@ -1,0 +1,1217 @@
+swagger: '2.0'
+info:
+  description: >
+       ## Service Domain Role :
+      
+        This service domain captures, classifies and stores relationship, servicing and product fulfillment related customer events. In addition to servicing and product transaction details, the log can capture life/relationship events that are revealed during customer exchanges.
+
+        
+        ## Example of use:
+        
+        A customer contacts the call center to enquire about account transactions and during the dialogue the servicing representative detects a life event (e.g. the customer is moving house). The contact details and life event are captured in the customer history
+        
+        ## General comment:
+        
+        The service domain captures a wide range of customer events to build a comprehensive history of customer activity that can support subsequent behavioral analysis. This includes key sales/proposal events, relationship management events, product delivery events, detected customer triggers (typically gleaned during servicing dialogues) and possibly externally sourced customer activity. The assembled data is made available for behavioral analysis and for more general reference (as might be used for relationship management for example)
+
+  version: "4.0.0"
+  title: 'Service Domain - customer-event-history'
+  
+ 
+# Added by API Auto Mocking Plugin
+host: virtserver.swaggerhub.com
+basePath: /BIAN/sd-customer-event-history/2.0.1
+schemes:
+  - https
+consumes: 
+- application/json
+produces: 
+- application/json
+paths:
+  /customer-event-history/customer-event-log/{cr-reference-id}/updation: 
+    put: 
+      tags: 
+      - update
+      operationId: updateCustomerEventLog 
+      summary:  Update a Customer Event History record 
+      parameters: 
+      - name : cr-reference-id
+        in: path
+        description: Customer Event Log Reference
+        required: true
+        type: string
+      - in: body
+        name: body
+        description: Update control record request payload
+        required: true
+        schema: 
+          $ref: '#/definitions/EventLogBase'
+      responses: 
+        200:
+          description: Successfully Updated Customer Event History record
+          schema:
+            $ref: '#/definitions/EventLogBaseWithID'
+      ########## Record
+ 
+  /customer-event-history/customer-event-log/{cr-reference-id}/relationships/{bq-reference-id}/recording:
+    post:
+      tags:
+      - record
+      summary: Record a customer relationship event
+      description: Record a customer relationship event
+      operationId: recordCustomerEventLogCustomerRelationshipEvent
+      parameters: 
+      - name : cr-reference-id
+        in: path
+        description: Customer Event Log Reference
+        required: true
+        type: string
+      - name : bq-reference-id
+        in: path
+        description: Customer Relationship Event Reference
+        required: true
+        type: string
+      - in: body
+        name: body
+        required: true 
+        schema:
+          $ref: '#/definitions/RelationshipBase'
+      responses:
+        201:
+          description: Successfully Created a customer relationship event record
+          schema:
+            $ref: '#/definitions/RelationshipRecordResponse'
+            
+  /customer-event-history/customer-event-log/{cr-reference-id}/sales/{bq-reference-id}/recording:
+    post:
+      tags:
+      - record
+      summary: Record a customer sales event
+      description: Record a customer sales event
+      operationId: recordCustomerEventLogSalesEvent
+      parameters: 
+      - name : cr-reference-id
+        in: path
+        description: Customer Event Log Reference
+        required: true
+        type: string
+      - name : bq-reference-id
+        in: path
+        description: Customer Sales Event Reference
+        required: true
+        type: string
+      - in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/SalesBase'
+      responses:
+        201:
+          description: Successfully Created a customer sales event record
+          schema:
+            $ref: '#/definitions/SalesRecordResponse'
+            
+  /customer-event-history/customer-event-log/{cr-reference-id}/servicings/{bq-reference-id}/recording:
+    post:
+      tags:
+      - record
+      summary: Record a customer servicing event
+      description: Record a customer servicing event
+      operationId: recordCustomerEventLogServicingEvent
+      parameters: 
+      - name : cr-reference-id
+        in: path
+        description: Customer Event Log Reference
+        required: true
+        type: string
+      - name : bq-reference-id
+        in: path
+        description: Customer Servicing Event Reference
+        required: true
+        type: string
+      - in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/ServicingBase'
+      responses:
+        201:
+          description: Successfully Created a customer servicing event record
+          schema:
+            $ref: '#/definitions/ServicingRecordResponse'
+      
+  /customer-event-history/customer-event-log/{cr-reference-id}/product-services/{bq-reference-id}/recording:
+    post:
+      tags:
+      - record
+      summary: Record a customer product servicing/alert event
+      description: Record a customer product servicing/alert event
+      operationId: recordCustomerEventLogProductServiceEvent/Alert
+      parameters: 
+      - name : cr-reference-id
+        in: path
+        description: Customer Event Log Reference
+        required: true
+        type: string
+      - name : bq-reference-id
+        in: path
+        description: Customer Product Event Reference
+        required: true
+        type: string
+      - in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/ProductServiceBase'
+      responses:
+        201:
+          description: Successfully Created a customer product-services/alert event record
+          schema:
+            $ref: '#/definitions/ProductServiceRecordResponse'
+  
+  /customer-event-history/customer-event-log/{cr-reference-id}/frauds/{bq-reference-id}/recording:
+    post:
+      tags:
+      - record
+      summary: Record a customer Fraud event
+      description: Record a customer Fraud event
+      operationId: recordCustomerEventLogFraudEvent
+      parameters: 
+      - name : cr-reference-id
+        in: path
+        description: Customer Event Log Reference
+        required: true
+        type: string
+      - name : bq-reference-id
+        in: path
+        description: Customer Fraud Event Reference
+        required: true
+        type: string
+      - in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/FraudBase'
+      responses:
+        201:
+          description: Successfully Created a customer fraud event record
+          schema:
+            $ref: '#/definitions/FraudRecordResponse'
+            
+  /customer-event-history/customer-event-log/{cr-reference-id}/lives/{bq-reference-id}/recording:
+    post:
+      tags:
+      - record
+      summary: Record a customer life event
+      description: Record a customer life event
+      operationId: recordCustomerEventLogLifeEvent
+      parameters: 
+      - name : cr-reference-id
+        in: path
+        description: Customer Event Log Reference
+        required: true
+        type: string
+      - name : bq-reference-id
+        in: path
+        description: Customer Life Event Reference
+        required: true
+        type: string
+      - in: body
+        name: body
+        required: true
+        schema:
+         $ref: '#/definitions/LifeBase'
+      responses:
+        201:
+          description: Successfully Created a customer life event record
+          schema:
+            $ref: '#/definitions/LifeRecordResponse'
+         
+        ### Retrieve
+  /customer-event-history/customer-event-log:
+    get:
+      tags: 
+      - retrieve
+      operationId: RetrieveCustomerEventHistoryReferenceIds
+      summary: Retrieve Customer Event History Control Record IDs available within the Service Domain.
+      produces: 
+      - application/json
+      parameters: 
+      - name : collection-filter
+        in: query
+        description: Filter to refine the result set. ex- 'customeReference == CR123'
+        type: string 
+      responses:
+        200:
+          description: successful
+          schema:
+            type: array
+            items:
+              type: string
+            example: [CELR123, CELR345]
+            
+  /customer-event-history/customer-event-log/behavior-qualifiers:
+    get:
+      tags: 
+      - retrieve
+      operationId: RetrieveCurrentAccountBehaviorQualifiers
+      summary: Retrieve all Behaviour Qualifier names in the Current Account Service Domain.
+      responses:
+        200:
+          description: successful
+          schema:
+            type: array
+            items:
+              type: string
+            example: [relationship, sales, servicing, product-service, fraud, life] 
+
+  /customer-event-history/customer-event-log/{cr-reference-id}/{behavior-qualifier}:
+    get:
+      tags: 
+      - retrieve
+      operationId: RetrieveBehaviorQualifierReferenceIds
+      summary: Retrieve Behaviour Qualifier Reference IDs of the given Behavior Qulifier.
+      parameters: 
+      - name : cr-reference-id
+        in: path
+        description: Customer Event Log Reference
+        required: true
+        type: string
+      - name : behavior-qualifier
+        in: path
+        description: Behavior Qualifier Name. ex- relationship
+        required: true
+        type: string
+      - name : collection-filter
+        in: query
+        description: Filter to refine the result set. ex- 'employeeUnitReference == "EUR736464"'
+        type: string
+      responses:
+        200:
+          description: successful
+          schema:
+            type: array
+            items:
+              type: string
+            example: [CRER345, CRER789, CRER456] 
+            
+  /customer-event-history/customer-event-log/{cr-reference-id}: 
+    get: 
+      tags: 
+      - retrieve
+      operationId: retrieveCustomerEventLog
+      summary:  Retrieve a customer event log report
+      parameters: 
+      - name : cr-reference-id
+        in: path
+        description: Customer Event Log Reference
+        required: true
+        type: string
+      responses: 
+        200: 
+          description: Successfully retrieved customer event log report
+          schema: 
+            $ref: '#/definitions/EventLogBaseWithID'
+            
+  /customer-event-history/customer-event-log/{cr-reference-id}/relationships/{bq-reference-id}:
+    get:
+      tags: 
+      - retrieve
+      operationId: retrieveRelationships
+      summary: Retrieve customer event log relationships record
+      parameters: 
+      - name : cr-reference-id
+        in: path
+        description: Customer Event Log Reference
+        required: true
+        type: string
+      - name : bq-reference-id
+        in: path
+        description: Customer Relationship Event Reference
+        required: true
+        type: string
+      responses:
+        200:
+          description: Successfully Retrieved customer event log relationships record
+          schema:
+            $ref: '#/definitions/RelationshipBaseWithIdAndStatus'
+    
+  /customer-event-history/customer-event-log/{cr-reference-id}/sales/{bq-reference-id}:
+    get:
+      tags: 
+      - retrieve
+      operationId: retrieveSales
+      summary: Retrieve customer event log sales record
+      parameters: 
+      - name : cr-reference-id
+        in: path
+        description: Customer Event Log Reference
+        required: true
+        type: string
+      - name : bq-reference-id
+        in: path
+        description: Customer Sales Event Reference
+        required: true
+        type: string
+      responses:
+        200:
+          description: Successfully Retrieved customer event log sales record
+          schema:
+            $ref: '#/definitions/SalesBaseWithIdAndStatus'
+            
+  /customer-event-history/customer-event-log/{cr-reference-id}/servicings/{bq-reference-id}:
+    get:
+      tags: 
+      - retrieve
+      operationId: retrieveServicing
+      summary: Retrieve customer event log servicing record
+      parameters: 
+      - name : cr-reference-id
+        in: path
+        description: Customer Event Log Reference
+        required: true
+        type: string
+      - name : bq-reference-id
+        in: path
+        description: Customer Servicing Event Reference
+        required: true
+        type: string
+      responses:
+        200:
+          description: Successfully Retrieved customer event log servicing record
+          schema:
+            $ref: '#/definitions/ServicingBaseWithIdAndStatus'
+        
+  /customer-event-history/customer-event-log/{cr-reference-id}/product-services/{bq-reference-id}:
+    get:
+      tags: 
+      - retrieve
+      operationId: retrieveProductService
+      summary: Retrieve customer event log product-service record
+      parameters: 
+      - name : cr-reference-id
+        in: path
+        description: Customer Event Log Reference
+        required: true
+        type: string
+      - name : bq-reference-id
+        in: path
+        description: Customer Product Event Reference
+        required: true
+        type: string
+      responses:
+        200:
+          description: Successfully Retrieved customer event log product-service record
+          schema:
+            $ref: '#/definitions/ProductServiceBaseWithIdAndStatus'
+            
+  /customer-event-history/customer-event-log/{cr-reference-id}/frauds/{bq-reference-id}:
+    get:
+      tags: 
+      - retrieve
+      operationId: retrieveFraud
+      summary: Retrieve customer event log fraud event record
+      parameters: 
+      - name : cr-reference-id
+        in: path
+        description: Customer Event Log Reference
+        required: true
+        type: string
+      - name : bq-reference-id
+        in: path
+        description: Customer Fraud Event Reference
+        required: true
+        type: string
+      responses:
+        200:
+          description: Successfully Retrieved customer event log fraud event record
+          schema:
+            $ref: '#/definitions/FraudBaseWithIdAndStatus'
+            
+  /customer-event-history/customer-event-log/{cr-reference-id}/lives/{bq-reference-id}:
+    get:
+      tags: 
+      - retrieve
+      operationId: retrieveLife
+      summary: Retrieve customer event log life event record
+      parameters: 
+      - name : cr-reference-id
+        in: path
+        description: Customer Event Log Reference
+        required: true
+        type: string
+      - name : bq-reference-id
+        in: path
+        description: Customer Life Event Reference
+        required: true
+        type: string
+      responses:
+        200:
+          description: Successfully Retrieved customer event log life event record
+          schema:
+            $ref: '#/definitions/LifeBaseWithIdAndStatus'
+
+parameters: 
+  controlRecordReference:
+    name : cr-reference-id
+    in: path
+    description: Customer Event Log Reference
+    required: true
+    type: string
+
+definitions:
+  EventLogBase:
+    type: object
+    properties:
+      customerEventLog:
+        type: object
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      customerReference:
+        type: string
+        example: CR764656
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+        
+  EventLogBaseWithID:
+    type: object
+    properties:
+      customerEventLogReference:
+        type: string
+        example: CELR736464
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      customerEventLog:
+        type: object
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      customerReference:
+        type: string
+        example: CR764656
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+  RelationshipBase:
+    type: object
+    properties:
+      customerRelationshipEventType:
+        type: string
+        example: advisory
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      employeeUnitReference:
+        type: string
+        example: EUR736465
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      customerRelationshipEventRecord:
+        type: object
+        example: captured information/details in the log
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+      customerRelationshipEventAction:
+        type: string
+        example: agreed follow-up activity
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      dateTimeLocation:
+        type: string
+        example: "2018-03-28 12:30:00 CST Dallas USA"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::DateTime
+  RelationshipBaseWithIdAndStatus:
+    type: object
+    properties:
+      customerEventLogReference:
+        type: string
+        example: CELR7546464
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      customerRelationshipEventReference:
+        type: string
+        example: CRER73464565
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      customerRelationshipEventType:
+        type: string
+        example: advisory
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      employeeUnitReference:
+        type: string
+        example: EUR736465
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      customerRelationshipEventRecord:
+        type: object
+        example: captured information/details in the log
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+      customerRelationshipEventAction:
+        type: string
+        example: agreed follow-up activity
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      dateTimeLocation:
+        type: string
+        example: "2018-03-28 12:30:00 CST Dallas USA"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::DateTime
+      customerRelationshipEventResult:
+        type: string
+        example: successful
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+
+  RelationshipRecordResponse:
+    type: object
+    properties:
+      recordingRecordReference:
+        type: string
+        example: RRR123
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      customerRelationshipEventResult:
+        type: string
+        example: successful
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+        
+  SalesBase:
+    type: object
+    properties:
+      customerSalesEventType:
+        type: string
+        example: solicited
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      employeeUnitReference:
+        type: string
+        example: EUR7236464
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      productServiceType:
+        type: string
+        example: Product Service Type
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      leadOpportunityReference:
+        type: string
+        example: LOR736464
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      customerSalesEventRecord:
+        type: object
+        example: captured information/details in the log
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+      commissionAgreementReference:
+        type: string
+        example: CAR736464
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      dateTimeLocation:
+        type: string
+        example: "2018-03-28 12:30:00 CST Dallas USA"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::DateTime
+  SalesBaseWithIdAndStatus:
+    type: object
+    properties:
+      customerEventLogReference:
+        type: string
+        example: CELR7634646
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      customerSalesEventReference:
+        type: string
+        example: CSER7354646
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      customerSalesEventType:
+        type: string
+        example: solicited
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      employeeUnitReference:
+        type: string
+        example: EUR7236464
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      productServiceType:
+        type: string
+        example: Product Service Type
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      leadOpportunityReference:
+        type: string
+        example: LOR736464
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      customerSalesEventRecord:
+        type: object
+        example: captured information/details in the log
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+      commissionAgreementReference:
+        type: string
+        example: CAR736464
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      dateTimeLocation:
+        type: string
+        example: "2018-03-28 12:30:00 CST Dallas USA"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::DateTime
+      customerSalesEventResult:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+        
+  SalesRecordResponse:
+    type: object
+    properties:
+      recordingRecordReference:
+        type: string
+        example: RRR123
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      customerSalesEventResult:
+        type: string
+        example: successful
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+     
+  ServicingBase:
+    type: object
+    properties:
+      customerServicingEventType:
+        type: string
+        example: assisted
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      customerContactDialogueRecordReference:
+        type: string
+        example: CDRR736464
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      accessedProductService:
+        type: string
+        example: referenced products/services
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      channelDeviceType:
+        type: string
+        example: device type
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      contactPurpose:
+        type: string
+        example: purpose for contact
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      contactResult:
+        type: string
+        example: successful
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      employeeUnit Reference:
+        type: string
+        example: EUR63544
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      customerServicingEventRecord:
+        type: object
+        example: captured information/details in the log
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+      dateTimeLocation:
+        type: string
+        example: "2018-03-28 12:30:00 CST Dallas USA"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::DateTime
+
+  ServicingBaseWithIdAndStatus:
+    type: object
+    properties:
+      customerEventLogReference:
+        type: string
+        example: CELR726464
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      customerServicingEventReference:
+        type: string
+        example: CSER735454
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      customerServicingEventType:
+        type: string
+        example: assisted
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      customerContactDialogueRecordReference:
+        type: string
+        example: CDRR736464
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      accessedProductService:
+        type: string
+        example: referenced products/services
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      channelDeviceType:
+        type: string
+        example: device type
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      contactPurpose:
+        type: string
+        example: purpose for contact
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      contactResult:
+        type: string
+        example: successful
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      employeeUnit Reference:
+        type: string
+        example: EUR63544
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      customerServicingEventRecord:
+        type: object
+        example: captured information/details in the log
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+      dateTimeLocation:
+        type: string
+        example: "2018-03-28 12:30:00 CST Dallas USA"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::DateTime
+      customerServicingEventResult:
+        type: string
+        example: successful
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+
+  ServicingRecordResponse:
+    type: object
+    properties:
+      recordingRecordReference:
+        type: string
+        example: RRR123
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      customerServicingEventResult:
+        type: string
+        example: successful
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+        
+  ProductServiceBase:
+    type: object
+    properties:
+      productInstanceReference:
+        type: string
+        example: PIR726454
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      productActionEventType:
+        type: string
+        example: payment initiation
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      productActionEventDescription:
+        type: string
+        example: details of action is available
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      productActionEventResult:
+        type: string
+        example: successful
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      employeeUnitReference:
+        type: string
+        example: EUR7236454
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      customerProductServiceEventRecord:
+        type: object
+        example: captured information/details in the log
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+      dateTimeLocation:
+        type: string
+        example: "2018-03-28 12:30:00 CST Dallas USA"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::DateTime
+
+  ProductServiceBaseWithIdAndStatus:
+    type: object
+    properties:
+      customerEventLogReference:
+        type: string
+        example: CELR736464
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      customerProductEventReference:
+        type: string
+        example: CPER7364646
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      productInstanceReference:
+        type: string
+        example: PIR726454
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      productActionEventType:
+        type: string
+        example: payment initiation
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      productActionEventDescription:
+        type: string
+        example: details of action is available
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      productActionEventResult:
+        type: string
+        example: successful
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      employeeUnitReference:
+        type: string
+        example: EUR7236454
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      customerProductServiceEventRecord:
+        type: object
+        example: captured information/details in the log
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+      dateTimeLocation:
+        type: string
+        example: "2018-03-28 12:30:00 CST Dallas USA"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::DateTime
+      customerProductServiceEventResult:
+        type: string
+        example: successful
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+ 
+  ProductServiceRecordResponse:
+    type: object
+    properties:
+      recordingRecordReference:
+        type: string
+        example: RRR123
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      customerProductServiceEventResult:
+        type: string
+        example: successful
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+        
+  FraudBase:
+    type: object
+    properties:
+      customerFraudCaseEventType:
+        type: string
+        example: stolen card
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      customerContactDialogueRecordReference:
+        type: string
+        example: CDRR737464
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      accessedProductService:
+        type: string
+        example: referenced products/services if provided
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      employeeUnitReference:
+        type: string
+        example: EUR736464
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      fraudCaseReference:
+        type: string
+        example: FCR736474
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      dateTimeLocation:
+        type: string
+        example: "2018-03-28 12:30:00 CST Dallas USA"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::DateTime
+
+  FraudBaseWithIdAndStatus:
+    type: object
+    properties:
+      customerEventLogReference:
+        type: string
+        example: CELR735464
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      customerFraudEventReference:
+        type: string
+        example: CFER7364645
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      customerFraudCaseEventType:
+        type: string
+        example: stolen card
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      customerContactDialogueRecordReference:
+        type: string
+        example: CDRR737464
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      accessedProductService:
+        type: string
+        example: referenced products/services if provided
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      employeeUnitReference:
+        type: string
+        example: EUR736464
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      fraudCaseReference:
+        type: string
+        example: FCR736474
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      dateTimeLocation:
+        type: string
+        example: "2018-03-28 12:30:00 CST Dallas USA"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::DateTime
+      customerFraudEventResult:
+        type: string
+        example: successful
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+
+  FraudRecordResponse:
+    type: object
+    properties:
+      recordingRecordReference:
+        type: string
+        example: RRR123
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      customerFraudEventResult:
+        type: string
+        example: successful
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+        
+  LifeBase:
+    type: object
+    properties:
+      customerLifeEventType:
+        type: string
+        example: relocation
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      customerContactReference:
+        type: string
+        example: CCR736464
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      employeeUnitReference:
+        type: string
+        example: EUR736464
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      customerLifeEventRecord:
+        type: object
+        example: captured information/details in the log
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+      customerLifeEventVerificationStatus:
+        type: string
+        example: true
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      dateTimeLocation:
+        type: string
+        example: "2018-03-28 12:30:00 CST Dallas USA"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::DateTime
+  LifeBaseWithIdAndStatus:
+    type: object
+    properties:
+      customerEventLogReference:
+        type: string
+        example: CELR736464
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      customerLifeEventReference:
+        type: string
+        example: CLER646474
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      customerLifeEventType:
+        type: string
+        example: relocation
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      customerContactReference:
+        type: string
+        example: CCR736464
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      employeeUnitReference:
+        type: string
+        example: EUR736464
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      customerLifeEventRecord:
+        type: object
+        example: captured information/details in the log
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+      customerLifeEventVerificationStatus:
+        type: string
+        example: true
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      dateTimeLocation:
+        type: string
+        example: "2018-03-28 12:30:00 CST Dallas USA"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::DateTime
+  LifeRecordResponse:
+    type: object
+    properties:
+      recordingRecordReference:
+        type: string
+        example: RRR123
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      customerLifeEventResult:
+        type: string
+        example: successful
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text

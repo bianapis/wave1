@@ -336,12 +336,7 @@ definitions:
           core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
           general-info: 'The sold/in-force status of a product/service with the customer'
       dateTime:
-        type: string
-        description: |
-          `status: Not Mapped`
-          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::DateTime
-          general-info: 'The time of the eligibility assessment request'
-        example: "2018-08-28T09:00:00"
+        $ref: 'https://api.swaggerhub.com/domains/BIAN/Common-Model/1.0.0#/definitions/ISODateTime'
 
   CustomerProductServiceEligibilityCheckResponse:
     type: object
@@ -396,12 +391,7 @@ definitions:
           general-info: 'Records the sold/in-force status of a product/service with the customer'
         example: "product status"
       dateTime:
-        type: string
-        description: |
-          `status: Not Mapped`
-          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::DateTime
-          general-info: 'The time of the eligibility assessment request'
-        example: "2018-08-28T09:00:00"
+        $ref: 'https://api.swaggerhub.com/domains/BIAN/Common-Model/1.0.0#/definitions/ISODateTime'
       customerProductServiceEligibilityAssessmentResult:
         type: string
         description: |
@@ -463,12 +453,7 @@ definitions:
           general-info: 'Records the sold/in-force status of a product/service with the customer'
         example: "product status"
       dateTime:
-        type: string
-        description: |
-          `status: Not Mapped`
-          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::DateTime
-          general-info: 'The time of the eligibility assessment request'
-        example: "2018-08-28T09:00:00"
+        $ref: 'https://api.swaggerhub.com/domains/BIAN/Common-Model/1.0.0#/definitions/ISODateTime'
       customerProductServiceAuthorizeAssessmentResult:
         type: string
         description: |
@@ -591,11 +576,7 @@ definitions:
           core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
         properties: {}
       recordingRecordDateTime:
-        type: string
-        description: |
-          `status: Not Mapped`
-          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::DateTime
-        example: "2018-08-28T09:00:00"
+        $ref: 'https://api.swaggerhub.com/domains/BIAN/Common-Model/1.0.0#/definitions/ISODateTime'
       employeeBusinessUnitReference:
         type: string
         description: |

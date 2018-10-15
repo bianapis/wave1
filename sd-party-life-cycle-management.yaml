@@ -10,11 +10,12 @@ info:
       
         ## Example of use:
       
-        A prospective customer has been identified and the bank undertakes a collection of checks to confirm this is a new relationship and to verify the relationship in compliance with bank, legal and regulatory requirements. Note that for different customer types (non consumer in particular) many different checks will be required.
-
+        A prospect has been identified and the bank undertakes a collection of checks to confirm this is a new relationship and to verify the relationship in compliance with bank, legal and regulatory requirements. Note that for different customer types (non consumer in particular) many different checks will be required. 
+        
         ## General comment:
       
         This service domain tracks the state of a party relationship with the bank from the initial checks made when establishing a new business relationship with a customer or partner and then that are performed as necessary over the duration of the relationship. The checks and the maintenance requirements will vary by party type (e.g. individual, company, partner) and jurisdiction. The checks cover bank specific and legal and regulatory considerations and may be updated based on a standard schedule or by request in specific circumstances.
+        This service domain tracks the state of a party relationship with the bank from the initial checks made for on-boarding a new customer and then maintained as necessary over the duration of the relationship. The checks and the maintenance requirements will vary by customer type and jurisdiction. The checks cover bank specific and legal and regulatory considerations and may be updated based on a standard schedule or by request in specific circumstances.
             
 # Added by API Auto Mocking Plugin
 host: virtserver.swaggerhub.com

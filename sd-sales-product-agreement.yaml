@@ -195,11 +195,6 @@ paths:
       summary:  Request that the terms are reviewed/refreshed 
       description: Create a new  agreement
       parameters:
-      - name: cr-reference-id
-        in: path
-        description: Sales Product Agreement Reference
-        required: true
-        type: string
       - in: body
         name: body
         description: Customer Agreement Request Payload

@@ -1,0 +1,671 @@
+swagger: '2.0'
+info:
+  version: "4.0.0"
+  title: 'Service Domain - Customer Credit Rating'
+  description: >
+
+       ## Service Domain Role: 
+     
+       This service domain maintains and administers the bank's credit assessment for customers based on consolidated internal data and optionally by referencing external credit agency reports.
+
+    
+       ## Example of use:
+      
+       A customer calls the contact center wishing to know what mortgage offers they are eligible for. The customer servicing representative (CSR) uses the customer's internal credit assessment as one input to reference the Product Directory to retrieve the details of available products and terms
+       
+       ## General comment:
+       
+       This service domain handles the derivation and maintenance of each customer's credit rating for both consumer and corporate customers. The internal rating can integrate externally provided credit details from credit scoring agencies with internal transactional data and relationship assessments. The credit rating will be maintained based on internal rules, but it is possible that a service will be offered to support an unscheduled recalculation of the credit score
+
+
+# Added by API Auto Mocking Plugin
+host: virtserver.swaggerhub.com
+basePath: /BIAN/sd-customer-credit-rating/2.0.1
+consumes:
+- application/json
+produces:
+- application/json
+schemes:
+ - https
+ 
+paths:
+  # Alert
+  /customer-credit-rating/customer-credit-rating-measurement/{cr-reference-id}/alerts/recording:
+    post:
+      tags:
+      - record
+      summary: Record information against Customer Credit Rating alert
+      operationId: recordCustomerCreditRatingMeasurementAlert
+      parameters:
+      - name: cr-reference-id
+        in: path
+        description: Customer Credit Rating Assessment Reference
+        required: true
+        type: string
+      - in: body
+        name: body
+        description: Customer Credit Rating Alert Request Payload
+        schema:
+          $ref: '#/definitions/AlertRecordRequest'
+      responses:
+        201:
+          description: Created a Customer Credit Rating Alert record successfully
+          schema:
+            $ref: '#/definitions/AlertRecordResponse'
+            
+  # Record
+  /customer-credit-rating/customer-credit-rating-measurement/{cr-reference-id}/recording:
+    post:
+      tags:
+      - record
+      summary: Record information against Customer Credit Rating assessment
+      operationId: recordCustomerCreditRatingMeasurement
+      parameters:
+      - name: cr-reference-id
+        in: path
+        description: Customer Credit Rating Assessment Reference
+        required: true
+        type: string
+      - in: body
+        name: body
+        description: Record Request Payload
+        required: true
+        schema:
+          $ref: '#/definitions/CreditRatingRecordRequest'
+      responses:
+        201:
+          description: Created a Customer Credit Rating record successfully
+          schema:
+            $ref: '#/definitions/CreditRatingRecordResponse'
+            
+            ######################################
+            
+        # Request CR only     PUT   Update
+  /customer-credit-rating/customer-credit-rating-measurement/{cr-reference-id}/requisition:
+    put:
+      tags:
+      - request
+      summary: update Request to undertake credit view refresh/reworking
+      operationId: requestCustomerCreditRatingMeasurementUpdate
+      parameters:
+      - name: cr-reference-id
+        in: path
+        description: Customer Credit Rating Assessment Reference
+        required: true
+        type: string
+      - in: body
+        name: body
+        description: Customer Credit Assessment Request Payload
+        required: true
+        schema:
+          $ref: '#/definitions/CreditRatingBase'
+      responses:
+        200:
+          description: Updated a Customer Credit Rating record successfully
+          schema:
+            $ref: '#/definitions/CreditRatingBaseWithId'
+  
+    # Request CR only     POST    Create
+  /customer-credit-rating/customer-credit-rating-measurement/requisition:
+    post:
+      tags:
+      - request
+      summary: Create Request to undertake credit view refresh/reworking
+      operationId: requestCustomerCreditRatingMeasurementCreate
+      parameters:
+      - in: body
+        name: body
+        description: Customer Credit Assessment Request Payload
+        required: true
+        schema:
+          $ref: '#/definitions/CreditRatingBase'
+      responses:
+        201:
+          description: Created a Customer Credit Rating record successfully
+          schema:
+            $ref: '#/definitions/CreditRatingBaseWithId'
+            
+    ###############################################
+            
+            # Retrieve
+  /customer-credit-rating/customer-credit-rating-measurement:
+    get:
+      tags:
+      - retrieve
+      operationId: retrieveCustomerCreditRatingMeasurementReferenceIds
+      summary: Retrieve Customer Credit Rating  Control Record Ids available within the Service Domain.
+      produces:
+      - application/json
+      parameters:
+      - name: collection-filter
+        in: query
+        description: Filter to refine the result set. ex- 'customerBehaviorModel = CBM123'
+        type: string 
+      responses:
+        200:
+          description: successful
+          schema:
+            type: array
+            items:
+              type: string
+            example: [CCR123, CCR345]
+            
+  /customer-credit-rating/customer-credit-rating-measurement/behavior-qualifiers:
+    get:
+      tags:
+      - retrieve
+      operationId: retrieveCustomerCreditRatingMeasurementBehaviorQualifiers
+      summary: Retrieve all Behaviour Qualifier names in Customer Credit Rating Domain.
+      produces:
+      - application/json
+      responses:
+        200:
+          description: Retrieved all Behaviour Qualifier names in Customer Credit Rating Domain successfully
+          schema:
+            type: array
+            items:
+              type: string
+            example: [external-rating, internal-analysis] 
+            
+  /customer-credit-rating/customer-credit-rating-measurement/{cr-reference-id}/{behavior-qualifier}:
+    get:
+      tags:
+      - retrieve
+      operationId: RetrieveBehaviorQualifierReferenceIds
+      summary: Retrieve Behaviour Qualifier Reference Ids of a given Behavior Qulifier.
+      produces:
+      - application/json
+      parameters:
+      - name: cr-reference-id
+        in: path
+        description: Customer Credit Rating Assessment Reference
+        required: true
+        type: string
+      - name: behavior-qualifier
+        in: path
+        description: Behavior Qualifier Name. ex- external-rating
+        required: true
+        type: string
+      - name: collection-filter
+        in: query
+        description: Filter to refine the result set. ex- 'ratingAgencyCreditReportType = type-1'
+        type: string
+      responses:
+        200:
+          description: successful
+          schema:
+            type: array
+            items:
+              type: string
+            example: [ER345, ER789, ER456] 
+
+  /customer-credit-rating/customer-credit-rating-measurement/{cr-reference-id}:
+    get:
+      tags:
+      - retrieve
+      operationId: retrieveCustomerCreditRatingMeasurement
+      summary:  Customer Credit Rating Assessment record
+      parameters:
+      - name: cr-reference-id
+        in: path
+        description: Customer Credit Rating Assessment Reference
+        required: true
+        type: string
+      responses:
+        200:
+          description: Retrieved Customer Credit Rating Assessment record successfully
+          schema:
+            $ref: '#/definitions/CreditRatingBaseWithId'
+            
+  /customer-credit-rating/customer-credit-rating-measurement/{cr-reference-id}/alerts/{bq-reference-id}:
+    get:
+      tags:
+      - retrieve
+      operationId: Retrievealerts
+      summary: Retrieve Alerts Behaviour Qualifier with all its' attributes. 
+      produces:
+      - application/json
+      parameters:
+      - name: cr-reference-id
+        in: path
+        description: Customer Credit Rating Assessment Reference
+        required: true
+        type: string
+      - name: bq-reference-id
+        in: path
+        description: Rating Agency Credit Report Reference
+        required: true
+        type: string
+      responses:
+        200:
+          description:  Retrieved Customer Credit Alerts record successfully
+          schema:
+            $ref: '#/definitions/CreditRatingAlerts'
+  /customer-credit-rating/customer-credit-rating-measurement/{cr-reference-id}/external-ratings/{bq-reference-id}:
+    get:
+      tags:
+      - retrieve
+      operationId: Retrieveexternalratings
+      summary: Retrieve External Rating Behaviour Qualifier with all its' attributes. 
+      produces:
+      - application/json
+      parameters:
+      - name: cr-reference-id
+        in: path
+        description: Customer Credit Rating Assessment Reference
+        required: true
+        type: string
+      - name: bq-reference-id
+        in: path
+        description: Rating Agency Credit Report Reference
+        required: true
+        type: string
+      responses:
+        200:
+          description:  Retrieved Customer Credit External Rating record successfully
+          schema:
+            $ref: '#/definitions/CreditRatingExternalRating'
+            
+  /customer-credit-rating/customer-credit-rating-measurement/{cr-reference-id}/internal-analysis/{bq-reference-id}:
+    get:
+      tags:
+      - retrieve
+      operationId: Retrieveinternalanalysis
+      summary: Retrieve Internal Analysis Behaviour Qualifier with all its' attributes. 
+      produces:
+      - application/json
+      parameters:
+      - name: cr-reference-id
+        in: path
+        description: Customer Credit Rating Assessment Reference
+        required: true
+        type: string
+      - name: bq-reference-id
+        in: path
+        description: Internal Credit Analysis Report Reference
+        required: true
+        type: string
+      responses:
+        200:
+          description:  Retrieved Customer Credit Internal Analysis record successfully
+          schema:
+            $ref: '#/definitions/CreditRatingInternalAnalysisBase'
+              
+definitions:
+  CreditRatingAlerts:
+    properties:
+      customerCreditAlertReference:
+        type: string
+        example: "CCRAR232342"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      customerReference:
+        type: string
+        example: "CCRAR232342"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      customerCreditRatingAssessmentReference:
+        type: string
+        example: "CCRAR232342"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      productInstanceReference:
+        type: string
+        example: "CCRAR232342"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      employeeBusinessUnitReference:
+        type: string
+        example: "CCRAR232342"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      customerCreditAlertType:
+        type: string
+        example: "CCRAR232342"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      customerCreditAlertDescription:
+        type: string
+        example: "Customer Credit Alert"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      dateTime:
+        type: string
+        example: "2018-09-06T09:00:00"
+        description: |
+         `status: Not Mapped`
+         core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::DateTime
+  
+  CreditRatingExternalRating:
+     properties:
+      customerCreditRatingAssessmentReference:
+        type: string
+        example: "CCRAR232342"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      ratingAgencyReference:
+        type: string
+        example: "RAR888"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      ratingAgencyAccessServiceSessionReference:
+        type: string
+        example: "RAASSR237"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      ratingAgencyAccessSchedule:
+        type: string
+        example: "service availability"
+        description: |
+         `status: Not Mapped`
+         core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      customerReference:
+        type: string
+        example: "CR568"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      ratingAgencyCreditReportType:
+        type: string
+        example: "long/short form report"
+        description: |
+         `status: Not Mapped`
+         core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Code
+      ratingAgencyCreditReportReference:
+        type: string
+        example: "RACRR432"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      ratingAgencyCreditReport:
+        type: object
+        description: |
+         `status: Not Mapped`
+         core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+      ratingAgengyCreditReportDateTime:
+        type: string
+        example: "2018-09-06T09:00:00"
+        description: |
+         `status: Not Mapped`
+         core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::DateTime
+      
+  CreditRatingInternalAnalysisBase:
+    type: object
+    properties:
+      customerCreditRatingAssessmentReference:
+        type: string
+        example: "CCRAR232342"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      internalCreditAnalysisReportReference:
+        type: string
+        example: "ICARR23476"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      productServiceActivityReportReference:
+        type: string
+        example: "PSARR4567"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      productServiceActivityReport:
+        type: string
+        example: "PSAR132"    
+        description: |
+         `status: Not Mapped`
+         core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+      customerReference:
+        type: string
+        example: "CR987"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      customerBehaviorModel:
+        type: string
+        example: "CBM777"
+        description: |
+         `status: Not Mapped`
+         core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      internalCreditAnalysisReportType:
+        type: string
+        example: "ICART23476"
+        description: |
+         `status: Not Mapped`
+         core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Code
+      internalCreditAnalysisReport:
+        type: string
+        example: "ICAR23476"    
+        description: |
+         `status: Not Mapped`
+         core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+      internalCreditAnalysisReportDateTime:
+        type: string
+        example: "2018-09-06T09:00:00"    
+        description: |
+         `status: Not Mapped`
+         core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::DateTime
+        
+  CreditRatingBaseWithId:
+    properties:
+      customerCreditRatingAssessmentReference:
+        type: string
+        example: "CCRAR232342"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      customerCreditRatingAssessment:
+        type: string
+        example: "internal bank credit rating/assessment"
+        description: |
+         `status: Not Mapped`
+         core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      customerBehaviorModel:
+        type: string
+        example: "model2"
+        description: |
+         `status: Not Mapped`
+         core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      ratingAgencyCreditReportReference:
+        type: string
+        example: "RRCRR436"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      internalCreditAnalysisReportReference:
+        type: string
+        example: "ICARR9090"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      customerReference:
+        type: string
+        example: "CR437"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      customerCreditRatingAssessmentType:
+        type: string
+        example: "corporate"
+        description: |
+         `status: Not Mapped`
+         core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      customerCreditRatingNarrative:
+        type: string
+        example: "structured report outlining basis for rating"
+        description: |
+         `status: Not Mapped`
+         core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      customerCreditRatingSchedule:
+        type: string
+        example: "update schedule"
+        description: |
+         `status: Not Mapped`
+         core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+
+  AlertRecordRequest:
+    type: object
+    properties:
+      customerReference:
+        type: string
+        example: "CR564"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      customerCreditRatingAssessmentReference:
+        type: string
+        example: "CCRAR232342"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      productInstanceReference:
+        type: string
+        example: "PIR7676"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      employeeBusinessUnitReference:
+        type: string
+        example: "EBUR5567"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      customerCreditAlertType:
+        type: string
+        example: "CCAT678"
+        description: |
+         `status: Not Mapped`
+         core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      customerCreditAlertDescription:
+        type: string
+        example: "Alert"
+        description: |
+         `status: Not Mapped`
+         core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      dateTime:
+        type: string
+        example: "2018-09-06T09:00:00"
+        description: |
+         `status: Not Mapped`
+         core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::DateTime
+        
+  AlertRecordResponse:
+    type: object
+    properties:
+      customerCreditAlertReference:
+        type: string
+        example: "CCAR2342"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      recordingRecordStatus:
+        type: string
+        example: "Applied"  
+        description: |
+         `status: Not Mapped`
+         core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+  
+  CreditRatingBase:
+    properties:
+      customerCreditRatingAssessment:
+        type: string
+        example: "internal bank credit rating/assessment"
+        description: |
+         `status: Not Mapped`
+         core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      customerBehaviorModel:
+        type: string
+        example: "model2"
+        description: |
+         `status: Not Mapped`
+         core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      ratingAgencyCreditReportReference:
+        type: string
+        example: "RACRR538"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      internalCreditAnalysisReportReference:
+        type: string
+        example: "ICARR980"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      customerReference:
+        type: string
+        example: "CR1234"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      customerCreditRatingAssessmentType:
+        type: string
+        example: "corporate"
+        description: |
+         `status: Not Mapped`
+         core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      customerCreditRatingNarrative:
+        type: string
+        example: "structured report outlining basis for rating"
+        description: |
+         `status: Not Mapped`
+         core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      customerCreditRatingSchedule:
+        type: string
+        example: "update schedule"
+        description: |
+         `status: Not Mapped`
+         core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+
+  CreditRatingRecordRequest:
+    type: object
+    properties:
+      recordingRecordType:
+        type: string
+        example: "Behavior model performance feedback"
+        description: |
+         `status: Not Mapped`
+         core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      recordingRecord:
+        type: object
+        description: |
+         `status: Not Mapped`
+         core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+      recordingRecordDateTime:
+        type: string
+        example: "2018-09-06T09:00:00"
+        description: |
+         `status: Not Mapped`
+         core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::DateTime
+      employeeBusinessUnitReference:
+        type: string
+        example: "REF456"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+
+  CreditRatingRecordResponse:
+    type: object
+    properties:
+      recordingRecordReference:
+        type: string
+        example: "RRR4678"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      recordingRecordStatus:
+        type: string
+        example: "Applied"
+        description: |
+         `status: Not Mapped`
+         core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text

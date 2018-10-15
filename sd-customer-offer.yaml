@@ -1,0 +1,1827 @@
+swagger: '2.0'
+info:
+  version: "4.0.0"
+  title: 'Service Domain - Customer Offer'
+  description: >
+  
+       ## Service Domain Role :
+
+       This service domain orchestrates the processing of a product offer for a new or established  customer. The offer process is defined specifically for the product or service being considered and can include actions such as document checks, collateral allocation, credit assessments, underwriting decisions, regulatory and procedural checks, eligibility checks, the use of internal and external specialist services (such as evaluations and legal advice).
+      
+        ## Example of use:
+      
+        An existing customer has discussed short term funding needs with the Financial Advisor and agreed in principle to taking out a corporate loan. The customer offer process is initiated and leads the advisor through the detailed checks, authorizations and documentation needed prior to the final set-up of the Corporate Loan
+
+      
+        ## General comment:
+      
+        The Offer Management Service Domain can process offers for all types of customers and any allowed combination of product or service. It references the Product Directory for the product specific offer instructions it must follow. The offer process may combine the selection of product/service specific details (e.g. pricing & negotiation ranges, documentation/authorization/regulatory requirements, eligibility and declarations, credit and other customer details), customer specific details (e.g. credit standing, other classifications such as operational overhead/retention target/activity history, demographics and segmentation). The service domain orchestrates a potentially complex/multi-threaded/multi stage workflow to get the offer to the point where the product/service can be initiated.
+ 
+        
+# Added by API Auto Mocking Plugin
+host: virtserver.swaggerhub.com
+basePath: /BIAN/sd-customer-offer/3.0.0
+consumes:
+- application/json
+produces:
+- application/json
+schemes:
+ - https
+
+paths:
+  #-------------update----------------
+  /customer-offer/customer-offer-procedure/{cr-reference-id}/updation:
+    put:
+      tags:
+      - update
+      operationId: updateCustomerOfferProcedure
+      summary: "Update details of an active customer offer"
+      parameters:
+      - in: path
+        name: cr-reference-id
+        description: "Customer Offer Reference"
+        required: true
+        type: string
+      - in: body
+        name: body
+        description: "Update Customer Offer Procedure request payload"
+        required: true
+        schema: 
+          $ref: '#/definitions/OfferBase'
+      responses:
+        200:
+          description: "Successfully updated customer offer procedure offer"
+          schema:
+            $ref: '#/definitions/OfferBaseWithId'
+
+  /customer-offer/customer-offer-procedure/{cr-reference-id}/recording:
+    post:
+      tags:
+      - record
+      operationId: recordCustomerOfferProcedure
+      summary: "Record information against an active customer offer"
+      parameters:
+      - in: path
+        name: cr-reference-id
+        description: "Customer Offer Reference"
+        required: true
+        type: string
+      - in: body
+        name: body
+        description: "Request Customer Offer Procedure request payload"
+        required: true
+        schema: 
+          $ref: '#/definitions/CustomerOfferRecordRequest'
+      responses:
+        201:
+          description: "Successfully record information against an active customer offer"
+          schema:
+            $ref: '#/definitions/CustomerOfferRecordResponse'
+
+  #-----------execute---------------
+  #No ID attribute found for product
+  /customer-offer/customer-offer-procedure/{cr-reference-id}/execution:
+    put:
+      tags:
+      - execute
+      operationId: executeCustomerOfferProcedureUpdate
+      summary: "Execute an automated offer process (for simple product/service offers)"
+      description: "Update existing customer offer"
+      parameters:
+      - in: path
+        name: cr-reference-id
+        description: "Customer Offer Reference"
+        required: true
+        type: string
+      - in: body
+        name: body
+        description: "Execute Customer Offer Procedure request payload"
+        required: true
+        schema: 
+          $ref: '#/definitions/OfferBase'
+      responses:
+        200:
+          description: "Successfully Updated existing customer offer"
+          schema:
+            $ref: '#/definitions/OfferBaseWithId'
+
+  /customer-offer/customer-offer-procedure/execution:
+    post:
+      tags:
+      - execute
+      operationId: executeCustomerOfferProcedureCreate
+      summary: "Execute an automated offer process (for simple product/service offers)"
+      description: "Create new customer offer"
+      parameters:
+      - in: body
+        name: body
+        description: "Execute Customer Offer Procedure request payload"
+        required: true
+        schema: 
+          $ref: '#/definitions/OfferBase'
+      responses:
+        201:
+          description: "Successfully created new customer offer"
+          schema:
+            $ref: '#/definitions/OfferBaseWithId'
+
+  #BQ- Execute the capture and application of existing customer reference data
+  /customer-offer/customer-offer-procedure/{cr-reference-id}/customers/{bq-reference-id}/execution:
+    put:
+      tags:
+      - execute
+      operationId: executeCustomerOfferProcedureReferenceDataCaptureUpdate
+      summary: "Execute the capture and application of existing customer reference data"
+      description: "Update existing customer"
+      parameters:
+      - in: path
+        name: cr-reference-id
+        description: "Customer Offer Reference"
+        required: true
+        type: string
+      - in: path
+        name: bq-reference-id
+        required: true
+        type: string
+        description: "Customer Offer Customer Reference Task Reference"
+      - in: body
+        name: body
+        required: true
+        schema: 
+          $ref: '#/definitions/CustomerBase'
+      responses:
+        200:
+          description: "Successfully Updated existing customer"
+          schema:
+            $ref: '#/definitions/CustomerBaseWithIdAndRoot'
+
+  /customer-offer/customer-offer-procedure/{cr-reference-id}/customers/execution:
+    post:
+      tags:
+      - execute
+      operationId: executeCustomerOfferProcedureReferenceDataCaptureCreate
+      summary: "Execute the capture and application of existing customer reference data"
+      description: "Create a new customer"
+      parameters:
+      - in: path
+        name: cr-reference-id
+        description: "Customer Offer Reference"
+        required: true
+        type: string
+      - in: body
+        name: body
+        required: true
+        schema: 
+          $ref: '#/definitions/CustomerBase'
+      responses:
+        201:
+          description: "Successfully created a new customer"
+          schema:
+            $ref: '#/definitions/CustomerBaseWithIdAndRoot'
+
+  #BQ- Execute the extract of customer reference data from provided documentation 
+  /customer-offer/customer-offer-procedure/{cr-reference-id}/documentations/{bq-reference-id}/execution:
+    put:
+      tags:
+      - execute
+      operationId: executeCustomerOfferProcedureDocumentExtractUpdate
+      summary: "Execute the extract of customer reference data from provided documentation "
+      description: "Update existing documentation"
+      parameters:
+      - in: path
+        name: cr-reference-id
+        description: "Customer Offer Reference"
+        required: true
+        type: string
+      - in: path
+        name: bq-reference-id
+        required: true
+        type: string
+        description: "Customer Offer Documentation Task Reference"
+      - in: body
+        name: body
+        required: true
+        schema: 
+          $ref: '#/definitions/DocumentationBase'
+      responses:
+        200:
+          description: "Successfully Updated existing documentation"
+          schema:
+            $ref: '#/definitions/DocumentationBaseWithIdAndRoot'
+            
+
+  /customer-offer/customer-offer-procedure/{cr-reference-id}/documentations/execution:
+    post:
+      tags:
+      - execute
+      operationId: executeCustomerOfferProcedureDocumentExtractCreate
+      summary: "Execute the extract of customer reference data from provided documentation"
+      description: "Create new documentation"
+      parameters:
+      - in: path
+        name: cr-reference-id
+        description: "Customer Offer Reference"
+        required: true
+        type: string
+      - in: body
+        name: body
+        schema:
+          $ref: '#/definitions/DocumentationBase'
+      responses:
+        201:
+          description: "Successfully created new documentation"
+          schema:
+            $ref: '#/definitions/DocumentationBaseWithIdAndRoot'
+
+  #-------------request-------------
+  #-CR- Request: End to end offer processing
+  /customer-offer/customer-offer-procedure/{cr-reference-id}/requisition:
+    put:
+      tags:
+      - request
+      operationId: requestCustomerOfferProcedureUpdate
+      summary: "Request a service under the Customer Offer Procedure"
+      description: "Update existing customer offer"
+      parameters: 
+      - in: path
+        name: cr-reference-id
+        description: "Customer Offer Reference"
+        required: true
+        type: string
+      - in: body
+        name: body
+        schema:
+          $ref: '#/definitions/OfferBase'
+      responses:
+        200:
+          description: "Successfully Updated existing customer offer"
+          schema:
+            $ref: '#/definitions/OfferBaseWithId'
+
+  /customer-offer/customer-offer-procedure/requisition:
+    post:
+      tags:
+      - request
+      operationId: requestCustomerOfferProcedureCreate
+      summary: "Request a service under the Customer Offer Procedure"
+      description: "Create a new customer offer"
+      parameters: 
+      - in: body
+        name: body
+        schema:
+          $ref: '#/definitions/OfferBase'
+      responses:
+        201:
+          description: "Successfully created new customer offer"
+          schema:
+            $ref: '#/definitions/OfferBaseWithId'
+            
+  #-BQ- Request: Product/service options selection, 
+  #No ID attribute found for product
+  /customer-offer/customer-offer-procedure/{cr-reference-id}/products/{bq-reference-id}/requisition:
+    put:
+      tags:
+      - request
+      operationId: requestCustomerOfferProcedureProductServiceOptionUpdate
+      summary: "Request the determination of product/service options"
+      description: "Update existing product"
+      parameters: 
+      - in: path
+        name: cr-reference-id
+        description: "Customer Offer Reference"
+        required: true
+        type: string
+      - in: path
+        name: bq-reference-id
+        required: true
+        type: string
+        description: "Customer Offer Customer Product Task Reference"
+      - in: body
+        name: body
+        schema:
+          $ref: "#/definitions/ProductBase"
+      responses:
+        200:
+          description: "Successfully Updated existing product"
+          schema:
+            $ref: "#/definitions/ProductBaseWithIdAndRoot"
+
+  /customer-offer/customer-offer-procedure/{cr-reference-id}/products/requisition:
+    post:
+      tags:
+      - request
+      operationId: requestCustomerOfferProcedureProductServiceOptionCreate
+      summary: "Request the determination of product/service options"
+      description: "Create new product"
+      parameters: 
+      - in: path
+        name: cr-reference-id
+        description: "Customer Offer Reference"
+        required: true
+        type: string
+      - in: body
+        name: body
+        schema:
+          $ref: "#/definitions/ProductBase"
+      responses:
+        201:
+          description: "Successfully created new product"
+          schema:
+            $ref: "#/definitions/ProductBaseWithIdAndRoot"
+
+  #BQ- Request the handling of disclosures
+  /customer-offer/customer-offer-procedure/{cr-reference-id}/disclosures/{bq-reference-id}/requisition:
+    put:
+      tags:
+      - request
+      operationId: requestCustomerOfferProcedureDisclosuresUpdate
+      summary: "Request the handling of disclosures"
+      description: "Update existing disclosures"
+      parameters: 
+      - in: path
+        name: cr-reference-id
+        description: "Customer Offer Reference"
+        required: true
+        type: string
+      - in: path
+        name: bq-reference-id
+        required: true
+        type: string
+        description: "Customer Offer Disclosure Task Reference"
+      - in: body
+        name: body
+        schema:
+          $ref: "#/definitions/DisclosureBase"
+      responses:
+        200:
+          description: "Successfully updated existing disclosures"
+          schema:
+            $ref: "#/definitions/DisclosureBaseWithIdAndRoot"
+
+  /customer-offer/customer-offer-procedure/{cr-reference-id}/disclosures/requisition:
+    post:
+      tags:
+      - request
+      operationId: requestCustomerOfferProcedureDisclosuresCreate
+      summary: "Request the handling of disclosures"
+      description: "Create new disclosure"
+      parameters: 
+      - in: path
+        name: cr-reference-id
+        description: "Customer Offer Reference"
+        required: true
+        type: string
+      - in: body
+        name: body
+        schema:
+          $ref: "#/definitions/DisclosureBase"
+      responses:
+        201:
+          description: "Successfully created new disclosure"
+          schema:
+            $ref: "#/definitions/DisclosureBaseWithIdAndRoot"
+
+  #BQ- Request the negotiation of terms/pricing
+  #No ID attribute found for pricing
+  /customer-offer/customer-offer-procedure/{cr-reference-id}/pricings{bq-reference-id}/requisition:
+    put:
+      tags:
+      - request
+      operationId: requestCustomerOfferProcedureNegotiationUpdate
+      summary: "Request the negotiation of terms/pricing"
+      description: "Update existing pricing"
+      parameters: 
+      - in: path
+        name: cr-reference-id
+        description: "Customer Offer Reference"
+        required: true
+        type: string
+      - in: path
+        name: bq-reference-id
+        required: true
+        type: string
+        description: "Customer Offer Pricing Task Reference"
+      - in: body
+        name: body
+        schema:
+          $ref: "#/definitions/PricingBase"
+      responses:
+        200:
+          description: "Successfully Updated existing pricing"
+          schema:
+            $ref: "#/definitions/PricingBaseWithIdAndRoot"
+            
+  /customer-offer/customer-offer-procedure/{cr-reference-id}/pricings/requisition:
+    post:
+      tags:
+      - request
+      operationId: requestCustomerOfferProcedureNegotiationCreate
+      summary: "Request the negotiation of terms/pricing"
+      description: "Create new pricing"
+      parameters: 
+      - in: path
+        name: cr-reference-id
+        description: "Customer Offer Reference"
+        required: true
+        type: string
+      - in: body
+        name: body
+        schema:
+          $ref: "#/definitions/PricingBase"
+      responses:
+        201:
+          description: "Successfully created new pricing"
+          schema:
+            $ref: "#/definitions/PricingBaseWithIdAndRoot"
+
+  ###################################  RETRIEVE  ###################################
+  /customer-offer/customer-offer-procedure:
+    get:
+      tags: 
+      - retrieve
+      operationId: retrieveCustomerOfferProcedureIds
+      summary: "Retrieve Customer Offer Procedure Control Record IDs available within the Service Domain."
+      parameters: 
+      - name : collection-filter
+        in: query
+        description: "Filter to refine the result set. ex- 'customer-reference = CR123'"
+        type: string 
+      responses:
+        200:
+          description: "Successfully retrieved customer offer procedure record Ids available within the service domain"
+          schema:
+            type: array
+            items:
+              type: string
+            example: ["COP123", "COP345"]
+            
+  /customer-offer/customer-offer-procedure/behavior-qualifiers:
+    get:
+      tags: 
+      - retrieve
+      operationId: retrieveCustomerOfferProcedureBqNames
+      summary: "Retrieve all Behaviour Qualifier names in the Customer Offer Procedure Service Domain."
+      responses:
+        200:
+          description: "Successfully retrieve all Behaviour Qualifier names in the Customer Offer Procedure Service Domain."
+          schema:
+            type: array
+            items:
+              type: string
+            example: ["customer", "product", "disclosures", "pricing", "credit", "underwriting", "compliance", "audit", "collateral", "booking", "correspondence", "documentation", "agreement", "closing"]
+
+  /customer-offer/customer-offer-procedure/{cr-reference-id}/{behavior-qualifier}:
+    get:
+      tags: 
+      - retrieve
+      operationId: retrieveCustomerOfferProcedureBqIds
+      summary: "Retrieve Behaviour Qualifier Reference IDs of the given Behavior Qulifier."
+      parameters: 
+      - in: path
+        name: cr-reference-id
+        description: "Customer Offer Reference"
+        required: true
+        type: string
+      - name : behavior-qualifier
+        in: path
+        description: "Behavior Qualifier Name. ex- customer"
+        required: true
+        type: string
+      - name : collection-filter
+        in: query
+        description: "Filter to refine the result set. ex- 'customer-reference = CR1234'"
+        type: string
+      responses:
+        200:
+          description: "Successfully Retrieve Behaviour Qualifier Reference IDs of the given Behavior Qulifier."
+          schema:
+            type: array
+            items:
+              type: string
+            example: ["COCRTR4345", "COCPTR4789", "COPTR4R456"] 
+            
+        ######################################################
+            
+  /customer-offer/customer-offer-procedure/{cr-reference-id}:
+    get:
+      tags:
+      - retrieve
+      operationId: retrieveCustomerOfferProcedure
+      summary: "Retrieve customer offer processing report"
+      parameters: 
+      - in: path
+        name: cr-reference-id
+        description: "Customer Offer Reference"
+        required: true
+        type: string
+      responses:
+        200:
+          description: "Successfully retrieved customer offer procedure"
+          schema:
+            $ref: '#/definitions/OfferBaseWithId'
+
+  /customer-offer/customer-offer-procedure/{cr-reference-id}/customers/{bq-reference-id}:
+    get:
+      tags:
+      - retrieve
+      summary: "Retrieve Customer"
+      operationId: retrieveCustomerOfferProcedureCustomer
+      parameters:
+      - in: path
+        name: cr-reference-id
+        description: "Customer Offer Reference"
+        required: true
+        type: string
+      - in : path
+        name: bq-reference-id
+        required: true
+        type: string
+        description: "Customer Offer Customer Reference Task Reference"
+      responses:
+        200:
+          description: "Successfully retrieved customer offer procedure customer"
+          schema:
+            $ref: "#/definitions/CustomerBaseWithIdAndRoot"
+
+  #No ID attribute found for 
+  /customer-offer/customer-offer-procedure/{cr-reference-id}/products/{bq-reference-id}:
+    get:
+      tags:
+      - retrieve
+      summary: "Retrieve Product"
+      operationId: retrieveCustomerOfferProcedureProduct
+      parameters:
+      - in: path
+        name: cr-reference-id
+        description: "Customer Offer Reference"
+        required: true
+        type: string
+      - in : path
+        name: bq-reference-id
+        required: true
+        type: string
+        description: "Customer Offer Customer Product Task Reference"
+      responses:
+        200:
+          description: "Successfully retrieved customer offer procedure products"
+          schema:
+            $ref: "#/definitions/ProductBaseWithIdAndRoot"
+
+  /customer-offer/customer-offer-procedure/{cr-reference-id}/disclosures/{bq-reference-id}:
+    get:
+      tags:
+      - retrieve
+      summary: "Retrieve Disclosure"
+      operationId: retrieveCustomerOfferProcedureDisclosure
+      parameters:
+      - in: path
+        name: cr-reference-id
+        description: "Customer Offer Reference"
+        required: true
+        type: string
+      - in : path
+        name: bq-reference-id
+        required: true
+        type: string
+        description: "Customer Offer Disclosure Task Reference"
+      responses:
+        200:
+          description: "Successfully retrieved customer offer procedure disclosures"
+          schema:
+            $ref: "#/definitions/DisclosureBaseWithIdAndRoot"
+
+  #No ID attribute found for pricing
+  /customer-offer/customer-offer-procedure/{cr-reference-id}/pricings/{bq-reference-id}:
+    get:
+      tags:
+      - retrieve
+      summary: "Retrieve Pricing"
+      operationId: retrieveCustomerOfferProcedurePricing
+      parameters:
+      - in: path
+        name: cr-reference-id
+        description: "Customer Offer Reference"
+        required: true
+        type: string
+      - in : path
+        name: bq-reference-id
+        required: true
+        type: string
+        description: "Customer Offer Pricing Task Reference"
+      responses:
+        200:
+          description: "Successfully retrieved customer offer procedure pricings"
+          schema:
+            $ref: "#/definitions/PricingBaseWithIdAndRoot"
+
+  /customer-offer/customer-offer-procedure/{cr-reference-id}/credits/{bq-reference-id}:
+    get:
+      tags:
+      - retrieve
+      summary: "Retrieve Credit"
+      operationId: retrieveCustomerOfferProcedureCredit
+      parameters:
+      - in: path
+        name: cr-reference-id
+        description: "Customer Offer Reference"
+        required: true
+        type: string
+      - in : path
+        name: bq-reference-id
+        required: true
+        type: string
+        description: "Customer Offer Credit Task Reference"
+      responses:
+        200:
+          description: "Successfully retrieved customer offer procedure credits"
+          schema:
+            $ref: "#/definitions/CreditBaseWithIdAndRoot"
+
+  /customer-offer/customer-offer-procedure/{cr-reference-id}/underwritings/{bq-reference-id}:
+    get:
+      tags:
+      - retrieve
+      summary: "Retrieve Underwriting"
+      operationId: retrieveCustomerOfferProcedureUnderwriting
+      parameters:
+      - in: path
+        name: cr-reference-id
+        description: "Customer Offer Reference"
+        required: true
+        type: string
+      - in : path
+        name: bq-reference-id
+        required: true
+        type: string
+        description: "Customer Offer Underwriting Task Reference"
+      responses:
+        200:
+          description: "Successfully retrieved customer offer procedure underwritings"
+          schema:
+            $ref: "#/definitions/UnderwritingWithIdAndRoot"
+
+  #No ID attribute found for compliance
+  /customer-offer/customer-offer-procedure/{cr-reference-id}/compliances/{bq-reference-id}:
+    get:
+      tags:
+      - retrieve
+      summary: "Retrieve Compliance"
+      operationId: retrieveCustomerOfferProcedureCompliance
+      parameters:
+      - in: path
+        name: cr-reference-id
+        description: "Customer Offer Reference"
+        required: true
+        type: string
+      - in : path
+        name: bq-reference-id
+        required: true
+        type: string
+        description: "Customer Offer Compliance Task Reference"
+      responses:
+        200:
+          description: "Successfully retrieved customer offer procedure compliances"
+          schema:
+            $ref: "#/definitions/ComplianceBaseWithIdAndRoot"
+
+  #No ID attribute found for audit
+  /customer-offer/customer-offer-procedure/{cr-reference-id}/audits/{bq-reference-id}:
+    get:
+      tags:
+      - retrieve
+      summary: "Retrieve Audit"
+      operationId: retrieveCustomerOfferProcedureAudit
+      parameters:
+      - in: path
+        name: cr-reference-id
+        description: "Customer Offer Reference"
+        required: true
+        type: string
+      - in : path
+        name: bq-reference-id
+        required: true
+        type: string
+        description: "Customer Offer Compliance Task Reference"
+      responses:
+        200:
+          description: "Successfully retrieved customer offer procedure audits"
+          schema:
+            $ref: "#/definitions/AuditWithIdAndRoot"
+
+  #No ID attribute found for collaterals
+  /customer-offer/customer-offer-procedure/{cr-reference-id}/collaterals/{bq-reference-id}:
+    get:
+      tags:
+      - retrieve
+      summary: "Retrieve Collateral"
+      operationId: retrieveCustomerOfferProcedureCollateral
+      parameters:
+      - in: path
+        name: cr-reference-id
+        description: "Customer Offer Reference"
+        required: true
+        type: string
+      - in : path
+        name: bq-reference-id
+        required: true
+        type: string
+        description: "Customer Offer Collateral Task Reference"
+      responses:
+        200:
+          description: "Successfully retrieved customer offer procedure collaterals"
+          schema:
+            $ref: "#/definitions/CollateralBaseWithIdAndRoot"
+
+  #No ID attribute found for booking
+  /customer-offer/customer-offer-procedure/{cr-reference-id}/bookings/{bq-reference-id}:
+    get:
+      tags:
+      - retrieve
+      summary: "Retrieve Booking"
+      operationId: retrieveCustomerOfferProcedureBooking
+      parameters:
+      - in: path
+        name: cr-reference-id
+        description: "Customer Offer Reference"
+        required: true
+        type: string
+      - in : path
+        name: bq-reference-id
+        required: true
+        type: string
+        description: "Customer Offer Booking Task Reference"
+      responses:
+        200:
+          description: "Successfully retrieved customer offer procedure bookings"
+          schema:
+            $ref: "#/definitions/BookingBaseWithIdAndRoot"
+
+  /customer-offer/customer-offer-procedure/{cr-reference-id}/correspondences/{bq-reference-id}:
+    get:
+      tags:
+      - retrieve
+      summary: "Retrieve Correspondence"
+      operationId: retrieveCustomerOfferProcedureCorrespondence
+      parameters:
+      - in: path
+        name: cr-reference-id
+        description: "Customer Offer Reference"
+        required: true
+        type: string
+      - in : path
+        name: bq-reference-id
+        required: true
+        type: string
+        description: "Customer Offer Correspondence Task Reference"
+      responses:
+        200:
+          description: "Successfully retrieved customer offer procedure correspondences"
+          schema:
+            $ref: "#/definitions/CorrespondenceBaseWithIdAndRoot"
+
+  /customer-offer/customer-offer-procedure/{cr-reference-id}/documentations/{bq-reference-id}:
+    get:
+      tags:
+      - retrieve
+      summary: "Retrieve Documentation"
+      operationId: retrieveCustomerOfferProcedureDocumentation
+      parameters:
+      - in: path
+        name: cr-reference-id
+        description: "Customer Offer Reference"
+        required: true
+        type: string
+      - in : path
+        name: bq-reference-id
+        required: true
+        type: string
+        description: "Customer Offer Documentation Task Reference"
+      responses:
+        200:
+          description: "Successfully retrieved customer offer procedure documentations"
+          schema:
+            $ref: "#/definitions/DocumentationBaseWithIdAndRoot"
+
+  /customer-offer/customer-offer-procedure/{cr-reference-id}/agreements/{bq-reference-id}:
+    get:
+      tags:
+      - retrieve
+      summary: "Retrieve Agreement"
+      operationId: retrieveCustomerOfferProcedureAgreement
+      parameters:
+      - in: path
+        name: cr-reference-id
+        description: "Customer Offer Reference"
+        required: true
+        type: string
+      - in : path
+        name: bq-reference-id
+        required: true
+        type: string
+        description: "Customer Offer Agreement Task Reference"
+      responses:
+        200:
+          description: "Successfully retrieved customer offer procedure agreements"
+          schema:
+            $ref: "#/definitions/AgreementBaseWithIdAndRoot"
+
+  #No ID attribute found for closing
+  /customer-offer/customer-offer-procedure/{cr-reference-id}/closings/{bq-reference-id}:
+    get:
+      tags:
+      - retrieve
+      summary: Retrieve Closing
+      operationId: retrieveCustomerOfferProcedureClosing
+      parameters:
+      - in: path
+        name: cr-reference-id
+        description: "Customer Offer Reference"
+        required: true
+        type: string
+      - in : path
+        name: bq-reference-id
+        required: true
+        type: string
+        description: "Customer Offer Closing Task Reference"
+      responses:
+        200:
+          description: "Successfully retrieved customer offer procedure closings"
+          schema:
+            $ref: "#/definitions/ClosingWithIdAndRoot"
+
+definitions:
+  OfferBase:
+    type: object
+    properties:
+      customerOfferRecord:
+        type: object
+        description: |
+          `status: Supplied`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+      customerReference:
+        type: string
+        example: "CR78546"
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: CustomerOffer.TargetCustomer
+          general-info: Customer Reference
+          
+      productReference:
+        type: string
+        example: "PR47856"
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: CustomerOffer.OfferedAgreement.GovernedContract(as Agreement).Product
+          general-info: Product Reference
+      dateTime:
+        type: string
+        example: "when started, updates, completed"
+        description: |
+          `status: Supplied`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::DateTime 
+      date:
+        $ref: 'https://api.swaggerhub.com/domains/BIAN/Common-Model/1.0.0#/definitions/ISODate'
+      employeeBusinessUnitReference:
+        type: string
+        example: "EBUR47856"
+        # description: "employee/unit processing the customer offer - referenced for commissions etc"
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: CustomerOffer.TargetCustomer.RelationshipManager.BusinessUnit
+          general-info: Employee Business Unit
+  OfferBaseWithId:
+    type: object
+    properties:
+      customerOfferReference:
+        type: string
+        example: "COR456897"
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: CustomerOffer
+          general-info: Customer Offer Reference
+      customerOfferRecord:
+        type: object
+        description: |
+          `status: Supplied`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+      customerReference:
+        type: string
+        example: "CR78546"
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: CustomerOffer.TargetCustomer
+          general-info: Customer Reference
+      productReference:
+        type: string
+        example: "PR47856"
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: CustomerOffer.OfferedAgreement.GovernedContract(as Agreement).Product
+          general-info: Product Reference
+      dateTime:
+        type: string
+        example: "when started, updates, completed"
+        description: |
+          `status: Supplied`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      date:
+        $ref: 'https://api.swaggerhub.com/domains/BIAN/Common-Model/1.0.0#/definitions/ISODate'
+      employeeBusinessUnitReference:
+        type: string
+        example: "EBUR47856"
+        # description: "employee/unit processing the customer offer - referenced for commissions etc"
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: CustomerOffer.TargetCustomer.RelationshipManager.BusinessUnit
+          general-info: Employee Business Unit
+  CustomerOfferRecordRequest:
+    type: object
+    properties:
+      recordingRecordType:
+        type: string
+        example: 8Z232345
+        description: |
+          `status: Supplied`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      recordingRecord:
+        type: object
+        example: 8Z232345
+        description: |
+          `status: Supplied`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+      recordingRecordDateTime:
+        $ref: 'https://api.swaggerhub.com/domains/BIAN/Common-Model/1.0.0#/definitions/ISODateTime'
+      employeeBusinessUnitReference:
+        type: string
+        example: 8Z232345
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: CustomerOffer.TargetCustomer.RelationshipManager.BusinessUnit
+            general-info: Employee/Business Unit Reference
+
+  CustomerOfferRecordResponse:
+    type: object
+    properties:
+      recordingRecordReference:
+        type: string
+        example: "RRR47856"
+        # description: "reference to the feedback"
+        description: |
+          `status: Supplied`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+          general-info: Recording Record
+      recordingRecordStatus:
+        type: string
+        example: "Applied"
+        description: |
+          `status: Supplied`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+        
+        # Customer #
+  CustomerBase:
+    type: object
+    properties:
+      customerReference:
+        type: string
+        example: "CR47586"
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: CustomerOffer.TargetCustomer
+          general-info: Customer Reference
+      partyReference:
+        type: string
+        example: "PR47853"
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: CustomerOffer.TargetCustomer(as Role).Player(as Party).AccountableParty
+          general-info: Party Reference
+  CustomerBaseWithIdAndRoot:
+    type: object
+    properties:
+      customerOfferReference:
+        type: string
+        example: "COR32345"
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: CustomerOffer
+          general-info: Customer Offer Reference
+      customerOfferCustomerReferenceTaskReference:
+        type: string
+        example: "COCRTR32345"
+        description: |
+          `status: Supplied`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      customerReference:
+        type: string
+        example: "CR47586"
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: CustomerOffer.TargetCustomer
+          general-info: Customer Reference
+      partyReference:
+        type: string
+        example: "PR47853"
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: CustomerOffer.TargetCustomer(as Role).Player(as Party).AccountableParty
+          general-info: Party Reference
+        
+  ProductBaseWithIdAndRoot:
+    properties:
+      customerOfferReference:
+        type: string
+        example: "COR455663"
+        description: |
+          `status: Supplied`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+          description: |
+            `status: Provisionally Registered`
+            bian-reference: CustomerOffer
+            general-info: Customer Offer Reference
+      customerOfferCustomerProductTaskReference:
+        type: string
+        example: "COCPTR47556"
+        description: |
+          `status: Supplied`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      productReference:
+        type: string
+        example: "PR74586"
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: CustomerOffer.OfferedAgreement.GovernedContract(as Agreement).Product
+          general-info: Product Reference
+      productOption:
+        type: string
+        example: "feature that can be configured for the customer"
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: CustomerOffer.OfferedAgreement.GovernedContract(as Agreement).Product.AvailableOption.OptionType
+          general-info: Product Option
+      productOptionDescription:
+        type: string
+        example: "feature description for review"
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: CustomerOffer.OfferedAgreement.GovernedContract(as Agreement).Product.AvailableOption.OptionDescription
+          general-info: Product Option Description
+      productOptionSelection:
+        type: string
+        example: "setting agreed/defined with customer"
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: CustomerOffer.OfferedAgreement.GovernedContract(as Agreement).Product.SelectedOption
+          general-info: Product Option Selection
+
+  ProductBase:
+    type: object
+    properties:
+      productReference:
+        type: string
+        example: 8Z232342
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: CustomerOffer.OfferedAgreement.GovernedContract(as Agreement).Product
+          general-info: Product Reference
+      productOption:
+        type: string
+        example: 
+        description: |
+          `status: Provisionally Registered`
+            bian-reference: CustomerOffer.OfferedAgreement.GovernedContract(as Agreement).Product.AvailableOption.OptionType          
+            general-info: feature that can be configured for the customer
+      productOptionDescription:
+        type: string
+        example: 
+        description: |
+          `status: Provisionally Registered`
+           bian-reference: CustomerOffer.OfferedAgreement.GovernedContract(as Agreement).Product.AvailableOption.OptionType           
+           general-info: feature description for review
+      productOptionSelection:
+        type: string
+        example: 
+        description: |
+          `status: Provisionally Registered`
+           bian-reference: CustomerOffer.OfferedAgreement.GovernedContract(as Agreement).Product.SelectedOption
+          general-info: setting agreed/defined with customer 
+
+
+  DisclosureBaseWithIdAndRoot:
+    properties:
+      customerOfferReference:
+        type: string
+        example: "COR475523"
+        description: |
+          `status: Provisionally Registered`
+            bian-reference: CustomerOffer
+          general-info: Customer Offer Reference
+
+      customerOfferDisclosureTaskReference:
+        type: string
+        example: "CODTR47853"
+        description: |
+          `status: Not Mapped'
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      disclosureType:
+        type: string
+        example: "voluntary"
+        description: |
+          `status: Registered`
+          iso-link: [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_9ju10HltEeG7BsjMvd1mEw_-739610260/elements/_9j4m0HltEeG7BsjMvd1mEw_-611051048)
+          bian-reference: CustomerOffer.OfferedAgreement.Disclosure(as Undertaking).Type
+          general-info: Disclosure Type
+      disclosureTextDescription:
+        type: string
+        example: "tax returns disclosure"
+        description: |
+          `status: Registered`
+          iso-link: [click here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_9ju10HltEeG7BsjMvd1mEw_-739610260/elements/_9j4m0XltEeG7BsjMvd1mEw_369279782)
+          bian-reference: CustomerOffer.OfferedAgreement.Disclosure(as Undertaking).Purpose
+          general-info: Disclosure Text/Description (for customer review)
+          
+      customerAcceptanceIndicator:
+        type: string
+        example: "accepted/rejected"
+        description: |
+          `status: Registered`
+          iso-link: [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_9ju10HltEeG7BsjMvd1mEw_-739610260/elements/_9j4m03ltEeG7BsjMvd1mEw_-1318630222)
+          bian-reference: CustomerOffer.OfferedAgreement.Disclosure(as Undertaking).ConfirmationIndicator
+          general-info: Confirmation Indicator
+      documentReference:
+        type: string
+        example: "DR7845213"
+        description: |
+          `status: Registered`
+          iso-link: [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_9ju10HltEeG7BsjMvd1mEw_-739610260/elements/_9kx-tHltEeG7BsjMvd1mEw_2137767733)
+          bian-reference: CustomerOffer.OfferedAgreement.Disclosure (as Undertaking).SpecifiedDocument
+          general-info: Customer signature/acceptance record
+  DisclosureBase:
+    type: object
+    properties:
+      disclosureType:
+        type: string
+        example: "voluntary"
+        description: |
+          `status: Registered`
+          iso-link: [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_9ju10HltEeG7BsjMvd1mEw_-739610260/elements/_9j4m0HltEeG7BsjMvd1mEw_-611051048)
+          bian-reference: CustomerOffer.OfferedAgreement.Disclosure(as Undertaking).Type
+          general-info: Disclosure Type
+      disclosureTextDescription:
+        type: string
+        example: "tax returns disclosure"
+        description: |
+          `status: Registered'
+           iso-link: [click here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_9ju10HltEeG7BsjMvd1mEw_-739610260/elements/_9j4m0XltEeG7BsjMvd1mEw_369279782)
+           bian-reference: CustomerOffer.OfferedAgreement.Disclosure(as Undertaking).Purpose
+           general-info: Disclosure Text/Description (for customer review)
+           
+      customerAcceptanceIndicator:
+        type: string
+        example: "accepted/rejected"
+        description: |
+          `status: Registered`
+          iso-link: [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_9ju10HltEeG7BsjMvd1mEw_-739610260/elements/_9j4m03ltEeG7BsjMvd1mEw_-1318630222)
+          bian-reference: CustomerOffer.OfferedAgreement.Disclosure(as Undertaking).ConfirmationIndicator
+          general-info: Confirmation Indicator
+      documentReference:
+        type: string
+        example: "DR7845213"
+        description: |
+          `status: Registered`
+          iso-link: [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_9ju10HltEeG7BsjMvd1mEw_-739610260/elements/_9kx-tHltEeG7BsjMvd1mEw_2137767733)
+          bian-reference: CustomerOffer.OfferedAgreement.Disclosure (as Undertaking).SpecifiedDocument
+          general-info: Customer signature/acceptance record
+
+  PricingBaseWithIdAndRoot:
+    properties:
+      customerOfferReference:
+        type: string
+        example: "COR78563"
+        description: |
+          `status: Provisionally Registered'
+           bian-reference: CustomerOffer
+           general-info: Customer Offer Reference
+           
+      customerOfferPricingTaskReference:
+        type: string
+        example: "COPTR78456"
+        description: |
+          `status: Provisionally Registered'
+          bian-reference: CustomerOffer
+          general-info: Customer Offer Reference
+
+
+      productPricing:
+        type: string
+        # description: "includes ranges by customer measures "
+        example:
+        description: |
+          `status: Registered`
+          iso-link: [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_FKYzQMTGEeChad0JzLk7QA_-1231897848/elements/___L8Y2IiEeGD28DQaMef-g)
+          bian-reference: CustomerOffer.OfferedAgreement.GovernedContract(as Agreement).Product.Quantity.GrossPriceQuantityRelatedLineItem
+          general-info: Credit Grade
+      negotiationGuidelinesRules:
+        type: string
+        example: "rule1, rule2"
+        # description: "defines allowed situation-based variations"
+        description: |
+         `status: Provisionally Registered`
+          bian-reference: CustomerOffer.OfferedAgreement.GovernedContract(as Agreement).Product.PricingRules
+          general-info : defines allowed situation-based variations
+          
+      agreedPricing:
+        type: string
+        example: "interest based"
+        # description: "covers all negotiable prices/fees/penalties"
+        description: |
+          `status: Provisionally Registered'
+           bian-reference: CustomerOffer.OfferedAgreement.GovernedContract(as Agreement).Product.PricingRules
+           general-info : covers all negotiable prices/fees/penalties
+           
+      pricingAdjustments:
+        type: string
+        example: "Credit score based"
+        # description: "customer profile and/or bank imposed adjustments/discounts"
+        description: |
+          `status: Registered`
+          iso-link1: [click-here](https://www.iso20022.org/standardsrepository/public/dictionaryModel/repositorySearch.xhtml#query=Penalty/status=ANY/object=BUSINESS_COMPONENT)
+          bian-reference: CustomerOffer.OfferedAgreement.GovernedContract(as Agreement).Product.Adjustment(as Penalty)
+          iso-link2: [click-here]
+          bian-reference: CustomerOffer.OfferedAgreement.GovernedContract(as Agreement).Product.Adjustment(as Charges)
+          iso-link3: [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_TkWg4A35EeKdSdbhKHXCPg_1501219725)
+          bian-reference: CustomerOffer.OfferedAgreement.GovernedContract(as Agreement).Product.Adjustment(as Discount)
+          iso-link4: [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_Flzj8MTGEeChad0JzLk7QA_-1112623234)
+          bian-reference: CustomerOffer.OfferedAgreement.GovernedContract(as Agreement).Product.Adjustment(as Allowance)
+          iso-link5: [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_FZSK58TGEeChad0JzLk7QA_-927609616)
+          bian-reference: CustomerOffer.OfferedAgreement.GovernedContract(as Agreement).Product.Adjustment(as Commission)
+          iso-link6: [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_E5GO-MTGEeChad0JzLk7QA_602584288)
+          bian-reference: CustomerOffer.OfferedAgreement.GovernedContract(as Agreement).Product.Adjustment.Price
+          general-info: customer profile and/or bank imposed adjustments/discounts
+        
+  PricingBase:
+    type: object
+    properties:
+      productPricing:
+        type: string
+        example: "credit grade"
+        description: |
+          `status: Registered`
+          iso-link: [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_FKYzQMTGEeChad0JzLk7QA_-1231897848/elements/___L8Y2IiEeGD28DQaMef-g)
+          bian-reference : CustomerOffer.OfferedAgreement.GovernedContract(as Agreement).Product.Quantity.GrossPriceQuantityRelatedLineItem
+          general-info: Product Price #includes ranges by customer measures
+      negotiationGuidelinesRules:
+        type: string
+        example: "rule1, rule2"
+        # description: "defines allowed situation-based variations"
+        description: |
+          `status: Provisionally Registered`
+           bian-reference: CustomerOffer.OfferedAgreement.GovernedContract(as Agreement).Product.PricingRules
+          general-info : defines allowed situation-based variations
+          
+      agreedPricing:
+        type: string
+        example: "interest based"
+        # description: "covers all negotiable prices/fees/penalties"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+          general-info : covers all negotiable prices/fees/penalties
+      pricingAdjustments:
+        type: string
+        example: "Credit score based"
+        # description: "customer profile and/or bank imposed adjustments/discounts"
+        description: |
+          `status: Registered`
+          bian-reference: CustomerOffer.OfferedAgreement.GovernedContract(as Agreement).Product.Adjustment(as Penalty)
+          iso-link1: [click-here](https://www.iso20022.org/standardsrepository/public/dictionaryModel/repositorySearch.xhtml#query=Penalty/status=ANY/object=BUSINESS_COMPONENT)
+          bian-reference: CustomerOffer.OfferedAgreement.GovernedContract(as Agreement).Product.Adjustment(as Charges)
+          iso-link2: [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_FMBK9sTGEeChad0JzLk7QA_-398781908)
+          bian-reference: CustomerOffer.OfferedAgreement.GovernedContract(as Agreement).Product.Adjustment(as Discount)
+          iso-link3: [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_TkWg4A35EeKdSdbhKHXCPg_1501219725)
+          bian-reference: CustomerOffer.OfferedAgreement.GovernedContract(as Agreement).Product.Adjustment(as Allowance)
+          iso-link4: [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_Flzj8MTGEeChad0JzLk7QA_-1112623234)
+          bian-reference: CustomerOffer.OfferedAgreement.GovernedContract(as Agreement).Product.Adjustment(as Commission)
+          iso-link5: [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_FZSK58TGEeChad0JzLk7QA_-927609616)
+          bian-reference: CustomerOffer.OfferedAgreement.GovernedContract(as Agreement).Product.Adjustment.Price
+          iso-link6: [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_E5GO-MTGEeChad0JzLk7QA_602584288)
+          general-info: customer profile and/or bank imposed adjustments/discounts
+
+  CreditBaseWithIdAndRoot:
+    properties:
+      customerOfferReference:
+        type: string
+        example: "COR78569"
+        description: |
+         `status: Provisionally Registered`
+         bian-reference: CustomerOffer
+         general-info: Customer Offer Reference
+         
+      customerOfferCreditTaskReference:
+        type: string
+        example: "COCTR78563"
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: CustomerOffer
+          general-info: Customer Offer Reference
+
+
+      customerCreditRating:
+        type: string
+        example: "score 120"
+        description: |
+         `status: Provisionally Registered`
+         bian-reference: CustomerOffer.CreditRating
+         general-info: Customer Credit Rating 
+
+         
+      creditAuthorizationDecisionReference:
+        type: string
+        example: "CADR45686"
+        # description: "where credit authorization required"
+        description: |
+         `status: Provisionally Registered`
+          bian-reference: CustomerOffer.CreditAuthorisation(as Assessment)
+          general-info : where credit authorization required
+          
+      creditAuthorizationDecision:
+        type: string
+        example: "approved/rejected"
+        description: |
+          `status: Provisionally Registered`
+           bian-reference: CustomerOffer.CreditAuthorisation(as Assessment).AssessmentResult
+          general-info : where credit authorization required
+
+
+  UnderwritingWithIdAndRoot:
+    properties:
+      customerOfferReference:
+        type: string
+        example: "COR78456"
+        description: |
+         `status: Provisionally Registered`
+          bian-reference: CustomerOffer      
+          
+      customerOfferUnderwritingTaskReference:
+        type: string
+        example: "COUTR78533"
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: CustomerOffer      
+
+
+      customerIncomeStatement:
+        type: string
+        example: "bank statement"
+        # description: "historical"
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: CustomerOffer      
+
+      customerDebtStatement:
+        type: string
+        example: "debt statement"
+        # description: "bank and known non-bank managed debts"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+          general-info : bank and known non-bank managed debts
+      customerAssetStatement:
+        type: string
+        example: "asset statement"
+        # description: "bank and known non-bank managed assets"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+          general-info : bank and known non-bank managed assets
+      underwritingAssessmentReference:
+        type: string
+        example: "UAR786542"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+
+  ComplianceBaseWithIdAndRoot:
+    properties:
+      customerOfferReference:
+        type: string
+        example: "COR785233"
+        description: |
+         `status: Provisionally Registered`
+          bian-reference: CustomerOffer      
+          
+      customerOfferComplianceTaskReference:
+        type: string
+        example: "COCTR48563"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      regulatoryComplianceCheckType:
+        type: string
+        example: "Ability to repay"
+        description: |
+          ` status: Provisionally Registered`
+           bian-reference: CustomerOffer.RegulatoryReport.RegulatoryCompliance.RegulatoryComplianceCheck (as Assessment).AssessmentTemplate
+      regulatoryComplianceCheckRequirement:
+        type: string
+        example: "debt statement"
+        # description: "submission requirements"
+        description: |
+          `status: Provisionally Registered`
+           bian-reference: CustomerOffer.RegulatoryReport.RegulatoryComplianceCheck.Regulation(as GuidelineRule).SubmissionRequirement
+           general_info : submission requirements
+        
+      regulatoryComplianceCheckSubmission:
+        type: string
+        example: "electronic"
+        # description: "submitted materials"
+        description: |
+           `status: Provisionally Registered`
+           bian-reference: CustomerOffer.Audit.GuidelineComplianceCheck(as Assessment).SupportingDocument 
+           general-info : submitted materials
+           
+      regulatoryComplianceAdjustmentRequirement:
+        type: string
+        example: "credit score"
+        # description: "change needed to comply"
+        description: |
+           `status: Provisionally Registered`
+            bian-reference: CustomerOffer.Audit.GuidelineComplianceCheck(as Assessment).RequiredAdjustment  
+            general-info : change needed to comply
+            
+      regulatoryComplianceCheckAssessment:
+        type: string
+        example: "pass"
+        # description: "compliance assessment result"
+        description: |
+            `status: Provisionally Registered`
+            bian-reference: CustomerOffer.Audit.GuidelineComplianceCheck          
+            general-info : compliance assessment result
+
+  AuditWithIdAndRoot:
+    properties:
+      customerOfferReference:
+        type: string
+        example: "COR78563"
+        description: |
+          `status: Provisionally Registered`
+           bian-reference: CustomerOffer
+           
+      customerOfferComplianceTaskReference:
+        type: string
+        example: "COCTR232342"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      guidelineComplianceCheckType:
+        type: string
+        example: "Ability to repay"
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: CustomerOffer.Audit.GuidelineComplianceCheck(as Assessment).AssessmentTemplate
+          
+      guidelineComplianceCheckRequirement:
+        type: string
+        example: "debt statement"
+        # description: "submission requirements"
+        description: |
+          `status: Provisionally Registered`
+           bian-reference: CustomerOffer.Audit.GuidelineComplianceCheck.CheckedGuideline(as GovernanceRule).SubmissionRequirement          
+            general-info : submission requirements
+            
+      guidelineComplianceCheckSubmission:
+        type: string
+        example: "electronic"
+        # description: "submitted materials"
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: CustomerOffer.Audit.GuidelineComplianceCheck(as Assessment).SupportingDocument
+          general-info : submission materials
+
+      guidelineComplianceAdjustmentRequirement:
+        type: string
+        example: "credit score"
+        # description: "change needed to comply"
+        description: |
+          `status: Provisionally Registered`
+           bian-reference: CustomerOffer.Audit.GuidelineComplianceCheck(as Assessment).RequiredAdjustment
+          general-info : change needed to comply
+
+      guidelineComplianceCheckAssessment:
+        type: string
+        example: "pass"
+        # description: "compliance assessment result"
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: CustomerOffer.Audit.GuidelineComplianceCheck
+          general-info : compliance assessment result
+        
+  CollateralBaseWithIdAndRoot:
+    properties:
+      customerOfferReference:
+        type: string
+        example: "COR232342"
+        description: |
+          `status: Provisionally Registered`
+            bian-reference: CustomerOffer
+            
+      customerOfferCollateralTaskReference:
+        type: string
+        example: "COCTR232342"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      collateralRequirement:
+        type: string
+        example: "615.5050 Collateral requirements. Ref https://www.law.cornell.edu/cfr/text/12/615.5050"
+        # description: "collateral amount"
+        description: |
+          `status: Registered`
+          bian-reference : CustomerOffer.OfferedAgreement(as MasterAgreement).GovernedContract(as CollateralAgreement).Collateral.CollateralAmount
+          iso-link: [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_FLlGEcTGEeChad0JzLk7QA_1826831344/elements/_FLlGE8TGEeChad0JzLk7QA_-1191802314)
+          general-info: Collateral Amount
+      collateralEarmarkReference:
+        type: string
+        example: "CER432342"
+        # description: "earmarked collateral"
+        description: |
+          `status: Registered`
+          iso-link: [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_E6vNtsTGEeChad0JzLk7QA_393174175/elements/_lrcFQC1hEeGp2Zpvgj9Dtw_-638405304)
+          general-info: Earmarked Collateral
+          bian-reference : CustomerOffer.OfferedAgreement(as MasterAgreement).GovernedContract(as CollateralAgreement).Collateral
+      collateralAllocationReference:
+        type: string
+        example: "CAR432342"
+        # description: "pointer to collateralized item"
+        description: |
+          `status: Registered`
+           bian-reference : CustomerOffer.OfferedAgreement(as MasterAgreement).GovernedContract(as Collateral Agreement).Collateral.AssetHolding.Asset
+          iso-link: [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_E6vNtsTGEeChad0JzLk7QA_393174175/elements/_lrcFQC1hEeGp2Zpvgj9Dtw_-638405304)
+          general-info: pointer to collateralized item
+      collateralAssetReference:
+        type: string
+        example: "CAR232342"
+        description: |
+          `status: Registered`
+          iso-link: [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_E5111cTGEeChad0JzLk7QA_-802839934/elements/_E5_m0MTGEeChad0JzLk7QA_-670722578)
+          general-info: allocated collateral - at closure
+
+  BookingBaseWithIdAndRoot:
+    properties:
+      customerOfferReference:
+        type: string
+        example: "COR232342"
+        description: |
+          `status: Provisionally Registered`
+           bian-reference: CustomerOffer  
+           
+      customerOfferBookingTaskReference:
+        type: string
+        example: "COBTR232342"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      productInstanceReference:
+        type: string
+        example: "PIR232342"
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: CustomerOffer.OfferedAgreement.Product
+
+      customerReference:
+        type: string
+        example: "CR232342"
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: CustomerOffer.TargetCustomer
+           general-info: Customer Reference
+          
+      businessUnitReference:
+        type: string
+        example: "BUR232342"
+        # description: "defines booking category"
+        description: |
+          `status: Provisionally Registered`
+           bian-reference: CustomerOffer.TargetCustomer.RelationshipManager.BusinessUnit
+            general-info: Business Unit Reference (defines booking category)
+           
+          
+      assetLiabilityType:
+        type: string
+        example: "Prepaid expenses"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Code
+      amount:
+        $ref: 'https://api.swaggerhub.com/domains/BIAN/Common-Model/1.0.0#/definitions/CurrencyAndAmount'
+
+  CorrespondenceBaseWithIdAndRoot:
+    properties:
+      customerOfferReference:
+        type: string
+        example: "COR78456"
+        description: |
+          `status: Provisionally Registered`
+           bian-reference: CustomerOffer
+            general-info: Customer Offer Reference
+          
+      customerOfferCorrespondenceTaskReference:
+        type: string
+        example: "COCTR78563"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      customerReference:
+        type: string
+        example: "CR785634"
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: CustomerOffer.TargetCustomer
+            general-info: Customer Reference
+          
+      customerMailingAddress:
+        type: string
+        example: "221 Baker street"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      correspondenceReference:
+        type: string
+        example: "CR785638"
+        # description: "to handle request/receipt of documents"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+          general-info : to handle request/receipt of documents
+
+  DocumentationBaseWithIdAndRoot:
+    properties:
+      customerOfferReference:
+        type: string
+        example: "COR232342"
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: CustomerOffer
+          general-info: Customer Offer Reference
+          
+      customerOfferDocumentationTaskReference:
+        type: string
+        example: "CODTR232342"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      documentReference:
+        type: string
+        example: "DR78563"
+        # description: "offer related documents"
+        description: |
+          `status: Registered`
+            bian-reference: CustomerOffer.OfferedAgreement.Document
+             iso-link1: [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_E2tpUMTGEeChad0JzLk7QA_1799405832/elements/_K5uxMMRaEeGGj8mSL0xBEQ_-912494530)
+             bian-reference: CustomerOffer.OfferedAgreement(as MasterAgreement).GovernedContract.Document
+              iso-link2: [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_E2tpUMTGEeChad0JzLk7QA_1799405832/elements/_K5uxMMRaEeGGj8mSL0xBEQ_-912494530)
+             general-info: Document Reference (offer related documents)
+             
+      documentLocation:
+        type: string
+        # description: "physical master version and copies"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+          general-info : physical master version and copies
+      documentContent:
+        type: string
+        # description: "any suitable format/media"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+          general-info : any suitable format/media
+      documentStatus:
+        type: string
+        # description: "to track processing state/location of documents"
+        description: |
+          `status: Registered`
+          bian-reference : CustomerOffer.OfferedAgreement.Document.Status
+          iso-link: [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_FNET28TGEeChad0JzLk7QA_1924783636/elements/_FNNdwcTGEeChad0JzLk7QA_-1077516966)
+          general-info: to track processing state/location of documents
+
+  DocumentationBase:
+    type: object
+    properties:
+      documentReference:
+        type: string
+        example: "DR78563"
+        # description: "offer related documents"
+        description: |
+          `status: Registered`
+          bian-reference: CustomerOffer.OfferedAgreement.Document
+          iso-link: [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_9ju10HltEeG7BsjMvd1mEw_-739610260/elements/_9kx-tHltEeG7BsjMvd1mEw_2137767733)
+          general-info: offer related documents
+          bian-reference: CustomerOffer.OfferedAgreement(as MasterAgreement).GovernedContract.Document
+          iso-link2: [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_E2tpUMTGEeChad0JzLk7QA_1799405832/elements/_K5uxMMRaEeGGj8mSL0xBEQ_-912494530)
+           general-info: offer related documents
+           
+      documentLocation:
+        type: string
+        # description: "physical master version and copies"
+        description: |
+          `status: Supplied`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Value
+          general-info : physical master version and copies
+      documentContent:
+        type: string
+        # description: "any suitable format/media"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+          general-info : any suitable format/media
+      documentStatus:
+        type: string
+        # description: "to track processing state/location of documents"
+        description: |
+          `status: Registered`
+          bian-reference : CustomerOffer.OfferedAgreement.Document.Status
+          iso-link: [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_FNET28TGEeChad0JzLk7QA_1924783636/elements/_FNNdwcTGEeChad0JzLk7QA_-1077516966)
+          general-info: to track processing state/location of documents
+
+  AgreementBaseWithIdAndRoot:
+    properties:
+      customerOfferReference:
+        type: string
+        example: "COR78569"
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: CustomerOffer
+            general-info: Customer Offer Reference
+          
+      customerOfferAgreementTaskReference:
+        type: string
+        example: "COATR4782"
+        description: |
+          `status: Supplied`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      customerAgreementReference:
+        type: string
+        example: "CAR78456"
+        # description: "customer master agreement"
+        description: |
+          `status: Supplied`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+          general-info : customer master agreement
+      salesProductAgreementReference:
+        type: string
+        example: "SPAR78445"
+        # description: "product specific sub/clause of master agreement"
+        description: |
+          `status: Registered`
+          iso-link: [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_E2tpUMTGEeChad0JzLk7QA_1799405832)
+          general-info: product specific sub/clause of master agreement
+
+  ClosingWithIdAndRoot:
+    properties:
+      customerOfferReference:
+        type: string
+        example: "COR432342"
+        description: |
+          `status: Provisionally Registered`
+            bian-reference: CustomerOffer
+            general-info: Customer Offer Reference
+            
+      customerOfferClosingTaskReference:
+        type: string
+        example: "COCTR475263"
+        description: |
+          `status: Supplied`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      customerReference:
+        type: string
+        example: "CR5232342"
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: CustomerOffer.TargetCustomer
+            general-info: Customer Reference
+          
+      productInstanceReference:
+        type: string
+        example: "PIR432342"
+        # description: "reference once set-up initiated for completed offers"
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: CustomerOffer.OfferedAgreement(as MasterAgreement).GovernedContract(as Agreement).Product
+          general-info: Product Instance Reference (reference once set-up initiated for completed offers)
+        
+      employeeBusinessUnitReference:
+        type: string
+        example: "EBUR45253"
+        description: |
+          `status:  Provisionally Registered`
+          bian-reference: CustomerOffer.TargetCustomer.RelationshipManager.BusinessUnit
+            general-info: Employee/Business Unit Reference
+          
+      dateTime:
+        $ref: 'https://api.swaggerhub.com/domains/BIAN/Common-Model/1.0.0#/definitions/ISODateTime'
+      customerOfferResult:
+        type: string
+        example: "accepted"
+        description: |
+          `status: Provisionally Registered'
+           bian-reference: CustomerOffer.Result

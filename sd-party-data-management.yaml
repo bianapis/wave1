@@ -1,0 +1,842 @@
+---
+swagger: "2.0"
+info:
+  version: "4.0.0"
+  title: "Service Domain - Party Data Management"
+  description: >
+        ## Service Domain Role: 
+      
+        This service domain maintains details of the legal entity structure of the party including dependents and associations for individuals and ownership/subsidiary structures for corporations. Some financial indicators and product coverage/activity details can be included where this defines the nature of the legal entity relationship in particular for corporate entities.
+
+      
+        ## Example of use:
+      
+        Party legal entity details are checked for the financial booking of a major loan
+        
+        ## General comment:
+      
+        This service domain maintains a view of the legal entity structure of a party with which the bank does business. It records different reference information detail depending on the type of entity - e.g. an individual/household, company or business partner. Where appropriate the service domain can maintain ratings and key financial properties of the entity where this has a bearing on the bank relationship
+
+host: "virtserver.swaggerhub.com"
+basePath: /BIAN/sd-party-data-management/4.0.0
+schemes:
+- "https"
+consumes:
+- application/json
+produces:
+- application/json
+
+paths:
+  
+  /party-data-management/party-directory-entry/{cr-reference-id}/references/{bq-reference-id}/updation:
+    put:
+      tags:
+      - update
+      summary: Update an existing party reference
+      operationId: updatePartyDirectoryReference
+      parameters:
+      - name: cr-reference-id
+        in: path
+        description: Party Directory Entry Reference
+        required: true
+        type: string
+      - name: bq-reference-id
+        in: path
+        description: Reference Directory Entry Reference
+        required: true
+        type: string
+      - in: body
+        name: body
+        required: true
+        schema:
+           $ref: '#/definitions/ReferenceBase'
+      responses:
+        200:
+          description: successful
+          schema:
+            $ref: '#/definitions/ReferenceBaseWithId'
+
+  /party-data-management/party-directory-entry/{cr-reference-id}/profiles/{bq-reference-id}/updation:
+    put:
+      tags:
+      - update
+      summary: Update an existing party profile
+      operationId: updatePartyDirectoryProfile
+      parameters:
+      - name: cr-reference-id
+        in: path
+        description: Party Directory Entry Reference
+        required: true
+        type: string
+      - name: bq-reference-id
+        in: path
+        description: Profile Directory Entry Reference
+        required: true
+        type: string
+      - in: body
+        name: body
+        required: true
+        schema:
+           $ref: '#/definitions/ProfileBase'
+      responses:
+        200:
+          description: successful
+          schema:
+            $ref: '#/definitions/ProfileBaseWithId'
+
+  /party-data-management/party-directory-entry/{cr-reference-id}/association/{bq-reference-id}/updation:
+    put:
+      tags:
+      - update
+      summary: Update an existing party association
+      operationId: updatePartyDirectoryAssociation
+      parameters:
+      - name: cr-reference-id
+        in: path
+        description: Party Directory Entry Reference
+        required: true
+        type: string
+      - name: bq-reference-id
+        in: path
+        description: Association Directory Entry Reference
+        required: true
+        type: string
+      - in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/AssociationBase'
+      responses:
+        200:
+          description: successful
+          schema:
+            $ref: '#/definitions/AssociationBaseWithId'
+    
+  /party-data-management/party-directory-entry/{cr-reference-id}/references/registration:
+    post:
+      tags:
+      - register
+      summary: Register a new party directory entry
+      operationId: registerPartyDirectoryEntryReference
+      parameters:
+      - name: cr-reference-id
+        in: path
+        description: Party Directory Entry Reference
+        required: true
+        type: string
+      - in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/ReferenceBase'
+      responses:
+        201:
+          description: A new party reference is created successfully
+          schema:
+            $ref: '#/definitions/ReferenceBaseWithId'
+            
+  /party-data-management/party-directory-entry/{cr-reference-id}/profiles/registration:
+    post:
+      tags:
+      - register
+      summary: Register key high level financiall profile details
+      operationId: registerPartyDirectoryEntryProfile
+      parameters:
+      - name: cr-reference-id
+        in: path
+        description: Party Directory Entry Reference
+        required: true
+        type: string
+      - in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/ProfileBase'
+      responses:
+        201:
+          description: A new party profile is created successfully
+          schema:
+            $ref: '#/definitions/ProfileBaseWithId'
+            
+  /party-data-management/party-directory-entry/{cr-reference-id}/associations/registration:
+    post:
+      tags:
+      - register
+      summary: Register a new party association within the directory
+      operationId: registerPartyDirectoryEntryAssociation
+      parameters:
+      - name: cr-reference-id
+        in: path
+        description: Party Directory Entry Reference
+        required: true
+        type: string
+      - in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/AssociationBase'
+      responses:
+        201:
+          description: A new party assiciation is created successfully
+          schema:
+            $ref: '#/definitions/AssociationBaseWithId'
+            
+  /party-data-management/party-directory-entry/{cr-reference-id}/requisition:
+    put:
+      tags:
+      - request
+      operationId: requestPartyDirectoryEntryUpdate
+      summary: Request to refresh an existing party directory entry
+      description: Update existing party directory
+      parameters:
+      - name: cr-reference-id
+        in: path
+        description: Party Directory Entry Reference
+        required: true
+        type: string
+      responses:
+        200:
+          description: Successfully refreshed
+          schema:
+            $ref: '#/definitions/DirectoryEntryRefreshResponse'
+ 
+  /party-data-management/party-directory-entry/{cr-reference-id}/recording:  
+    post:
+      tags:
+      - record
+      summary: Record usage or feedback against a directory entry
+      operationId: recordPartyDirectoryEntry
+      parameters:
+      - name: cr-reference-id
+        in: path
+        description: Party Directory Entry Reference
+        required: true
+        type: string
+      - in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/PartyDataManagementRecordRequest'
+      responses:
+        201:
+          description: A new record is created
+          schema:
+            $ref: '#/definitions/PartyDataManagementRecordResponse'
+  
+  #<---------------retrieve---------->
+  /party-data-management/party-directory-entry:
+    get:
+      tags: 
+      - retrieve
+      operationId: retrieveLocationDirectoryEntryReferenceIds
+      summary: Retrieve Directory entry reference ids according to a filtering criteria
+      parameters: 
+      - name: collection-filter
+        in: query
+        description: Filter to refine the result set
+        type: string 
+      responses:
+        200:
+          description: successful
+          schema:
+            type: array
+            items:
+              type: string
+            example: [PDER4388, PDER3246243]
+            
+  /party-data-management/party-directory-entry/behavior-qualifiers:
+    get:
+      tags: 
+      - retrieve
+      operationId: retrieveLocationDirectoryEntryBehaviorQualifiers
+      summary: Retrieve all behavior qualifiers of the control record
+      responses:
+        200:
+          description: successful
+          schema:
+            type: array
+            items:
+              type: string
+            example: [reference, profile, association] 
+            
+  /party-data-management/party-directory-entry/{cr-reference-id}/{behavior-qualifier}:
+    get:
+      tags: 
+      - retrieve
+      operationId: RetrieveBehaviorQualifierReferenceIds
+      summary: Retrieve Behaviour Qualifier Reference Ids of the given Behavior Qulifier.
+      parameters: 
+      - name: cr-reference-id
+        in: path
+        description: Party Directory Entry Reference
+        required: true
+        type: string
+      - name: behavior-qualifier
+        in: path
+        description: Behavior Qualifier Name. ex- Reference
+        required: true
+        type: string
+      - name: collection-filter
+        in: query
+        description: Filter to refine the result set. ex- 'legal-entity-reference = LER123'
+        type: string
+      responses:
+        200:
+          description: successful
+          schema:
+            type: array
+            items:
+              type: string
+            example: [RDER3465346, RDER4563, RDER45687] 
+  
+  /party-data-management/party-directory-entry/{cr-reference-id}/references/{bq-reference-id}:
+    get:
+      tags: 
+      - retrieve
+      operationId: retrieveReference
+      summary: Retrieve party directory entry references
+      parameters: 
+      - name: cr-reference-id
+        in: path
+        description: Party Directory Entry Reference
+        required: true
+        type: string
+      - name: bq-reference-id
+        in: path
+        description: Reference Directory Entry Reference
+        required: true
+        type: string
+      responses:
+        200:
+          description: successful
+          schema:
+            $ref: '#/definitions/ReferenceBaseWithId' 
+            
+  /party-data-management/party-directory-entry/{cr-reference-id}/profiles/{bq-reference-id}:
+    get:
+      tags: 
+      - retrieve
+      operationId: retrieveProfile
+      summary: Retrieve party directory entry profiles
+      parameters: 
+      - name: cr-reference-id
+        in: path
+        description: Party Directory Entry Reference
+        required: true
+        type: string
+      - name: bq-reference-id
+        in: path
+        description: Profile Directory Entry Reference
+        required: true
+        type: string
+      responses:
+        200:
+          description: successful
+          schema:
+            $ref: '#/definitions/ProfileBaseWithId'          
+            
+  /party-data-management/party-directory-entry/{cr-reference-id}/associations/{bq-reference-id}:
+    get:
+      tags: 
+      - retrieve
+      operationId: retrieveAssociation
+      summary: Retrieve party directory entry associations
+      parameters: 
+      - name: cr-reference-id
+        in: path
+        description: Party Directory Entry Reference
+        required: true
+        type: string
+      - name: bq-reference-id
+        in: path
+        description: Association Directory Entry Reference
+        required: true
+        type: string
+      responses:
+        200:
+          description: successful
+          schema:
+            $ref: '#/definitions/AssociationBaseWithId'
+
+definitions:
+        
+  ReferenceBase:
+    type: object
+    properties:
+      legalEntityReference:
+        type: string
+        example: 47654676
+        description: |
+          `status: Registered`
+          iso-link: [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_FEHzNMTGEeChad0JzLk7QA_-1382123937/elements/_yagFILl5EeOpCN0IL2Swqw)
+          general-info: Legal Entity
+      legalEntityOfficialName:
+        type: string
+        example: Entity Official Name
+        description: |
+          `status: Registered`
+          iso-link: [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_E7L5qcTGEeChad0JzLk7QA_-1556021177/elements/_E7VDkMTGEeChad0JzLk7QA_151261734)
+          general-info: Legal Entity Official Name
+      legalEntityType:
+        type: string
+        example: T2
+        description: |
+         `status: Registered`
+          iso-link: [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_FEHzNMTGEeChad0JzLk7QA_-1382123937/elements/_zJK20OVaEeG_peKHD7roXg_-1787384341)
+          general-info: Legal Entity Type
+      sectorsofOperation:
+        type: string
+        example: Sectors of Operation
+        description: |
+          `status: Registered`
+          iso-link: [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_FNg_x8TGEeChad0JzLk7QA_908383601/elements/_FNqJssTGEeChad0JzLk7QA_-694813541)
+          general-info: Sectors of Operation
+      registeredAddress:
+        type: string
+        example: Address
+        description: |
+          `status: Registered`
+          iso-link: [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_FNg_w8TGEeChad0JzLk7QA_1650940768/elements/_FNg_xcTGEeChad0JzLk7QA_1331688362)
+          general-info: Registered Address
+      headquartersLocation:
+        type: string
+        example:  Headquarters Location
+        description: |
+          `status: Registered`
+          iso-link: [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_FNqJt8TGEeChad0JzLk7QA_-1317971633/elements/_z2I6YGx5EeKmZJ0Ago--9g_239738909)
+          general-info: Headquarters Location
+      dateofIncorporation:
+        type: string
+        example: "08/08/2018"
+        description: |
+          `status: Registered`
+          iso-link: [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_FNg_x8TGEeChad0JzLk7QA_908383601/elements/_FNqJsMTGEeChad0JzLk7QA_-992959099)
+          general-info: Date Of InCorporation
+      jurisdictionofIncorporation:
+        type: string
+        example: Jurisdiction of Incorporation
+        description: |
+          `status: Registered`
+          iso-link: [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_FNg_w8TGEeChad0JzLk7QA_1650940768/elements/__-cVZ2IiEeGD28DQaMef-g)
+          general-info: Jurisdiction of Incorporation
+      registrationAuthority:
+        type: string
+        example: Registration Authority
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: PartyRegistryEntry.RegisteredParty(as Organisation).RegistraftionAuthority
+          general-info: Registration Authority
+          
+      primaryRegulator:
+        type: string
+        example: Primary Regulator
+        description: |
+          `status: Registered`
+          iso-link: [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_FI4-csTGEeChad0JzLk7QA_-1972046907/elements/_I8jqIHQzEeKIFpWttHerUA_2136525583)
+          general-info: Primary Regulator
+      taxIdentifier:
+        type: string
+        example: Tax Identifier
+        description: |
+          `status: Registered`
+          iso-link: [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_FEHzNMTGEeChad0JzLk7QA_-1382123937/elements/_FEHzNcTGEeChad0JzLk7QA_-1792766550)
+          general-info: Tax Identifier
+      contactRole:
+        type: string
+        example: contact Role
+        description: |
+          `status: Registered`
+          iso-link: [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_FNg_x8TGEeChad0JzLk7QA_908383601/elements/_YaxeYNTxEeO8xr27LwkIFw)
+          general-info: Contact Role
+      contactAddressDetails:
+        type: string
+        example: Contact Address Details
+        description: |
+          `status: Registered`
+          iso-link: [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_FNqJt8TGEeChad0JzLk7QA_-1317971633/elements/_FEHzOMTGEeChad0JzLk7QA_-1894201405)
+          general-info: Contact Address Details
+  
+  ReferenceBaseWithId:
+    type: object
+    properties:
+      partyDirectoryEntryReference:
+        type: string
+        example: 47654676
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      referenceDirectoryEntryReference:
+        type: string
+        example: 47654676
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      legalEntityReference:
+        type: string
+        example: 47654676
+        description: |
+          `status: Registered`
+          iso-link: [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_FEHzNMTGEeChad0JzLk7QA_-1382123937/elements/_yagFILl5EeOpCN0IL2Swqw)
+          general-info: Legal Entity
+      legalEntityOfficialName:
+        type: string
+        example: Entity Official Name
+        description: |
+          `status: Registered`
+          iso-link: [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_E7L5qcTGEeChad0JzLk7QA_-1556021177/elements/_E7VDkMTGEeChad0JzLk7QA_151261734)
+          general-info: Entity Official Name
+      legalEntityType:
+        type: string
+        example: T2
+        description: |
+          `status: Registered`
+          iso-link: [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_FEHzNMTGEeChad0JzLk7QA_-1382123937/elements/_zJK20OVaEeG_peKHD7roXg_-1787384341)
+          general-info: Legal Entity Type
+      sectorsofOperation:
+        type: string
+        example: Sectors of Operation
+        description: |
+          `status: Registered`
+          iso-link: [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_FNg_x8TGEeChad0JzLk7QA_908383601/elements/_FNqJssTGEeChad0JzLk7QA_-694813541)
+          general-info: Sectors of Operation
+      registeredAddress:
+        type: string
+        example: Address
+        description: |
+          `status: Registered`
+          iso-link: [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_FNg_w8TGEeChad0JzLk7QA_1650940768/elements/_FNg_xcTGEeChad0JzLk7QA_1331688362)
+          general-info: Registered Address
+      headquartersLocation:
+        type: string
+        example:  Headquarters Location
+        description: |
+          `status: Registered`
+          iso-link: [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_FNqJt8TGEeChad0JzLk7QA_-1317971633/elements/_z2I6YGx5EeKmZJ0Ago--9g_239738909)
+          general-info: Headquarters Location
+      dateofIncorporation:
+        type: string
+        example: "08/08/2018"
+        description: |
+          `status: Registered`
+          iso-link: [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_FNg_x8TGEeChad0JzLk7QA_908383601/elements/_FNqJsMTGEeChad0JzLk7QA_-992959099)
+          general-info: Date Of InCorporation
+      jurisdictionofIncorporation:
+        type: string
+        example: Jurisdiction of Incorporation
+        description: |
+          `status: Registered`
+          iso-link: [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_FNg_w8TGEeChad0JzLk7QA_1650940768/elements/__-cVZ2IiEeGD28DQaMef-g)
+          general-info: Jurisdiction of Incorporation
+      registrationAuthority:
+        type: string
+        example: Registration Authority
+        description: |
+          `status: Provisionally Registered`
+           bian-reference: PartyRegistryEntry.RegisteredParty(as Organisation).RegistraftionAuthority
+          general-info: Registration Authority
+          
+      primaryRegulator:
+        type: string
+        example: Primary Regulator
+        description: |
+          `status: Registered`
+          iso-link: [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_FI4-csTGEeChad0JzLk7QA_-1972046907/elements/_I8jqIHQzEeKIFpWttHerUA_2136525583)
+          general-info: Primary Regulator
+      taxIdentifier:
+        type: string
+        example: Tax Identifier
+        description: |
+          `status: Registered`
+          iso-link: [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_FEHzNMTGEeChad0JzLk7QA_-1382123937/elements/_FEHzNcTGEeChad0JzLk7QA_-1792766550)
+          general-info: Tax Identifier
+      contactRole:
+        type: string
+        example: contact Role
+        description: |
+          `status: Registered`
+          iso-link: [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_FNg_x8TGEeChad0JzLk7QA_908383601/elements/_YaxeYNTxEeO8xr27LwkIFw)
+          general-info: Contact Role
+      contactAddressDetails:
+        type: string
+        example: Contact Address Details
+        description: |
+          `status: Registered`
+          iso-link: [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_FNqJt8TGEeChad0JzLk7QA_-1317971633/elements/_FEHzOMTGEeChad0JzLk7QA_-1894201405)
+          general-info: Contact Address Details
+        
+  PartyDataManagementRecordRequest:
+    type: object
+    properties:
+      recordingRecordType:
+        type: string
+        example: The layout/type of the feedback
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      recordingRecord:
+        type: object
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+      recordingRecordDateTime:
+        $ref: 'https://api.swaggerhub.com/domains/BIAN/Common-Model/1.0.0#/definitions/ISODateTime'
+      employeeBusinessUnitReference:
+        type: string
+        example: 47654676
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      
+  PartyDataManagementRecordResponse:
+    type: object
+    properties:
+      recordingRecordReference:
+        type: string
+        example: 47654676
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+          
+      recordingRecordStatus:
+        type: string
+        example: Applied
+        description: |
+          `status: Not Mapped`
+          BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+
+  ProfileBase:
+    type: object
+    properties:
+      organizationCapitalization:
+        type: string
+        example: Organization Capitalization
+        description: |
+          `status: Provisionally Registered`
+           bian-reference: PartyRegistryEntry.RegisteredParty(as Organisation).OrganisationProfile.Capitalisation
+             general-info: Organization Capitalization
+           
+      organizationDebtLevel:
+        type: string
+        example: Organization Debt Level
+        description: |
+          `status: Provisionally Registered`
+            bian-reference: PartyRegistryEntry.RegisteredParty(as Organisation).OrganisationProfile.DebtLevel
+             general-info: Organization Debt Level
+          
+      organizationEconomicIntent:
+        type: string
+        example: Organization Economic Intent
+        description: |
+          `status: Provisionally Registered`
+            bian-reference: PartyRegistryEntry.RegisteredParty(as Organisation).OrganisationProfile.EconomicIntent
+              general-info: Organization Economic Intent
+          
+      organizationGrowthRate:
+        type: string
+        example: Organization Growth Rate
+        description: |
+          `status: Provisionally Registered`
+            bian-reference: PartyRegistryEntry.RegisteredParty(as Organisation).OrganisationProfile.GrowthRate
+            general-info: Organization Growth Rate
+          
+      organizationProfitabilityStocks :
+        type: string
+        example: Organization Profitability Stocks
+        description: |
+          `status: Provisionally Registered`
+           bian-reference: PartyRegistryEntry.RegisteredParty(as Organisation).OrganisationProfile.GrowthRate
+            general-info: Organization Profitability/Stocks
+          
+      organizationRevenueTurnover:
+        type: string
+        example: Organization Revenue  Turnover
+        description: |
+          `status: Provisionally Registered`
+           bian-reference: PartyRegistryEntry.RegisteredParty(as Organisation).OrganisationProfile.Revenue
+            general-info: Organization Revenue/Turnover
+
+  ProfileBaseWithId:
+     type: object
+     properties:
+      partyDirectoryEntryReference:
+        type: string
+        example: Organization Capitalization
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      profileDirectoryEntryReference:
+        type: string
+        example: Organization Capitalization
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      organizationCapitalization:
+        type: string
+        example: Organization Capitalization
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: PartyRegistryEntry.RegisteredParty(as Organisation).OrganisationProfile.Capitalisation
+            general-info: Organization Capitalization
+            
+      organizationDebtLevel:
+        type: string
+        example: Organization Debt Level
+        description: |
+          `status: Provisonally Registered`
+            bian-reference: PartyRegistryEntry.RegisteredParty(as Organisation).OrganisationProfile.DebtLevel
+             general-info: Organization Debt Level
+            
+      organizationEconomicIntent:
+        type: string
+        example: Organization Economic Intent
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: PartyRegistryEntry.RegisteredParty(as Organisation).OrganisationProfile.EconomicIntent
+            general-info: Organization Economic Intent
+            
+      organizationGrowthRate:
+        type: string
+        example: Organization Growth Rate
+        description: |
+          `status: Provisionally Registered`
+           bian-reference: PartyRegistryEntry.RegisteredParty(as Organisation).OrganisationProfile.GrowthRate
+             general-info: Organization Growth Rate
+             
+           
+      organizationProfitabilityStocks :
+        type: string
+        example: Organization Profitability Stocks
+        description: |
+          `status: Provisionally Registered`
+           bian-reference: PartyRegistryEntry.RegisteredParty(as Organisation).OrganisationProfile.GrowthRate
+           general-info: Organization Profitability/Stocks
+           
+      organizationRevenueTurnover:
+        type: string
+        example: Organization Revenue  Turnover
+        description: |
+          `status: Provisionally Regsitered`
+            bian-reference: PartyRegistryEntry.RegisteredParty(as Organisation).OrganisationProfile.Revenue
+              general-info: Organization Revenue/Turnover
+
+  AssociationBase:
+     type: object
+     properties:
+      legalEntityAssociationReference:
+        type: string
+        example: 47654676
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: PartyRegistryEntry.RegisteredParty(as RolePlayer).Role.PartyRelationship
+           general-info: Legal Entity Association Reference (company or individual)
+          
+      legalEntityAssociationType :
+        type: string
+        example: L2
+        description: |
+          `status: Provisionally Registered`
+           general-info: Legal Entity Association Reference (company or individual)
+             general-info: Legal Entity Association Type (corporate or familial)
+          
+      legalEntityAssociationObligation:
+        type: string
+        example: Association Obligation
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: PartyRegistryEntry.RegisteredParty(as RolePlayer).Role.PartyRelationship.RelationshipAgreement.Obligation
+          general-info: Legal Entity Association Obligation (e.g. shareholder, director, guardian, guarantor)
+          
+      parentLegalEntityReference:
+        type: string
+        example: 47654676
+        description: |
+          `status: Registered`
+          iso-link: [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_FEHzNMTGEeChad0JzLk7QA_-1382123937/elements/_yagFILl5EeOpCN0IL2Swqw)
+          general-info: Parent Legal Entity
+      subsidiaryLegalEntityReference:
+        type: string
+        example: 47654676
+        description: |
+          `status: Registered`
+          iso-link: [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_FEHzNMTGEeChad0JzLk7QA_-1382123937/elements/_yagFILl5EeOpCN0IL2Swqw)
+          general-info: Subsidiary Legal Entity Reference
+      shareholdingProfile:
+        type: string
+        example: shareholding Profile
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: PartyRegistryEntry.RegisteredParty(as Organisation).ShareholderRegister
+          general-info: Shareholding Profile (lists major shareholders and shareholdings of significance) 
+          
+  AssociationBaseWithId:
+     type: object
+     properties:
+      partyDirectoryEntryReference:
+        type: string
+        example: 47654676
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      associationDirectoryEntryReference:
+        type: string
+        example: 47654676
+        description: |
+          `status: Not Mapped
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      legalEntityAssociationReference:
+        type: string
+        example: 47654676
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: PartyRegistryEntry.RegisteredParty(as RolePlayer).Role.PartyRelationship
+          general-info: Legal Entity Association Reference (company or individual)
+          
+      legalEntityAssociationType :
+        type: string
+        example: L2
+        description: |
+          `status: Provisionally Registered`
+            bian-reference: PartyRegistryEntry.RegisteredParty(as RolePlayer).Role.PartyRelationship.PartyRelationshipType
+            general-info: Legal Entity Association Type (corporate or familial)
+          
+      legalEntityAssociationObligation:
+        type: string
+        example: Association Obligation
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: PartyRegistryEntry.RegisteredParty(as RolePlayer).Role.PartyRelationship.RelationshipAgreement.Obligation
+           general-info: Legal Entity Association Obligation (e.g. shareholder, director, guardian, guarantor)
+          
+          
+      parentLegalEntityReference:
+        type: string
+        example: 47654676
+        description: |
+          `status: Registered`
+          iso-link: [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_FEHzNMTGEeChad0JzLk7QA_-1382123937/elements/_yagFILl5EeOpCN0IL2Swqw)
+          general-info: Parent Legal Entity
+      subsidiaryLegalEntityReference:
+        type: string
+        example: 47654676
+        description: |
+          `status: Registered`
+          iso-link: [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_FEHzNMTGEeChad0JzLk7QA_-1382123937/elements/_yagFILl5EeOpCN0IL2Swqw)
+          general-info: Subsidiary Legal Entity Reference
+      shareholdingProfile:
+        type: string
+        example: shareholding Profile
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: PartyRegistryEntry.RegisteredParty(as Organisation).ShareholderRegister
+           general-info: Shareholding Profile (lists major shareholders and shareholdings of significance)
+          
+
+  DirectoryEntryRefreshResponse:
+    type: object
+    properties:
+      refreshStatus:
+        type: string
+        example: Refreshed
+        description: |
+          `status: Not Mapped`
+          BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text

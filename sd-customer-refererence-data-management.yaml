@@ -20,25 +20,28 @@ basePath: "/BIAN/sd-customer-reference-data-management/4.0.0"
 schemes:
 - "https"
 paths:
-  /customer-reference-data-management/customer-reference-data-directory/registration:
+  /customer-reference-data-management/customer-reference-data-directory/{cr-reference-id}/references/registration:
     post:
       tags:
       - "register"
-      summary: "Register a new customer reference directory entry"
-      operationId: "registerCustomerReferenceDataDirectoryDetails"
+      summary: "Register bank relationship"
+      operationId: "registerCustomerReferenceDataDirectoryEntryReference"
       produces:
       - "application/json"
       parameters:
+      - name: "cr-reference-id"
+        in: "path"
+        description: "Customer Reference Data Directory Entry Reference"
+        required: true
+        type: "string"
       - in: "body"
         name: "body"
-        description: "Request Customer Reference Data Directory Details"
         required: true
         schema:
           $ref: "#/definitions/ReferenceBase"
       responses:
         201:
-          description: "Successfully registered a new customer reference directory\
-            \ entry."
+          description: "Successfully registerd reference"
           schema:
             $ref: "#/definitions/ReferenceBaseWithIdAndRoot"
   /customer-reference-data-management/customer-reference-data-directory/{cr-reference-id}/associations/registration:
@@ -63,8 +66,7 @@ paths:
           $ref: "#/definitions/CustomerAssociationBase"
       responses:
         201:
-          description: "Successfully registered a customer relationship/association\
-            \ between existing customer records."
+          description: "Successfully registered an association"
           schema:
             $ref: "#/definitions/CustomerAssociationBaseWithIdAndRoot"
   /customer-reference-data-management/customer-reference-data-directory/{cr-reference-id}/demographics/registration:
@@ -88,8 +90,7 @@ paths:
           $ref: "#/definitions/DemographicBase"
       responses:
         201:
-          description: "Successfully registered demographic details against an existing\
-            \ customer record."
+          description: "Successfully registered a demographic."
           schema:
             $ref: "#/definitions/DemographicBaseWithIdAndRoot"
   /customer-reference-data-management/customer-reference-data-directory/{cr-reference-id}/bankrelations/registration:
@@ -113,8 +114,7 @@ paths:
           $ref: "#/definitions/BankRelationsBase"
       responses:
         201:
-          description: "Successfully registerd bank relationship/activity details\
-            \ against an existing customer record."
+          description: "Successfully registerd a bank relation"
           schema:
             $ref: "#/definitions/BankRelationsBaseWithIdAndRoot"
   /customer-reference-data-management/customer-reference-data-directory/:
@@ -241,7 +241,7 @@ paths:
         200:
           description: "Successfully retrieved Customer Reference Data Directory References."
           schema:
-            $ref: "#/definitions/RetrieveCustomerReferenceDataManagementResponse"
+            $ref: "#/definitions/ReferenceBaseWithIdAndRoot"
   /customer-reference-data-management/customer-reference-data-directory/{cr-reference-id}/associations/{bq-reference-id}:
     get:
       tags:
@@ -1163,196 +1163,6 @@ definitions:
         description: |
           `status: Provisionally Registered`
           bian-reference:  CustomerRegistryEntry.RegisteredCustomer.RelationshipManager.BusinessUnit
-  RetrieveCustomerReferenceDataManagementResponse:
-    type: "object"
-    properties:
-      customerReferenceDataDirectoryEntryReference:
-        type: "string"
-        example: "CRDDER679"
-        description: |
-          `status: Not Mapped`
-          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
-      referenceDirectoryEntryReference:
-        type: "string"
-        example: "EX7777"
-        description: |
-          `status: Not Mapped`
-          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
-      customerReference:
-        type: "string"
-        example: "CNRE3968"
-        description: |
-          `status: Registered`
-          bian-reference:  CustomerRegistryEntry.RegisteredCustomer(asRole).Player(asParty)
-          iso-link:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_EwTfUMTGEeChad0JzLk7QA_-1978180945/elements/_EwTfUcTGEeChad0JzLk7QA_434950303)
-          general-info: consumer
-      customerLegalEntityReference:
-        type: "string"
-        example: "CLER7300"
-        description: |
-          `status: Registered`
-          bian-reference:  CustomerRegistryEntry.RegisteredCustomer(asRole).Player(asParty).Identification
-          iso-link:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_FNqJt8TGEeChad0JzLk7QA_-1317971633/elements/_FNqJucTGEeChad0JzLk7QA_1357540588)
-      customerNameSalutation:
-        type: "string"
-        example: "Mr.John"
-        description: |
-          `status: Registered`
-          bian-reference:  CustomerRegistryEntry.RegisteredCustomer(asRole).Player(asParty).Identification.PartyName
-          iso-link:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_FEHzNMTGEeChad0JzLk7QA_-1382123937/elements/_FEHzN8TGEeChad0JzLk7QA_1608854558)
-      governmentIssuedIdentityReference:
-        type: "string"
-        example: "GIIR4001"
-        description: |
-          `status: Registered`
-          bian-reference:  CustomerRegistryEntry.RegisteredCustomer(asRole).Player(asPerson).PersonIdentification
-          iso-link:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_FNXOwMTGEeChad0JzLk7QA_-1677946147/elements/_wetlYA93EeGeV5vP7Mvdig_1485186470)
-          general-info: social security number
-      governmentIssuedDocumentDetails:
-        type: "string"
-        example: "SocialSecurityNumber"
-        description: |
-          `status: Registered`
-          bian-reference:  CustomerRegistryEntry.RegisteredCustomer(asRole).Player(asPerson).PersonIdentification.DriversLicenseNumber
-          iso-link:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_E7VDkcTGEeChad0JzLk7QA_-2076942625/elements/_E7VDksTGEeChad0JzLk7QA_-855295891)
-          general-info: driving license/passport details
-      residencyStatus:
-        type: "string"
-        example: "Own"
-        description: |
-          `status: Registered`
-          bian-reference:  CustomerRegistryEntry.RegisteredCustomer(asRole).Player(asPerson).ResidentialStatus
-          iso-link:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_FNXOwMTGEeChad0JzLk7QA_-1677946147/elements/_FNXOxsTGEeChad0JzLk7QA_-1496564084)
-      dateOfBirth:
-        type: "string"
-        example: "1970-08-01"
-        description: |
-          `status: Registered`
-          bian-reference:  CustomerRegistryEntry.RegisteredCustomer(asRole).Player(asPerson).BirthDate
-          iso-link:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_FNXOwMTGEeChad0JzLk7QA_-1677946147/elements/_FNXOwcTGEeChad0JzLk7QA_-1677946145)
-      nationality:
-        type: "string"
-        example: "US"
-        description: |
-          `status: Registered`
-          bian-reference:  CustomerRegistryEntry.RegisteredCustomer(asRole).Player(asParty)(asPerson).Nationality
-          iso-link:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_FNXOwMTGEeChad0JzLk7QA_-1677946147/elements/_FNXOxMTGEeChad0JzLk7QA_-1677946132)
-          `status: Registered`
-          bian-reference:  CustomerRegistryEntry.RegisteredCustomer(asRole).Player(asPerson).PlaceOfBirth
-          iso-link:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_FNXOwMTGEeChad0JzLk7QA_-1677946147/elements/_FNXOyMTGEeChad0JzLk7QA_-1037578805)
-      residentialAddress:
-        type: "string"
-        example: "23 Dallas Texas"
-        description: |
-          `status: Registered`
-          bian-reference:  CustomerRegistryEntry.RegisteredCustomer(asRole).Player(asParty).Residence
-          iso-link:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_FNqJt8TGEeChad0JzLk7QA_-1317971633/elements/_FNz6sMTGEeChad0JzLk7QA_1111100108)
-      emailAddress:
-        type: "string"
-        example: "john@email.com"
-        description: |
-          `status: Registered`
-          bian-reference:  CustomerRegistryEntry.RegisteredCustomer(asRole).Player(asParty).ContactPoint(asElectronicAddress)
-          iso-link:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_FNqJt8TGEeChad0JzLk7QA_-1317971633/elements/_FEHzOMTGEeChad0JzLk7QA_-1894201405)
-          `status: Registered`
-          bian-reference:  CustomerRegistryEntry.RegisteredCustomer(asRole).Player(asParty).ContactPoint(asElectronicAddress)
-          iso-link:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_FQ8HM8TGEeChad0JzLk7QA_1582936206)
-      cellPhoneNumber:
-        type: "string"
-        example: "+1-4123464748"
-        description: |
-          `status: Registered`
-          bian-reference:  CustomerRegistryEntry.RegisteredCustomer(asRole).Player(asParty).ContactPoint(asPhoneAddress)
-          iso-link:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_FNqJt8TGEeChad0JzLk7QA_-1317971633/elements/_FEHzOMTGEeChad0JzLk7QA_-1894201405)
-          `status: Registered`
-          bian-reference:  CustomerRegistryEntry.RegisteredCustomer(asRole).Player(asParty).ContactPoint(asPhoneAddress)
-          iso-link:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_FNz6usTGEeChad0JzLk7QA_352593535)
-      socialNetworkContacts:
-        type: "string"
-        example: "john@twiiter"
-        description: |
-          `status: Provisionally Registered`
-          bian-reference:  CustomerRegistryEntry.RegisteredCustomer(asRole).Player(asParty).ContactPoint(asElectronicAddress).SocialNetworkAddress
-          `status: Registered`
-          bian-reference:  CustomerRegistryEntry.RegisteredCustomer(asRole).Player(asParty).ContactPoint(asElectronicAddress).SocialNetworkAddress
-          iso-link:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_FNqJt8TGEeChad0JzLk7QA_-1317971633/elements/_FEHzOMTGEeChad0JzLk7QA_-1894201405)
-      politicalExposureType:
-        type: "string"
-        example: "Senior"
-        description: |
-          `status: Not Mapped`
-          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
-      politicalExposureRecord:
-        type: "object"
-        example: "PoliticalRecord"
-        description: |
-          `status: Not Mapped`
-          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Binary
-      corporateCustomerReference:
-        type: "string"
-        example: "CCRE6010"
-        description: |
-         `status: Registered`
-          bian-reference:  CustomerRegistryEntry.RegisteredCustomer(asRole).Player(asOrganisation)
-          iso-link:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_EwTfUMTGEeChad0JzLk7QA_-1978180945/elements/_EwTfUcTGEeChad0JzLk7QA_434950303)
-          `status: Registered`
-          bian-reference:  CustomerRegistryEntry.RegisteredCustomer(asRole).Player(asOrganisation)
-          iso-link:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_FNg_x8TGEeChad0JzLk7QA_908383601)
-          general-info: Company
-      corporateCustomerLegalEntityReference:
-        type: "string"
-        example: "CCLE2010"
-        description: |
-          `status: Registered`
-          bian-reference:  CustomerRegistryEntry.RegisteredCustomer(asRole).Player(asOrganisation)
-          iso-link:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_EwTfUMTGEeChad0JzLk7QA_-1978180945/elements/_EwTfUcTGEeChad0JzLk7QA_434950303)
-          `status: Registered`
-          bian-reference:  CustomerRegistryEntry.RegisteredCustomer(asRole).Player(asOrganisation)
-          iso-link:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_FNg_x8TGEeChad0JzLk7QA_908383601)
-      corporateAddress:
-        type: "string"
-        example: "4 Dallas Texas"
-        description: |
-          `status: Registered`
-          bian-reference:  CustomerRegistryEntry.RegisteredCustomer(asRole).Player(asOrganisation).PlaceOfOperation
-          iso-link:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_FNg_x8TGEeChad0JzLk7QA_908383601/elements/_FNqJtcTGEeChad0JzLk7QA_-1846259904)
-          `status: Registered`
-          bian-reference:  CustomerRegistryEntry.RegisteredCustomer(asRole).Player(asOrganisation).PlaceOfRegistration
-          iso-link: [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_FNg_x8TGEeChad0JzLk7QA_908383601/elements/_FNqJtMTGEeChad0JzLk7QA_-847083437)
-      companyOfficerRole:
-        type: "string"
-        example: "Accountant"
-        description: |
-          `status: Provisionally Registered`
-          bian-reference:  CustomerRegistryEntry.RegisteredCustomer.RelationshipManager
-          `status: Registered`
-          bian-reference:  CustomerRegistryEntry.RegisteredCustomer.RelationshipManager
-          iso-link:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_EwKVZ8TGEeChad0JzLk7QA_-1034255710)
-      companyOfficerReference:
-        type: "string"
-        example: "CORE1962"
-        description: |
-          `status: Registered`
-          bian-reference:  CustomerRegistryEntry.RegisteredCustomer.RelationshipManager(asRole).Player(asPerson)
-          iso-link:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_EwTfUMTGEeChad0JzLk7QA_-1978180945/elements/_EwTfUcTGEeChad0JzLk7QA_434950303)
-          `status: Registered`
-          bian-reference:  CustomerRegistryEntry.RegisteredCustomer.RelationshipManager(asRole).Player(asPerson)
-          iso-link:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_FNXOwMTGEeChad0JzLk7QA_-1677946147)
-      customerSinceDate:
-        type: "string"
-        example: "2010-08-01"
-        description: |
-          `status: Provisionally Registered`
-          bian-reference:  CustomerRegistryEntry.RegisteredCustomer(asRole).ApplicablePeriod.FromDateTime
-          `status: Registered`
-          bian-reference:  CustomerRegistryEntry.RegisteredCustomer(asRole).ApplicablePeriod.FromDateTime
-          iso-link:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_FJ8HVcTGEeChad0JzLk7QA_726404707)
-      customerReferenceRecord:
-        type: "object"
-        description: |
-          `status: Not Mapped`
-          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Binary
-        properties: {}
   RetrieveCustomerReferenceDataManagementRoot:
     type: "object"
     properties:

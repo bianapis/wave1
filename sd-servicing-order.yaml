@@ -377,12 +377,7 @@ definitions:
           `status: Not Mapped`
           core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
       date:
-        type: string
-        example: "09/20/2018"
-        description: | 
-          general-info: Date
-          `status: Not Mapped`
-          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Date
+        $ref: 'https://api.swaggerhub.com/domains/BIAN/Common-Model/1.0.0#/definitions/ISODateTime'
       servicingOrderStatus:
         type: string
         example: pending
@@ -444,12 +439,7 @@ definitions:
           `status: Not Mapped`
           core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
       date:
-        type: string
-        example: "25-09-2018"
-        description: | 
-          general-info: Date
-          `status: Not Mapped`
-          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Date
+        $ref: 'https://api.swaggerhub.com/domains/BIAN/Common-Model/1.0.0#/definitions/ISODateTime'
       servicingOrderStatus:
         type: string
         example: pending
@@ -564,12 +554,11 @@ definitions:
           `status: Not Mapped`
           core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
       workTaskDescription:
-        type: object
-        properties: {}
+        type: string
         description: | 
           general-info: Work Task Description
           `status: Not Mapped`
-          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
       workTaskRecord:
         type: object
         properties: {}
@@ -609,11 +598,7 @@ definitions:
           `status: Not Mapped`
           core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
       recordingRecordDateTime:
-        type: string
-        example: "2018-09-06T09:00:00"
-        description: |
-          `status: Not Mapped`
-          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::DateTime
+        $ref: 'https://api.swaggerhub.com/domains/BIAN/Common-Model/1.0.0#/definitions/ISODateTime'
       employeeBusinessUnitReference:
         type: string
         example: REF456
@@ -672,11 +657,7 @@ definitions:
           `status: Not Mapped`
           core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
       recordingRecordDateTime:
-        type: string
-        example: "2018-09-06T09:00:00"
-        description: |
-          `status: Not Mapped`
-          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::DateTime
+        $ref: 'https://api.swaggerhub.com/domains/BIAN/Common-Model/1.0.0#/definitions/ISODateTime'
       recordingRecordStatus:
         type: string
         example: "Applied"

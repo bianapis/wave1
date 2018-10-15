@@ -250,11 +250,7 @@ definitions:
           core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Name
           general-info: e.g. web, phone, chat, video, VOIP, face to face at a branch - note there can be concurrent sessions within a single customer contact
       contactDialogueRecordSessionStartEndTime:
-        type: string
-        example: "07:24:33+00:00 - 17:24:33+00:00"
-        description: |
-          `status: Not Mapped`
-          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Duration
+        $ref: 'https://api.swaggerhub.com/domains/BIAN/Common-Model/1.0.0#/definitions/DateTimePeriod'
       contactDialogueRecordContactDialogueType:
         type: string
         example: verified customer
@@ -287,12 +283,7 @@ definitions:
           core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
           general-info: records actions performed during contact, including all sessions
       customerContactFromTo:
-        type: string
-        example: "01/01/2018 - 01/10/2018"
-        description: |
-          `status: Not Mapped`
-          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Duration
-          general-info: start and duration of contact
+        $ref: 'https://api.swaggerhub.com/domains/BIAN/Common-Model/1.0.0#/definitions/DateTimePeriod'
       customerContactResult:
         type: string
         example: success
@@ -306,12 +297,7 @@ definitions:
           `status: Not Mapped`
           core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
       channelActivityHistoryReportFromTo:
-        type: string
-        example: "01/01/2018 - 01/01/2019"
-        description: |
-          `status: Not Mapped`
-          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Duration
-          general-info: recent channel activity is provided to support authorization
+        $ref: 'https://api.swaggerhub.com/domains/BIAN/Common-Model/1.0.0#/definitions/DateTimePeriod'
       channelActivityHistoryReport:
         type: object
         description: |
@@ -442,11 +428,7 @@ definitions:
           core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Name
           general-info: e.g. web, phone, chat, video, VOIP, face to face at a branch - note there can be concurrent sessions within a single customer contact
       contactDialogueRecordSessionStartEndTime:
-        type: string
-        example: "07:24:33+00:00 - 17:24:33+00:00"
-        description: |
-          `status: Not Mapped`
-          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Duration
+        $ref: 'https://api.swaggerhub.com/domains/BIAN/Common-Model/1.0.0#/definitions/DateTimePeriod'
       contactDialogueRecordContactDialogueType:
         type: string
         example: verified customer
@@ -479,12 +461,7 @@ definitions:
           core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
           general-info: records actions performed during contact, including all sessions
       customerContactFromTo:
-        type: string
-        example: "01/01/2018 - 01/10/2018"
-        description: |
-          `status: Not Mapped`
-          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Duration
-          general-info: start and duration of contact
+        $ref: 'https://api.swaggerhub.com/domains/BIAN/Common-Model/1.0.0#/definitions/DateTimePeriod'
       customerContactResult:
         type: string
         example: success

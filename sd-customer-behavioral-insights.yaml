@@ -246,11 +246,7 @@ definitions:
           core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
           general-info: the derived value of the specific insight for the customer
       customerInsightCalculationDate:
-        type: string
-        description: |
-          `status: Not Mapped`
-          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::DateTime
-          general-info: the date/time the value was last calculated
+        $ref: 'https://api.swaggerhub.com/domains/BIAN/Common-Model/1.0.0#/definitions/ISODateTime'
         
 
   CustomerBehavioralInsightsBaseWithId:
@@ -289,11 +285,7 @@ definitions:
           core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
           general-info: "the derived value of the specific insight for the customer"
       customerInsightCalculationDate:
-        type: string
-        description: |
-          `status: Not Mapped`
-          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::DateTime
-          general-info: the date/time the value was last calculated
+        $ref: 'https://api.swaggerhub.com/domains/BIAN/Common-Model/1.0.0#/definitions/ISODateTime'
 
   AlgorithmBaseWithId:
     type: "object"
@@ -357,11 +349,7 @@ definitions:
           `status: Not Mapped`
           core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
       recordingRecordDateTime:
-        type: string
-        example: 2018-09-24T09:00:00
-        description: |
-          `status: Not Mapped`
-          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::DateTime
+        $ref: 'https://api.swaggerhub.com/domains/BIAN/Common-Model/1.0.0#/definitions/ISODateTime'
       employeeBusinessUnitReference:
         type: string
         example: EBU9078
