@@ -1,0 +1,702 @@
+swagger: '3.0'
+info:
+  version: "4.0.0"
+  title: 'Service Domain - Underwriting'
+  description: >
+        ## Service Domain Role :
+      
+        This service domain manages the underwriting decision process for loan origination.
+
+        ## Example of use:
+        
+        A corporate loan offer is processed and at the appropriate point an underwriting authorization is requested
+         
+        ## General comment:
+        
+        The underwriting decision considers the ability of the borrower to finance the loan based on their known cash flows and credit worthiness. The underwriting decision refers to specific properties of the proposed loan (amount, term, repayment schedule, collateral etc.), the income and known commitments of the borrower and their credit history with the bank. The decision may factor perceived underwriting risks into the interest rate and/or collateral requirements to obtain approval
+
+
+# Added by API Auto Mocking Plugin
+host: virtserver.swaggerhub.com
+basePath: /BIAN/sd-underwriting/2.0.1
+schemes:
+  - https
+consumes: 
+- application/json
+produces: 
+- application/json
+ 
+paths:
+
+  /underwriting/underwriting-assessment/{cr-reference-id}/evaluation:
+    post:
+      tags:
+      - evaluate
+      operationId: evaluateUnderwritingAssessment
+      summary:  Request an underwriting decision
+      parameters:
+      - $ref: '#/parameters/controlRecordReference'
+      - in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/DecisionBase'
+      responses:
+        201:
+          description: successful
+          schema:
+            $ref: '#/definitions/DecisionBaseWithIdAndEvaluationResult'
+            
+  /underwriting/underwriting-assessment/{cr-reference-id}/requisition:
+    put:
+      tags: 
+      - request
+      operationId: requestUnderwritingAssessmentUpdate
+      summary: Update existing underwriting assessment guidelines
+      parameters: 
+      - $ref: '#/parameters/controlRecordReference'
+      - in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/GuidelineBase'
+      responses:
+        200:
+          description: successful
+          schema:
+             $ref: '#/definitions/GuidelineBaseWithIdAndRoot'
+ 
+  /underwriting/underwriting-assessment/requisition:
+    post:
+      tags: 
+      - request
+      operationId: requestUnderwritingAssessmentCreate
+      summary: create an underwriting assessment guidelines
+      parameters: 
+      - $ref: '#/parameters/controlRecordReference'
+      - in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/GuidelineBase'
+      responses:
+        201:
+          description: Create new guideline successfully
+          schema:
+           $ref: '#/definitions/GuidelineBaseWithIdAndRoot'
+
+  ###################################  RETRIEVE  ###################################
+  /underwriting/underwriting-assessment/behavior-qualifiers:
+    get:
+      tags: 
+      - retrieve
+      operationId: RetrieveCurrentAccountBehaviorQualifiers
+      summary: Retrieve all Behaviour Qualifier names in the Underwriting Assessment Service Domain.
+      responses:
+        200:
+          description: successful
+          schema:
+            type: array
+            items:
+              type: string
+            example: [guideline]
+
+  /underwriting/underwriting-assessment/{cr-reference-id}/{behavior-qualifier}:
+    get:
+      tags: 
+      - retrieve
+      operationId: RetrieveBehaviorQualifierReferenceIds
+      summary: Retrieve Behaviour Qualifier Reference IDs of the given Behavior Qulifier.
+      parameters: 
+      - name: cr-reference-id
+        in: path
+        description: Underwriting Assessment Reference
+        required: true
+        type: string
+      - name : behavior-qualifier
+        in: path
+        description: Behavior Qualifier Name. ex- analysis
+        required: true
+        type: string
+      - name : collection-filter
+        in: query
+        description: Filter to refine the result set. ex- 'customerReference == "EUR736464"'
+        type: string
+      responses:
+        200:
+          description: successful
+          schema:
+            type: array
+            items:
+              type: string
+            example: [R345, R789, R456] 
+            
+  /underwriting/underwriting-assessment:
+    get:
+      tags: 
+      - retrieve
+      operationId: retrieveUnderwritingAssessmentReferenceIds
+      summary: Retrieve an underwriting assessment report
+      parameters: 
+      - name : collection-filter
+        in: query
+        description: Filter to refine the result set. ex- 'customer-reference = CR123'
+        type: string 
+      responses:
+        200:
+          description: successful
+          schema:
+            type: array
+            items:
+              type: string
+            example: [D123, D345]
+            
+  /underwriting/underwriting-assessment/{cr-reference-id}:
+    get:
+      tags:
+      - retrieve
+      operationId: retrieveUnderwritingAssessment
+      summary: Retrieve an underwriting assessment report
+      parameters: 
+      - $ref: '#/parameters/controlRecordReference'
+      responses:
+        200:
+          description: successful
+          schema:
+             $ref: '#/definitions/DecisionBaseWIthId'
+  
+  /underwriting/underwriting-assessment/{cr-reference-id}/guidelines/{bq-reference-id}:
+    get:
+      tags: 
+      - retrieve
+      operationId: retrieveUnderwritingAssessment
+      summary: Retrieve underwriting assessment guidelines
+      parameters: 
+      - $ref: '#/parameters/controlRecordReference'
+      - name : bq-reference-id
+        in: path
+        description: Obtain underwriting assessment guidelines
+        required: true
+        type: string
+      responses:
+        200:
+          description: Successfully Retrieved underwriting assessment record
+          schema:
+            $ref: '#/definitions/GuidelineBaseWithIdAndRoot'
+        
+            
+######################################
+parameters:
+  controlRecordReference:
+    name : cr-reference-id
+    in: path
+    description: Underwriting Assessment Reference
+    required: true
+    type: string
+
+definitions:
+  DecisionBase:
+    properties:
+      underwritingAssessment:
+        type: string
+        example: underwritingAssessment
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      productInstanceReference:
+        type: string
+        example: 8Z232342
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      proposedLoanTerms:
+        type: string
+        example: Proposed Loan Terms
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      proposedLoanAmount:
+        type: string
+        example: '500'
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Amount
+      loanPurpose:
+        type: string
+        example: Loan Purpose
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      customerReference:
+        type: string
+        example: 8Z232342
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      customerReferenceDetails:
+        type: string
+        example: Customer Reference Details
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      customerProductEligibilityTerms:
+        type: string
+        example: Product Eligibility Terms
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      customerEmploymentHistory:
+        type: string
+        example: Employment History
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      customerIncomeStatement:
+        type: string
+        example: Income Statement
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      customerDebtStatement:
+        type: string
+        example: Bank And Known Non-bank Managed Debts
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      customerAssetStatement:
+        type: string
+        example: Bank And Known Non-bank Managed Debts
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      customerCreditAssessment:
+        type: string
+        example: Customer Credit Assessment
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      customerProductServicePaymentHistory:
+        type: string
+        example: Product Service Payment History
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      collateralItemReference:
+        type: string
+        example: 8Z232342
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      collateralItemType:
+        type: string
+        example: Collateral Item Type
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      collateralItemValuation:
+        type: string
+        example: Item valuation
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      documentReference:
+        type: string
+        example: 8Z232342
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+
+  DecisionBaseWithIdAndEvaluationResult:
+    properties:
+      underwritingAssessmentReference:
+        type: string
+        example: 8Z232342
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      underwritingAssessment:
+        type: string
+        example: underwritingAssessment
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      productInstanceReference:
+        type: string
+        example: 8Z232342
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      proposedLoanTerms:
+        type: string
+        example: Proposed Loan Terms
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      proposedLoanAmount:
+        type: string
+        example: '500'
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Amount
+      loanPurpose:
+        type: string
+        example: Loan Purpose
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      customerReference:
+        type: string
+        example: 8Z232342
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      customerReferenceDetails:
+        type: string
+        example: Customer Reference Details
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      customerProductEligibilityTerms:
+        type: string
+        example: Product Eligibility Terms
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      customerEmploymentHistory:
+        type: string
+        example: Employment History
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      customerIncomeStatement:
+        type: string
+        example: Income Statement
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      customerDebtStatement:
+        type: string
+        example: Bank And Known Non-bank Managed Debts
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      customerAssetStatement:
+        type: string
+        example: Bank And Known Non-bank Managed Debts
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      customerCreditAssessment:
+        type: string
+        example: Customer Credit Assessment
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      customerProductServicePaymentHistory:
+        type: string
+        example: Product Service Payment History
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      collateralItemReference:
+        type: string
+        example: 8Z232342
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      collateralItemType:
+        type: string
+        example: Collateral Item Type
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      collateralItemValuation:
+        type: string
+        example: Item valuation
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      documentReference:
+        type: string
+        example: 8Z232342
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      evaluationResult:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+        
+  GuidelineBase:
+    properties:
+      UnderwritingGuidelineRequestReference:
+        type: string
+        example: UGRR123
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      productServiceType:
+        type: string
+        example: ServiceType
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      customerType:
+        type: string
+        example: Customer Type
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      proposedLoanAmount:
+        type: string
+        example: '500'
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Amount
+      proposedCollateralItemType:
+        type: string
+        example: Collateral Item Type
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      proposedCollateralItemValuation:
+        type: string
+        example: Item valuation
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      requiredCustomerEmploymentHistoryDetails:
+        type: string
+        example: Employment History Details
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      requiredCustomerDebtAssetStatement:
+        type: string
+        example: Customer Debt Asset Statement
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      requiredCustomerCreditAssessment:
+        type: string
+        example: Customer Credit Assessment
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      requiredCollateralCoverage:
+        type: string
+        example: Collateral Coverage
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      requiredCustomerProductServicePaymentHistory:
+        type: string
+        example: Customer Product Service Payment History
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      requiredCustomerDocuments:
+        type: string
+        example: proof of identity
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+          
+  GuidelineBaseWithIdAndRoot:
+    properties:
+      underwritingAssessmentReference:
+        type: string
+        example: 8Z232342
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      underwritingGuidelineRequestReference:
+        type: string
+        example: UGRR123
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      productServiceType:
+        type: string
+        example: ServiceType
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      customerType:
+        type: string
+        example: Customer Type
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      proposedLoanAmount:
+        type: string
+        example: '500'
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Amount
+      proposedCollateralItemType:
+        type: string
+        example: Collateral Item Type
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      proposedCollateralItemValuation:
+        type: string
+        example: Item valuation
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      requiredCustomerEmploymentHistoryDetails:
+        type: string
+        example: Employment History Details
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      requiredCustomerDebtAssetStatement:
+        type: string
+        example: Customer Debt Asset Statement
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      requiredCustomerCreditAssessment:
+        type: string
+        example: Customer Credit Assessment
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      requiredCollateralCoverage:
+        type: string
+        example: Collateral Coverage
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      requiredCustomerProductServicePaymentHistory:
+        type: string
+        example: Customer Product Service Payment History
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      requiredCustomerDocuments:
+        type: string
+        example: proof of identity
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+        
+  DecisionBaseWIthId:
+    properties:
+      underwritingAssessmentReference:
+        type: string
+        example: 8Z232342
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      underwritingAssessment:
+        type: string
+        example: underwritingAssessment
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      productInstanceReference:
+        type: string
+        example: 8Z232342
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      proposedLoanTerms:
+        type: string
+        example: Proposed Loan Terms
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      proposedLoanAmount:
+        type: string
+        example: '500'
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Amount
+      loanPurpose:
+        type: string
+        example: Loan Purpose
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      customerReference:
+        type: string
+        example: 8Z232342
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      customerReferenceDetails:
+        type: string
+        example: Customer Reference Details
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      customerProductEligibilityTerms:
+        type: string
+        example: Product Eligibility Terms
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      customerEmploymentHistory:
+        type: string
+        example: Employment History
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      customerIncomeStatement:
+        type: string
+        example: Income Statement
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      customerDebtStatement:
+        type: string
+        example: Bank And Known Non-bank Managed Debts
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      customerAssetStatement:
+        type: string
+        example: Bank And Known Non-bank Managed Debts
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      customerCreditAssessment:
+        type: string
+        example: Customer Credit Assessment
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      customerProductServicePaymentHistory:
+        type: string
+        example: Product Service Payment History
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      collateralItemReference:
+        type: string
+        example: 8Z232342
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Identifier
+      collateralItemType:
+        type: string
+        example: Collateral Item Type
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      collateralItemValuation:
+        type: string
+        example: Item valuation
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      documentReference:
+        type: string
+        example: 8Z232342
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier

@@ -913,7 +913,7 @@ definitions:
           core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
         example: "open"
       date:
-        $ref: 'https://api.swaggerhub.com/domains/BIAN/Common-Model/1.0.0#/definitions/ISODate'
+        $ref: 'https://api.swaggerhub.com/domains/BIAN/Common-Model/1.0.0#/definitions/ISODateTime'
       involvedPartyReference:
         type: string
         description: |
@@ -1010,7 +1010,7 @@ definitions:
           core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
         example: "open"
       date:
-        $ref: 'https://api.swaggerhub.com/domains/BIAN/Common-Model/1.0.0#/definitions/ISODate'
+        $ref: 'https://api.swaggerhub.com/domains/BIAN/Common-Model/1.0.0#/definitions/ISODateTime'
       involvedPartyReference:
         type: string
         description: |
@@ -1121,7 +1121,7 @@ definitions:
           core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
         example: "open"
       date:
-        $ref: 'https://api.swaggerhub.com/domains/BIAN/Common-Model/1.0.0#/definitions/ISODate'
+        $ref: 'https://api.swaggerhub.com/domains/BIAN/Common-Model/1.0.0#/definitions/ISODateTime'
       involvedPartyReference:
         type: string
         description: |
@@ -1277,7 +1277,7 @@ definitions:
       currency:
         $ref: 'https://api.swaggerhub.com/domains/BIAN/Common-Model/1.0.0#/definitions/CurrencyCode'
       valueDate:
-        $ref: 'https://api.swaggerhub.com/domains/BIAN/Common-Model/1.0.0#/definitions/ISODate'
+        $ref: 'https://api.swaggerhub.com/domains/BIAN/Common-Model/1.0.0#/definitions/ISODateTime'
 
   SavingsAccountDepositWithIdAndRoot:
     type: "object"
@@ -1342,7 +1342,7 @@ definitions:
       currency:
         $ref: 'https://api.swaggerhub.com/domains/BIAN/Common-Model/1.0.0#/definitions/CurrencyCode'
       valueDate:
-        $ref: 'https://api.swaggerhub.com/domains/BIAN/Common-Model/1.0.0#/definitions/ISODate'
+        $ref: 'https://api.swaggerhub.com/domains/BIAN/Common-Model/1.0.0#/definitions/ISODateTime'
 
   SavingsAccountPayment:
     type: "object"
@@ -1382,7 +1382,7 @@ definitions:
       currency:
         $ref: 'https://api.swaggerhub.com/domains/BIAN/Common-Model/1.0.0#/definitions/CurrencyCode'
       valueDate:
-        $ref: 'https://api.swaggerhub.com/domains/BIAN/Common-Model/1.0.0#/definitions/ISODate'
+        $ref: 'https://api.swaggerhub.com/domains/BIAN/Common-Model/1.0.0#/definitions/ISODateTime'
       paymentMechanism:
         type: string
         description: |
@@ -1452,7 +1452,7 @@ definitions:
       currency:
         $ref: 'https://api.swaggerhub.com/domains/BIAN/Common-Model/1.0.0#/definitions/CurrencyCode'
       valueDate:
-        $ref: 'https://api.swaggerhub.com/domains/BIAN/Common-Model/1.0.0#/definitions/ISODate'
+        $ref: 'https://api.swaggerhub.com/domains/BIAN/Common-Model/1.0.0#/definitions/ISODateTime'
       paymentMechanism:
         type: string
         description: |
@@ -1754,6 +1754,13 @@ definitions:
           core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
           general-info: 'savings account number'
         example: "PIR7374646"
+      sweepFacilityReference:
+        type: string
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+          general-info: 'savings account number'
+        example: "SFR7376464"
       customerReference:
         type: string
         description: |
@@ -1854,9 +1861,9 @@ definitions:
           `status: Not Mapped`
           core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
       lienStartDate:
-        $ref: 'https://api.swaggerhub.com/domains/BIAN/Common-Model/1.0.0#/definitions/ISODate'
+        $ref: 'https://api.swaggerhub.com/domains/BIAN/Common-Model/1.0.0#/definitions/ISODateTime'
       lienExpiryDate:
-        $ref: 'https://api.swaggerhub.com/domains/BIAN/Common-Model/1.0.0#/definitions/ISODate'
+        $ref: 'https://api.swaggerhub.com/domains/BIAN/Common-Model/1.0.0#/definitions/ISODateTime'
       lienStatus:
         type: string
         description: |
@@ -1896,9 +1903,9 @@ definitions:
           `status: Not Mapped`
           core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
       lienStartDate:
-        $ref: 'https://api.swaggerhub.com/domains/BIAN/Common-Model/1.0.0#/definitions/ISODate'
+        $ref: 'https://api.swaggerhub.com/domains/BIAN/Common-Model/1.0.0#/definitions/ISODateTime'
       lienExpiryDate:
-        $ref: 'https://api.swaggerhub.com/domains/BIAN/Common-Model/1.0.0#/definitions/ISODate'
+        $ref: 'https://api.swaggerhub.com/domains/BIAN/Common-Model/1.0.0#/definitions/ISODateTime'
       lienStatus:
         type: string
         description: |
@@ -1934,11 +1941,7 @@ definitions:
       applicableInterestRate:
         $ref: 'https://api.swaggerhub.com/domains/BIAN/Common-Model/1.0.0#/definitions/PercentageRate'
       rateApplicationSchedule:
-        type: string
-        description: |
-          `status: Not Mapped`
-          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
-        example: "Weekly"
+        $ref: 'https://api.swaggerhub.com/domains/BIAN/Common-Model/1.0.0#/definitions/Frequency1Code'
       accuredInterestAmount:
         type: string
         description: |
@@ -2028,16 +2031,12 @@ definitions:
           general-info: 'e.g. balance/mini-statement/annual'
         example: "balance"
       statementTrasactionType:
-        type: object
+        type: string
         description: |
           `status: Not Mapped`
           core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
       statementPeriod:
-        type: string
-        description: |
-          `status: Not Mapped`
-          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Duration
-        example: "01/08/2018 - 31/08/2018"
+        $ref: 'https://api.swaggerhub.com/domains/BIAN/Common-Model/1.0.0#/definitions/DateTimePeriod'
       transactionRecordReference:
         type: string
         description: |

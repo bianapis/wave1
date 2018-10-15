@@ -253,23 +253,7 @@ definitions:
       update:
         $ref: '#/definitions/IssuedDeviceUpdateWithId'
         
-  RequestIssuedDeviceTrackingRequest:
-    type: object
-    properties:
-      trackingService:
-        $ref: '#/definitions/IssuedDeviceTrackingServiceWithOutId'
-      cancellation:
-        $ref: '#/definitions/IssuedDeviceCancellationWithoutId'
-      update:
-        $ref: '#/definitions/IssuedDeviceUpdateWithOutId'
-        
-  RequestIssuedDeviceTrackingResponse:
-    type: object
-    properties:
-      cancellation:
-        $ref: '#/definitions/IssuedDeviceCancellationWithId'
-      update:
-        $ref: '#/definitions/IssuedDeviceUpdateWithId'      
+     
       
   IssuedDeviceTrackingServiceWithOutId:
     type: object
@@ -297,10 +281,10 @@ definitions:
           core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier     
       trackingServiceSchedule:
        type: string
-       example: 15mins/30mins/60mins
+       example: "2018-08-28T09:00:00"
        description: |
           `status: Not Mapped`
-          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Duration     
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::DateTime     
       trackingServiceReportReference:
        type: string
        example: TSRR4718
@@ -314,28 +298,6 @@ definitions:
           core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary     
 
 
-  IssuedDeviceCancellationWithoutId:
-    type: object
-    properties:
-      issuedDeviceType:
-       type: string
-       example: Physical/Virtual
-       description: |
-          `status: Not Mapped`
-          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text     
-      validFromToDate:
-       type: string
-       example: "2018-07-01 To 2018-07-31"
-       description: |
-          `status: Not Mapped`
-          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Duration     
-      issuedDeviceStatus:
-       type: string
-       example: Active/Inactive
-       description: |
-          `status: Not Mapped`
-          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text  
-  
   IssuedDeviceCancellationWithId:
     type: object
     properties:
@@ -375,183 +337,7 @@ definitions:
        description: |
           `status: Not Mapped`
           core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text  
-  
-  IssuedDeviceUpdate:
-    type: object
-    properties:
-      issuedDeviceType:
-       type: string
-       example: Physical/Virtual
-       description: |
-          `status: Not Mapped`
-          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text     
-      issuedDeviceSerialNumber:
-       type: string
-       example: IDSN2730
-       description: |
-          `status: Not Mapped`
-          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier     
-      versionNumber:
-       type: string
-       example: Ver 1.2
-       description: |
-          `status: Not Mapped`
-          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier     
-      customerReference:
-       type: string
-       example: CSRE3456
-       description: |
-          `status: Not Mapped`
-          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier     
-      customerCustomizationReference:
-       type: string
-       example: CCZR0942
-       description: |
-          `status: Not Mapped`
-          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier     
-      associatedPermissions:
-       type: string
-       example: City/State/National/International
-       description: |
-          `status: Not Mapped`
-          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Code     
-      issueLocation:
-       type: string
-       example: Austin/Chicago/Dallas/Seattle
-       description: |
-          `status: Not Mapped`
-          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Name     
-      validFromToDate:
-       type: string
-       example: "2018-07-01 To 2018-07-31"
-       description: |
-          `status: Not Mapped`
-          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Duration     
-      issuedDeviceConfiguration:
-       type: string
-       example: BillingOptions/TransactionProcessingOptions
-       description: |
-          `status: Not Mapped`
-          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text     
-      issuedDeviceTemplate:
-       type: string
-       example: General/Secured
-       description: |
-          `status: Not Mapped`
-          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text     
-      sequenceNumber:
-       type: string
-       example: SQNM3309
-       description: |
-          `status: Not Mapped`
-          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier     
-      passwordValue:
-       type: string
-       example: SecondaryPassword/SecurityQuestion
-       description: |
-          `status: Not Mapped`
-          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text     
-      accessLog:
-       type: string
-       example: LoginLogReport
-       description: |
-          `status: Not Mapped`
-          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text     
-      usageLog:
-       type: string
-       example: SessionLogReport
-       description: |
-          `status: Not Mapped`
-          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text     
-      issuedDeviceStatus:
-       type: string
-       example: Active/Inactive
-       description: |
-          `status: Not Mapped`
-          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text     
-  
-  IssuedDeviceUpdateWithOutId:
-    type: object
-    properties:
-      issuedDeviceType:
-       type: string
-       example: Physical/Virtual
-       description: |
-          `status: Not Mapped`
-          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text     
-      #issuedDeviceSerialNumber:
-       #type: string
-       #example: IDSN2730
-       #description: |
-          #`status: Not Mapped`
-          #core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier     
-      versionNumber:
-       type: string
-       example: Ver 1.2
-       description: |
-          `status: Not Mapped`
-          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier     
-      associatedPermissions:
-       type: string
-       example: City/State/National/International
-       description: |
-          `status: Not Mapped`
-          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Code     
-      issueLocation:
-       type: string
-       example: Austin/Chicago/Dallas/Seattle
-       description: |
-          `status: Not Mapped`
-          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Name     
-      validFromToDate:
-       type: string
-       example: "2018-07-01 To 2018-07-31"
-       description: |
-          `status: Not Mapped`
-          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Duration     
-      issuedDeviceConfiguration:
-       type: string
-       example: BillingOptions/TransactionProcessingOptions
-       description: |
-          `status: Not Mapped`
-          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text     
-      issuedDeviceTemplate:
-       type: string
-       example: General/Secured
-       description: |
-          `status: Not Mapped`
-          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text     
-      sequenceNumber:
-       type: string
-       example: SQNM3309
-       description: |
-          `status: Not Mapped`
-          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier     
-      passwordValue:
-       type: string
-       example: SecondaryPassword/SecurityQuestion
-       description: |
-          `status: Not Mapped`
-          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text     
-      accessLog:
-       type: string
-       example: LoginLogReport
-       description: |
-          `status: Not Mapped`
-          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text     
-      usageLog:
-       type: string
-       example: SessionLogReport
-       description: |
-          `status: Not Mapped`
-          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text     
-      #issuedDeviceStatus:
-       #type: string
-       #example: Active/Inactive
-       #description: |
-          #`status: Not Mapped`
-          #core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text     
-       
+ 
   IssuedDeviceUpdateWithId:
     type: object
     properties:

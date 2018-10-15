@@ -863,6 +863,8 @@ definitions:
           iso-link: [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_E10RdcTGEeChad0JzLk7QA_-917313471/elements/_E10RdsTGEeChad0JzLk7QA_-1031152537)
           bian-reference: PaymentCardService.PaymentCardAgreement.PaymentCard.RelatedAccount(as Account).AccountRestriction.RestrictionType
           `status: Provisionally Registered`
+          bian-reference: (PaymentCardService.PaymentCardAgreement.PaymentCard.RelatedAccount(as Account).AccountRestriction.RestrictionDescription)
+          
       configurationOptions:
         type: string
         example: CardScheme
@@ -993,6 +995,7 @@ definitions:
           bian-reference: PaymentCardService.PaymentCardAgreement.PaymentCard.CardPayment(as Payment).Adjustment      
           iso-link: [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_FCL5hcTGEeChad0JzLk7QA_1746210980/elements/_uwRncGnpEeG7Npk4oYag0A_1876689712)
           `status: Provisionally Registered`
+          bian-reference: PaymentCardService.PaymentCardAgreement.PaymentCard.RelatedAccount.Adjustment
       feeConfiguration:
         type: string
         example: Fees
@@ -1241,12 +1244,7 @@ definitions:
           bian-reference: PaymentCardService.PaymentCardAgreement.PaymentCard.CardPayment(as Payment).PaymentObligation.CommercialTrade.ProductDeliveryObligation.ProductDeliveryOffset.Product
           iso-link: [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_E23aUsTGEeChad0JzLk7QA_482851588/elements/_E23aV8TGEeChad0JzLk7QA_253240170)      
       transactionDateTime:
-        type: string
-        example : "2018-09-07:T09:00:00"
-        description: |
-          `status: Registered`
-          bian-reference: PaymentCardService.PaymentCardAgreement.PaymentCard.CardPayment.CardPaymentAcquiring.TransactionDateTime
-          iso-link: [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_E3wLJ8TGEeChad0JzLk7QA_939531259/elements/_oRrlkE21EeKnlYfGtmXcCw_602726172)      
+        $ref: 'https://api.swaggerhub.com/domains/BIAN/Common-Model/1.0.0#/definitions/ISODateTime'     
 
   StatementsBaseWithIdAndRoot:
     type: object
@@ -1544,9 +1542,4 @@ definitions:
           bian-reference: PaymentCardService.PaymentCardAgreement.PaymentCard.CardPayment(as Payment).PaymentObligation.CommercialTrade.ProductDeliveryObligation.ProductDeliveryOffset.Product
           iso-link: [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_E23aUsTGEeChad0JzLk7QA_482851588/elements/_E23aV8TGEeChad0JzLk7QA_253240170)      
       transactionDateTime:
-        type: string
-        example : "2018-09-07:T09:00:00"
-        description: |
-          `status: Registered`
-          bian-reference: PaymentCardService.PaymentCardAgreement.PaymentCard.CardPayment.CardPaymentAcquiring.TransactionDateTime
-          iso-link: [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_E3wLJ8TGEeChad0JzLk7QA_939531259/elements/_oRrlkE21EeKnlYfGtmXcCw_602726172)
+        $ref: 'https://api.swaggerhub.com/domains/BIAN/Common-Model/1.0.0#/definitions/ISODateTime'

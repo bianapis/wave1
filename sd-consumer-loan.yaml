@@ -26,7 +26,7 @@ paths:
     post:
       tags:
       - "initiate"
-      summary: "Initiate - Set-up a new consumer loan"
+      summary: "Initiate-new consumer loan"
       description: "Initiate - Set-up a new consumer loan"
       operationId: "initiateConsumerLoanFulfillmentArrangement"
       consumes:
@@ -48,7 +48,7 @@ paths:
     post:
       tags:
       - "record"
-      summary: "Record - Record activity/feedback against an active consumer loan"
+      summary: "Record active consumer loan"
       description: "Record activity/feedback against an active consumer loan"
       operationId: "recordConsumerLoanFulfillmentArrangement"
       parameters:
@@ -71,7 +71,7 @@ paths:
     put:
       tags:
       - "execute"
-      summary: "Execute- Consumer loan disbursement"
+      summary: "Update disbursement"
       description: "Updated consumer loan disbursement execution"
       operationId: "executeConsumerLoanFulfillmentArrangementDisbursementUpdate"
       consumes:
@@ -103,7 +103,7 @@ paths:
     post:
       tags:
       - "execute"
-      summary: "Execute- Consumer loan disbursement"
+      summary: "Create disbursement"
       description: "Create a new consumer loan disbursement execution"
       operationId: "executeConsumerLoanFulfillmentArrangementDisbursementCreate"
       consumes:
@@ -131,7 +131,7 @@ paths:
     put:
       tags:
       - "execute"
-      summary: "Execute- Consumer loan staged repayment"
+      summary: "Update staged repayment"
       description: "Update a Consumer Loan Payment Execution record"
       operationId: "executeConsumerLoanFulfillmentArrangementRepaymentUpdate"
       consumes:
@@ -163,7 +163,7 @@ paths:
     post:
       tags:
       - "execute"
-      summary: "Execute- Consumer loan staged repayment"
+      summary: "Create staged repayment"
       description: "Create a Consumer Loan Payment Execution record"
       operationId: "executeConsumerLoanFulfillmentArrangementRepaymentCreate"
       consumes:
@@ -190,7 +190,7 @@ paths:
     put:
       tags:
       - "execute"
-      summary: "Consumer loan withdrawal"
+      summary: "Update withdrawal"
       description: "Update a Consumer Loan Withdrawl Execution Record"
       operationId: "executeConsumerLoanFulfillmentArrangementWithdrawalUpdate"
       consumes:
@@ -222,7 +222,7 @@ paths:
     post:
       tags:
       - "execute"
-      summary: "Consumer loan withdrawal"
+      summary: "Create withdrawal"
       description: "Create a New Consumer Loan Withdrawl Execution Record"
       operationId: "executeConsumerLoanFulfillmentArrangementWithdrawalCreate"
       consumes:
@@ -249,7 +249,7 @@ paths:
     put:
       tags:
       - "request"
-      summary: "Loan restructuring"
+      summary: "Request restructuring updation"
       description: "Update a restructuring request record"
       operationId: "requestConsumerLoanFulfillmentArrangementRestructuringUpdate"
       consumes:
@@ -281,7 +281,7 @@ paths:
     post:
       tags:
       - "request"
-      summary: "Loan restructuring"
+      summary: "Request restructuring creation"
       description: "Create a new restructuring request record"
       operationId: "requestConsumerLoanFulfillmentArrangementRestructuringCreate"
       consumes:
@@ -308,7 +308,7 @@ paths:
     get:
       tags:
       - "retrieve"
-      summary: "Retrieve Consumer Loan Control Record Ids"
+      summary: "Retrieve Control Record Ids"
       operationId: "RetrieveConsumerLoanReferenceIds"
       produces:
       - "application/json"
@@ -356,7 +356,7 @@ paths:
     get:
       tags:
       - "retrieve"
-      summary: "Retrieve Behaviour Qualifier Reference Ids of the given Behavior Qulifier."
+      summary: "Retrieve Behaviour Qualifier Reference Ids."
       operationId: "RetrieveBehaviorQualifierReferenceIds"
       produces:
       - "application/json"
@@ -392,7 +392,7 @@ paths:
     get:
       tags:
       - "retrieve"
-      summary: "Retrieve- Consumer loan reporting"
+      summary: "Retrieve consumer loan"
       description: "retrieveConsumerLoanFulfillmentArrangement Service Operation"
       operationId: "retrieveConsumerLoanFulfillmentArrangementWithBQs"
       produces:
@@ -411,7 +411,7 @@ paths:
     delete:
       tags:
       - "terminate"
-      summary: "Termination request for an active loan"
+      summary: "Termination for an active loan"
       operationId: "terminateConsumerLoanFulfillmentArrangement"
       parameters:
       - name: "cr-reference-id"
@@ -451,7 +451,7 @@ paths:
     get:
       tags:
       - "retrieve"
-      summary: "Retrieve Consumer Loan Maintenance Record"
+      summary: "Retrieve Maintenance"
       description: "Retrieve Consumer Loan Maintenance Record"
       operationId: "Retrieve Maintenance"
       produces:
@@ -476,7 +476,7 @@ paths:
     get:
       tags:
       - "retrieve"
-      summary: "Retrieve Consumer Loan Wthdrawl Record"
+      summary: "Retrieve Wthdrawl Record"
       description: "Retrieve Consumer Loan Wthdrawl Record"
       operationId: "Retrieve Withdrawal"
       produces:
@@ -501,7 +501,7 @@ paths:
     get:
       tags:
       - "retrieve"
-      summary: "Retrieve Consumer Loan Payment Record"
+      summary: "Retrieve Payment"
       description: "Retrieved Consumer Loan Payment Record"
       operationId: "Retrieve Payment"
       produces:
@@ -526,7 +526,7 @@ paths:
     get:
       tags:
       - "retrieve"
-      summary: "Retrieve Consumer Loan Restructurings Record"
+      summary: "Retrieve Restructurings"
       description: "Retrieve Consumer Loan Restructurings Record"
       operationId: "Retrieve Restructuring"
       produces:
@@ -551,7 +551,7 @@ paths:
     get:
       tags:
       - "retrieve"
-      summary: "Retrieved Consumer Loan Statement"
+      summary: "Retrieved Statement"
       description: "Retrieved Consumer Loan Statement"
       operationId: "Retrieve Statements"
       produces:
@@ -609,7 +609,7 @@ definitions:
         example: "CR72346234"
         description: |
           `status: Registered`
-          iso-link: "[click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_FNqJt8TGEeChad0JzLk7QA_-1317971633)"
+          iso-link: [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_FNqJt8TGEeChad0JzLk7QA_-1317971633)
           bian-reference: Loan.Agreement.TradePartyRole(as Borrower)(as Role).Player(as Party)
           general-info: loan account holder
       customerAgreementReference:
@@ -648,7 +648,7 @@ definitions:
         description: |
           `status: Registered`
           bian-reference:  LoanAgreement.TradePartyRole(asLender)(asRole).Player(asParty).Location
-          iso-link:  [click-here] (https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_FNqJt8TGEeChad0JzLk7QA_-1317971633/elements/_z2I6YGx5EeKmZJ0Ago--9g_239738909)
+          iso-link:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_FNqJt8TGEeChad0JzLk7QA_-1317971633/elements/_z2I6YGx5EeKmZJ0Ago--9g_239738909)
           general-info: for processing/logistics
       bankAccountingUnitReference:
         type: "string"
@@ -663,22 +663,22 @@ definitions:
         description: |
           `status: Registered`
           bian-reference:  LoanAgreement.CollateralPartyRole(asGiverRole)
-          iso-link-1:  [click-here] (https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_EuN0ocTGEeChad0JzLk7QA_1159142715)
+          iso-link-1:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_EuN0ocTGEeChad0JzLk7QA_1159142715)
           `status: Registered`
           bian-reference:  LoanAgreement.CollateralPartyRole(asTakerRole)
-          iso-link-2:  [click-here] (https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_Ex8eFcTGEeChad0JzLk7QA_-1939123823)
+          iso-link-2:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_Ex8eFcTGEeChad0JzLk7QA_-1939123823)
           `status: Registered`
           bian-reference:  LoanAgreement.GuaranteePartyRole(asGuaranteeBeneficiary)
-          iso-link-3:  [click-here] (https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_EuN0p8TGEeChad0JzLk7QA_-1821987913)
+          iso-link-3:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_EuN0p8TGEeChad0JzLk7QA_-1821987913)
           `status: Registered`
           bian-reference:  LoanAgreement.GuaranteePartyRole(asGuarantorRole)
-          iso-link-4:  [click-here] (https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_EuN0psTGEeChad0JzLk7QA_150894546)
+          iso-link-4:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_EuN0psTGEeChad0JzLk7QA_150894546)
           `status: Registered`
           bian-reference:  LoanAgreement.LoanProduct.Loan(asAsset).Trade.TradePartyRole(asBorrower)
-          iso-link-5:  [click-here] (https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_t-Si4N1CEeGAp99n2TKigg_-919072642)
+          iso-link-5:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_t-Si4N1CEeGAp99n2TKigg_-919072642)
           `status: Registered`
           bian-reference:  LoanAgreement.LoanProduct.Loan(asAsset).Trade.TradePartyRole(asLender)
-          iso-link-6:  [click-here] (https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_t-Si4d1CEeGAp99n2TKigg_-1009340668)
+          iso-link-6:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_t-Si4d1CEeGAp99n2TKigg_-1009340668)
           general-info: guarantor/cosigner
       involvedPartyObligationEntitlement:
         type: "string"
@@ -698,38 +698,37 @@ definitions:
         description: |
           `status: Registered`
           bian-reference:  Loan(asAsset).InvestmentAmount
-          iso-link-1:  [click-here] (https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_FPv0acTGEeChad0JzLk7QA_-150026816/elements  /_FepzGcTGEeChad0JzLk7QA_298530288)
+          iso-link-1:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_FPv0acTGEeChad0JzLk7QA_-150026816/elements/_FepzGcTGEeChad0JzLk7QA_298530288)
           `status: Registered`
           bian-reference:  Loan.PrincipalAmount
-          iso-link-2:  [click-here] (https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_mw1ysHJTEeWwf47VrwMaTQ/elements/_QLjLYHJUEeWwf47VrwMaTQ)
+          iso-link-2:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_mw1ysHJTEeWwf47VrwMaTQ/elements/_QLjLYHJUEeWwf47VrwMaTQ)
       loanCurrency:
         type: "string"
         example: "fixed"
         description: |
           `status: Registered`
           bian-reference:  Loan(asAsset).InvestmentAmount
-          iso-link-1:  [click-here] (https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_FPv0acTGEeChad0JzLk7QA_-150026816/elements/_FepzGcTGEeChad0JzLk7QA_298530288)
+          iso-link-1:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_FPv0acTGEeChad0JzLk7QA_-150026816/elements/_FepzGcTGEeChad0JzLk7QA_298530288)
           `status: Registered`
           bian-reference:  Loan(asDebt).PaymentCurrency
-          iso-link-2:  [click-here] (https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_Ff_P1MTGEeChad0JzLk7QA_-1514166912/elements/_X0hLUKRMEeO1ke9HGqKZhg)
+          iso-link-2:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_Ff_P1MTGEeChad0JzLk7QA_-1514166912/elements/_X0hLUKRMEeO1ke9HGqKZhg)
           `status: Registered`
           bian-reference:  Loan.PrincipalAmount
-          iso-link-3:  [click-here] (https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc  /_mw1ysHJTEeWwf47VrwMaTQ/elements/_QLjLYHJUEeWwf47VrwMaTQ)
-
+          iso-link-3:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_mw1ysHJTEeWwf47VrwMaTQ/elements/_QLjLYHJUEeWwf47VrwMaTQ)
       loanRateType:
         type: "string"
         example: "fixed"
         description: |
           `status: Registered`
           bian-reference:  Loan(asDebt).NextInterest.VariableInterest.VariableRateChangeFrequency
-          iso-link:  [click-here] (https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_Fd5lKcTGEeChad0JzLk7QA_-958104524/elements/_FeNHIMTGEeChad0JzLk7QA_-12422289)
+          iso-link:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_Fd5lKcTGEeChad0JzLk7QA_-958104524/elements/_FeNHIMTGEeChad0JzLk7QA_-12422289)
       loanApplicableRate:
         type: "string"
         example: "9%"
         description: |
           `status: Registered`
           bian-reference:  Loan(asDebt).NextInterest.VariableInterest
-          iso-link:  [click-here] (https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_FXWRMsTGEeChad0JzLk7QA_-398781879/elements/_FXgCNMTGEeChad0JzLk7QA_-129916673)
+          iso-link:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_FXWRMsTGEeChad0JzLk7QA_-398781879/elements/_FXgCNMTGEeChad0JzLk7QA_-129916673)
       repaymentType:
         type: "string"
         example: "Structured"
@@ -742,10 +741,10 @@ definitions:
         description: |
           `status: Registered`
           bian-reference:  Loan.InterestPaymentsSchedule.PaymentPeriod
-          iso-link-1:  [click-here] (https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_jF5agJh7EeOUgsYi4EbJBw/elements/_AcedgZh9EeORjJTqwAvaiQ)
+          iso-link-1:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_jF5agJh7EeOUgsYi4EbJBw/elements/_AcedgZh9EeORjJTqwAvaiQ)
           `status: Registered`
           bian-reference:  Loan.PrincipalPaymentsSchedule.PaymentPeriod
-          iso-link-2:  [click-here] (https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_jF5agJh7EeOUgsYi4EbJBw/elements/_AcedgZh9EeORjJTqwAvaiQ)
+          iso-link-2:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_jF5agJh7EeOUgsYi4EbJBw/elements/_AcedgZh9EeORjJTqwAvaiQ)
       interestType:
         type: "string"
         example: "Prime plus"
@@ -763,35 +762,35 @@ definitions:
         description: |
           `status: Registered`
           bian-reference:  Loan.InterestPaymentsSchedule.RelatedPaymentObligation.PaymentOffset
-          iso-link-1:  [click-here] (https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_FDPCYMTGEeChad0JzLk7QA_-1131921749/elements/_FDPCacTGEeChad0JzLk7QA_-72272631)
+          iso-link-1:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_FDPCYMTGEeChad0JzLk7QA_-1131921749/elements/_FDPCacTGEeChad0JzLk7QA_-72272631)
           `status: Registered`
           bian-reference:  Loan.PrincipalPaymentsSchedule.RelatedPaymentObligation.PaymentOffset
-          iso-link-2:  [click-here] (https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_FDPCYMTGEeChad0JzLk7QA_-1131921749/elements/_FDPCacTGEeChad0JzLk7QA_-72272632)
+          iso-link-2:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_FDPCYMTGEeChad0JzLk7QA_-1131921749/elements/_FDPCacTGEeChad0JzLk7QA_-72272632)
       loanOutstandingBalance:
         type: "string"
         example: "250000"
         description: |
           `status: Registered`
           bian-reference:  Loan.PrincipalAmount
-          iso-link:  [click-here] (https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_mw1ysHJTEeWwf47VrwMaTQ/elements/_QLjLYHJUEeWwf47VrwMaTQ)
+          iso-link:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_mw1ysHJTEeWwf47VrwMaTQ/elements/_QLjLYHJUEeWwf47VrwMaTQ)
       loanOriginationDate:
-        $ref: 'https://api.swaggerhub.com/domains/BIAN/Common-Model/1.0.0#/definitions/ISODate'
+        $ref: 'https://api.swaggerhub.com/domains/BIAN/Common-Model/1.0.0#/definitions/ISODateTime'
       loanMaturityDate:
-        $ref: 'https://api.swaggerhub.com/domains/BIAN/Common-Model/1.0.0#/definitions/ISODate'
+        $ref: 'https://api.swaggerhub.com/domains/BIAN/Common-Model/1.0.0#/definitions/ISODateTime'
       collateralReference:
         type: "string"
         example: "COL232342"
         description: |
           `status: Registered`
           bian-reference:  LoanAgreement(asMasterAgreement).CollateralAgreement.Collateral
-          iso-link:  [click-here] (https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_E6vNtsTGEeChad0JzLk7QA_393174175/elements/_lrcFQC1hEeGp2Zpvgj9Dtw_-638405304)
+          iso-link:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_E6vNtsTGEeChad0JzLk7QA_393174175/elements/_lrcFQC1hEeGp2Zpvgj9Dtw_-638405304)
       collateralAllocation:
         type: "string"
         example: "$450000"
         description: |
           `status: Registered`
           bian-reference:  LoanAgreement(asMasterAgreement).CollateralAgreement.Collateral.Valuation
-          iso-link:  [click-here] (https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_FLlGEcTGEeChad0JzLk7QA_1826831344/elements/_AAYPOmIjEeGD28DQaMef-g)
+          iso-link:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_FLlGEcTGEeChad0JzLk7QA_1826831344/elements/_AAYPOmIjEeGD28DQaMef-g)
           general-info: value applied
       configurationOptions:
         type: "string"
@@ -814,7 +813,7 @@ definitions:
         description: |
           `status: Registered`
           bian-reference:  Loan(asDebt).PrePaymentSpeed
-          iso-link:  [click-here] (https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_Ff_P1MTGEeChad0JzLk7QA_-1514166912/elements/_Fg4nt8TGEeChad0JzLk7QA_742037711)
+          iso-link:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_Ff_P1MTGEeChad0JzLk7QA_-1514166912/elements/_Fg4nt8TGEeChad0JzLk7QA_742037711)
           `status: Provisionally Registered`
           bian-reference:  Loan.Limit
           general-info: allowed payments/withdrawals
@@ -833,7 +832,7 @@ definitions:
         description: |
           `status: Registered`
           bian-reference:  Loan.LoanAccount(asAccount).Identification
-          iso-link:  [click-here] (https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_E1rHgsTGEeChad0JzLk7QA_-1068889728/elements/_E1rHhcTGEeChad0JzLk7QA_-755813725)
+          iso-link:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_E1rHgsTGEeChad0JzLk7QA_-1068889728/elements/_E1rHhcTGEeChad0JzLk7QA_-755813725)
           general-info: loan account number
       customerReference:
         type: "string"
@@ -841,7 +840,7 @@ definitions:
         description: |
           `status: Registered`
           bian-reference:  Loan.Agreement.TradePartyRole(asBorrower)(asRole).Player(asParty)
-          iso-link:  [click-here] (https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_FNqJt8TGEeChad0JzLk7QA_-1317971633)
+          iso-link:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_FNqJt8TGEeChad0JzLk7QA_-1317971633)
           general-info: loan account holder
       customerAgreementReference:
         type: "string"
@@ -879,7 +878,7 @@ definitions:
         description: |
           `status: Registered`
           bian-reference:  LoanAgreement.TradePartyRole(asLender)(asRole).Player(asParty).Location
-          iso-link:  [click-here] (https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_FNqJt8TGEeChad0JzLk7QA_-1317971633/elements/_z2I6YGx5EeKmZJ0Ago--9g_239738909)
+          iso-link:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_FNqJt8TGEeChad0JzLk7QA_-1317971633/elements/_z2I6YGx5EeKmZJ0Ago--9g_239738909)
           general-info: for processing/logistics
       bankAccountingUnitReference:
         type: "string"
@@ -894,22 +893,22 @@ definitions:
         description: |
           `status: Registered`
           bian-reference:  LoanAgreement.CollateralPartyRole(asGiverRole)
-          iso-link-1:  [click-here] (https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_EuN0ocTGEeChad0JzLk7QA_1159142715)
+          iso-link-1:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_EuN0ocTGEeChad0JzLk7QA_1159142715)
           `status: Registered`
           bian-reference:  LoanAgreement.CollateralPartyRole(asTakerRole)
-          iso-link-2:  [click-here] (https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_Ex8eFcTGEeChad0JzLk7QA_-1939123823)
+          iso-link-2:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_Ex8eFcTGEeChad0JzLk7QA_-1939123823)
           `status: Registered`
           bian-reference:  LoanAgreement.GuaranteePartyRole(asGuaranteeBeneficiary)
-          iso-link-3:  [click-here] (https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_EuN0p8TGEeChad0JzLk7QA_-1821987913)
+          iso-link-3:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_EuN0p8TGEeChad0JzLk7QA_-1821987913)
           `status: Registered`
           bian-reference:  LoanAgreement.GuaranteePartyRole(asGuarantorRole)
-          iso-link-4:  [click-here] (https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_EuN0psTGEeChad0JzLk7QA_150894546)
+          iso-link-4:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_EuN0psTGEeChad0JzLk7QA_150894546)
           `status: Registered`
           bian-reference:  LoanAgreement.LoanProduct.Loan(asAsset).Trade.TradePartyRole(asBorrower)
-          iso-link-5:  [click-here] (https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_t-Si4N1CEeGAp99n2TKigg_-919072642)
+          iso-link-5:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_t-Si4N1CEeGAp99n2TKigg_-919072642)
           `status: Registered`
           bian-reference:  LoanAgreement.LoanProduct.Loan(asAsset).Trade.TradePartyRole(asLender)
-          iso-link-6:  [click-here] (https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_t-Si4d1CEeGAp99n2TKigg_-1009340668)
+          iso-link-6:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_t-Si4d1CEeGAp99n2TKigg_-1009340668)
           general-info: guarantor/cosigner
       involvedPartyObligationEntitlement:
         type: "string"
@@ -929,25 +928,36 @@ definitions:
         description: |
           `status: Registered`
           bian-reference:  Loan(asAsset).InvestmentAmount
-          iso-link-1:  [click-here] (https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_FPv0acTGEeChad0JzLk7QA_-150026816/elements/_FepzGcTGEeChad0JzLk7QA_298530288)
+          iso-link-1:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_FPv0acTGEeChad0JzLk7QA_-150026816/elements/_FepzGcTGEeChad0JzLk7QA_298530288)
           `status: Registered`
           bian-reference:  Loan.PrincipalAmount
-          iso-link-2:  [click-here] (https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_mw1ysHJTEeWwf47VrwMaTQ/elements/_QLjLYHJUEeWwf47VrwMaTQ)
+          iso-link-2:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_mw1ysHJTEeWwf47VrwMaTQ/elements/_QLjLYHJUEeWwf47VrwMaTQ)
       loanCurrency:
-        $ref: 'https://api.swaggerhub.com/domains/BIAN/Common-Model/1.0.0#/definitions/CurrencyCode'
+        type: "string"
+        example: "fixed"
+        description: |
+          `status: Registered`
+          bian-reference:  Loan(asAsset).InvestmentAmount
+          iso-link:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_FPv0acTGEeChad0JzLk7QA_-150026816/elements/_FepzGcTGEeChad0JzLk7QA_298530288)
+          `status: Registered`
+          bian-reference:  Loan(asDebt).PaymentCurrency
+          iso-link:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_Ff_P1MTGEeChad0JzLk7QA_-1514166912/elements/_X0hLUKRMEeO1ke9HGqKZhg)
+          `status: Registered`
+          bian-reference:  Loan.PrincipalAmount
+          iso-link:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_mw1ysHJTEeWwf47VrwMaTQ/elements/_QLjLYHJUEeWwf47VrwMaTQ)
       loanRateType:
         type: "string"
         description: |
           `status: Registered`
           bian-reference:  Loan(asDebt).NextInterest.VariableInterest.VariableRateChangeFrequency
-          iso-link:  [click-here] (https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_Fd5lKcTGEeChad0JzLk7QA_-958104524/elements/_FeNHIMTGEeChad0JzLk7QA_-12422289)
+          iso-link:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_Fd5lKcTGEeChad0JzLk7QA_-958104524/elements/_FeNHIMTGEeChad0JzLk7QA_-12422289)
       loanApplicableRate:
         type: "string"
         example: "9%"
         description: |
           `status: Registered`
           bian-reference:  Loan(asDebt).NextInterest.VariableInterest
-          iso-link:  [click-here] (https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_FXWRMsTGEeChad0JzLk7QA_-398781879/elements/_FXgCNMTGEeChad0JzLk7QA_-129916673)
+          iso-link:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_FXWRMsTGEeChad0JzLk7QA_-398781879/elements/_FXgCNMTGEeChad0JzLk7QA_-129916673)
       repaymentType:
         type: "string"
         example: "Structured"
@@ -960,10 +970,10 @@ definitions:
         description: |
           `status: Registered`
           bian-reference:  Loan.InterestPaymentsSchedule.PaymentPeriod
-          iso-link-1:  [click-here] (https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_jF5agJh7EeOUgsYi4EbJBw/elements/_AcedgZh9EeORjJTqwAvaiQ)
+          iso-link-1:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_jF5agJh7EeOUgsYi4EbJBw/elements/_AcedgZh9EeORjJTqwAvaiQ)
           `status: Registered`
           bian-reference:  Loan.PrincipalPaymentsSchedule.PaymentPeriod
-          iso-link-2:  [click-here] (https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_jF5agJh7EeOUgsYi4EbJBw/elements/_AcedgZh9EeORjJTqwAvaiQ)
+          iso-link-2:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_jF5agJh7EeOUgsYi4EbJBw/elements/_AcedgZh9EeORjJTqwAvaiQ)
       interestType:
         type: "string"
         example: "Prime plus"
@@ -981,35 +991,35 @@ definitions:
         description: |
           `status: Registered`
           bian-reference:  Loan.InterestPaymentsSchedule.RelatedPaymentObligation.PaymentOffset
-          iso-link-1:  [click-here] (https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_FDPCYMTGEeChad0JzLk7QA_-1131921749/elements/_FDPCacTGEeChad0JzLk7QA_-72272631)
+          iso-link-1:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_FDPCYMTGEeChad0JzLk7QA_-1131921749/elements/_FDPCacTGEeChad0JzLk7QA_-72272631)
           `status: Registered`
           bian-reference:  Loan.PrincipalPaymentsSchedule.RelatedPaymentObligation.PaymentOffset
-          iso-link-2:  [click-here] (https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_FDPCYMTGEeChad0JzLk7QA_-1131921749/elements/_FDPCacTGEeChad0JzLk7QA_-72272632)
+          iso-link-2:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_FDPCYMTGEeChad0JzLk7QA_-1131921749/elements/_FDPCacTGEeChad0JzLk7QA_-72272632)
       loanOutstandingBalance:
         type: "string"
         example: "250000"
         description: |
           `status: Registered`
           bian-reference:  Loan.PrincipalAmount
-          iso-link:  [click-here] (https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_mw1ysHJTEeWwf47VrwMaTQ/elements/_QLjLYHJUEeWwf47VrwMaTQ)
+          iso-link:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_mw1ysHJTEeWwf47VrwMaTQ/elements/_QLjLYHJUEeWwf47VrwMaTQ)
       loanOriginationDate:
-        $ref: 'https://api.swaggerhub.com/domains/BIAN/Common-Model/1.0.0#/definitions/ISODate'
+        $ref: 'https://api.swaggerhub.com/domains/BIAN/Common-Model/1.0.0#/definitions/ISODateTime'
       loanMaturityDate:
-        $ref: 'https://api.swaggerhub.com/domains/BIAN/Common-Model/1.0.0#/definitions/ISODate'
+        $ref: 'https://api.swaggerhub.com/domains/BIAN/Common-Model/1.0.0#/definitions/ISODateTime'
       collateralReference:
         type: "string"
         example: "COL232342"
         description: |
           `status: Registered`
           bian-reference:  LoanAgreement(asMasterAgreement).CollateralAgreement.Collateral
-          iso-link:  [click-here] (https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_E6vNtsTGEeChad0JzLk7QA_393174175/elements/_lrcFQC1hEeGp2Zpvgj9Dtw_-638405304)
+          iso-link:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_E6vNtsTGEeChad0JzLk7QA_393174175/elements/_lrcFQC1hEeGp2Zpvgj9Dtw_-638405304)
       collateralAllocation:
         type: "string"
         example: "$450000"
         description: |
           `status: Registered`
           bian-reference:  LoanAgreement(asMasterAgreement).CollateralAgreement.Collateral.Valuation
-          iso-link:  [click-here] (https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_FLlGEcTGEeChad0JzLk7QA_1826831344/elements/_AAYPOmIjEeGD28DQaMef-g)
+          iso-link:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_FLlGEcTGEeChad0JzLk7QA_1826831344/elements/_AAYPOmIjEeGD28DQaMef-g)
           general-info: value applied
       configurationOptions:
         type: "string"
@@ -1024,7 +1034,7 @@ definitions:
         description: |
           `status: Registered`
           bian-reference:  LoanAgreement.TradePartyRole(asBorrower).Player(asParty).Identification.TaxIdentificationNumber
-          iso-link:  [click-here] (https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_FEHzNMTGEeChad0JzLk7QA_-1382123937/elements/_FEHzNcTGEeChad0JzLk7QA_-1792766550)
+          iso-link:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_FEHzNMTGEeChad0JzLk7QA_-1382123937/elements/_FEHzNcTGEeChad0JzLk7QA_-1792766550)
           general-info: Tax-Id
       loanAccessTerms:
         type: "string"
@@ -1032,7 +1042,7 @@ definitions:
         description: |
           `status: Registered`
           bian-reference:  Loan(asDebt).PrePaymentSpeed
-          iso-link:  [click-here] (https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_Ff_P1MTGEeChad0JzLk7QA_-1514166912/elements/_Fg4nt8TGEeChad0JzLk7QA_742037711)
+          iso-link:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_Ff_P1MTGEeChad0JzLk7QA_-1514166912/elements/_Fg4nt8TGEeChad0JzLk7QA_742037711)
           `status: Provisionally Registered`
           bian-reference:  Loan.Limit
           general-info: allowed payments/withdrawals
@@ -1058,7 +1068,7 @@ definitions:
         description: |
           `status: Registered`
           bian-reference:  LoanAgreement.TradePartyRole(asBorrower)(asRole).Player(asParty)
-          iso-link:  [click-here] (https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_FNqJt8TGEeChad0JzLk7QA_-1317971633)
+          iso-link:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_FNqJt8TGEeChad0JzLk7QA_-1317971633)
           general-info: loan account holder
       payeeReference:
         type: "string"
@@ -1066,19 +1076,19 @@ definitions:
         description: |
           `status: Registered`
           bian-reference:  Loan.Disbursement(asPayment).PaymentPartyRole(asCreditorRole)
-          iso-link:  [click-here] (https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_EteNycTGEeChad0JzLk7QA_-591715083)
+          iso-link:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_EteNycTGEeChad0JzLk7QA_-591715083)
       payeeProductInstanceReference:
         type: "string"
         example: "8Z232342"
         description: |
           `status: Registered`
           bian-reference:  Loan.Disbursement(asPayment).PaymentPartyRole(asCreditorRole)(asPaymentPartyRole).CashAccount
-          iso-link-1:  [click-here] (https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_EvtpdMTGEeChad0JzLk7QA_-1076538618/elements/_EvtpdsTGEeChad0JzLk7QA_1151666800)
+          iso-link-1:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_EvtpdMTGEeChad0JzLk7QA_-1076538618/elements/_EvtpdsTGEeChad0JzLk7QA_1151666800)
           `status: Provisionally Registered`
           bian-reference:  Loan.LoanAccount
           `status: Registered`
           bian-reference:  Loan.LoanAccount
-          iso-link-2:  [click-here] (https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_E4gZEcTGEeChad0JzLk7QA_2010102988)
+          iso-link-2:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_E4gZEcTGEeChad0JzLk7QA_2010102988)
           general-info: payee account
       payeeBankReference:
         type: "string"
@@ -1086,13 +1096,13 @@ definitions:
         description: |
           `status: Registered`
           bian-reference:  Loan.Disbursement(asPayment).PaymentPartyRole(asCreditorAgentRole)
-          iso-link:  [click-here] (https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_EteNyMTGEeChad0JzLk7QA_-246206935)
+          iso-link:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_EteNyMTGEeChad0JzLk7QA_-246206935)
       amount:
         $ref: 'https://api.swaggerhub.com/domains/BIAN/Common-Model/1.0.0#/definitions/CurrencyAndAmount'
       currency:
         $ref: 'https://api.swaggerhub.com/domains/BIAN/Common-Model/1.0.0#/definitions/CurrencyCode'
       valueDate:
-        $ref: 'https://api.swaggerhub.com/domains/BIAN/Common-Model/1.0.0#/definitions/ISODate'
+        $ref: 'https://api.swaggerhub.com/domains/BIAN/Common-Model/1.0.0#/definitions/ISODateTime'
   ConsumerLoanDisbursementWithId:
     type: "object"
     properties:
@@ -1102,7 +1112,7 @@ definitions:
         description: |
           `status: Registered`
           bian-reference:  Loan.LoanAccount(asAccount).Identification
-          iso-link:  [click-here] (https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_E1rHgsTGEeChad0JzLk7QA_-1068889728/elements/_E1rHhcTGEeChad0JzLk7QA_-755813725)
+          iso-link:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_E1rHgsTGEeChad0JzLk7QA_-1068889728/elements/_E1rHhcTGEeChad0JzLk7QA_-755813725)
           general-info: loan account number
       disbursementOrderReference:
         type: "string"
@@ -1116,7 +1126,7 @@ definitions:
         description: |
           `status: Registered`
           bian-reference:  LoanAgreement.TradePartyRole(asBorrower)(asRole).Player(asParty)
-          iso-link:  [click-here] (https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_FNqJt8TGEeChad0JzLk7QA_-1317971633)
+          iso-link:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_FNqJt8TGEeChad0JzLk7QA_-1317971633)
           general-info: loan account holder
       payeeReference:
         type: "string"
@@ -1124,19 +1134,19 @@ definitions:
         description: |
           `status: Registered`
           bian-reference:  Loan.Disbursement(asPayment).PaymentPartyRole(asCreditorRole)
-          iso-link:  [click-here] (https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_EteNycTGEeChad0JzLk7QA_-591715083)
+          iso-link:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_EteNycTGEeChad0JzLk7QA_-591715083)
       payeeProductInstanceReference:
         type: "string"
         example: "PPIR72465237542"
         description: |
           `status: Registered`
           bian-reference:  Loan.Disbursement(asPayment).PaymentPartyRole(asCreditorRole)(asPaymentPartyRole).CashAccount
-          iso-link-1:  [click-here] (https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_EvtpdMTGEeChad0JzLk7QA_-1076538618/elements/_EvtpdsTGEeChad0JzLk7QA_1151666800)
+          iso-link-1:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_EvtpdMTGEeChad0JzLk7QA_-1076538618/elements/_EvtpdsTGEeChad0JzLk7QA_1151666800)
           `status: Provisionally Registered`
           bian-reference:  Loan.LoanAccount
           `status: Registered`
           bian-reference:  Loan.LoanAccount
-          iso-link-2:  [click-here] (https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_E4gZEcTGEeChad0JzLk7QA_2010102988)
+          iso-link-2:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_E4gZEcTGEeChad0JzLk7QA_2010102988)
           general-info: payee account
       payeeBankReference:
         type: "string"
@@ -1144,13 +1154,13 @@ definitions:
         description: |
           `status: Registered`
           bian-reference:  Loan.Disbursement(asPayment).PaymentPartyRole(asCreditorAgentRole)
-          iso-link:  [click-here] (https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_EteNyMTGEeChad0JzLk7QA_-246206935)
+          iso-link:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_EteNyMTGEeChad0JzLk7QA_-246206935)
       amount:
         $ref: 'https://api.swaggerhub.com/domains/BIAN/Common-Model/1.0.0#/definitions/CurrencyAndAmount'
       currency:
         $ref: 'https://api.swaggerhub.com/domains/BIAN/Common-Model/1.0.0#/definitions/CurrencyCode'
       valueDate:
-        $ref: 'https://api.swaggerhub.com/domains/BIAN/Common-Model/1.0.0#/definitions/ISODate'
+        $ref: 'https://api.swaggerhub.com/domains/BIAN/Common-Model/1.0.0#/definitions/ISODateTime'
   ConsumerLoanMaintenanceWithId:
     type: "object"
     properties:
@@ -1195,7 +1205,7 @@ definitions:
           bian-reference:  Loan.LoanAccount(asAccount).Adjustment(asCharges)
           `status: Registered`
           bian-reference:  Loan.LoanAccount(asAccount).Adjustment(asCharges)
-          iso-link:  [click-here] (https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_FMBK9sTGEeChad0JzLk7QA_-398781908)
+          iso-link:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_FMBK9sTGEeChad0JzLk7QA_-398781908)
           general-info: as booked against loan account
       penalties:
         type: "string"
@@ -1205,7 +1215,7 @@ definitions:
           bian-reference:  Loan.LoanAccount(asAccount).Adjustment(asPenalty)
           `status: Registered`
           bian-reference:  Loan.LoanAccount(asAccount).Adjustment(asPenalty)
-          iso-link:  [click-here] (https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_eEiTMHRkEeKIFpWttHerUA_-261419352)
+          iso-link:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_eEiTMHRkEeKIFpWttHerUA_-261419352)
           general-info: as booked against loan account
       collateralValuation:
         type: "string"
@@ -1213,7 +1223,7 @@ definitions:
         description: |
           `status: Registered`
           bian-reference:  LoanAgreement(asMasterAgreement).GovernedContract(asCollateralAgreement).Collateral.Valuation
-          iso-link:  [click-here] (https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_FLlGEcTGEeChad0JzLk7QA_1826831344/elements/_AAYPOmIjEeGD28DQaMef-g)
+          iso-link:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_FLlGEcTGEeChad0JzLk7QA_1826831344/elements/_AAYPOmIjEeGD28DQaMef-g)
           general-info: value confirmed as of date
   ConsumerLoanWithdrawalWithoutCommonAndId:
     type: "object"
@@ -1224,7 +1234,7 @@ definitions:
         description: |
           `status: Registered`
           bian-reference:  LoanAgreement.TradePartyRole(asBorrower)
-          iso-link:  [click-here] (https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_t-Si4N1CEeGAp99n2TKigg_-919072642)
+          iso-link:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_t-Si4N1CEeGAp99n2TKigg_-919072642)
           general-info: loan account holder
       payeeReference:
         type: "string"
@@ -1232,14 +1242,14 @@ definitions:
         description: |
           `status: Registered`
           bian-reference:  Loan.Withdrawal(asPayment).PaymentPartyRole(asCreditorRole)
-          iso-link:  [click-here] (https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_EteNycTGEeChad0JzLk7QA_-591715083)
+          iso-link:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_EteNycTGEeChad0JzLk7QA_-591715083)
       payeeProductInstanceReference:
         type: "string"
         example: "PPI7Z626234"
         description: |
           `status: Registered`
           bian-reference:  Loan.Withdrawal(asPayment).PaymentPartyRole(asCreditorRole)(asPaymentPartyRole).CashAccount
-          iso-link:  [click-here] (https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_EvtpdMTGEeChad0JzLk7QA_-1076538618/elements/_EvtpdsTGEeChad0JzLk7QA_1151666800)
+          iso-link:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_EvtpdMTGEeChad0JzLk7QA_-1076538618/elements/_EvtpdsTGEeChad0JzLk7QA_1151666800)
           general-info: payee account
       payeeBankReference:
         type: "string"
@@ -1247,13 +1257,13 @@ definitions:
         description: |
           `status: Registered`
           bian-reference:  Loan.Withdrawal(asPayment).PaymentPartyRole(asCreditorAgentRole)
-          iso-link:  [click-here] (https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_EteNyMTGEeChad0JzLk7QA_-246206935)
+          iso-link:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_EteNyMTGEeChad0JzLk7QA_-246206935)
       amount:
         $ref: 'https://api.swaggerhub.com/domains/BIAN/Common-Model/1.0.0#/definitions/CurrencyAndAmount'
       currency:
         $ref: 'https://api.swaggerhub.com/domains/BIAN/Common-Model/1.0.0#/definitions/CurrencyCode'
       valueDate:
-        $ref: 'https://api.swaggerhub.com/domains/BIAN/Common-Model/1.0.0#/definitions/ISODate'
+        $ref: 'https://api.swaggerhub.com/domains/BIAN/Common-Model/1.0.0#/definitions/ISODateTime'
   ConsumerLoanWithdrawalWithId:
     type: "object"
     properties:
@@ -1263,7 +1273,7 @@ definitions:
         description: |
           `status: Registered`
           bian-reference:  Loan.LoanAccount(asAccount).Identification
-          iso-link:  [click-here] (https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_E1rHgsTGEeChad0JzLk7QA_-1068889728/elements/_E1rHhcTGEeChad0JzLk7QA_-755813725)
+          iso-link:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_E1rHgsTGEeChad0JzLk7QA_-1068889728/elements/_E1rHhcTGEeChad0JzLk7QA_-755813725)
           general-info: loan account number
       withdrawlInstructionReference:
         type: "string"
@@ -1277,7 +1287,7 @@ definitions:
         description: |
           `status: Registered`
           bian-reference:  LoanAgreement.TradePartyRole(asBorrower)
-          iso-link:  [click-here] (https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_t-Si4N1CEeGAp99n2TKigg_-919072642)
+          iso-link:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_t-Si4N1CEeGAp99n2TKigg_-919072642)
           general-info: loan account holder
       payeeReference:
         type: "string"
@@ -1285,14 +1295,14 @@ definitions:
         description: |
           `status: Registered`
           bian-reference:  Loan.Withdrawal(asPayment).PaymentPartyRole(asCreditorRole)
-          iso-link:  [click-here] (https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_EteNycTGEeChad0JzLk7QA_-591715083)
+          iso-link:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_EteNycTGEeChad0JzLk7QA_-591715083)
       payeeProductInstanceReference:
         type: "string"
         example: "PPI7Z626234"
         description: |
           `status: Registered`
           bian-reference:  Loan.Withdrawal(asPayment).PaymentPartyRole(asCreditorRole)(asPaymentPartyRole).CashAccount
-          iso-link:  [click-here] (https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_EvtpdMTGEeChad0JzLk7QA_-1076538618/elements/_EvtpdsTGEeChad0JzLk7QA_1151666800)
+          iso-link:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_EvtpdMTGEeChad0JzLk7QA_-1076538618/elements/_EvtpdsTGEeChad0JzLk7QA_1151666800)
           general-info: payee account
       payeeBankReference:
         type: "string"
@@ -1300,13 +1310,13 @@ definitions:
         description: |
           `status: Registered`
           bian-reference:  Loan.Withdrawal(asPayment).PaymentPartyRole(asCreditorAgentRole)
-          iso-link:  [click-here] (https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_EteNyMTGEeChad0JzLk7QA_-246206935)
+          iso-link:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_EteNyMTGEeChad0JzLk7QA_-246206935)
       amount:
         $ref: 'https://api.swaggerhub.com/domains/BIAN/Common-Model/1.0.0#/definitions/CurrencyAndAmount'
       currency:
         $ref: 'https://api.swaggerhub.com/domains/BIAN/Common-Model/1.0.0#/definitions/CurrencyCode'
       valueDate:
-        $ref: 'https://api.swaggerhub.com/domains/BIAN/Common-Model/1.0.0#/definitions/ISODate'
+        $ref: 'https://api.swaggerhub.com/domains/BIAN/Common-Model/1.0.0#/definitions/ISODateTime'
   ConsumerLoanPaymentWithoutCommonAndId:
     type: "object"
     properties:
@@ -1322,14 +1332,14 @@ definitions:
         description: |
           `status: Registered`
           bian-reference:  Loan(asDebt).NextInterest.VariableInterest
-          iso-link:  [click-here] (https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_FXWRMsTGEeChad0JzLk7QA_-398781879/elements/_FXgCNMTGEeChad0JzLk7QA_-129916673)
+          iso-link:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_FXWRMsTGEeChad0JzLk7QA_-398781879/elements/_FXgCNMTGEeChad0JzLk7QA_-129916673)
       customerReference:
         type: "string"
         example: "C723674324"
         description: |
           `status: Registered`
           bian-reference:  Loan.LoanAccount(asAccount).AccountPartyRole(asAccountOwnerRole)
-          iso-link:  [click-here] (https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_EysE9cTGEeChad0JzLk7QA_-200588046)
+          iso-link:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_EysE9cTGEeChad0JzLk7QA_-200588046)
           general-info: loan account holder
       payerReference:
         type: "string"
@@ -1337,52 +1347,52 @@ definitions:
         description: |
           `status: Registered`
           bian-reference:  Loan.InterestPaymentsSchedule.RelatedPaymentObligation.PaymentOffset.PartyRole(asDebtorRole)
-          iso-link-1:  [click-here] (https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_Etn-xcTGEeChad0JzLk7QA_1929472526)
+          iso-link-1:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_Etn-xcTGEeChad0JzLk7QA_1929472526)
           `status: Registered`
           bian-reference:  Loan.PrincipalPaymentsSchedule.RelatedPaymentObligation.PaymentOffset.PartyRole(asDebtorRole)
-          iso-link-2:  [click-here] (https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_Etn-xcTGEeChad0JzLk7QA_1929472526)
+          iso-link-2:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_Etn-xcTGEeChad0JzLk7QA_1929472526)
       payerProductInstanceReference:
         type: "string"
         example: "PPI7Z626234"
         description: |
           `status: Registered`
           bian-reference:  Loan.InterestPaymentsSchedule.RelatedPaymentObligation.PaymentOffset.PartyRole(asDebtorRole)(asPaymentPartyRole).CashAccount
-          iso-link-1:  [click-here] (https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_EvtpdMTGEeChad0JzLk7QA_-1076538618/elements/_EvtpdsTGEeChad0JzLk7QA_1151666800)
+          iso-link-1:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_EvtpdMTGEeChad0JzLk7QA_-1076538618/elements/_EvtpdsTGEeChad0JzLk7QA_1151666800)
           `status: Registered`
           bian-reference:  Loan.PrincipalPaymentsSchedule.RelatedPaymentObligation.PaymentOffset.PartyRole(asDebtorRole)(asPaymentPartyRole).CashAccount
-          iso-link-2:  [click-here] (https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_EvtpdMTGEeChad0JzLk7QA_-1076538618/elements/_EvtpdsTGEeChad0JzLk7QA_1151666800)
+          iso-link-2:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_EvtpdMTGEeChad0JzLk7QA_-1076538618/elements/_EvtpdsTGEeChad0JzLk7QA_1151666800)
       payerBankReference:
         type: "string"
         example: "PBR7Z626234"
         description: |
           `status: Registered`
           bian-reference:  Loan.InterestPaymentsSchedule.RelatedPaymentObligation.PaymentOffset.PartyRole(asDebtorRole).CashAccount(asAccount).AccountPartyRole(asAccountServicerRole)
-          iso-link-1:  [click-here] (https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_Ey118MTGEeChad0JzLk7QA_1536519000)
+          iso-link-1:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_Ey118MTGEeChad0JzLk7QA_1536519000)
           `status: Registered`
           bian-reference:  Loan.PrincipalPaymentsSchedule.RelatedPaymentObligation.PaymentOffset.PartyRole(asDebtorRole).CashAccount(asAccount).AccountPartyRole(asAccountServicerRole)
-          iso-link-2:  [click-here] (https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_Ey118MTGEeChad0JzLk7QA_1536519000)
+          iso-link-2:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_Ey118MTGEeChad0JzLk7QA_1536519000)
       amount:
         $ref: 'https://api.swaggerhub.com/domains/BIAN/Common-Model/1.0.0#/definitions/CurrencyAndAmount'
       currency:
         $ref: 'https://api.swaggerhub.com/domains/BIAN/Common-Model/1.0.0#/definitions/CurrencyCode'
       valueDate:
-        $ref: 'https://api.swaggerhub.com/domains/BIAN/Common-Model/1.0.0#/definitions/ISODate'
+        $ref: 'https://api.swaggerhub.com/domains/BIAN/Common-Model/1.0.0#/definitions/ISODateTime'
       stagedRepaymentStatement:
         type: "string"
         description: |
           `status: Registered`
           bian-reference:  Loan.InterestPaymentsSchedule.RelatedPaymentObligation.PaymentOffset
-          iso-link-1:  [click-here] (https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_FDPCYMTGEeChad0JzLk7QA_-1131921749/elements/_FDPCacTGEeChad0JzLk7QA_-72272631)
+          iso-link-1:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_FDPCYMTGEeChad0JzLk7QA_-1131921749/elements/_FDPCacTGEeChad0JzLk7QA_-72272631)
           `status: Registered`
           bian-reference:  Loan.PrincipalPaymentsSchedule.RelatedPaymentObligation.PaymentOffset
-          iso-link-2:  [click-here] (https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_FDPCYMTGEeChad0JzLk7QA_-1131921749/elements/_FDPCacTGEeChad0JzLk7QA_-72272631)
+          iso-link-2:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_FDPCYMTGEeChad0JzLk7QA_-1131921749/elements/_FDPCacTGEeChad0JzLk7QA_-72272631)
       loanOutstandingBalance:
         type: "number"
         example: "$340000"
         description: |
           `status: Registered`
           bian-reference:  Loan.PrincipalAmount
-          iso-link:  [click-here] (https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_mw1ysHJTEeWwf47VrwMaTQ/elements/_QLjLYHJUEeWwf47VrwMaTQ)
+          iso-link:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_mw1ysHJTEeWwf47VrwMaTQ/elements/_QLjLYHJUEeWwf47VrwMaTQ)
   ConsumerLoanPaymentsWithId:
     type: "object"
     properties:
@@ -1392,7 +1402,7 @@ definitions:
         description: |
           `status: Registered`
           bian-reference:  Loan.LoanAccount(asAccount).Identification
-          iso-link:  [click-here] (https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_E1rHgsTGEeChad0JzLk7QA_-1068889728/elements/_E1rHhcTGEeChad0JzLk7QA_-755813725)
+          iso-link:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_E1rHgsTGEeChad0JzLk7QA_-1068889728/elements/_E1rHhcTGEeChad0JzLk7QA_-755813725)
           general-info: loan account number
       paymentTransactionReference:
         type: "string"
@@ -1412,14 +1422,14 @@ definitions:
         description: |
           `status: Registered`
           bian-reference:  Loan(asDebt).NextInterest.VariableInterest
-          iso-link:  [click-here] (https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_FXWRMsTGEeChad0JzLk7QA_-398781879/elements/_FXgCNMTGEeChad0JzLk7QA_-129916673)
+          iso-link:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_FXWRMsTGEeChad0JzLk7QA_-398781879/elements/_FXgCNMTGEeChad0JzLk7QA_-129916673)
       customerReference:
         type: "string"
         example: "C723674324"
         description: |
           `status: Registered`
           bian-reference:  Loan.LoanAccount(asAccount).AccountPartyRole(asAccountOwnerRole)
-          iso-link:  [click-here] (https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_EysE9cTGEeChad0JzLk7QA_-200588046)
+          iso-link:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_EysE9cTGEeChad0JzLk7QA_-200588046)
           general-info: loan account holder
       payerReference:
         type: "string"
@@ -1427,52 +1437,52 @@ definitions:
         description: |
           `status: Registered`
           bian-reference:  Loan.InterestPaymentsSchedule.RelatedPaymentObligation.PaymentOffset.PartyRole(asDebtorRole)
-          iso-link-1:  [click-here] (https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_Etn-xcTGEeChad0JzLk7QA_1929472526)
+          iso-link-1:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_Etn-xcTGEeChad0JzLk7QA_1929472526)
           `status: Registered`
           bian-reference:  Loan.PrincipalPaymentsSchedule.RelatedPaymentObligation.PaymentOffset.PartyRole(asDebtorRole)
-          iso-link-2:  [click-here] (https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_Etn-xcTGEeChad0JzLk7QA_1929472526)
+          iso-link-2:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_Etn-xcTGEeChad0JzLk7QA_1929472526)
       payerProductInstanceReference:
         type: "string"
         example: "PPI7Z626234"
         description: |
           `status: Registered`
           bian-reference:  Loan.InterestPaymentsSchedule.RelatedPaymentObligation.PaymentOffset.PartyRole(asDebtorRole)(asPaymentPartyRole).CashAccount
-          iso-link-1:  [click-here] (https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_EvtpdMTGEeChad0JzLk7QA_-1076538618/elements/_EvtpdsTGEeChad0JzLk7QA_1151666800)
+          iso-link-1:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_EvtpdMTGEeChad0JzLk7QA_-1076538618/elements/_EvtpdsTGEeChad0JzLk7QA_1151666800)
           `status: Registered`
           bian-reference-2:  Loan.PrincipalPaymentsSchedule.RelatedPaymentObligation.PaymentOffset.PartyRole(asDebtorRole)(asPaymentPartyRole).CashAccount
-          iso-link:  [click-here] (https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_EvtpdMTGEeChad0JzLk7QA_-1076538618/elements/_EvtpdsTGEeChad0JzLk7QA_1151666800)
+          iso-link:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_EvtpdMTGEeChad0JzLk7QA_-1076538618/elements/_EvtpdsTGEeChad0JzLk7QA_1151666800)
       payerBankReference:
         type: "string"
         example: "PBR7Z626234"
         description: |
           `status: Registered`
           bian-reference:  Loan.InterestPaymentsSchedule.RelatedPaymentObligation.PaymentOffset.PartyRole(asDebtorRole).CashAccount(asAccount).AccountPartyRole(asAccountServicerRole)
-          iso-link-1:  [click-here] (https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_Ey118MTGEeChad0JzLk7QA_1536519000)
+          iso-link-1:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_Ey118MTGEeChad0JzLk7QA_1536519000)
           `status: Registered`
           bian-reference:  Loan.PrincipalPaymentsSchedule.RelatedPaymentObligation.PaymentOffset.PartyRole(asDebtorRole).CashAccount(asAccount).AccountPartyRole(asAccountServicerRole)
-          iso-link-2:  [click-here] (https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_Ey118MTGEeChad0JzLk7QA_1536519000)
+          iso-link-2:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_Ey118MTGEeChad0JzLk7QA_1536519000)
       amount:
         $ref: 'https://api.swaggerhub.com/domains/BIAN/Common-Model/1.0.0#/definitions/CurrencyAndAmount'
       currency:
         $ref: 'https://api.swaggerhub.com/domains/BIAN/Common-Model/1.0.0#/definitions/CurrencyCode'
       valueDate:
-        $ref: 'https://api.swaggerhub.com/domains/BIAN/Common-Model/1.0.0#/definitions/ISODate'
+        $ref: 'https://api.swaggerhub.com/domains/BIAN/Common-Model/1.0.0#/definitions/ISODateTime'
       stagedRepaymentStatement:
         type: "string"
         description: |
           `status: Registered`
           bian-reference:  Loan.InterestPaymentsSchedule.RelatedPaymentObligation.PaymentOffset
-          iso-link-1:  [click-here] (https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_FDPCYMTGEeChad0JzLk7QA_-1131921749/elements/_FDPCacTGEeChad0JzLk7QA_-72272631)
+          iso-link-1:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_FDPCYMTGEeChad0JzLk7QA_-1131921749/elements/_FDPCacTGEeChad0JzLk7QA_-72272631)
           `status: Registered`
           bian-reference:  Loan.PrincipalPaymentsSchedule.RelatedPaymentObligation.PaymentOffset
-          iso-link-2:  [click-here] (https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_FDPCYMTGEeChad0JzLk7QA_-1131921749/elements/_FDPCacTGEeChad0JzLk7QA_-72272631)
+          iso-link-2:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_FDPCYMTGEeChad0JzLk7QA_-1131921749/elements/_FDPCacTGEeChad0JzLk7QA_-72272631)
       loanOutstandingBalance:
         type: "number"
         example: "$340000"
         description: |
           `status: Registered`
           bian-reference:  Loan.PrincipalAmount
-          iso-link:  [click-here] (https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_mw1ysHJTEeWwf47VrwMaTQ/elements/_QLjLYHJUEeWwf47VrwMaTQ)
+          iso-link:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_mw1ysHJTEeWwf47VrwMaTQ/elements/_QLjLYHJUEeWwf47VrwMaTQ)
   ConsumerLoanRestructuringWithoutCommonAndId:
     type: "object"
     properties:
@@ -1593,7 +1603,7 @@ definitions:
       transactionPrincipleAmount:
         $ref: 'https://api.swaggerhub.com/domains/BIAN/Common-Model/1.0.0#/definitions/CurrencyAndAmount'
       transactionDateTime:
-        $ref: 'https://api.swaggerhub.com/domains/BIAN/Common-Model/1.0.0#/definitions/ISODate'
+        $ref: 'https://api.swaggerhub.com/domains/BIAN/Common-Model/1.0.0#/definitions/ISODateTime'
   ConsumerLoanRecordRequest:
     type: "object"
     properties:
@@ -1610,7 +1620,7 @@ definitions:
           core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
         properties: {}
       recordingRecordDateTime:
-        $ref: 'https://api.swaggerhub.com/domains/BIAN/Common-Model/1.0.0#/definitions/ISODate'
+        $ref: 'https://api.swaggerhub.com/domains/BIAN/Common-Model/1.0.0#/definitions/ISODateTime'
       empolyeeBusinessUnitReference:
         type: "string"
         example: "Ref6798"
