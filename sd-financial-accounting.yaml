@@ -3,17 +3,17 @@ info:
   version: "4.0.0"
   title: 'Service Domain - Financial Accounting'
   description: >
-        ## Description:
+        ## Service Domain Role :
 
-        Financial booking of all business activity in an ledger/sub-ledger accounting structure/hierarchy according to the appropriate chart of accounts
+        This service domain handles financial booking of all business activity in a ledger/sub-ledger accounting structure/hierarchy according to the appropriate chart of accounts.
 
         ## Example of use:
 
-        The corporate financial reports are assembled to schedule for accounting and general reporting needs
+        A business unit posts its financial transactions to the sub ledger at the end of the working day
 
         ## General comment:
 
-        This service domain handles the posting of business activity to the bank's financial accounts. These will typically be double entry ledgers and can include multiple levels of consolidation (sub-ledgers) The financial accounts conform to chart of accounts and appropriate GAP rules and are rolled up into the GL as part of the financial statements
+        This service domain handles the posting of business activity to the bank's financial accounts. These will typically be double entry ledgers and can include multiple levels of consolidation (sub-ledgers) The financial accounts conform to the bank's chart of accounts and appropriate GAP rules and are rolled up into the GL as part of the financial statements
 
 
 host: virtserver.swaggerhub.com
@@ -323,11 +323,7 @@ definitions:
           core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
         example: "general"
       reportingPeriod:
-        type: string
-        description: |
-          `status: Not Mapped`
-          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Duration
-        example: "01/01/2015 - 01/01/2016"
+        $ref: 'https://api.swaggerhub.com/domains/BIAN/Common-Model/1.0.0#/definitions/DateTimePeriod'
       report:
         type: object
         description: |
@@ -356,12 +352,7 @@ definitions:
           core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Amount
           general-info: credit/debit pair
       bookingValueDate:
-        type: string
-        format: date
-        description: |
-          `status: Not Mapped`
-          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Date
-        example: "09/01/2016"
+        $ref: 'https://api.swaggerhub.com/domains/BIAN/Common-Model/1.0.0#/definitions/ISODateTime'
       bookingResult:
         type: object
         description: |
@@ -398,12 +389,7 @@ definitions:
           core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Amount
           general-info: credit/debit pair
       bookingValueDate:
-        type: string
-        format: date
-        description: |
-          `status: Not Mapped`
-          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Date
-        example: "09/01/2016"
+        $ref: 'https://api.swaggerhub.com/domains/BIAN/Common-Model/1.0.0#/definitions/ISODateTime'
       bookingResult:
         type: string
         description: |

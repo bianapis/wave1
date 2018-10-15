@@ -1,0 +1,346 @@
+---
+swagger: '2.0'
+info:
+  version: "4.0.0"
+  title: Service Domain - Credit Management
+  description: >
+       ## Service Domain Role: 
+     
+       This service domain provides a bank-wide/oversight function to qualify credit pricing for offered products and services to reflect the bank's appetite to write the business. This decision can override the standard product pricing procedure.
+    
+       ## Example of use:
+      
+       A corporate loan is presented for credit management pricing decisioning prior to completion of the offer process
+       
+       ## General comment:
+       
+       This service domain supports a central bank credit management function that maintains an overarching credit perspective across all bank activity. Transactions can be re-priced to factor in this credit perspective
+
+host: virtserver.swaggerhub.com
+basePath: /BIAN/credit-management/2.0.0
+schemes:
+- https
+consumes:
+- application/json
+produces:
+- application/json
+paths:
+  /credit-management/credit-position-measurement/{cr-reference-id}/recording:
+  # /credit-management/credit-position-measurement/{cr-reference-id}/transaction-reportings/{bq-reference-id}/recording:
+    post:
+      tags:
+      - record
+      summary: Record details updating a monitored position
+      description: Record Transaction details impacting tracked positions
+      operationId: recordCreditPositionMeasurement
+      parameters:
+      - name: cr-reference-id
+        in: path
+        description: managedPositionReference
+        required: true
+        type: string
+      # - name: bq-reference-id
+      #   in: path
+      #   description: Association Directory Entry Reference
+      #   required: true
+      #   type: string
+      - in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/CreditManagementRecordRequest'
+      responses:
+        201:
+          description: A new Record is created.
+          schema:
+            $ref: '#/definitions/CreditManagementRecordResponse'
+            
+  /credit-management/credit-position-measurement/{cr-reference-id}/requisition:
+    put:
+      tags:
+      - request
+      summary: Request that the credit position is recalculated/refreshed
+      description: Update the credit position
+      operationId: requestCreditPositionMeasurementUpdate
+      parameters:
+      - name: cr-reference-id
+        in: path
+        description: managedPositionReference
+        required: true
+        type: string
+      - in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/EvaluationNoId'
+      responses:
+        200:
+          description: Successful
+          schema:
+            $ref: '#/definitions/Evaluation'
+            
+  /credit-management/credit-position-measurement/requisition:
+    post:
+      tags:
+      - request
+      summary: Request that the credit position is recalculated/refreshed
+      description: Create the credit position
+      operationId: requestCreditPositionMeasurementCreate
+      parameters:
+      - in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/EvaluationNoId'
+      responses:
+        201:
+          description: Created new credit position successfully
+          schema:
+            $ref: '#/definitions/Evaluation'
+             
+  /credit-management/credit-position-measurement/:
+    get:
+      tags: 
+      - retrieve
+      operationId: RetrieveRegulatoryReportingReferenceIds
+      summary: Retrieve Regulatory Reporting Control Record Ids available within the Service Domain.
+      produces: 
+      - application/json
+      parameters: 
+      - name : collection-filter
+        in: query
+        description: Filter to refine the result set. ex- 'customer-reference = CR123'
+        type: string 
+      responses:
+        200:
+          description: Successfully retrieved
+          schema:
+            type: array
+            items:
+              type: string
+            example: [CR56735, CR6743]
+            
+  /credit-management/credit-position-measurement/{cr-reference-id}:
+    get:
+      tags:
+      - retrieve
+      summary: Retrieve a monitored position measurement/status report
+      operationId: retrieveCreditPositionMeasurement
+      parameters:
+      - name: cr-reference-id
+        in: path
+        description: managedPositionReference
+        required: true
+        type: string
+      responses:
+        200:
+          description: successful
+          schema:
+            $ref: '#/definitions/CreditPosition'
+          
+definitions:
+  CreditManagementRecordRequest:
+    type: object
+    properties:
+      managedPositionType:
+        type: string
+        example: consolidated customer exposure
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      transactionReference:
+        type: string
+        example: 754626
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      transactionType:
+        type: string
+        example: TT5
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      transactionRecord:
+        type: object
+        example: 35473
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+      transactionRecordAmount:
+        type: string
+        example: $5000
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Amount
+      transactionRecordValueDate:
+        type: string
+        example: 01/01/2018
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Date
+      transactionRecordBookingEntity:
+        type: string
+        example: 45734763
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+          
+  CreditManagementRecordResponse:
+    type: object
+    properties:
+      managedPositionReference:
+        type: string
+        example: 457342
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      managedPositionType:
+        type: string
+        example: consolidated customer exposure
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      transactionReference:
+        type: string
+        example: 754626
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      transactionType:
+        type: string
+        example: TT5
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      transactionRecord:
+        type: object
+        example: 35473
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+      transactionRecordAmount:
+        type: string
+        example: $5000
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Amount
+      transactionRecordValueDate:
+        type: string
+        example: 01/01/2018
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Date
+      transactionRecordBookingEntity:
+        type: string
+        example: 45734763
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      recordingRecordReference:
+        type: string
+        example: "RRR4678"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      recordingRecordStatus:
+        type: string
+        example: "Applied"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+        
+  EvaluationNoId:
+    type: object
+    properties:
+      managedPositionImpactAssessmentReference:
+        type: string
+        example: 5672
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      proposedTransactionReference:
+        type: string
+        example: 34645
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      proposedTransactionRecord:
+        type: object
+        example: 76853
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+      proposedPositionImpactAssessment:
+        type: string
+        example: 43567
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+        
+  Evaluation:
+    type: object
+    properties:
+      managedPositionReference:
+        type: string
+        example: 34346
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      managedPositionImpactAssessmentReference:
+        type: string
+        example: 5672
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      proposedTransactionReference:
+        type: string
+        example: 34645
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      proposedTransactionRecord:
+        type: object
+        example: 76853
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+      proposedPositionImpactAssessment:
+        type: string
+        example: 43567
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+  
+  CreditPosition:
+    type: object
+    properties:
+      managedPositionReference:
+        type: string
+        example: 464362
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      managedPositionType:
+        type: string
+        example: consolidated customer exposure
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      customerReference:
+        type: string
+        example: 4573
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      sectorReference:
+        type: string
+        example: 7864
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      productReference:
+        type: string
+        example: 34346
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier

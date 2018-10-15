@@ -392,7 +392,6 @@ definitions:
           core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier      
       regulatoryAdvisoryTaskRecord:
         type: object
-        example: ROTR3201
         description: |
           `status: Not Mapped`
           core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary    

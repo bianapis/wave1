@@ -216,24 +216,24 @@ definitions:
         type: string
         example: CSRE3456
         description: |
-          `status: Supplied`
+          `status: Not Mapped`
           core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier           
       collateralType:
         type: string
         example: Residential
         description: |
-          `status: Supplied`
+          `status: Not Mapped`
           core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text         
       collateralAssetRecord:
-        type: string
+        type: object
         description: |
-          `status: Supplied`
+          `status: Not Mapped`
           core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary         
       collateralAssetAllocationProfile:
         type: string
         example: DomesticResidence
         description: |
-          `status: Supplied`
+          `status: Not Mapped`
           core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text    
   CollateralAssetBaseWithId:
     type: object
@@ -242,30 +242,30 @@ definitions:
         type: string
         example: CARE2215 
         description: |
-          `status: Supplied`
+          `status: Not Mapped`
           core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier      
       customerReference:
         type: string
         example: CSRE3456
         description: |
-          `status: Supplied`
+          `status: Not Mapped`
           core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier      
       collateralType:
         type: string
         example: Residential
         description: |
-          `status: Supplied`
+          `status: Not Mapped`
           core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text    
       collateralAssetRecord:
-        type: string
+        type: object
         description: |
-          `status: Supplied`
+          `status: Not Mapped`
           core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary    
       collateralAssetAllocationProfile:
         type: string
         example: DomesticResidence 
         description: |
-          `status: Supplied`
+          `status: Not Mapped`
           core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text    
   CollateralAllocationManagementRecordRequest:
     type: object
@@ -274,24 +274,24 @@ definitions:
         type: string
         example: BehaviorModelPerformanceFeedback
         description: |
-          `status: Supplied`
+          `status: Not Mapped`
           core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text    
       recordingRecord:
         type: object
         description: |
-          `status: Supplied`
+          `status: Not Mapped`
           core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary    
       recordingRecordDateTime:
         type: string
-        example: 2018-08-28T09:00:00
+        example: "2018-08-28T09:00:00"
         description: |
-          `status: Supplied`
+          `status: Not Mapped`
           core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::DateTime    
       empolyeeBusinessUnitReference:
         type: string
         example: EBUR6798
         description: |
-          `status: Supplied`
+          `status: Not Mapped`
           core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier      
   CollateralAllocationManagementRecordResponse:
     type: object
@@ -300,13 +300,13 @@ definitions:
         type: string
         example: CRRR3456
         description: |
-          `status: Supplied`
+          `status: Not Mapped`
           core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier      
       recordingRecordStatus:
         type: string
         example: Applied/InProcess/Pending
         description: |
-          `status: Supplied`
+          `status: Not Mapped`
           core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text    
   AllocationBase:
     type: object
@@ -315,95 +315,95 @@ definitions:
         type: string
         example: earmark for future allocation
         description: |
-          `status: Supplied`
+          `status: Not Mapped`
           core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text    
       productInstanceReference:
         type: string
         example: PIR123
         description: |
-          `status: Supplied`
+          `status: Not Mapped`
           core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier      
       customerOfferReference:
         type: string
         example: COFR0390
         description: |
-          `status: Supplied`
+          `status: Not Mapped`
           core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier      
       customerReference:
         type: string
         example: CSRE3456  
         description: |
-          `status: Supplied`
+          `status: Not Mapped`
           core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier      
       collateralEarmarkAmount:
         type: string
         example: $50000
         description: |
-          `status: Supplied`
+          `status: Not Mapped`
           core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Amount    
       collateralEarmarkDuration:
         type: string
         example: 12Months
         description: |
-          `status: Supplied`
+          `status: Not Mapped`
           core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Duration    
       collateralAllocationAmount:
         type: string
         example: $300000 
         description: |
-          `status: Supplied`
+          `status: Not Mapped`
           core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Amount    
       collateralAllocationDuration:
         type: string
         example: 12Months
         description: |
-          `status: Supplied`
+          `status: Not Mapped`
           core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Duration    
       collateralAllocationRecallAmount:
         type: string
         example: $10000
         description: |
-          `status: Supplied`
+          `status: Not Mapped`
           core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Amount    
       collateralAllocationRecallTimetable:
         type: string
         description: |
-          `status: Supplied`
+          `status: Not Mapped`
           core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Time      
       collateralAllocationRecallResult:
         type: object
         description: |
-          `status: Supplied`
+          `status: Not Mapped`
           core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text      
       collateralAssetValuation:
         type: string
         example: $3000000
         description: |
-          `status: Supplied`
+          `status: Not Mapped`
           core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Value    
       collateralAssetValuationDate:
         type: string
         example: "2018-07-31"
         description: |
-          `status: Supplied`
+          `status: Not Mapped`
           core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Date    
       collateralAssetLoanToValueRatio:
         type: string
         example: 2:1
         description: |
-          `status: Supplied`
+          `status: Not Mapped`
           core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Ratio    
       collateralAssetAllocationProfile:
         type: string
         example: DomesticResidence
         description: |
-          `status: Supplied`
+          `status: Not Mapped`
           core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text    
       collateralAssetAllocationState:
         type: string
         example: Pending confirmation
         description: |
-          `status: Supplied`
+          `status: Not Mapped`
           core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text    
   AllocationBaseWithId:
     type: object
@@ -412,110 +412,110 @@ definitions:
         type: string
         example: CAR123
         description: |
-          `status: Supplied`
+          `status: Not Mapped`
           core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier      
       allocationRequestReference:
         type: string
         example: ARR123
         description: |
-          `status: Supplied`
+          `status: Not Mapped`
           core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier      
       requestedAllocationRequestType:
         type: string
         example: earmark for future allocation
         description: |
-          `status: Supplied`
+          `status: Not Mapped`
           core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text      
       productInstanceReference:
         type: string
         example: PIR123
         description: |
-          `status: Supplied`
+          `status: Not Mapped`
           core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier      
       customerOfferReference:
         type: string
         example: COFR0390
         description: |
-          `status: Supplied`
+          `status: Not Mapped`
           core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier      
       customerReference:
         type: string
         example: CSRE3456  
         description: |
-          `status: Supplied`
+          `status: Not Mapped`
           core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier      
       collateralEarmarkAmount:
         type: string
         example: $50000
         description: |
-          `status: Supplied`
+          `status: Not Mapped`
           core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Amount    
       collateralEarmarkDuration:
         type: string
         example: 12Months
         description: |
-          `status: Supplied`
+          `status: Not Mapped`
           core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Duration    
       collateralAllocationAmount:
         type: string
         example: $300000  
         description: |
-          `status: Supplied`
+          `status: Not Mapped`
           core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Amount    
       collateralAllocationDuration:
         type: string
         example: 12Months
         description: |
-          `status: Supplied`
+          `status: Not Mapped`
           core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Duration    
       collateralAllocationRecallAmount:
         type: string
         example: $10000
         description: |
-          `status: Supplied`
+          `status: Not Mapped`
           core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Amount    
       collateralAllocationRecallTimetable:
         type: string
         description: |
-          `status: Supplied`
+          `status: Not Mapped`
           core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Time    
       collateralAllocationRecallResult:
         type: object
         description: |
-          `status: Supplied`
+          `status: Not Mapped`
           core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text    
       collateralAssetValuation:
         type: string
         example: $3000000
         description: |
-          `status: Supplied`
+          `status: Not Mapped`
           core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Value    
       collateralAssetValuationDate:
         type: string
         example: "2018-07-31"
         description: |
-          `status: Supplied`
+          `status: Not Mapped`
           core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Date    
       collateralAssetLoanToValueRatio:
         type: string
         example: 2:1
         description: |
-          `status: Supplied`
+          `status: Not Mapped`
           core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Ratio    
       collateralAssetAllocationProfile:
         type: string
         example: DomesticResidence
         description: |
-          `status: Supplied`
+          `status: Not Mapped`
           core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text    
       collateralAssetAllocationState:
         type: string
         example: Pending confirmation
         description: |
-          `status: Supplied`
+          `status: Not Mapped`
           core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text    
       collateralAllocationRequestResult:
         type: object
         description: |
-          `status: Supplied`
+          `status: Not Mapped`
           core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text

@@ -1,0 +1,744 @@
+swagger: '2.0'
+info:
+  version: "4.0.0"
+  title: 'Service Domain - Regulatory Reporting'
+  description: >
+        ## Service Domain Role:
+        
+        This service domain administers and orchestrates the tasks required to meet the bank's regulatory reporting obligations.
+
+        ## Example of use:
+        
+        Trading activity is reported to the exchange to comply with regulatory reporting requirements
+        
+        ## General comment:
+        
+        The service domain handles the bank's regulatory reporting obligations. This includes the consolidation and presentation of information in regulatory reports and disclosures and handling the response to regulatory requests for information as part of ongoing regulator relations. It also handles the scheduled consolidation, formatting and delivery of the range of compliance reports including 'on-line' trade reporting and after the event transaction analysis reporting
+
+# Added by API Auto Mocking Plugin
+host: virtserver.swaggerhub.com
+basePath: /BIAN/sd-regulatory-reporting/1.0.0
+schemes:
+ - https
+
+consumes:
+- application/json
+produces:
+- application/json
+ 
+paths:
+#<----------------update---------------->
+  /regulatory-reporting/regulatory-compliance-administrative-plan/{cr-reference-id}/updation:
+    put:
+      tags:
+      - update
+      summary: Update regulatory compliance administered details/activity records
+      description: Update specific regulatory reporting records
+      operationId: updateRegulatoryComplianceAdministrativePlan
+      parameters:
+      - name: cr-reference-id
+        in: path
+        description: Regulatory Report Reference (refers to reports included in the schedule)
+        required: true
+        type: string
+      # - $ref: '#/parameters/controlRecordReference'
+      - in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/RegulatoryReportingWithoutId'
+          # $ref: 'https://api.swaggerhub.com/domains/BIAN/model-3/1.0.0#/definitions/RegulatoryReportingWithoutId'
+      responses:
+        200:
+          description: successful
+          schema:
+           $ref: '#/definitions/RegulatoryReporting'
+           #$ref: 'https://api.swaggerhub.com/domains/BIAN/model-3/1.0.0#/definitions/RegulatoryReporting'
+
+  #there was no bq in consolidation, so it will be subset of cr
+  /regulatory-reporting/regulatory-compliance-administrative-plan/{cr-reference-id}/recording:
+    post:
+      tags:
+      - record
+      operationId: recordRegulatoryComplianceAdministrativePlan
+      summary: Record regulatory compliance time/effort/cost activity records
+      description: Record regulatory compliance time/effort/cost activity records
+      parameters:
+      - name: cr-reference-id
+        in: path
+        description: Regulatory Report Reference (refers to reports included in the schedule)
+        required: true
+        type: string
+      # - $ref: '#/parameters/controlRecordReference'
+      - in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/RegulatoryReportingRecordRequest'
+          #$ref: 'https://api.swaggerhub.com/domains/BIAN/model-3/1.0.0#/definitions/RegulatoryReportingRecordRequest'
+      responses:
+        201:
+          description: A new record is created
+          schema:
+            $ref: '#/definitions/RegulatoryReportingRecordResponse'
+            #$ref: 'https://api.swaggerhub.com/domains/BIAN/model-3/1.0.0#/definitions/RegulatoryReportingRecordResponse'
+
+  /regulatory-reporting/regulatory-compliance-administrative-plan/{cr-reference-id}/requisition:
+    put:
+      tags:
+      - request
+      summary: Request action/response by the regulatory compliance unit
+      description: Update existing enquiry action
+      operationId: requestRegulatoryComplianceAdministrativePlanUpdate
+      parameters:
+      - name: cr-reference-id
+        in: path
+        description: Regulatory Report Reference (refers to reports included in the schedule)
+        required: true
+        type: string
+      # - $ref: '#/parameters/controlRecordReference'
+      - in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/RegulatoryReportingWithoutId'
+          #$ref: 'https://api.swaggerhub.com/domains/BIAN/model-3/1.0.0#/definitions/RegulatoryReportingWithoutId'
+      responses:
+        200:
+          description: successful
+          schema:
+            $ref: '#/definitions/RegulatoryReporting'
+            #$ref: 'https://api.swaggerhub.com/domains/BIAN/model-3/1.0.0#/definitions/RegulatoryReporting'
+    post:
+      tags:
+      - request
+      summary: Request action/response by the regulatory compliance unit
+      description: Create a new enquiry action
+      operationId: requestRegulatoryComplianceAdministrativePlanCreate
+      parameters:
+      - name: cr-reference-id
+        in: path
+        description: Regulatory Report Reference (refers to reports included in the schedule)
+        required: true
+        type: string
+      # - $ref: '#/parameters/controlRecordReference'
+      - in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/RegulatoryReportingWithoutId'
+          #$ref: 'https://api.swaggerhub.com/domains/BIAN/model-3/1.0.0#/definitions/RegulatoryReportingWithoutId'
+      responses:
+        201:
+          description: Created a new regulatory reporting
+          schema:
+            $ref: '#/definitions/RegulatoryReporting'
+            #$ref: 'https://api.swaggerhub.com/domains/BIAN/model-3/1.0.0#/definitions/RegulatoryReporting'          
+
+  /regulatory-reporting/regulatory-compliance-administrative-plan/{cr-reference-id}:
+    get:
+      tags:
+      - retrieve
+      summary: Retrieve regulatory compliance administrative activity reports
+      operationId: retrieveRegulatoryComplianceAdministrativePlan
+      parameters:
+      - name: cr-reference-id
+        in: path
+        description: Regulatory Report Reference (refers to reports included in the schedule)
+        required: true
+        type: string
+      # - $ref: '#/parameters/controlRecordReference'
+      responses:
+        200:
+          description: successful
+          schema:
+            $ref: '#/definitions/RegulatoryReportingWithBq'
+            #$ref: 'https://api.swaggerhub.com/domains/BIAN/model-3/1.0.0#/definitions/RegulatoryReportingWithBq'
+  /regulatory-reporting/regulatory-compliance-administrative-plan/{cr-reference-id}/consolidations:
+    get:
+      tags:
+      - retrieve
+      summary: Retrieve Consolidation
+      operationId: Retrieve Consolidation
+      parameters:
+      - name: cr-reference-id
+        in: path
+        description: Regulatory Report Reference (refers to reports included in the schedule)
+        required: true
+        type: string
+      # - $ref: '#/parameters/controlRecordReference'
+      responses:
+        200:
+          description: successful
+          schema:
+            $ref: '#/definitions/RegulatoryReportingConsolidation'
+            #$ref: 'https://api.swaggerhub.com/domains/BIAN/model-3/1.0.0#/definitions/RegulatoryReportingConsolidation'
+  /regulatory-reporting/regulatory-compliance-administrative-plan/{cr-reference-id}/authorings:
+    get:
+      tags:
+      - retrieve
+      summary: Retrieve Authoring
+      operationId: Retrieve Authoring
+      parameters:
+      - name: cr-reference-id
+        in: path
+        description: Regulatory Report Reference (refers to reports included in the schedule)
+        required: true
+        type: string
+      # - $ref: '#/parameters/controlRecordReference'
+      responses:
+        200:
+          description: successful
+          schema:
+            $ref: '#/definitions/RegulatoryReportingAuthoring'
+            #$ref: 'https://api.swaggerhub.com/domains/BIAN/model-3/1.0.0#/definitions/RegulatoryReportingAuthoring'
+  /regulatory-reporting/regulatory-compliance-administrative-plan/{cr-reference-id}/enquiries/{bq-reference-id}:
+    get:
+      tags:
+      - retrieve
+      summary: Retrieve Enquiries
+      operationId: Retrieve Enquiries
+      parameters:
+      - name: cr-reference-id
+        in: path
+        description: Regulatory Report Reference (refers to reports included in the schedule)
+        required: true
+        type: string
+      # - $ref: '#/parameters/controlRecordReference'
+      - name: bq-reference-id
+        in: path
+        description: Regulatory Enquiry Task Reference (task to address regulator's reporting request)
+        required: true
+        type: string
+      responses:
+        200:
+          description: successful
+          schema:
+            $ref: '#/definitions/RegulatoryReportingEnquiries'
+            #$ref: 'https://api.swaggerhub.com/domains/BIAN/model-3/1.0.0#/definitions/RegulatoryReportingEnquiries'
+
+parameters:
+  controlRecordReference:
+    name: cr-reference-id
+    in: path
+    description: Regulatory Report Reference (refers to reports included in the schedule)
+    required: true
+    type: string
+    
+definitions:
+  ########################### <Regulatory Reporting> ###################
+  RegulatoryReporting:
+    properties:
+      regulatoryReportingSchedule:
+        type: string
+        example: "reporting schedule"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::DateTime
+      regulatoryReportingTaskReference:
+        type: string
+        example: 8Z232342
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      reportingPeriod:
+        type: string
+        example: "from Jan 1, 2018 to Jan 5, 2018"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Duration
+      regulatoryReport:
+        type: string
+        example: "SR 18-2 Interagency Statement on Accounting and Reporting Implications\
+          \ of the New Tax Law. Ref. https://www.federalreserve.gov/supervisionreg/topics/reporting.htm"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      regulatoryReportType:
+        type: string
+        example: "SR 18-2, SR 13-11 Ref. https://www.federalreserve.gov/supervisionreg/topics/reporting.htm"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      regulatoryAuthorityReference:
+        type: string
+        example: 8Z232342
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      businessLegalEntityReference:
+        type: string
+        example: 8Z232342
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      documentReference:
+        type: string
+        example: 8Z232342
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      businessUnitReference:
+        type: string
+        example: 8Z232342
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+    title: "RegulatoryReporting"
+  RegulatoryReportingWithoutId:
+    type: object
+    properties:
+      regulatoryReportingSchedule:
+        type: string
+        example: "reporting schedule"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::DateTime
+      regulatoryReportingTaskReference:
+        type: string
+        example: 8Z232342
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      reportingPeriod:
+        type: string
+        example: "from Jan 1, 2018 to Jan 5, 2018"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Duration
+      regulatoryReport:
+        type: string
+        example: "SR 18-2 Interagency Statement on Accounting and Reporting Implications\
+          \ of the New Tax Law. Ref. https://www.federalreserve.gov/supervisionreg/topics/reporting.htm"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      regulatoryReportType:
+        type: string
+        example: "SR 18-2, SR 13-11 Ref. https://www.federalreserve.gov/supervisionreg/topics/reporting.htm"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      regulatoryAuthorityReference:
+        type: string
+        example: 8Z232342
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      businessLegalEntityReference:
+        type: string
+        example: 8Z232342
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      documentReference:
+        type: string
+        example: 8Z232342
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      businessUnitReference:
+        type: string
+        example: 8Z232342
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+    title: "RegulatoryReportingWithoutId"
+  RegulatoryReportingWithBq:
+    properties:
+      regulatoryReportingSchedule:
+        type: string
+        example: "reporting schedule"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::DateTime
+      regulatoryReportingTaskReference:
+        type: string
+        example: 8Z232342
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      reportingPeriod:
+        type: string
+        example: "from Jan 1, 2018 to Jan 5, 2018"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Duration
+      regulatoryReport:
+        type: string
+        example: "SR 18-2 Interagency Statement on Accounting and Reporting Implications\
+          \ of the New Tax Law. Ref. https://www.federalreserve.gov/supervisionreg/topics/reporting.htm"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      regulatoryReportType:
+        type: string
+        example: "SR 18-2, SR 13-11 Ref. https://www.federalreserve.gov/supervisionreg/topics/reporting.htm"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      regulatoryAuthorityReference:
+        type: string
+        example: 8Z232342
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      businessLegalEntityReference:
+        type: string
+        example: 8Z232342
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      documentReference:
+        type: string
+        example: 8Z232342
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      businessUnitReference:
+        type: string
+        example: 8Z232342
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      consolidation:
+        $ref: "#/definitions/RegulatoryReportingConsolidationWithoutCommon"
+      authoring:
+        $ref: "#/definitions/RegulatoryReportingAuthoringWithoutCommon"
+      enquiries:
+        $ref: "#/definitions/RegulatoryReportingEnquiriesWithoutCommon"
+    title: "RegulatoryReportingWithBq"
+  RegulatoryReportingConsolidationWithoutCommon:
+    properties:
+      productServiceReference:
+        type: string
+        example: 8Z232342
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      customerReference:
+        type: string
+        example: 8Z232342
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      transactionRecords:
+        type: string
+        example: "transaction receipt"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      businessUnitEmployeeReference:
+        type: string
+        example: 8Z232342
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      regulationReference:
+        type: string
+        example: 8Z232342
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      regulatoryReportingTaskRecord:
+        type: string
+        example: "trasaction receipt"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      regulationComplianceReportingRequirements:
+        type: string
+        example: "financial, tax"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+    title: "RegulatoryReportingConsolidationWithoutCommon"
+  RegulatoryReportingConsolidation:
+    properties:
+      productServiceReference:
+        type: string
+        example: 8Z232342
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      customerReference:
+        type: string
+        example: 8Z232342
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      transactionRecords:
+        type: string
+        example: "transaction receipt"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      businessUnitEmployeeReference:
+        type: string
+        example: 8Z232342
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      regulationReference:
+        type: string
+        example: 8Z232342
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      regulatoryReportingTaskRecord:
+        type: string
+        example: "trasaction receipt"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      regulationComplianceReportingRequirements:
+        type: string
+        example: "financial, tax"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      regulatoryReportingTaskReference:
+        type: string
+        example: 8Z232342
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      reportingPeriod:
+        type: string
+        example: "from Jan 1, 2018 to Jan 5, 2018"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Duration
+      regulatoryReportType:
+        type: string
+        example: "SR 18-2, SR 13-11 Ref. https://www.federalreserve.gov/supervisionreg/topics/reporting.htm"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+    title: "RegulatoryReportingConsolidation"
+  RegulatoryReportingAuthoringWithoutCommon:
+    properties:
+      transactionRecords:
+        type: string
+        example: "transaction receipt"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      regulatoryReportingTaskRecord:
+        type: string
+        example: "transaction receipt"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+    title: "RegulatoryReportingAuthoringWithoutCommon"
+  RegulatoryReportingAuthoring:
+    properties:
+      transactionRecords:
+        type: string
+        example: "transaction receipt"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      regulatoryReportingTaskRecord:
+        type: string
+        example: "transaction receipt"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      regulatoryReportingTaskReference:
+        type: string
+        example: 8Z232342
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      reportingPeriod:
+        type: string
+        example: "from Jan 1, 2018 to Jan 5, 2018"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Duration
+      regulatoryReport:
+        type: string
+        example: "SR 18-2 Interagency Statement on Accounting and Reporting Implications\
+          \ of the New Tax Law. Ref. https://www.federalreserve.gov/supervisionreg/topics/reporting.htm"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      regulatoryReportType:
+        type: string
+        example: "SR 18-2, SR 13-11 Ref. https://www.federalreserve.gov/supervisionreg/topics/reporting.htm"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      regulatoryReportReference:
+        type: string
+        example: 8Z232342
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      documentReference:
+        type: string
+        example: 8Z232342
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      businessUnitReference:
+        type: string
+        example: 8Z232342
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+    title: "RegulatoryReportingAuthoring"
+  RegulatoryReportingEnquiriesWithoutCommon:
+    properties:
+      productServiceReference:
+        type: string
+        example: 8Z232342
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      regulatoryEnquiryTaskResult:
+        type: string
+        example: "pass"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      regulatoryEnquiry:
+        type: string
+        example: "Tax, Debt"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      customerReference:
+        type: string
+        example: 8Z232342
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      transactionRecords:
+        type: string
+        example: "transaction receipt"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      regulatoryEnquiryTaskRecord:
+        type: string
+        example: "Enquiry report"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      regulatoryEnquiryTaskReference:
+        type: string
+        example: 8Z232342
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+    title: "RegulatoryReportingEnquiriesWithoutCommon"
+  RegulatoryReportingEnquiries:
+    properties:
+      productServiceReference:
+        type: string
+        example: 8Z232342
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      regulatoryEnquiryTaskResult:
+        type: string
+        example: "pass"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      regulatoryEnquiry:
+        type: string
+        example: "Tax, Debt"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      customerReference:
+        type: string
+        example: 8Z232342
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      transactionRecords:
+        type: string
+        example: "transaction receipt"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      regulatoryEnquiryTaskRecord:
+        type: string
+        example: "Enquiry report"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      regulatoryEnquiryTaskReference:
+        type: string
+        example: 8Z232342
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      regulatoryAuthorityReference:
+        type: string
+        example: 8Z232342
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      documentReference:
+        type: string
+        example: 8Z232342
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      businessUnitReference:
+        type: string
+        example: 8Z232342
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+    title: "RegulatoryReportingEnquiries"
+  RegulatoryReportingRecordRequest:
+    type: object
+    properties:
+      regulatoryReportingRecordingRecordType:
+        type: string
+        example: "Behavior model performance feedback"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      regulatoryReportingRecordingRecord:
+        type: object
+        properties: {}
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+      recordingRecordDateTime:
+        type: string
+        format: date-time
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::DateTime
+      empolyeeBusinessUnitReference:
+        type: string
+        example: "Ref6798"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+    title: "RegulatoryReportingRecordRequest"
+  RegulatoryReportingRecordResponse:
+    type: object
+    properties:
+      regulatoryReportingRecordingRecordReference:
+        type: string
+        example: "RRR3456"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      recordingRecordStatus:
+        type: string
+        example: "Applied"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+    title: "RegulatoryReportingRecordResponse"
+########################### </Regulatory Reporting> ###################

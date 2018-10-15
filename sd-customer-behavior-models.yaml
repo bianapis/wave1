@@ -3,17 +3,18 @@ info:
   version: "4.0.0"
   title: 'Service Domain - Customer Behavior Models'
   description: >
-        ## Description:
+        ## Service Domain Role :
 
-        Assess the coverage and impact of the portfolio of customer behavior models and develop and refine the portfolio of available models
+
+        This service domain handles the design and maintenance of a portfolio of customer behavior models that might be used in all aspects of customer relationship development, sales, servicing and product fulfillment
 
         ## Example of use:
-
-        Decision scientists track the use and impact of behavior models and make design improvements to enhance their accuracy
+        
+        A customer 'propensity to buy model' algorithm is updated to take account of additional transaction utilization data that is available
 
         ## General comment:
 
-        This service domain handles the development, maintenance and assessment of the collection of customer behavior models that are deployed across the bank. This includes more general analyses for sales, operational behavior, relationship development and specific behaviors such as credit and fraud detection. Customer can cover consumer, corporate and merchant behavior for some behavior models/scanners
+        This service domain handles the development, maintenance and continual assessment and refinement of the collection of customer behavior models that are deployed across the bank. This includes more general analyses for sales, operational behavior, relationship development and specific behaviors such as credit and fraud detection. Customer can cover consumer, corporate and merchant behavior for some behavioral models/scanners
 
 host: virtserver.swaggerhub.com
 basePath: /BIAN/sd-customer-behavior-models/2.0.1
@@ -746,6 +747,7 @@ definitions:
           core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
       customerBehaviorModelTestReference:
         type: string
+        example: "CBMT089234"
         description: |
           `status: Not Mapped`
           core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
@@ -758,6 +760,7 @@ definitions:
           core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
       customerBehaviorModelTestHarnessReference:
         type: string
+        example: "CBMTH209384"
         description: |
           `status: Not Mapped`
           core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
@@ -804,6 +807,7 @@ definitions:
           core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
       complianceTestReference:
         type: string
+        example: "CT23874"
         description: |
           `status: Not Mapped`
           core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
@@ -988,7 +992,7 @@ definitions:
           general-info: tracks completion of deployment actions
       customerBehaviorModelUsage:
         type: object
-        example: 2 production deployments
+        example: production deployments
         description: |
           `status: Not Mapped`
           core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary

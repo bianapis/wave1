@@ -80,7 +80,7 @@ paths:
       tags: 
       - request
       operationId: requestCollateralAssetAdministrativePlanCreate
-      summary: Create a handling request
+      summary: Create a handling request for a collateral asset
       description: Create a handling request for a collateral asset
       produces: 
       - application/json
@@ -103,7 +103,7 @@ paths:
       tags: 
       - request
       operationId: requestCollateralAssetAdministrativePlanUpdate
-      summary: Update a handling request
+      summary: Update a handling request for a collateral asset
       description: Update a handling request for a collateral asset
       produces: 
       - application/json
@@ -126,11 +126,11 @@ paths:
             $ref: '#/definitions/CollateralAssetBaseWithId'
             
   /collateral-asset-administration/collateral-asset-administrative-plan/{cr-reference-id}/valuations/requisition:
-    post:
+    put:
       tags: 
       - request
       operationId: requestCollateralAssetAdministrativePlanValuationCreate
-      summary: Create new collateral asset administration valuation
+      summary: Create a new collateral asset administration valuation
       description: Create a new valuation
       produces: 
       - application/json
@@ -140,25 +140,18 @@ paths:
         description: Collateral Asset Reference
         required: true
         type: string
-      - in: body
-        name: body
-        description: Create Collateral Asset Administration Valuation Request Payload
-        required: true
-        schema: 
-          $ref: 'https://api.swaggerhub.com/domains/BIAN/model-1/1.0.0#/definitions/ValuationBase'
-        
       responses:
-        201:
-          description: Created a valuation successfully 
+        200:
+          description: Refresh a valuation successfully 
           schema:
-            $ref: 'https://api.swaggerhub.com/domains/BIAN/model-1/1.0.0#/definitions/ValuationBaseWithIdAndRoot'            
+            $ref: '#/definitions/CollateralAssetAdministrationRefreshResponse'            
   
   /collateral-asset-administration/collateral-asset-administrative-plan/{cr-reference-id}/valuations/{bq-reference-id}/requisition:
     put:
       tags: 
       - request
       operationId: requestCollateralAssetAdministrativePlanValuationUpdate
-      summary: Update existing collateral asset administration valuation
+      summary: Update an existing collateral asset administration valuation
       description: Update an exising valuation
       produces: 
       - application/json
@@ -178,20 +171,20 @@ paths:
         description: Update Collateral Asset Administration Valuation Request Payload
         required: true
         schema: 
-          $ref: 'https://api.swaggerhub.com/domains/BIAN/model-1/1.0.0#/definitions/ValuationBase'
+          $ref: '#/definitions/CollateralAssetAdministrationRefreshResponse'
         
       responses:
         200:
-          description: Updated a valuation successfully 
+          description: Refresh a valuation successfully  
           schema:
-            $ref: 'https://api.swaggerhub.com/domains/BIAN/model-1/1.0.0#/definitions/ValuationBaseWithIdAndRoot'
+            $ref: '#/definitions/ValuationBaseWithIdAndRoot'
   
   /collateral-asset-administration/collateral-asset-administrative-plan/{cr-reference-id}/captures/requisition:
     post:
       tags: 
       - request
       operationId: requestCollateralAssetAdministrativePlanCaptureCreate
-      summary: Register collateral asset
+      summary: The initial registration of the collateral asset
       description: The initial registration of the collateral asset
       produces: 
       - application/json
@@ -219,7 +212,7 @@ paths:
       tags: 
       - request
       operationId: requestCollateralAssetAdministrativePlanCaptureUpdate
-      summary: Register/capture details of asset
+      summary: Register/capture details of an asset
       description: Update details of an existing asset
       produces: 
       - application/json
@@ -431,7 +424,7 @@ paths:
         200:
           description: Successfully retrieved collateral asset administration update information. 
           schema:
-            $ref: 'https://api.swaggerhub.com/domains/BIAN/model-1/1.0.0#/definitions/UpdateBaseWithIdAndRoot'
+            $ref: '#/definitions/UpdateBaseWithIdAndRoot'
   
   /collateral-asset-administration/collateral-asset-administrative-plan/{cr-reference-id}/reportings/{bq-reference-id}:
    
@@ -1349,3 +1342,97 @@ definitions:
           description: |
             `status: Not Mapped`
             core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Date
+            
+
+  
+    UpdateBaseWithIdAndRoot: 
+        type: object
+        properties: 
+          collateralAssetReference:
+           type: string
+           example: CARE2215
+           description: |
+              `status: Not Mapped`
+              core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier     
+          collateralAssetUpdateReference:
+           type: string
+           example: CAUR9659
+           description: |
+              `status: Not Mapped`
+              core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier     
+          collateralAssetUpdateResult:
+           type: string
+           example: Success/Failure
+           description: |
+              `status: Not Mapped`
+              core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text     
+          collateralAssetType:
+           type: string
+           example: Residential/Industrial/Commercial
+           description: |
+              `status: Not Mapped`
+              core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text     
+          collateralAssetProperties:
+           type: string
+           example: UnderConstruction/Repair/Inhabited/Vacant
+           description: |
+              `status: Not Mapped`
+              core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text     
+          collateralAssetDescription:
+           type: string
+           example: DomesticResidence/Manufacturing/Retail
+           description: |
+              `status: Not Mapped`
+              core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text     
+          collateralAssetTitle:
+           type: string
+           example: Blossom Inc./Budding Tech Pvt Ltd
+           description: |
+              `status: Not Mapped`
+              core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Name     
+          collateralAssetLocation:
+           type: string
+           example: 221B Baker Street Kingston NewYork United States
+           description: |
+              `status: Not Mapped`
+              core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Name     
+          collateralAssetJurisdiction:
+           type: string
+           example: NewYork United States
+           description: |
+              `status: Not Mapped`
+              core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Name     
+          collateralAssetDocumentReference:
+           type: string
+           example: CADR8734
+           description: |
+              `status: Not Mapped`
+              core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier       
+          collateralAssetDocumentType:
+           type: string
+           example: SecurityAgreement/CollateralAgreement/PledgeAgreement/MortageAgreement
+           description: |
+              `status: Not Mapped`
+              core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text     
+          collateralAssetOwnership:
+           type: string
+           example: Sole/Joint/Tenancy/Community
+           description: |
+              `status: Not Mapped`
+              core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Name     
+          collateralAssetInterestedParties:
+           type: string
+           example: Custodian/Insurer
+           description: |
+              `status: Not Mapped`
+              core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+              
+    CollateralAssetAdministrationRefreshResponse:
+      type: object
+      properties:
+        refreshStatus:
+          type: string
+          example: Refreshed
+          description: |
+            `status: Not Mapped`
+            core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Text

@@ -432,7 +432,7 @@ definitions:
         example: personal
         description: |
           `status: Not Mapped`
-          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Indicator    
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text    
       loanAmount:
         type: string
         example: $500000
@@ -486,7 +486,7 @@ definitions:
         example: 234662
         description: |
           `status: Not Mapped`
-          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Name    
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Name    
       taxReference:
         type: string
         example: TR343
@@ -504,7 +504,7 @@ definitions:
         example: active
         description: |
           `status: Not Mapped`
-          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Indicator    
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text    
       stagedRepaymentTransactionReference:
         type: string
         example: 65332
@@ -597,7 +597,7 @@ definitions:
         example: success
         description: |
           `status: Not Mapped`
-          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Indicator    
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text    
       paymentTransactionReference:
         type: string
         example: 7553
@@ -621,7 +621,7 @@ definitions:
         example: active
         description: |
           `status: Not Mapped`
-          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Indicator    
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text    
 
   ContactWithIds:
     type: object
@@ -661,7 +661,7 @@ definitions:
         example: 5687
         description: |
           `status: Not Mapped`
-          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Duration    
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::DateTime    
       dunningMessagescript:
         type: string
         example: 567
@@ -679,7 +679,7 @@ definitions:
         example: success
         description: |
           `status: Not Mapped`
-          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Indicator    
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text    
       paymentTransactionReference:
         type: string
         example: 7553
@@ -703,7 +703,7 @@ definitions:
         example: active
         description: |
           `status: Not Mapped`
-          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Indicator    
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text    
 
   RecordRequest:
     type: object
@@ -713,7 +713,7 @@ definitions:
         example: 7733
         description: |
           `status: Not Mapped`
-          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Indicator    
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text    
       recordingRecord:
         type: object
         description: |
@@ -746,7 +746,7 @@ definitions:
         example: success
         description: |
           `status: Not Mapped`
-          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Indicator    
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text    
 
   Record:
     type: object
@@ -768,7 +768,7 @@ definitions:
         example: 7733
         description: |
           `status: Not Mapped`
-          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Indicator    
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text    
       recordingRecord:
         type: object
         description: |
@@ -785,7 +785,7 @@ definitions:
         example: success
         description: |
           `status: Not Mapped`
-          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Indicator    
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text    
       employeebusinessUnitReference:
         type: string
         example: 567843

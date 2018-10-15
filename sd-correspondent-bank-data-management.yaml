@@ -80,36 +80,12 @@ paths:
         description: Correspondent Bank Reference
         required: true
         type: string
-      - in: body
-        name: CorrespondentBank
-        required: true
-        schema:
-          $ref: '#/definitions/CorrespondentBankWithoutId'
       responses:
         200:
           description: Successfully requested a refresh/check of a correspondent bank directory entry.
           schema:
-            $ref: '#/definitions/CorrespondentBank'
-  /correspondent-bank-data-management/correspondent-bank-directory-entry/requisition:
-    post:
-      tags:
-      - request
-      summary: 'Request directory entries'
-      description: Request a refresh/check of a correspondent bank directory entry
-      operationId: requestCorrespondentBankDirectoryCreate
-      produces:
-      - application/json
-      parameters:
-      - in: body
-        name: CorrespondentBank
-        required: true
-        schema:
-          $ref: '#/definitions/CorrespondentBankWithoutId'
-      responses:
-        201:
-          description: Successfully created a refresh/check of a correspondent bank directory entry.
-          schema:
-            $ref: '#/definitions/CorrespondentBank'
+            $ref: '#/definitions/CorrespondentBankDataManagementRefreshResponse'
+ 
   /correspondent-bank-data-management/correspondent-bank-directory-entry/{cr-reference-id}/recording:
     post:
       tags:
@@ -158,6 +134,58 @@ paths:
               type: string
             example: [CAR123, CAR345]
 
+ 
+  /correspondent-bank-data-management/correspondent-bank-directory-entry/behavior-qualifiers/:
+    get:
+      tags: 
+      - retrieve
+      operationId: RetrieveCorrespondentBankDataManagementBehaviorQualifiers
+      summary: Retrieve BQ names
+      produces: 
+      - application/json
+      responses:
+        200:
+          description: successful
+          schema:
+            type: array
+            items:
+              type: string
+            example: [Bank, use, occupancy] 
+            
+  /location-data-management/location-directory/{cr-reference-id}/{behavior-qualifier}/:
+    get:
+      tags: 
+      - retrieve
+      operationId: RetrieveBehaviorQualifierReferenceIds
+      summary: Retrieve BQ Ids
+      produces: 
+      - application/json
+      parameters: 
+      - name : cr-reference-id
+        in: path
+        description: Correspondent Bank Data Directory Entry Reference
+        required: true
+        type: string
+      - name : behavior-qualifier
+        in: path
+        description: Behavior Qualifier Name. ex- occupancy
+        required: true
+        type: string
+      - name : collection-filter
+        in: query
+        description: Filter to refine the result set. ex- 'BankType == business'
+        type: string
+      responses:
+        200:
+          description: successful
+          schema:
+            type: array
+            items:
+              type: string
+            example: [BKER345, BKER789, BKER456] 
+  
+  
+  
   /correspondent-bank-data-management/correspondent-bank-directory-entry/{cr-reference-id}:
     get:
       tags:
@@ -178,7 +206,53 @@ paths:
           description: Successfully retrieved correspondent bank directory.
           schema:
             $ref: '#/definitions/CorrespondentBank'
+            
+  /correspondent-bank-data-management/correspondent-bank-directory-entry/{cr-reference-id}/Directories/{bq-reference-id}:
+    get:
+      tags:
+      - retrieve
+      summary: 'Retrieve reporting'
+      description: Retrieve a correspondent bank directory record/report
+      operationId: retrieveCorrespondentBankDirectoryRecord
+      produces:
+      - application/json
+      parameters:
+      - name: cr-reference-id
+        in: path
+        description: Correspondent Bank Reference
+        required: true
+        type: string
+      - name: bq-reference-id
+        in: path
+        description: Correspondent Bank Reference
+        required: true
+        type: string  
+      responses:
+        200:
+          description: Successfully retrieved correspondent bank directory.
+          schema:
+            $ref: '#/definitions/CorrespondentBankDataManagementDirectory'          
+            
 definitions:
+  CorrespondentBankDataManagementDirectory: 
+      type: object
+      properties: 
+        correspondentBankDirectoryReference:
+          type: string
+          description: |
+            `status: Not Mapped`
+            core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier  
+        correspondentBankDirectoryVersion: 
+          type: string
+          description: |
+            `status: Not Mapped`
+            core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text    
+        correspondentBankDirectoryConfiguration: 
+          type: string
+          description: |
+            `status: Not Mapped`
+            core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text    
+  
   CorrespondentBankWithoutId:
     type: object
     properties:
@@ -354,3 +428,13 @@ definitions:
         description: |
           `status: Not Mapped`
           core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+          
+  CorrespondentBankDataManagementRefreshResponse:
+      type: object
+      properties:
+        refreshStatus:
+          type: string
+          example: Refreshed
+          description: |
+            `status: Not Mapped`
+            core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Text

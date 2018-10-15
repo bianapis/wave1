@@ -56,7 +56,7 @@ paths:
       tags:
       - execute
       summary: "Updates a inbound access record"
-      operationId: executeVoiceChannelOperatingSessionInboundVoiceAccessUpdate
+      operationId: executeVoiceChannelOperatingSessionInboundUpdate
       consumes:
       - application/json
       produces:
@@ -89,7 +89,7 @@ paths:
       tags:
       - execute
       summary: "Created a inbound access record"
-      operationId: executeVoiceChannelOperatingSessionInboundVoiceAccessCreate
+      operationId: executeVoiceChannelOperatingSessionInboundCreate
       consumes:
       - application/json
       produces:
@@ -117,7 +117,7 @@ paths:
       tags:
       - execute
       summary: "Updates a outbound access record"
-      operationId: executeEBranchChannelOperatingSessionOutboundWebAccessUpdate
+      operationId: executeVoiceChannelOperatingSessionOutboundUpdate
       consumes:
       - application/json
       produces:
@@ -150,7 +150,7 @@ paths:
       tags:
       - execute
       summary: "Creates a channel outbound web access"
-      operationId: executeEBranchChannelOperatingSessionOutboundWebAccessCreate
+      operationId: executeVoiceChannelOperatingSessionOutboundCreate
       consumes:
       - application/json
       produces:
@@ -178,7 +178,7 @@ paths:
       tags:
       - request
       summary: "Updates a issues record"
-      operationId: requestVoiceChannelOperatingSessionUpdate
+      operationId: requestVoiceChannelOperatingSessionIssueUpdate
       consumes:
       - application/json
       produces:

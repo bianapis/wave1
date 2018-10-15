@@ -1,0 +1,682 @@
+---
+swagger: '2.0'
+info:
+  version: "4.0.0"
+  title: 'Service Domain - Corporate Treasury'
+  description: >
+        ## Service Domain Role :
+ 
+        This service domain orchestrates the consolidation and presentation of summary transaction details in order to assemble a timely and accurate view of the overall treasury position of the Bank at any one time. It is also responsible for determining the different interest and exchange rates applied to different products and services within the bank.
+
+
+        ## Example of use:
+        
+        The Bank Treasury consolidates trading and lending activity across its corporate clients to develop timely views of current positions and maturity projections
+        
+        ## General comment:
+        
+        This service domain manages and administers the consolidation of transaction details and summaries in order to derive and report on the array of consolidated positions managed by Treasury. This includes the assembly of related maturity ladders (cash flow projections) and managing tactical and strategic funding activity for the bank. It is also responsible for tracking prevailing market conditions and determining the various bank rates that should be applied throughout the bank
+
+host: virtserver.swaggerhub.com
+# basePath: /BIAN/corporate-treasury/1.0.0
+schemes:
+ - https
+consumes:
+- application/json
+produces:
+- application/json
+
+paths:
+  /corporate-treasury/corporate-treasury-management-plan/{cr-reference-id}/recording:
+    post:
+      tags:
+      - record
+      summary: Record information against the corporate treasury management plan
+      description: Record a Asset/liability transaction
+      operationId: recordCorporateTreasuryManagementPlan
+      parameters: 
+      - name : cr-reference-id
+        in: path
+        description: Treasury Plan Reference 
+        required: true
+        type: string
+      - in: body
+        name: body
+        required: true
+        description: Record request payload
+        schema:
+          $ref: '#/definitions/CorporateTreasuryRecordRequest'
+      responses:
+        201:
+          description: Created a Corporate Treasury record successfully
+          schema:
+            $ref: '#/definitions/CorporateTreasuryRecordResponse'
+  /corporate-treasury/corporate-treasury-management-plan/{cr-reference-id}/requisition:
+    put:
+      tags:
+      - request
+      summary: Request an action offered corporate treasury management
+      description: Updating existing treasury plan
+      operationId: requestCorporateTreasuryManagementPlanUpdate
+      parameters: 
+      - name : cr-reference-id
+        in: path
+        description: Treasury Plan Reference 
+        required: true
+        type: string
+      - in: body
+        name: body
+        required: true
+        description: Request treasury plan request payload
+        schema:
+          $ref: '#/definitions/TreasuryPlanBase'
+      responses:
+        200:
+          description: Updated a Corporate Treasury record successfully
+          schema:
+            $ref: '#/definitions/TreasuryPlanBaseWithId'
+  
+  /corporate-treasury/corporate-treasury-management-plan/requisition:
+    post:
+      tags:
+      - request
+      summary: Create an action offered corporate treasury management
+      description: Create new treasury plan
+      operationId: requestCorporateTreasuryManagementPlanCreate
+      parameters:
+      - in: body
+        name: body
+        required: true
+        description: Request treasury plan request payload
+        schema:
+          $ref: '#/definitions/TreasuryPlanBase'
+      responses:
+        201:
+          description: Created a Corporate Treasury record successfully
+          schema:
+            $ref: '#/definitions/TreasuryPlanBaseWithId'
+################################  RETRIEVE  #############################################
+  
+  /corporate-treasury/corporate-treasury-management-plan:
+    get:
+      tags: 
+      - retrieve
+      operationId: RetrieveCorporateTreasuryReferenceIds
+      summary: Retrieve Corporate Treasury Control Record IDs available within the Service Domain.
+      parameters: 
+      - name : collection-filter
+        in: query
+        description: Filter to refine the result set. ex- 'treasury-plan-goals = goal'
+        type: string 
+      responses:
+        200:
+          description: successful
+          schema:
+            type: array
+            items:
+              type: string
+            example: [TPR123, TPR345]
+            
+  /corporate-treasury/corporate-treasury-management-plan/behavior-qualifiers:
+    get:
+      tags: 
+      - retrieve
+      operationId: RetrieveCorporateTreasuryBehaviorQualifiers
+      summary: Retrieve all Behaviour Qualifier names in the Corporate Treasury Service Domain.
+      responses:
+        200:
+          description: Retrieved Corporate Treasury Behaviour Qualifier names successfully
+          schema:
+            type: array
+            items:
+              type: string
+            example: [Record, Liquidity, TacticalFunding, StrategicFunding, Securitization, BankRates]
+  /corporate-treasury/corporate-treasury-management-plan/{cr-reference-id}/{behavior-qualifier}:
+    get:
+      tags: 
+      - retrieve
+      operationId: RetrieveBehaviorQualifierReferenceIds
+      summary: Retrieve Behaviour Qualifier Reference IDs of the given Behavior Qulifier.
+      parameters: 
+      - name : cr-reference-id
+        in: path
+        description: Treasury Plan Reference 
+        required: true
+        type: string
+      - name : behavior-qualifier
+        in: path
+        description: Behavior Qualifier Name. ex- record
+        required: true
+        type: string
+      - name : collection-filter
+        in: query
+        description: Filter to refine the result set. ex- 'employee-business-unit-reference = EBUR123'
+        type: string
+      responses:
+        200:
+          description: successful
+          schema:
+            type: array
+            items:
+              type: string
+            example: [R345, R789, R456]
+            
+  /corporate-treasury/corporate-treasury-management-plan/{cr-reference-id}:
+    get:
+      tags:
+      - retrieve
+      summary: Retrieve a corporate treasury management report
+      operationId: retrieveCorporateTreasuryManagementPlan
+      parameters:
+      - name : cr-reference-id
+        in: path
+        description: Treasury Plan Reference 
+        required: true
+        type: string
+      responses:
+        200:
+          description: Retrieved Corporate Treasury Management plan successfully
+          schema:
+            $ref: '#/definitions/TreasuryPlanBaseWithId'
+            
+  /corporate-treasury/corporate-treasury-management-plan/{cr-reference-id}/liquidities/{bq-reference-id}:
+    get:
+      tags: 
+      - retrieve
+      operationId: RetrieveLiquidity
+      summary: Retrieve Liquidity
+      parameters:
+      - name : cr-reference-id
+        in: path
+        description: Treasury Plan Reference 
+        required: true
+        type: string
+      - name : bq-reference-id
+        in: path
+        description: Enterprise Liquidity/Cash Management Analysis
+        required: true
+        type: string
+      responses:
+        200:
+          description: Retrieved Corporate Treasury Liquidity record successfully
+          schema:
+            $ref: '#/definitions/LiquidityBaseWithID'
+    
+  /corporate-treasury/corporate-treasury-management-plan/{cr-reference-id}/tactical-fundings/{bq-reference-id}:
+    get:
+      tags:
+      - retrieve
+      summary: Retrieve TacticalFunding
+      operationId: RetrieveTacticalFunding
+      parameters:
+      - name : cr-reference-id
+        in: path
+        description: Treasury Plan Reference 
+        required: true
+        type: string
+      - name : bq-reference-id
+        in: path
+        description: Enterprise Short Term Funding Management Analysis
+        required: true
+        type: string
+      responses:
+        200:
+          description: Retrieved Corporate Treasury Tactical Funding record successfully
+          schema:
+            $ref: '#/definitions/TacticalFundingBaseWithID'
+            
+  /corporate-treasury/corporate-treasury-management-plan/{cr-reference-id}/strategic-fundings/{bq-reference-id}:
+    get:
+      tags:
+      - retrieve
+      summary: Retrieve StrategicFunding
+      operationId: RetrieveStrategicFunding
+      parameters:
+      - name : cr-reference-id
+        in: path
+        description: Treasury Plan Reference 
+        required: true
+        type: string
+      - name : bq-reference-id
+        in: path
+        description: Enterprise Long Term Funding Management Analysis
+        required: true
+        type: string
+      responses:
+        200:
+          description: Retrieved Corporate Treasury Strategic Funding record successfully
+          schema:
+            $ref: '#/definitions/StrategicFundingBaseWithID'
+            
+  /corporate-treasury/corporate-treasury-management-plan/{cr-reference-id}/securitizations/{bq-reference-id}:
+    get:
+      tags:
+      - retrieve
+      summary: Retrieve Securitization
+      operationId: RetrieveSecuritization
+      parameters:
+      - name : cr-reference-id
+        in: path
+        description: Treasury Plan Reference 
+        required: true
+        type: string
+      - name : bq-reference-id
+        in: path
+        description: Securitization Tranche Reference
+        required: true
+        type: string
+      responses:
+        200:
+          description: Retrieved Corporate Treasury Securitization record successfully
+          schema:
+            $ref: '#/definitions/SecuritizationBaseWithID'
+            
+  /corporate-treasury/corporate-treasury-management-plan/{cr-reference-id}/bank-rates/{bq-reference-id}:
+    get:
+      tags:
+      - retrieve
+      summary: Retrieve BankRates
+      operationId: RetrieveBankRates
+      parameters:
+      - name : cr-reference-id
+        in: path
+        description: Treasury Plan Reference 
+        required: true
+        type: string
+      - name : bq-reference-id
+        in: path
+        description: Bank Rate Record Reference
+        required: true
+        type: string
+      responses:
+        200:
+          description: Retrieved Corporate Treasury Bank Rate record successfully
+          schema:
+            $ref: '#/definitions/BankRatesBaseWithID'
+            
+  /corporate-treasury/corporate-treasury-management-plan/{cr-reference-id}/records/{bq-reference-id}:
+    get:
+      tags: 
+      - retrieve
+      operationId: RetrieveRecord
+      summary: Retrieve Record
+      parameters:
+      - name : cr-reference-id
+        in: path
+        description: Treasury Plan Reference 
+        required: true
+        type: string
+      - name : bq-reference-id
+        in: path
+        description: Recording Record Reference
+        required: true
+        type: string
+      responses:
+        200:
+          description: Retrieved Corporate Treasury Recording record successfully
+          schema:
+            $ref: '#/definitions/RecordBaseWithId'
+
+definitions:
+  CorporateTreasuryRecordRequest:
+    type: object
+    properties:
+      recordingRecordType:
+        type: string
+        example: "Behavior model performance feedback"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      recordingRecord:
+        type: object
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+      recordingRecordDateTime:
+        type: string
+        example: "2018-09-06T09:00:00"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::DateTime
+      employeeBusinessUnitReference:
+        type: string
+        example: REF456
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+        
+  CorporateTreasuryRecordResponse:
+    type: object
+    properties:
+      recordingRecordReference:
+        type: string
+        example: "RRR4678"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      recordingRecordStatus:
+        type: string
+        example: "Applied"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+        
+      ################ Request ##################  
+  TreasuryPlanBase:
+    type: object
+    properties:
+      treasuryPlanningPoliciesGuidelines:
+        type: string
+        example: the policies and guidelines reflected in the plan
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      treasuryPlanOperatingParameters:
+        type: string
+        example: positions and limits to be met through the plan
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      treasuryPlanGoals:
+        type: string
+        example: target financial performance goals set by the plan
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+        
+  TreasuryPlanBaseWithId:
+    type: object
+    properties:
+      treasuryPlanReference:
+        type: string
+        example: TPR778832
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      treasuryPlanningPoliciesGuidelines:
+        type: string
+        example: the policies and guidelines reflected in the plan
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      treasuryPlanOperatingParameters:
+        type: string
+        example: positions and limits to be met through the plan
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      treasuryPlanGoals:
+        type: string
+        example: target financial performance goals set by the plan
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+    
+  #bq=Liquidity
+  LiquidityBaseWithID:
+    type: object
+    properties:
+      treasuryPlanReference:
+        type: string
+        example: TPR234
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      enterpriseLiquidityCashManagementAnalysis:
+        type: string
+        example: consolidated cashflow/liquidity reports
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      enterpriseBankAccountingCashManagementRecords:
+        type: string
+        example: covers booking, pooling and netting activities
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      enterpriseLargePaymentTransactionRecords:
+        type: string
+        example: enterprise large payment transaction records
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      businessUnitFinancialReports:
+        type: string
+        example: cost/income actual and projected
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      currencyandRateRiskAnalysis:
+        type: string
+        example: currency and rate risk analysis
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+        
+  #bq=TacticalFunding
+  TacticalFundingBaseWithID:
+    type: object
+    properties:
+      treasuryPlanReference:
+        type: string
+        example: TPR234
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      enterpriseShortTermFundingManagementAnalysis:
+        type: string
+        example: enterprise short term funding management analysis
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      capitalAdequacyRequirements:
+        type: string
+        example: capital Adequacy Requirements
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      currencyandRateRiskAnalysis:
+        type: string
+        example: currency and Rate Risk Analysis
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      bankPositionsandHedgingRequirements:
+        type: string
+        example: bank Positions and Hedging Requirements
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      capitalWholesaleMarketTransactions:
+        type: string
+        example: capital Whole sale Market Transactions
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      enterpriseBalanceSheetPositions:
+        type: string
+        example: enterprise Balance Sheet Positions
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+        
+  #bq=StrategicFunding
+  StrategicFundingBaseWithID:
+    type: object
+    properties:
+      treasuryPlanReference:
+        type: string
+        example: TPR234
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      enterpriseLongTermFundingManagementAnalysis:
+        type: string
+        example: enterprise Long Term Funding Management Analysis
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      financialPerformanceandBalanceSheetProjections:
+        type: string
+        example: financial Performance and Balance Sheet Projections
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      ECMDCMMarketTransactions:
+        type: string
+        example: ECMDCM Market Transactions
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      strategicInvestmentHoldingsTransactions:
+        type: string
+        example: strategic Investment Holdings Transactions
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      capitalWholesaleMarketTransactions:
+        type: string
+        example: capital Whole sale Market Transactions
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      enterpriseBalanceSheetPositions:
+        type: string
+        example: enterprise Balance Sheet Positions
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+  
+  #bq=Securitization
+  SecuritizationBaseWithID:
+    type: object
+    properties:
+      treasuryPlanReference:
+        type: string
+        example: TPR234
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      securitizationTrancheReference:
+        type: string
+        example: CT778832
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      enterpriseFinancialStatements:
+        type: string
+        example: enterprise Financial Statements
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      enterpriseBalanceSheetDetailed:
+        type: string
+        example: includes breakdown of individual assets/liabilities
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      bankSecuritizationPoliciesandGuidelines:
+        type: string
+        example: bankS ecuritization Policies and guidelines
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      securitizationTranceRecord:
+        type: object
+        example: bundled balance sheet items for securitization
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+        
+  #bq=BankRates
+  BankRatesBaseWithID:
+    type: object
+    properties:
+      treasuryPlanReference:
+        type: string
+        example: TPR234
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      bankRateRecordReference:
+        type: string
+        example: BRRR778832
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      bankRateType:
+        type: string
+        example: bank Rate Type
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      bankRateValue:
+        type: string
+        example: bank Rate Value
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Value
+      bankRateValueDateTime:
+        type: string
+        format: date-time
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::DateTime
+      bankRateValueHistory:
+        type: string
+        example: Bank Rate Value History
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      bankRateRecord:
+        type: object
+        example: rate record
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+      bankRateRecordDateTime:
+        type: string
+        format: date-time
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::DateTime
+  
+  #bq-Record
+  RecordBaseWithId:
+    type: object
+    properties:
+      recordingRecordReference:
+        type: string
+        example: "RRR4678"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      recordingRecordType:
+        type: string
+        example: "Behavior model performance feedback"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      recordingRecord:
+        type: object
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+      recordingRecordDateTime:
+        type: string
+        example: "2018-09-06T09:00:00"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::DateTime
+      recordingRecordStatus:
+        type: string
+        example: "Applied"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      employeeBusinessUnitReference:
+        type: string
+        example: REF456
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier

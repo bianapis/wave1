@@ -398,11 +398,7 @@ definitions:
           general-info: 'the feedback'
         properties: {}
       recordingRecordDateTime:
-        type: "string"
-        format: "date-time"
-        description: |
-          `status: Not Mapped`
-          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::DateTime
+        $ref: 'https://api.swaggerhub.com/domains/BIAN/Common-Model/1.0.0#/definitions/ISODateTime'
         example: "2018-09-20T17:17:25.107Z"
       employeeBusinessUnitReference:
         type: "string"

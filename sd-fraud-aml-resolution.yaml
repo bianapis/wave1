@@ -1,0 +1,1010 @@
+swagger: "2.0"
+info:
+  description: >
+        ## Service Domain Role :
+        This service domain reviews, diagnoses and responds to potential fraud/AML behavior that has been detected during production processing
+
+      
+        ## Example of use:
+        A pattern of possible fraud is highlighted in transaction records that is researched and evidence of fraud discovered. Prosecution/resolution activity is initiated
+
+        ## General comment:
+      
+        This service domain handles the diagnosis/confirmation of detected potential fraud and AML issues in production. Typically the service is supported with specialist teams to  handle cases with structured procedures and techniques for analysis and undertaking the required resolution/escalation tasks
+
+
+
+  version: "4.0.0"
+  title: "Service Domain - fraudAMLResolution"
+host: "virtserver.swaggerhub.com"
+basePath: "/BIAN/fraud-aml-resolution/2.0.1"
+schemes:
+- "https"
+consumes: 
+- application/json
+produces: 
+- application/json
+paths:
+  /fraud-aml-resolution/fraud-aml-resolution-procedure/{cr-reference-id}/updation:
+    put:
+      tags:
+      - update
+      summary: Update details of an active Fraud AML case
+      operationId: updateFraudAMLResolutionProcedure
+      parameters:
+      - name: cr-reference-id
+        in: path
+        description: Fraud Case Reference
+        required: true
+        type: string
+      - in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/FraudCaseBase'
+      responses:
+        200:
+          description: Successfully updated Fraud/AML case record
+          schema:
+            $ref: '#/definitions/FraudCaseBaseWithIdAndRoot'
+
+  /fraud-aml-resolution/fraud-aml-resolution-procedure/{cr-reference-id}/recording:
+    post:
+      tags:
+      - record
+      summary: Record information against an active Fraud AML case
+      operationId: recordFraudAMLResolutionProcedure
+      parameters:
+      - name: cr-reference-id
+        in: path
+        description: Fraud Case Reference
+        required: true
+        type: string
+      - in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/FraudCaseBase'
+      responses:
+        201:
+          description: Successfully recorded information for active Fraud AML case
+          schema:
+            $ref: '#/definitions/RecordResponse'
+            
+  /fraud-aml-resolution/fraud-aml-resolution-procedure/{cr-reference-id}/execution:
+    put:
+      tags:
+      - execute
+      description: Update an automated action record for an active Fraud/AML case 
+      summary:  Update an automated action record for an active Fraud/AML case
+      operationId: executeFraudAMLResolutionProcedureUpdate
+      parameters:
+      - name: cr-reference-id
+        in: path
+        description: Fraud Case Reference
+        required: true
+        type: string
+      - in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/FraudCaseBase'
+      responses:
+        200:
+          description: Successfully  Updated automated action record for the active Fraud/AML case
+          schema:
+            $ref: '#/definitions/FraudCaseBaseWithIdAndRoot'
+
+  /fraud-aml-resolution/fraud-aml-resolution-procedure/execution:
+    post:
+      tags:
+      - execute
+      description:  Create an automated action record for a Fraud/AML case
+      summary:  Create an automated action record for a Fraud/AML case
+      operationId: executeFraudAMLResolutionProcedureCreate
+      parameters:
+      - in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/FraudCaseBase'
+      responses:
+        201:
+          description:  Successfully Created an automated action record for the Fraud/AML case
+          schema:
+            $ref: '#/definitions/FraudCaseBaseWithIdAndRoot'
+  
+  /fraud-aml-resolution/fraud-aml-resolution-procedure/{cr-reference-id}/requisition:
+    put:
+      tags:
+      - request
+      summary: Update a workstep against an active Fraud AML case
+      description: Update an existing workstep against an active Fraud AML case
+      operationId: requestFraudAMLResolutionProcedureUpdate
+      parameters:
+      - name: cr-reference-id
+        in: path
+        description: fraud Case Reference
+        required: true
+        type: string
+      - in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/FraudCaseBase'
+      responses:
+        200:
+          description: Successfully Updated an existing workstep against an active Fraud AML case
+          schema:
+            $ref: '#/definitions/FraudCaseBaseWithIdAndRoot'
+  /fraud-aml-resolution/fraud-aml-resolution-procedure/requisition:
+    post:
+      tags:
+      - request
+      summary: Create a workstep against a Fraud AML case
+      description: Create a workstep against a Fraud AML case
+      operationId: requestFraudAMLResolutionProcedureCreate
+      parameters:
+      - in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/FraudCaseBase'
+      responses:
+        201:
+          description: Created new Fraud AML case  successfully
+          schema:
+            $ref: '#/definitions/FraudCaseBaseWithIdAndRoot'
+            
+  ###################################  RETRIEVE  ###################################
+  /fraud-aml-resolution/fraud-aml-resolution-procedure:
+    get:
+      tags: 
+      - retrieve
+      operationId: RetrieveFraudamlresolutionReferenceIds
+      summary: Retrieve Fraud AML resolution Control Record IDs available within the Service Domain.
+      parameters: 
+      - name : collection-filter
+        in: query
+        description: Filter to refine the result set. ex- 'customerReference == "CR123"'
+        type: string 
+      responses:
+        200:
+          description: successful
+          schema:
+            type: array
+            items:
+              type: string
+            example: [FCR123, FCR345]
+            
+  /fraud-aml-resolution/fraud-aml-resolution-procedure/behavior-qualifiers:
+    get:
+      tags: 
+      - retrieve
+      operationId: RetrieveCurrentAccountBehaviorQualifiers
+      summary: Retrieve all Behaviour Qualifier names in the Fraud AML resolution Service Domain.
+      responses:
+        200:
+          description: successful
+          schema:
+            type: array
+            items:
+              type: string
+            example: [analysis, determination, resolution, procedures, reporting]
+
+  /fraud-aml-resolution/fraud-aml-resolution-procedure/{cr-reference-id}/{behavior-qualifier}:
+    get:
+      tags: 
+      - retrieve
+      operationId: RetrieveBehaviorQualifierReferenceIds
+      summary: Retrieve Behaviour Qualifier Reference IDs of the given Behavior Qulifier.
+      parameters: 
+      - name: cr-reference-id
+        in: path
+        description: Fraud Case Reference
+        required: true
+        type: string
+      - name : behavior-qualifier
+        in: path
+        description: Behavior Qualifier Name. ex- analysis
+        required: true
+        type: string
+      - name : collection-filter
+        in: query
+        description: Filter to refine the result set. ex- 'fraudCaseType == "merchant-fraud"'
+        type: string
+      responses:
+        200:
+          description: successful
+          schema:
+            type: array
+            items:
+              type: string
+            example: [R345, R789, R456] 
+            
+  /fraud-aml-resolution/fraud-aml-resolution-procedure/{cr-reference-id}: 
+    get: 
+      tags: 
+      - retrieve
+      operationId: retrieveFraudamlresolutionLog
+      summary:  Retrieve a fraud/aml resolution procedure record
+      parameters: 
+      - name: cr-reference-id
+        in: path
+        description: Fraud Case Reference
+        required: true
+        type: string
+      responses: 
+        200: 
+          description: Successfully retrieved fraud/aml resolution procedure record
+          schema: 
+            $ref: '#/definitions/FraudCaseBaseWithIdAndRoot'
+  
+  /fraud-aml-resolution/fraud-aml-resolution-procedure/{cr-reference-id}/analysis/{bq-reference-id}:
+    get:
+      tags:
+      - retrieve
+      summary: Retrieve a Fraud Case Analysis Report
+      operationId: RetrieveAnalysis
+      parameters:
+      - name: cr-reference-id
+        in: path
+        description: Fraud Case Reference
+        required: true
+        type: string
+      - name: bq-reference-id
+        in: path
+        description: Fraud Case Analysis Record Reference
+        required: true
+        type: string
+      responses:
+        200:
+          description: Successfully Retrieved Fraud Case Analysis Report
+          schema:
+            $ref: '#/definitions/AnalysisBaseWithIdAndRoot'
+            
+  /fraud-aml-resolution/fraud-aml-resolution-procedure/{cr-reference-id}/determinations/{bq-reference-id}:
+    get:
+      tags:
+      - retrieve
+      summary: Retrieve A Fraud Case Determinations Report
+      operationId: RetrieveDetermination
+      parameters:
+      - name: cr-reference-id
+        in: path
+        description: Fraud Case Reference
+        required: true
+        type: string
+      - name: bq-reference-id
+        in: path
+        description: Fraud Case Determination Record Reference
+        required: true
+        type: string
+      responses:
+        200:
+          description: Successfully Retrieved Fraud Case Determinations Report
+          schema:
+            $ref: '#/definitions/DeterminationBaseWithIdAndRoot'
+            
+  /fraud-aml-resolution/fraud-aml-resolution-procedure/{cr-reference-id}/resolutions/{bq-reference-id}:
+    get:
+      tags:
+      - retrieve
+      summary: Retrieve Fraud Case Resolutions Report
+      operationId: RetrieveResolution
+      parameters:
+      - name: cr-reference-id
+        in: path
+        description: Fraud Case Reference
+        required: true
+        type: string
+      - name: bq-reference-id
+        in: path
+        description: Fraud Case Resolution Record Reference
+        required: true
+        type: string
+      responses:
+        200:
+          description: Successfully Retrieved Fraud Case Resolutions Report
+          schema:
+            $ref: '#/definitions/ResolutionBaseWithIdAndRoot'
+            
+  /fraud-aml-resolution/fraud-aml-resolution-procedure/{cr-reference-id}/procedures/{bq-reference-id}:
+    get:
+      tags:
+      - retrieve
+      summary: Retrieve Fraud Case Procedures Report
+      operationId: RetrieveProcedures
+      parameters:
+      - name: cr-reference-id
+        in: path
+        description: Fraud Case Reference
+        required: true
+        type: string
+      - name: bq-reference-id
+        in: path
+        description: Fraud Case Procedure Update Recommendation Reference
+        required: true
+        type: string
+      responses:
+        200:
+          description: Successfully Retrieved Fraud Case Procedures Report
+          schema:
+            $ref: '#/definitions/ProceduresBaseWithIdAndRoot'
+  
+  /fraud-aml-resolution/fraud-aml-resolution-procedure/{cr-reference-id}/reportings/{bq-reference-id}:
+    get:
+      tags:
+      - retrieve
+      summary: Retrieve Fraud Case Reportings Report
+      operationId: retrieveReporting
+      parameters:
+      - name: cr-reference-id
+        in: path
+        description: Fraud Case Reference
+        required: true
+        type: string
+      - name: bq-reference-id
+        in: path
+        description: Fraud Case Reporting Record Reference
+        required: true
+        type: string
+      responses:
+        200:
+          description: Successfully Retrieved Fraud Case Reportings Report
+          schema:
+            $ref: '#/definitions/ReportingBaseWithIdAndRoot'
+
+    
+definitions:
+  FraudCaseBase:
+    type: object
+    properties:
+      fraudCaseType:
+        type: string
+        example: disputed charge
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      productInstanceReference:
+        type: string
+        example: PIR766464
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      customerReference:
+        type: string
+        example: CR726454
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      merchantReference:
+        type: string
+        example: MR726454
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      contactReference:
+        type: string
+        example: COR736465
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      transactionReference:
+        type: string
+        example: TR7376465
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      transactionRecord:
+        type: object
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+      caseLocation:
+        type: string
+        example: "10 Wilson Road, Dallas, TX"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      dateTime:
+        type: string
+        format: date-time
+        example: "2018-09-05 14:30:30 EDT"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::DateTime
+      employeeBusinessUnitReference:
+        type: string
+        example: EBU726454
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      fraudCaseRecord:
+        type: object
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+      fraudCaseResolutionSchedule:
+        type: string
+        example: "2018-09-07 14:30:30 EDT"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::DateTime
+      fraudCaseStatus:
+        type: string
+        example: status
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+        
+  FraudCaseBaseWithIdAndRoot:
+    type: object
+    properties:
+      fraudCaseReference:
+        type: string
+        example: FCR7264546
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      fraudCaseType:
+        type: string
+        example: disputed charge
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      productInstanceReference:
+        type: string
+        example: PIR766464
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      customerReference:
+        type: string
+        example: CR726454
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      merchantReference:
+        type: string
+        example: MR726454
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      contactReference:
+        type: string
+        example: COR736465
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      transactionReference:
+        type: string
+        example: TR7376465
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      transactionRecord:
+        type: object
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+      caseLocation:
+        type: string
+        example: "10 Wilson Road, Dallas, TX"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      dateTime:
+        type: string
+        format: date-time
+        example: "2018-09-05 14:30:30 EDT"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::DateTime
+      employeeBusinessUnitReference:
+        type: string
+        example: EBU726454
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      fraudCaseRecord:
+        type: object
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+      fraudCaseResolutionSchedule:
+        type: string
+        example: "2018-09-09 12:30:31 CST"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::DateTime
+      fraudCaseStatus:
+        type: string
+        example: resolved
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+
+  AnalysisBaseWithIdAndRoot:
+    type: object
+    properties:
+      fraudCaseReference:
+        type: string
+        example: FCR72634545
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      fraudCaseAnalysisRecordReference:
+        type: string
+        example: FCAR725464
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      fraudCaseType:
+        type: string
+        example: disputed charge
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      productInstanceReference:
+        type: string
+        example: PIR726464
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      customerReference:
+        type: string
+        example: CR7364556
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      merchantReference:
+        type: string
+        example: MR7364656
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      merchantDocumentRequestReference:
+        type: string
+        example: MDRR7364656
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      customerDocumentRequestReference:
+        type: string
+        example: CDRR736464
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      documentReference:
+        type: string
+        example: DR7274646
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      contactReference:
+        type: string
+        example: COR73764665
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      transactionReference:
+        type: string
+        example: TR72364664
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      transactionRecord:
+        type: object
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+      caseLocation:
+        type: string
+        example: "10 Main St, Dallas, TX"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      dateTime:
+        type: string
+        format: date-time
+        example: "2018-09-06 12:30:31 CST"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::DateTime
+      fraudCaseRecord:
+        type: object
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+      fraudCaseAnalysisRecord:
+        type: object
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+      fraudCaseResolutionSchedule:
+        type: string
+        example: "2018-09-09 12:30:31 CST"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::DateTime
+      fraudCaseStatus:
+        type: string
+        example: Case Status
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+
+  DeterminationBaseWithIdAndRoot:
+    type: object
+    properties:
+      fraudCaseReference:
+        type: string
+        example: FCR72634545
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      fraudCaseDeterminationRecordReference:
+        type: string
+        example: FCDRR725464
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      fraudCaseType:
+        type: string
+        example: Fraud Type
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      productInstanceReference:
+        type: string
+        example: PIR7364646
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      customerReference:
+        type: string
+        example: CR73654646
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      customerAgreementReference:
+        type: string
+        example: CAR73654646
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      customerAgreement:
+        type: string
+        example: Customer Agreement
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      merchantReference:
+        type: string
+        example: MR7364646
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      merchantAgreementReference:
+        type: string
+        example: MAR726464
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      merchantAgreement:
+        type: string
+        example: Agreement
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      fraudCaseAnalysisRecord:
+        type: object
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+      fraudCaseDeterminationRecord:
+        type: object
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+      fraudCaseResolutionSchedule:
+        type: string
+        example: "2018-09-09 12:30:00 EST"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::DateTime
+      fraudCaseStatus:
+        type: string
+        example: RESOLVED
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+
+  ResolutionBaseWithIdAndRoot:
+    type: object
+    properties:
+      fraudCaseReference:
+        type: string
+        example: FCR72634545
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      fraudCaseResolutionRecordReference:
+        type: string
+        example: FCRR725464
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      fraudCaseType:
+        type: string
+        example: Fraud Type
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      productInstanceReference:
+        type: string
+        example: PIR736466
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      customerReference:
+        type: string
+        example: CR7364646
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      customerAgreementReference:
+        type: string
+        example: CAR73654546
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      customerAgreement:
+        type: string
+        example: Customer Agreement
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      merchantReference:
+        type: string
+        example: MR736464
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      merchantAgreementReference:
+        type: string
+        example: MAR7264646
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      merchantAgreement:
+        type: string
+        example: Agreement
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      fraudCaseAnalysisRecord:
+        type: object
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+      fraudCaseDeterminationRecord:
+        type: object
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+      fraudCaseResolutionRecord:
+        type: object
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+      employeeBusinessUnitReference:
+        type: string
+        example: EBU7236464
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      correspondenceReference:
+        type: string
+        example: CR7264646
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      documentReference:
+        type: string
+        example: CR7364646
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      paymentOrderReference:
+        type: string
+        example: POR726464
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      fraudCaseResolutionSchedule:
+        type: string
+        example: "2018-09-09 12:30:00 EST"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::DateTime
+      fraudCaseStatus:
+        type: string
+        example: RESOLVED
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+
+  ProceduresBaseWithIdAndRoot:
+    type: object
+    properties:
+      fraudCaseReference:
+        type: string
+        example: FCR7364646
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      fraudCaseProcedureUpdateRecommendationReference:
+        type: string
+        example: FCPRR726464
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      fraudCaseType:
+        type: string
+        example: disputed charge
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      productServiceReference:
+        type: string
+        example: PSR726354
+        description: |
+          `status: Not Mapped`
+           core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      fraudCaseAnalysisRecord:
+        type: object
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+      fraudCaseDeterminationRecord:
+        type: object
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+      fraudCaseProcedureUpdateRecommendationRecord:
+        type: object
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+
+  ReportingBaseWithIdAndRoot:
+    type: object
+    properties:
+      fraudCaseReference:
+        type: string
+        example: FCR7236464
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      fraudCaseReportingRecordReference:
+        type: string
+        example: FRRR736464
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      fraudCaseType:
+        type: string
+        example:  stolen/fake device
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      productInstanceReference:
+        type: string
+        example: PIR7265464
+        description: |
+          `status: Not Mapped`
+           core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      customerReference:
+        type: string
+        example: CR7364664
+        description: |
+          `status: Not Mapped`
+           core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      customerAgreementReference:
+        type: string
+        example: CAR7236464
+        description: |
+          `status: Not Mapped`
+           core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      customerAgreement:
+        type: string
+        example: customer Agreement
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      merchantReference:
+        type: string
+        example: MR736464
+        description: |
+          `status: Not Mapped`
+           core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      merchantAgreementReference:
+        type: string
+        example: MAR736454
+        description: |
+          `status: Not Mapped`
+           core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      merchantAgreement:
+        type: string
+        example: Merchant Agreement
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      fraudCaseAnalysisRecord:
+        type: object
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+      fraudCaseDeterminationRecord:
+        type: object
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+      fraudCaseResolutionRecord:
+        type: object
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+      correspondenceReference:
+        type: string
+        example: CR7234545
+        description: |
+          `status: Not Mapped`
+           core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      documentReference:
+        type: string
+        example: DR736464
+        description: |
+          `status: Not Mapped`
+           core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      paymentOrderReference:
+        type: string
+        example: POR736464
+        description: |
+          `status: Not Mapped`
+           core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      fraudCaseResolutionSchedule:
+        type: string
+        example: "2018-09-09 12:30:00 EST"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::DateTime
+      fraudCaseStatus:
+        type: string
+        example: RESOLVED
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      fraudCaseReportingRecord:
+        type: object
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+        
+  RecordResponse:
+    type: "object"
+    properties:
+      recordingRecordReference:
+        type: "string"
+        example: "RRR4678"
+        description: |
+          `status: Not Mapped`
+           core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      recordingRecordStatus:
+        type: "string"
+        example: "Applied"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text

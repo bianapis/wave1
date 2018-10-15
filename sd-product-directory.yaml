@@ -3,16 +3,19 @@ info:
   version: "4.0.0"
   title: 'Service Domain - Product Directory'
   description: >
-        ## Description: 
+        ## Service Domain Role :
       
-        Keep information about the basic product building blocks, represented as Product Components with Functions and Features, as well as the completed product specification from SD Product Design.
+        This service domain maintains a comprehensive directory of the bank's products and services. It can be referenced to obtain product details used to support activities including product selection, sales and marketing, on-boarding, servicing and product fulfillment.
+
 
         ## Example of use:
         
-        Available product components, functions and features are registered and stored in SD Product Directory, ready to be used by SD Product Design.
-        New product specifications from Q&E SDs will be registered in SD Product Directory, with all its functions, features, price models etc. available in the O&E SDs as operational products, and with the sales product, which includes terms and conditions, in SD Sales Product.
+        A customer accesses the product directory to obtain product feature descriptions, eligibility and pricing guidelinesExample of use
         
         ## General comment:
+        
+        The product directory service domain provides a central service to reference product specifications and related details. The broad range of specification information available includes : product feature descriptions; pricing and eligibility requirements used in sales and on-boarding; servicing support and guidelines; and operational and production requirements 
+
 
 # Added by API Auto Mocking Plugin
 host: virtserver.swaggerhub.com
@@ -20,6 +23,36 @@ basePath: /BIAN/sd-product-directory/4.0.0
 schemes:
  - https
 paths:
+  # /product-directory/product-directory-entry/{cr-reference-id}/updation:
+  #   put:
+  #     tags:
+  #     - update
+  #     operationId: updateProductDirectoryEntry
+  #     summary: Update an existing product directory record entry
+  #     produces:
+  #     - application/json
+  #     parameters:
+  #     - name: cr-reference-id
+  #       in: path
+  #       description: Product/Service Directory Entry Reference
+  #       required: true
+  #       type: string
+  #     - name : bq-reference-id
+  #       in: path
+  #       description: Recording Record Reference
+  #       required: true
+  #       type: string
+  #     - in: body
+  #       name: body
+  #       description: Update request payload which extracts all the attributes from Behavior Qualifier
+  #       required: true
+  #       schema:
+  #         $ref: '#/definitions/ProductDirectoryDirectoryEntryBase'
+  #     responses:
+  #       200:
+  #         description: Successfully Updated
+  #         schema:
+  #           $ref: '#/definitions/ProductDirectoryDirectoryEntryBaseWithIds'
   /product-directory/product-directory-entry/{cr-reference-id}/records/{bq-reference-id}/updation:
     put:
       tags:
@@ -210,7 +243,7 @@ paths:
     post:
       tags:
       - register
-      operationId: registerProductDirectoryProductSpecifications
+      operationId: registerProductDirectoryProductOperations
       summary: Register a new product's specification in the directory
       produces:
         - application/json
@@ -236,7 +269,7 @@ paths:
     post:
       tags:
       - register
-      operationId: registerProductDirectorySalesMarketingMaterials
+      operationId: registerProductDirectoryEntrySalesMarketing
       summary: Register a new product's marketing materials in the directory
       produces:
       - application/json
@@ -262,7 +295,7 @@ paths:
     post:
       tags:
       - register
-      operationId: registerProductDirectorySuitabilityRules
+      operationId: registerProductDirectoryEntrySuitability
       summary: Register a new Suitability features in Product Directory
       produces:
       - application/json
@@ -288,7 +321,7 @@ paths:
     post:
       tags:
       - register
-      operationId: registerProductDirectoryServicingInstructions
+      operationId: registerProductDirectoryEntryServicing
       summary: Register a new product's servicing instructions in the directory
       produces:
       - application/json
@@ -314,7 +347,7 @@ paths:
     post:
       tags:
       - register
-      operationId: registerProductDirectoryProductionInstructions
+      operationId: registerProductDirectoryEntryProduction
       summary: Register a new product's servicing instructions in the directory
       produces:
       - application/json
@@ -340,7 +373,7 @@ paths:
     put:
       tags:
       - request
-      operationId: requestProductDirectoryRefresh
+      operationId: requestProductDirectoryEntry
       summary: Request a check/refresh of a product directory entry
       produces:
       - application/json
@@ -625,11 +658,7 @@ definitions:
           `status: Not Mapped`
           core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
       recordingRecordDateTime:
-        type: string
-        example: "2018-08-28T09:00:00"
-        description: |
-          `status: Not Mapped`
-          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::DateTime
+        $ref: 'https://api.swaggerhub.com/domains/BIAN/Common-Model/1.0.0#/definitions/ISODateTime'
       employeeBusinessUnitReference:
         type: string
         example: EBUR6798
@@ -870,11 +899,7 @@ definitions:
           `status: Not Mapped`
           core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
       recordingRecordDateTime:
-        type: string
-        example: "2018-08-28T09:00:00"
-        description: |
-          `status: Not Mapped`
-          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::DateTime
+        $ref: 'https://api.swaggerhub.com/domains/BIAN/Common-Model/1.0.0#/definitions/ISODateTime'
       recordingRecordStatus:
         type: string
         example: Applied
@@ -931,7 +956,7 @@ definitions:
           general-info: Access channels/devices supported by the product/service
           `status: Not Mapped`
           core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
-        
+   
   ProductDirectoryRecordBase:
     type: object
     properties:
@@ -948,11 +973,7 @@ definitions:
           `status: Not Mapped`
           core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
       recordingRecordDateTime:
-        type: string
-        example: "2018-08-28T09:00:00"
-        description: |
-          `status: Not Mapped`
-          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::DateTime
+        $ref: 'https://api.swaggerhub.com/domains/BIAN/Common-Model/1.0.0#/definitions/ISODateTime'
       recordingRecordStatus:
         type: string
         example: Applied
@@ -1033,7 +1054,7 @@ definitions:
           general-info: Collection of features making up product/service
           `status: Not Mapped`
           core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
-      producServicetFeatureGuideline:
+      productServiceFeatureGuideline:
         type: string
         example: "Analyze terminologies used in the product line to identify features"
         description: |
@@ -1073,12 +1094,7 @@ definitions:
           `status: Not Mapped`
           core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
       productServiceTimeAvailability:
-        type: string
-        example: "2018-09-19T09:00:00"
-        description: |
-          general-info: Dates and times product/service is available
-          `status: Not Mapped`
-          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::DateTime
+        $ref: 'https://api.swaggerhub.com/domains/BIAN/Common-Model/1.0.0#/definitions/ISODateTime'
       productServiceAccessAvailability:
         type: string
         example: "By ATM or Online banking or Mobile Banking"
