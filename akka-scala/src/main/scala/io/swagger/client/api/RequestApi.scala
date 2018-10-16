@@ -5,8 +5,16 @@
  */
 package io.swagger.client.api
 
-import io.swagger.client.model.ConsumerLoanRestructuringWithId
-import io.swagger.client.model.ConsumerLoanRestructuringWithoutCommonAndId
+import io.swagger.client.model.DirectDebitBase
+import io.swagger.client.model.DirectDebitBaseWithIdAndRoot
+import io.swagger.client.model.InventoryBase
+import io.swagger.client.model.InventoryBaseWithIdAndRoot
+import io.swagger.client.model.LienBase
+import io.swagger.client.model.LienBaseWithIdAndRoot
+import io.swagger.client.model.StandingOrderBase
+import io.swagger.client.model.StandingOrderBaseWithIdAndRoot
+import io.swagger.client.model.SweepBase
+import io.swagger.client.model.SweepBaseWithIdAndRoot
 import io.swagger.client.core._
 import io.swagger.client.core.CollectionFormats._
 import io.swagger.client.core.ApiKeyLocations._
@@ -14,35 +22,155 @@ import io.swagger.client.core.ApiKeyLocations._
 object RequestApi {
 
   /**
-   * Create a new restructuring request record
+   * Create a new Direct Debit
    * 
    * Expected answers:
-   *   code 201 : ConsumerLoanRestructuringWithId (Successfuly created consumer loan restructuring request)
+   *   code 201 : DirectDebitBaseWithIdAndRoot (Created a direct debit successfully)
    * 
-   * @param crReferenceId Product Instance Reference (loan account number)
-   * @param body 
+   * @param crReferenceId Product Instance Reference
+   * @param body Request direct debits request payload
    */
-  def requestConsumerLoanFulfillmentArrangementRestructuringCreate(crReferenceId: String, body: Option[ConsumerLoanRestructuringWithoutCommonAndId] = None): ApiRequest[ConsumerLoanRestructuringWithId] =
-    ApiRequest[ConsumerLoanRestructuringWithId](ApiMethods.POST, "https://virtserver.swaggerhub.com/BIAN/sd-consumer-loan/3.0.1", "/consumer-loan/consumer-loan-fulfillment-arrangement/{cr-reference-id}/restructurings/requisition", "application/json")
+  def requestCurrentAccountFulfillmentArrangementDirectDebitCreate(crReferenceId: String, body: DirectDebitBase): ApiRequest[DirectDebitBaseWithIdAndRoot] =
+    ApiRequest[DirectDebitBaseWithIdAndRoot](ApiMethods.POST, "https://virtserver.swaggerhub.com/BIAN/current-account/3.0.1", "/current-account/current-account-fulfillment-arrangement/{cr-reference-id}/direct-debits/requisition", "application/json")
       .withBody(body)
       .withPathParam("cr-reference-id", crReferenceId)
-      .withSuccessResponse[ConsumerLoanRestructuringWithId](201)
+      .withSuccessResponse[DirectDebitBaseWithIdAndRoot](201)
         /**
-   * Update a restructuring request record
+   * Update an exising Direct Debit
    * 
    * Expected answers:
-   *   code 200 : ConsumerLoanRestructuringWithId (Successfully updated consumer loan restructuring request)
+   *   code 200 : DirectDebitBaseWithIdAndRoot (successful)
    * 
-   * @param crReferenceId Product Instance Reference (loan account number)
-   * @param bqReferenceId Restructuring Task Reference
-   * @param body 
+   * @param crReferenceId Product Instance Reference
+   * @param bqReferenceId Direct Debit Facility Reference
+   * @param body Request direct debits request payload
    */
-  def requestConsumerLoanFulfillmentArrangementRestructuringUpdate(crReferenceId: String, bqReferenceId: String, body: Option[ConsumerLoanRestructuringWithoutCommonAndId] = None): ApiRequest[ConsumerLoanRestructuringWithId] =
-    ApiRequest[ConsumerLoanRestructuringWithId](ApiMethods.PUT, "https://virtserver.swaggerhub.com/BIAN/sd-consumer-loan/3.0.1", "/consumer-loan/consumer-loan-fulfillment-arrangement/{cr-reference-id}/restructurings/{bq-reference-id}/requisition", "application/json")
+  def requestCurrentAccountFulfillmentArrangementDirectDebitUpdate(crReferenceId: String, bqReferenceId: String, body: DirectDebitBase): ApiRequest[DirectDebitBaseWithIdAndRoot] =
+    ApiRequest[DirectDebitBaseWithIdAndRoot](ApiMethods.PUT, "https://virtserver.swaggerhub.com/BIAN/current-account/3.0.1", "/current-account/current-account-fulfillment-arrangement/{cr-reference-id}/direct-debits/{bq-reference-id}/requisition", "application/json")
       .withBody(body)
       .withPathParam("cr-reference-id", crReferenceId)
       .withPathParam("bq-reference-id", bqReferenceId)
-      .withSuccessResponse[ConsumerLoanRestructuringWithId](200)
+      .withSuccessResponse[DirectDebitBaseWithIdAndRoot](200)
+        /**
+   * Create a new Inventory
+   * 
+   * Expected answers:
+   *   code 201 : InventoryBaseWithIdAndRoot (Created an inventory successfully)
+   * 
+   * @param crReferenceId Product Instance Reference
+   * @param body Request inventories request payload
+   */
+  def requestCurrentAccountFulfillmentArrangementInventoryCreate(crReferenceId: String, body: InventoryBase): ApiRequest[InventoryBaseWithIdAndRoot] =
+    ApiRequest[InventoryBaseWithIdAndRoot](ApiMethods.POST, "https://virtserver.swaggerhub.com/BIAN/current-account/3.0.1", "/current-account/current-account-fulfillment-arrangement/{cr-reference-id}/inventories/requisition", "application/json")
+      .withBody(body)
+      .withPathParam("cr-reference-id", crReferenceId)
+      .withSuccessResponse[InventoryBaseWithIdAndRoot](201)
+        /**
+   * Update an exising Inventory
+   * 
+   * Expected answers:
+   *   code 200 : InventoryBaseWithIdAndRoot (successful)
+   * 
+   * @param crReferenceId Product Instance Reference
+   * @param bqReferenceId Inventory Item Reference
+   * @param body Request inventories request payload
+   */
+  def requestCurrentAccountFulfillmentArrangementInventoryUpdate(crReferenceId: String, bqReferenceId: String, body: InventoryBase): ApiRequest[InventoryBaseWithIdAndRoot] =
+    ApiRequest[InventoryBaseWithIdAndRoot](ApiMethods.PUT, "https://virtserver.swaggerhub.com/BIAN/current-account/3.0.1", "/current-account/current-account-fulfillment-arrangement/{cr-reference-id}/inventories/{bq-reference-id}/requisition", "application/json")
+      .withBody(body)
+      .withPathParam("cr-reference-id", crReferenceId)
+      .withPathParam("bq-reference-id", bqReferenceId)
+      .withSuccessResponse[InventoryBaseWithIdAndRoot](200)
+        /**
+   * Create a new Lien
+   * 
+   * Expected answers:
+   *   code 201 : LienBaseWithIdAndRoot (Created a Lien successfully)
+   * 
+   * @param crReferenceId Product Instance Reference
+   * @param body Request liens request payload
+   */
+  def requestCurrentAccountFulfillmentArrangementLienCreate(crReferenceId: String, body: LienBase): ApiRequest[LienBaseWithIdAndRoot] =
+    ApiRequest[LienBaseWithIdAndRoot](ApiMethods.POST, "https://virtserver.swaggerhub.com/BIAN/current-account/3.0.1", "/current-account/current-account-fulfillment-arrangement/{cr-reference-id}/liens/requisition", "application/json")
+      .withBody(body)
+      .withPathParam("cr-reference-id", crReferenceId)
+      .withSuccessResponse[LienBaseWithIdAndRoot](201)
+        /**
+   * Update an exising Lien
+   * 
+   * Expected answers:
+   *   code 200 : LienBaseWithIdAndRoot (successful)
+   * 
+   * @param crReferenceId Product Instance Reference
+   * @param bqReferenceId Lien Facility Reference
+   * @param body Request liens request payload
+   */
+  def requestCurrentAccountFulfillmentArrangementLienUpdate(crReferenceId: String, bqReferenceId: String, body: LienBase): ApiRequest[LienBaseWithIdAndRoot] =
+    ApiRequest[LienBaseWithIdAndRoot](ApiMethods.PUT, "https://virtserver.swaggerhub.com/BIAN/current-account/3.0.1", "/current-account/current-account-fulfillment-arrangement/{cr-reference-id}/liens/{bq-reference-id}/requisition", "application/json")
+      .withBody(body)
+      .withPathParam("cr-reference-id", crReferenceId)
+      .withPathParam("bq-reference-id", bqReferenceId)
+      .withSuccessResponse[LienBaseWithIdAndRoot](200)
+        /**
+   * Create a new Standing order
+   * 
+   * Expected answers:
+   *   code 201 : StandingOrderBaseWithIdAndRoot (Created a standing order successfully)
+   * 
+   * @param crReferenceId Product Instance Reference
+   * @param body Request standing order request payload
+   */
+  def requestCurrentAccountFulfillmentArrangementStandingOrderCreate(crReferenceId: String, body: StandingOrderBase): ApiRequest[StandingOrderBaseWithIdAndRoot] =
+    ApiRequest[StandingOrderBaseWithIdAndRoot](ApiMethods.POST, "https://virtserver.swaggerhub.com/BIAN/current-account/3.0.1", "/current-account/current-account-fulfillment-arrangement/{cr-reference-id}/standing-orders/requisition", "application/json")
+      .withBody(body)
+      .withPathParam("cr-reference-id", crReferenceId)
+      .withSuccessResponse[StandingOrderBaseWithIdAndRoot](201)
+        /**
+   * Update an exising Standing order
+   * 
+   * Expected answers:
+   *   code 200 : StandingOrderBaseWithIdAndRoot (successful)
+   * 
+   * @param crReferenceId Product Instance Reference
+   * @param bqReferenceId Standing Order Facility Reference
+   * @param body Request standing order request payload
+   */
+  def requestCurrentAccountFulfillmentArrangementStandingOrderUpdate(crReferenceId: String, bqReferenceId: String, body: StandingOrderBase): ApiRequest[StandingOrderBaseWithIdAndRoot] =
+    ApiRequest[StandingOrderBaseWithIdAndRoot](ApiMethods.PUT, "https://virtserver.swaggerhub.com/BIAN/current-account/3.0.1", "/current-account/current-account-fulfillment-arrangement/{cr-reference-id}/standing-orders/{bq-reference-id}/requisition", "application/json")
+      .withBody(body)
+      .withPathParam("cr-reference-id", crReferenceId)
+      .withPathParam("bq-reference-id", bqReferenceId)
+      .withSuccessResponse[StandingOrderBaseWithIdAndRoot](200)
+        /**
+   * Create a new Sweep
+   * 
+   * Expected answers:
+   *   code 201 : SweepBaseWithIdAndRoot (Created a Sweep successfully)
+   * 
+   * @param crReferenceId Product Instance Reference
+   * @param body Request sweeps request payload
+   */
+  def requestCurrentAccountFulfillmentArrangementSweepCreate(crReferenceId: String, body: SweepBase): ApiRequest[SweepBaseWithIdAndRoot] =
+    ApiRequest[SweepBaseWithIdAndRoot](ApiMethods.POST, "https://virtserver.swaggerhub.com/BIAN/current-account/3.0.1", "/current-account/current-account-fulfillment-arrangement/{cr-reference-id}/sweeps/requisition", "application/json")
+      .withBody(body)
+      .withPathParam("cr-reference-id", crReferenceId)
+      .withSuccessResponse[SweepBaseWithIdAndRoot](201)
+        /**
+   * Update an exising Sweep
+   * 
+   * Expected answers:
+   *   code 200 : SweepBaseWithIdAndRoot (successful)
+   * 
+   * @param crReferenceId Product Instance Reference
+   * @param bqReferenceId Sweep Facility Reference
+   * @param body Request sweeps request payload
+   */
+  def requestCurrentAccountFulfillmentArrangementSweepUpdate(crReferenceId: String, bqReferenceId: String, body: SweepBase): ApiRequest[SweepBaseWithIdAndRoot] =
+    ApiRequest[SweepBaseWithIdAndRoot](ApiMethods.PUT, "https://virtserver.swaggerhub.com/BIAN/current-account/3.0.1", "/current-account/current-account-fulfillment-arrangement/{cr-reference-id}/sweeps/{bq-reference-id}/requisition", "application/json")
+      .withBody(body)
+      .withPathParam("cr-reference-id", crReferenceId)
+      .withPathParam("bq-reference-id", bqReferenceId)
+      .withSuccessResponse[SweepBaseWithIdAndRoot](200)
       
 
 }
