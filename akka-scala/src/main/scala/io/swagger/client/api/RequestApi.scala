@@ -5,8 +5,8 @@
  */
 package io.swagger.client.api
 
-import io.swagger.client.model.ReferenceBase
-import io.swagger.client.model.ReferenceBaseWithIdAndRoot
+import io.swagger.client.model.ConsumerLoanRestructuringWithId
+import io.swagger.client.model.ConsumerLoanRestructuringWithoutCommonAndId
 import io.swagger.client.core._
 import io.swagger.client.core.CollectionFormats._
 import io.swagger.client.core.ApiKeyLocations._
@@ -14,31 +14,35 @@ import io.swagger.client.core.ApiKeyLocations._
 object RequestApi {
 
   /**
-   * Create a new Customer Reference Data Directory
+   * Create a new restructuring request record
    * 
    * Expected answers:
-   *   code 201 : ReferenceBaseWithIdAndRoot (Successfully created customer directory entry.)
+   *   code 201 : ConsumerLoanRestructuringWithId (Successfuly created consumer loan restructuring request)
    * 
-   * @param body Request customer reference request payload
+   * @param crReferenceId Product Instance Reference (loan account number)
+   * @param body 
    */
-  def requestCustomerReferenceDataDirectoryCreate(body: ReferenceBase): ApiRequest[ReferenceBaseWithIdAndRoot] =
-    ApiRequest[ReferenceBaseWithIdAndRoot](ApiMethods.POST, "https://virtserver.swaggerhub.com/BIAN/sd-customer-reference-data-management/4.0.0", "/customer-reference-data-management/customer-reference-data-directory/requisition", "application/json")
-      .withBody(body)
-      .withSuccessResponse[ReferenceBaseWithIdAndRoot](201)
-        /**
-   * 
-   * 
-   * Expected answers:
-   *   code 200 : ReferenceBaseWithIdAndRoot (Successfully requested a refresh of an existing customer directory entry.)
-   * 
-   * @param crReferenceId Customer Reference Data Directory Entry Reference
-   * @param body Request customer reference request payload
-   */
-  def requestCustomerReferenceDataDirectoryUpdate(crReferenceId: String, body: ReferenceBase): ApiRequest[ReferenceBaseWithIdAndRoot] =
-    ApiRequest[ReferenceBaseWithIdAndRoot](ApiMethods.PUT, "https://virtserver.swaggerhub.com/BIAN/sd-customer-reference-data-management/4.0.0", "/customer-reference-data-management/customer-reference-data-directory/{cr-reference-id}/requisition", "application/json")
+  def requestConsumerLoanFulfillmentArrangementRestructuringCreate(crReferenceId: String, body: Option[ConsumerLoanRestructuringWithoutCommonAndId] = None): ApiRequest[ConsumerLoanRestructuringWithId] =
+    ApiRequest[ConsumerLoanRestructuringWithId](ApiMethods.POST, "https://virtserver.swaggerhub.com/BIAN/sd-consumer-loan/3.0.1", "/consumer-loan/consumer-loan-fulfillment-arrangement/{cr-reference-id}/restructurings/requisition", "application/json")
       .withBody(body)
       .withPathParam("cr-reference-id", crReferenceId)
-      .withSuccessResponse[ReferenceBaseWithIdAndRoot](200)
+      .withSuccessResponse[ConsumerLoanRestructuringWithId](201)
+        /**
+   * Update a restructuring request record
+   * 
+   * Expected answers:
+   *   code 200 : ConsumerLoanRestructuringWithId (Successfully updated consumer loan restructuring request)
+   * 
+   * @param crReferenceId Product Instance Reference (loan account number)
+   * @param bqReferenceId Restructuring Task Reference
+   * @param body 
+   */
+  def requestConsumerLoanFulfillmentArrangementRestructuringUpdate(crReferenceId: String, bqReferenceId: String, body: Option[ConsumerLoanRestructuringWithoutCommonAndId] = None): ApiRequest[ConsumerLoanRestructuringWithId] =
+    ApiRequest[ConsumerLoanRestructuringWithId](ApiMethods.PUT, "https://virtserver.swaggerhub.com/BIAN/sd-consumer-loan/3.0.1", "/consumer-loan/consumer-loan-fulfillment-arrangement/{cr-reference-id}/restructurings/{bq-reference-id}/requisition", "application/json")
+      .withBody(body)
+      .withPathParam("cr-reference-id", crReferenceId)
+      .withPathParam("bq-reference-id", bqReferenceId)
+      .withSuccessResponse[ConsumerLoanRestructuringWithId](200)
       
 
 }

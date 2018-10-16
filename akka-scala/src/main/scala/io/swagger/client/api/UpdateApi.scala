@@ -5,8 +5,8 @@
  */
 package io.swagger.client.api
 
-import io.swagger.client.model.ReferenceBaseUpdateRequest
-import io.swagger.client.model.ReferenceBaseWithIdAndRoot
+import io.swagger.client.model.ConsumerLoanBase
+import io.swagger.client.model.ConsumerLoanWithIdAndStatus
 import io.swagger.client.core._
 import io.swagger.client.core.CollectionFormats._
 import io.swagger.client.core.ApiKeyLocations._
@@ -14,19 +14,19 @@ import io.swagger.client.core.ApiKeyLocations._
 object UpdateApi {
 
   /**
-   * 
+   * Update an Active Consumer Loan
    * 
    * Expected answers:
-   *   code 200 : ReferenceBaseWithIdAndRoot (Successfully)
+   *   code 200 : ConsumerLoanWithIdAndStatus (Successfully Updated Active Consumer Loan)
    * 
-   * @param crReferenceId Customer Reference Data Directory Entry Reference
+   * @param crReferenceId Product Instance Reference (loan account number)
    * @param body Update control record request payload
    */
-  def updateCustomerReferenceDataDirectory(crReferenceId: String, body: ReferenceBaseUpdateRequest): ApiRequest[ReferenceBaseWithIdAndRoot] =
-    ApiRequest[ReferenceBaseWithIdAndRoot](ApiMethods.PUT, "https://virtserver.swaggerhub.com/BIAN/sd-customer-reference-data-management/4.0.0", "/customer-reference-data-management/customer-reference-data-directory/{cr-reference-id}/updation", "application/json")
+  def updateConsumerLoanFulfillmentArrangement(crReferenceId: String, body: ConsumerLoanBase): ApiRequest[ConsumerLoanWithIdAndStatus] =
+    ApiRequest[ConsumerLoanWithIdAndStatus](ApiMethods.PUT, "https://virtserver.swaggerhub.com/BIAN/sd-consumer-loan/3.0.1", "/consumer-loan/consumer-loan-fulfillment-arrangement/{cr-reference-id}/updation", "application/json")
       .withBody(body)
       .withPathParam("cr-reference-id", crReferenceId)
-      .withSuccessResponse[ReferenceBaseWithIdAndRoot](200)
+      .withSuccessResponse[ConsumerLoanWithIdAndStatus](200)
       
 
 }
