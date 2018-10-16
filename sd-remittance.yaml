@@ -1,0 +1,1311 @@
+---
+swagger: "2.0"
+info:
+  description: "## Description: \nThis service domain provides a customer payment\
+    \ service. It captures the payer and payee details and other key properties of\
+    \ the payment and orchestrates the transaction. It provides support for repeating/scheduled\
+    \ payments.\n## Example of use:\nAn established customer transfers an amount from\
+    \ their current account to an overseas account for a family member. As this is\
+    \ a recurring transaction, the details are maintained and updated as necessary.\n\
+    ## General comment:\nThis service domain supports payment services for consumer\
+    \ and business customers. Payments are made to other accounts within the bank,\
+    \ other banks and possibly internationally using whatever payments mechanism is\
+    \ suited to the transaction (See Payments Order/Execution). The service domain\
+    \ can support single transactions, or manage repeating/scheduled payments if requested.\n"
+  version: "4.0.0"
+  title: "Service Domain - Remittances (to be renamed to Payment Initiation)"
+host: "virtserver.swaggerhub.com"
+basePath: "/BIAN/sd-remittance/4.0.0"
+schemes:
+- "https"
+paths:
+  /remittances/payment-initiation-transaction/initiation:
+    post:
+      tags:
+      - "initiate"
+      summary: "Initiate transaction"
+      operationId: "initiateRemittanceTransaction"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "Payment Initiation request payload"
+        required: true
+        schema:
+          $ref: "#/definitions/PaymentInitiation"
+      responses:
+        201:
+          description: "Created a Remittance record successfully."
+          schema:
+            $ref: "#/definitions/PaymentInitiationWithId"
+  /remittances/payment-initiation-transaction/{cr-reference-id}/updation:
+    put:
+      tags:
+      - "update"
+      summary: "Update transaction details"
+      operationId: "updateRemittanceTransaction"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "cr-reference-id"
+        in: "path"
+        description: "Payment Request Reference"
+        required: true
+        type: "string"
+      - in: "body"
+        name: "body"
+        description: "Transaction Update Reference request payload"
+        required: true
+        schema:
+          $ref: "#/definitions/TransactionUpdateBase"
+      responses:
+        200:
+          description: "Successful"
+          schema:
+            $ref: "#/definitions/TransactionUpdateBaseWithIdAndRoot"
+  /remittances/payment-initiation-transaction/{cr-reference-id}/execution:
+    put:
+      tags:
+      - "execute"
+      summary: "Execute payment transaction"
+      operationId: "executeRemittanceTransactionUpdate"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "cr-reference-id"
+        in: "path"
+        description: "Payment Request Reference"
+        required: true
+        type: "string"
+      - in: "body"
+        name: "body"
+        description: "Payment Request Reference request payload"
+        required: true
+        schema:
+          $ref: "#/definitions/PaymentInitiation"
+      responses:
+        200:
+          description: "Successful"
+          schema:
+            $ref: "#/definitions/PaymentInitiationWithId"
+  /remittances/payment-initiation-transaction/execution:
+    post:
+      tags:
+      - "execute"
+      summary: "Create remittance transaction"
+      operationId: "executeRemittanceTransactionCreate"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "Payment Request Reference request payload"
+        required: true
+        schema:
+          $ref: "#/definitions/PaymentInitiation"
+      responses:
+        201:
+          description: "Created a payment  initiation record successfully."
+          schema:
+            $ref: "#/definitions/PaymentInitiationWithId"
+  /remittances/payment-initiation-transaction/{cr-reference-id}/repeating-payments/{bq-reference-id}/requisition:
+    put:
+      tags:
+      - "request"
+      summary: "Transaction update request."
+      operationId: "requestRemittanceTransactionUpdate"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "cr-reference-id"
+        in: "path"
+        description: "Payment Request Reference"
+        required: true
+        type: "string"
+      - name: "bq-reference-id"
+        in: "path"
+        description: "Repeating Payment Facility Reference"
+        required: true
+        type: "string"
+      - in: "body"
+        name: "body"
+        description: "Repeating Payment Request Payload"
+        required: true
+        schema:
+          $ref: "#/definitions/RepeatingPaymentsBase"
+      responses:
+        200:
+          description: "Updated repeating payment transaction successfully."
+          schema:
+            $ref: "#/definitions/RepeatingPaymentsBaseWithIdAndRoot"
+  /remittances/payment-initiation-transaction/{cr-reference-id}/repeating-payments/requisition:
+    post:
+      tags:
+      - "request"
+      summary: "Create payment transaction."
+      operationId: "requestRemittanceTransactionCreate"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "cr-reference-id"
+        in: "path"
+        description: "Payment Request Reference"
+        required: true
+        type: "string"
+      - in: "body"
+        name: "body"
+        description: "Repeating Payment Request Payload"
+        required: true
+        schema:
+          $ref: "#/definitions/RepeatingPaymentsBase"
+      responses:
+        201:
+          description: "Created a repeating remittance record successfully."
+          schema:
+            $ref: "#/definitions/RepeatingPaymentsBaseWithIdAndRoot"
+  /remittances/payment-initiation-transaction/:
+    get:
+      tags:
+      - "retrieve"
+      summary: "Retrieve Control Record Ids."
+      operationId: "RetrieveRemittancesReferenceIds"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "collection-filter"
+        in: "query"
+        description: "Filter to refine the result set. ex- 'customer-reference = CR123'"
+        required: false
+        type: "string"
+      responses:
+        200:
+          description: "successful"
+          schema:
+            type: "array"
+            items:
+              type: "string"
+            example:
+            - "PRR123"
+            - "PRR345"
+  /remittances/payment-initiation-transaction/behavior-qualifiers/:
+    get:
+      tags:
+      - "retrieve"
+      summary: "Retrieve BQ names."
+      operationId: "RetrieveRemittanceBehaviorQualifierNames"
+      produces:
+      - "application/json"
+      parameters: []
+      responses:
+        200:
+          description: "Retrieved all Behaviour Qualifier names in Remittances domain\
+            \ successfully"
+          schema:
+            type: "array"
+            items:
+              type: "string"
+            example:
+            - "repeatingpayment"
+            - "otcpayment"
+            - "compliance"
+            - "fundingcheck"
+            - "payment"
+            - "update"
+            - "reporting"
+  /remittances/payment-initiation-transaction/{cr-reference-id}/{behavior-qualifier}/:
+    get:
+      tags:
+      - "retrieve"
+      summary: "Retrieve BQ Ids."
+      operationId: "RetrieveBehaviorQualifierReferenceIds"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "cr-reference-id"
+        in: "path"
+        description: "Payment Request Reference"
+        required: true
+        type: "string"
+      - name: "behavior-qualifier"
+        in: "path"
+        description: "Behavior Qualifier Name. ex- otcpayments"
+        required: true
+        type: "string"
+      - name: "collection-filter"
+        in: "query"
+        description: "Filter to refine the result set. ex- 'amount > 2000'"
+        required: false
+        type: "string"
+      responses:
+        200:
+          description: "successful"
+          schema:
+            type: "array"
+            items:
+              type: "string"
+            example:
+            - "ORR345"
+            - "ORR789"
+            - "ORR456"
+  /remittances/payment-initiation-transaction/{cr-reference-id}:
+    get:
+      tags:
+      - "retrieve"
+      summary: "Retrieve transaction report"
+      operationId: "retrieveRemittanceTransaction"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "cr-reference-id"
+        in: "path"
+        description: "Payment Request Reference"
+        required: true
+        type: "string"
+      responses:
+        200:
+          description: "Successful"
+          schema:
+            $ref: "#/definitions/RetrieveRemittancesResponse"
+  /remittances/payment-initiation-transaction/{cr-reference-id}/repeating-payments/{bq-reference-id}:
+    get:
+      tags:
+      - "retrieve"
+      summary: "Retrieve remittance transaction report"
+      operationId: "retrieveRemittanceRepeatingTransaction"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "cr-reference-id"
+        in: "path"
+        description: "Payment Request Reference"
+        required: true
+        type: "string"
+      - name: "bq-reference-id"
+        in: "path"
+        description: "Repeating Payment Facility Reference"
+        required: true
+        type: "string"
+      responses:
+        200:
+          description: "Retrieved a Repeating Payment record successfully"
+          schema:
+            $ref: "#/definitions/RepeatingPaymentsBaseWithIdAndRoot"
+  /remittances/payment-initiation-transaction/{cr-reference-id}/compliances/{bq-reference-id}:
+    get:
+      tags:
+      - "retrieve"
+      summary: "Retrieve Compliance transaction report"
+      operationId: "retrieveRemittanceComplianceTransaction"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "cr-reference-id"
+        in: "path"
+        description: "Payment Request Reference"
+        required: true
+        type: "string"
+      - name: "bq-reference-id"
+        in: "path"
+        description: "Compliance Check Reference"
+        required: true
+        type: "string"
+      responses:
+        200:
+          description: "Retrieved a Compliance record successfully"
+          schema:
+            $ref: "#/definitions/ComplianceBaseWithRoot"
+  /remittances/payment-initiation-transaction/{cr-reference-id}/otc-payments/{bq-reference-id}:
+    get:
+      tags:
+      - "retrieve"
+      summary: "Retrieve OTCPayment report"
+      operationId: "retrieveRemittanceOTCPaymentTransaction"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "cr-reference-id"
+        in: "path"
+        description: "Payment Request Reference"
+        required: true
+        type: "string"
+      - name: "bq-reference-id"
+        in: "path"
+        description: "OTCPayment Request Reference"
+        required: true
+        type: "string"
+      responses:
+        200:
+          description: "Retrieved an OTCPayment record successfully"
+          schema:
+            $ref: "#/definitions/OTCPaymentBaseWithIdAndRoot"
+  /remittances/payment-initiation-transaction/{cr-reference-id}/funding-checks/{bq-reference-id}:
+    get:
+      tags:
+      - "retrieve"
+      summary: "Retrieve Funding Check report"
+      operationId: "retrieveRemittanceFundingCheckTransaction"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "cr-reference-id"
+        in: "path"
+        description: "Payment Request Reference"
+        required: true
+        type: "string"
+      - name: "bq-reference-id"
+        in: "path"
+        description: "Funding Check Reference"
+        required: true
+        type: "string"
+      responses:
+        200:
+          description: "Retrieved a Funding Check record successfully"
+          schema:
+            $ref: "#/definitions/FundingCheckBaseWithIdAndRoot"
+  /remittances/payment-initiation-transaction/{cr-reference-id}/payments/{bq-reference-id}:
+    get:
+      tags:
+      - "retrieve"
+      summary: "Retrieve payment report"
+      operationId: "retrievePaymentOrderRequest"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "cr-reference-id"
+        in: "path"
+        description: "Payment Request Reference"
+        required: true
+        type: "string"
+      - name: "bq-reference-id"
+        in: "path"
+        description: "Payment Order Reference"
+        required: true
+        type: "string"
+      responses:
+        200:
+          description: "Retrieved a Payment Order record successfully"
+          schema:
+            $ref: "#/definitions/PaymentRequestWithIdAndRoot"
+  /remittances/payment-initiation-transaction/{cr-reference-id}/updates/{bq-reference-id}:
+    get:
+      tags:
+      - "retrieve"
+      summary: "Retrieve remittance report"
+      operationId: "retrieveRemittanceUpdateTransaction"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "cr-reference-id"
+        in: "path"
+        description: "Payment Request Reference"
+        required: true
+        type: "string"
+      - name: "bq-reference-id"
+        in: "path"
+        description: "Transaction Update Reference"
+        required: true
+        type: "string"
+      responses:
+        200:
+          description: "Retrieved an Updated Payment record successfully"
+          schema:
+            $ref: "#/definitions/TransactionUpdateBaseWithIdAndRoot"
+  /remittances/payment-initiation-transaction/{cr-reference-id}/reportings/{bq-reference-id}:
+    get:
+      tags:
+      - "retrieve"
+      summary: "Retrieve reporting remittance report"
+      operationId: "retrieveRemittanceTransactionReportingTransaction"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "cr-reference-id"
+        in: "path"
+        description: "Payment Request Reference"
+        required: true
+        type: "string"
+      - name: "bq-reference-id"
+        in: "path"
+        description: "Reporting Request Reference"
+        required: true
+        type: "string"
+      responses:
+        200:
+          description: "Retrieved a reporting remittance successfully"
+          schema:
+            $ref: "#/definitions/TransactionReportingResponse"
+definitions:
+  PaymentInitiation:
+    type: "object"
+    properties:
+      paymentRequest:
+        type: "string"
+        example: "PR7649"
+        description: "`status: Not Mapped`\ncore-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Indicator\n"
+      payerProductInstanceReference:
+        type: "string"
+        example: "PPIR7649"
+        description: "`status: Not Mapped`\ncore-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier\
+          \     \n"
+      customerReference:
+        type: "string"
+        example: "CSRE3456"
+        description: "`status: Not Mapped`\ncore-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier\
+          \     \n"
+      payerReference:
+        type: "string"
+        example: "PYRE5345"
+        description: "`status: Not Mapped`\ncore-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier\
+          \     \n"
+      payerBankReference:
+        type: "string"
+        example: "PYBR1093"
+        description: "`status: Not Mapped`\ncore-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier\
+          \     \n"
+      payeeReference:
+        type: "string"
+        example: "PAEE5007"
+        description: "`status: Not Mapped`\ncore-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier\
+          \     \n"
+      payeeProductInstanceReference:
+        type: "string"
+        example: "PAIR7456"
+        description: "`status: Not Mapped`\ncore-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier\
+          \     \n"
+      payeeBankReference:
+        type: "string"
+        example: "PEBR2783"
+        description: "`status: Not Mapped`\ncore-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier\
+          \     \n"
+      amount:
+        type: "string"
+        example: "$5000"
+        description: "`status: Not Mapped`\ncore-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Amount\
+          \     \n"
+      currency:
+        type: "string"
+        example: "USD"
+        description: "`status: Not Mapped`\ncore-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text\
+          \     \n"
+      valueDate:
+        type: "string"
+        example: "2018-08-28"
+        description: "`status: Not Mapped`\ncore-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Date\
+          \     \n"
+      paymentFeesCharges:
+        type: "string"
+        example: "$20"
+        description: "`status: Not Mapped`\ncore-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Amount\
+          \     \n"
+      paymentMechanism:
+        type: "string"
+        example: "SWIFT"
+        description: "`status: Not Mapped`\ncore-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Name\
+          \     \n"
+    example:
+      payerProductInstanceReference: "PPIR7649"
+      amount: "$5000"
+      payeeReference: "PAEE5007"
+      paymentFeesCharges: "$20"
+      payeeProductInstanceReference: "PAIR7456"
+      payerBankReference: "PYBR1093"
+      payeeBankReference: "PEBR2783"
+      valueDate: "2018-08-28"
+      customerReference: "CSRE3456"
+      payerReference: "PYRE5345"
+      currency: "USD"
+      paymentRequest: "PR7649"
+      paymentMechanism: "SWIFT"
+  PaymentInitiationWithId:
+    type: "object"
+    properties:
+      paymentRequesteReference:
+        type: "string"
+        example: "PR77992"
+        description: "`status: Not Mapped`\ncore-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier\
+          \     \n"
+      paymentRequest:
+        type: "string"
+        example: "PR7649"
+        description: "`status: Not Mapped`\ncore-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Indicator\
+          \      \n"
+      payerProductInstanceReference:
+        type: "string"
+        example: "PPIR7649"
+        description: "`status: Not Mapped`\ncore-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier\
+          \     \n"
+      customerReference:
+        type: "string"
+        example: "CSRE3456"
+        description: "`status: Not Mapped`\ncore-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier\
+          \     \n"
+      payerReference:
+        type: "string"
+        example: "PYRE5345"
+        description: "`status: Not Mapped`\ncore-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier\
+          \     \n"
+      payerBankReference:
+        type: "string"
+        example: "PYBR1093"
+        description: "`status: Not Mapped`\ncore-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier\
+          \     \n"
+      payeeReference:
+        type: "string"
+        example: "PAEE5007"
+        description: "`status: Not Mapped`\ncore-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier\
+          \     \n"
+      payeeProductInstanceReference:
+        type: "string"
+        example: "PAIR7456"
+        description: "`status: Not Mapped`\ncore-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier\
+          \     \n"
+      payeeBankReference:
+        type: "string"
+        example: "PEBR2783"
+        description: "`status: Not Mapped`\ncore-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier\
+          \     \n"
+      amount:
+        type: "string"
+        example: "$5000"
+        description: "`status: Not Mapped`\ncore-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Amount\
+          \     \n"
+      currency:
+        type: "string"
+        example: "USD"
+        description: "`status: Not Mapped`\ncore-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text\
+          \     \n"
+      valueDate:
+        type: "string"
+        example: "2018-08-28"
+        description: "`status: Not Mapped`\ncore-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Date\
+          \     \n"
+      paymentFeesCharges:
+        type: "string"
+        example: "$20"
+        description: "`status: Not Mapped`\ncore-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Amount\
+          \     \n"
+      paymentMechanism:
+        type: "string"
+        example: "SWIFT"
+        description: "`status: Not Mapped`\ncore-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Name\
+          \     \n"
+    example:
+      payerProductInstanceReference: "PPIR7649"
+      amount: "$5000"
+      paymentRequesteReference: "PR77992"
+      payeeReference: "PAEE5007"
+      paymentFeesCharges: "$20"
+      payeeProductInstanceReference: "PAIR7456"
+      payerBankReference: "PYBR1093"
+      payeeBankReference: "PEBR2783"
+      valueDate: "2018-08-28"
+      customerReference: "CSRE3456"
+      payerReference: "PYRE5345"
+      currency: "USD"
+      paymentRequest: "PR7649"
+      paymentMechanism: "SWIFT"
+  OTCPaymentBaseWithIdAndRoot:
+    properties:
+      otcpaymentRequestReference:
+        type: "string"
+        example: "ORR7547"
+        description: "`status: Not Mapped`\ncore-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier\
+          \       \n"
+      paymentRequestReference:
+        type: "string"
+        example: "PMRE585"
+        description: "`status: Not Mapped`\ncore-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier\
+          \       \n"
+      productInstanceReference:
+        type: "string"
+        example: "PIR345"
+        description: "`status: Not Mapped`\ncore-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier\
+          \     \n"
+      payerReference:
+        type: "string"
+        example: "PYRE5345"
+        description: "`status: Not Mapped`\ncore-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier\
+          \     \n"
+      documentReference:
+        type: "string"
+        example: "DCRE8470"
+        description: "`status: Not Mapped`\ncore-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier\
+          \     \n"
+      payerBankReference:
+        type: "string"
+        example: "PYBR1093"
+        description: "`status: Not Mapped`\ncore-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier\
+          \     \n"
+      payerProductInstanceReference:
+        type: "string"
+        example: "PARR6400"
+        description: "`status: Not Mapped`\ncore-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier\
+          \     \n"
+      payeeReference:
+        type: "string"
+        example: "PAEE5007"
+        description: "`status: Not Mapped`\ncore-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier\
+          \     \n"
+      payeeProductInstanceReference:
+        type: "string"
+        example: "PAIR7456"
+        description: "`status: Not Mapped`\ncore-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier\
+          \     \n"
+      payeeBankReference:
+        type: "string"
+        example: "PEBR2783"
+        description: "`status: Not Mapped`\ncore-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier\
+          \     \n"
+      amount:
+        type: "string"
+        example: "$5000"
+        description: "`status: Not Mapped`\ncore-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Amount\
+          \     \n"
+      currency:
+        type: "string"
+        example: "USD"
+        description: "`status: Not Mapped`\ncore-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text\
+          \     \n"
+      valueDate:
+        type: "string"
+        example: "09-05-2018"
+        description: "`status: Not Mapped`\ncore-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Date\
+          \     \n"
+      paymentMechanism:
+        type: "string"
+        example: "SWIFT"
+        description: "`status: Not Mapped`\ncore-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Name\
+          \     \n"
+    example:
+      otcpaymentRequestReference: "ORR7547"
+      payerProductInstanceReference: "PARR6400"
+      amount: "$5000"
+      payeeReference: "PAEE5007"
+      payeeProductInstanceReference: "PAIR7456"
+      payerBankReference: "PYBR1093"
+      payeeBankReference: "PEBR2783"
+      valueDate: "09-05-2018"
+      paymentRequestReference: "PMRE585"
+      productInstanceReference: "PIR345"
+      payerReference: "PYRE5345"
+      documentReference: "DCRE8470"
+      currency: "USD"
+      paymentMechanism: "SWIFT"
+  TransactionReportingResponse:
+    type: "object"
+    properties:
+      reportingRequestReference:
+        type: "string"
+        example: "PMRE5850"
+        description: "`status: Not Mapped`\ncore-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier\
+          \     \n"
+      paymentRequestReference:
+        type: "string"
+        example: "PMRE5850"
+        description: "`status: Not Mapped`\ncore-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier\
+          \     \n"
+      customerReference:
+        type: "string"
+        example: "CSRE3456"
+        description: "`status: Not Mapped`\ncore-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier\
+          \      \n"
+      payerBankReference:
+        type: "string"
+        example: "PYBR1093"
+        description: "`status: Not Mapped`\ncore-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier\
+          \     \n"
+      payeeReference:
+        type: "string"
+        example: "PAEE5007"
+        description: "`status: Not Mapped`\ncore-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier\
+          \     \n"
+      payeeProductInstanceReference:
+        type: "string"
+        example: "PAIR7456"
+        description: "`status: Not Mapped`\ncore-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier\
+          \     \n"
+      payeeBankReference:
+        type: "string"
+        example: "PEBR2783"
+        description: "`status: Not Mapped`\ncore-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier\
+          \     \n"
+      amount:
+        type: "string"
+        example: "$5000"
+        description: "`status: Not Mapped`\ncore-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Amount\
+          \     \n"
+      currency:
+        type: "string"
+        example: "USD"
+        description: "`status: Not Mapped`\ncore-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text\
+          \     \n"
+      valueDate:
+        type: "string"
+        example: "2018-08-28"
+        description: "`status: Not Mapped`\ncore-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Date\
+          \     \n"
+      paymentMechanism:
+        type: "string"
+        example: "SWIFT"
+        description: "`status: Not Mapped`\ncore-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Name\
+          \     \n"
+      transactionStatus:
+        type: "string"
+        example: "Success/Failure"
+        description: "`status: Not Mapped`\ncore-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Indicator\
+          \     \n"
+    example:
+      amount: "$5000"
+      payeeReference: "PAEE5007"
+      transactionStatus: "Success/Failure"
+      payeeProductInstanceReference: "PAIR7456"
+      customerReference: "CSRE3456"
+      payerBankReference: "PYBR1093"
+      payeeBankReference: "PEBR2783"
+      reportingRequestReference: "PMRE5850"
+      currency: "USD"
+      valueDate: "2018-08-28"
+      paymentRequestReference: "PMRE5850"
+      paymentMechanism: "SWIFT"
+  FundingCheckBaseWithIdAndRoot:
+    type: "object"
+    properties:
+      fundingCheckReference:
+        type: "string"
+        example: "GS76537"
+        description: "`status: Not Mapped`\ncore-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier\
+          \     \n"
+      paymentRequestReference:
+        type: "string"
+        example: "SARE2041"
+        description: "`status: Not Mapped`\ncore-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier\
+          \     \n"
+      customerReference:
+        type: "string"
+        example: "CSRE3456"
+        description: "`status: Not Mapped`\ncore-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier\
+          \     \n"
+      amount:
+        type: "string"
+        example: "$5000"
+        description: "`status: Not Mapped`\ncore-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Amount\
+          \     \n"
+      productInstanceReference:
+        type: "string"
+        example: "PARR6400"
+        description: "`status: Not Mapped`\ncore-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier\
+          \     \n"
+      servicingActionResult:
+        type: "string"
+        example: "Success/Failure"
+        description: "`status: Not Mapped`\ncore-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Text\
+          \     \n"
+    example:
+      productInstanceReference: "PARR6400"
+      amount: "$5000"
+      customerReference: "CSRE3456"
+      fundingCheckReference: "GS76537"
+      servicingActionResult: "Success/Failure"
+      paymentRequestReference: "SARE2041"
+  ComplianceBaseWithRoot:
+    type: "object"
+    properties:
+      complianceCheckReference:
+        type: "string"
+        example: "MN8765"
+        description: "`status: Not Mapped`\ncore-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier\
+          \     \n"
+      paymentRequestReference:
+        type: "string"
+        example: "PMRE5850"
+        description: "`status: Not Mapped`\ncore-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier\
+          \     \n"
+      paymentPurpose:
+        type: "string"
+        example: "Debt/Bill"
+        description: "`status: Not Mapped`\ncore-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Name\
+          \     \n"
+      customerReference:
+        type: "string"
+        example: "CSRE3456"
+        description: "`status: Not Mapped`\ncore-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Indicator\
+          \     \n"
+      payerReference:
+        type: "string"
+        example: "PYRE5345"
+        description: "`status: Not Mapped`\ncore-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier\
+          \     \n"
+      payeeReference:
+        type: "string"
+        example: "PAEE5007"
+        description: "`status: Not Mapped`\ncore-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier\
+          \     \n"
+      amount:
+        type: "string"
+        example: "$5000"
+        description: "`status: Not Mapped`\ncore-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Amount\
+          \     \n"
+    example:
+      amount: "$5000"
+      complianceCheckReference: "MN8765"
+      payeeReference: "PAEE5007"
+      customerReference: "CSRE3456"
+      payerReference: "PYRE5345"
+      paymentPurpose: "Debt/Bill"
+      paymentRequestReference: "PMRE5850"
+  RepeatingPaymentsBase:
+    type: "object"
+    properties:
+      repeatingPaymentPurpose:
+        type: "string"
+        example: "Adjustment/Billing"
+        description: "`status: Not Mapped`\ncore-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Name\
+          \      \n"
+      payerProductInstanceReference:
+        type: "string"
+        example: "PARR6400"
+        description: "`status: Not Mapped`\ncore-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier\
+          \     \n"
+      customerReference:
+        type: "string"
+        example: "CSRE3456"
+        description: "`status: Not Mapped`\ncore-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier\
+          \     \n"
+      payerBankReference:
+        type: "string"
+        example: "PYBR1093"
+        description: "`status: Not Mapped`\ncore-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier\
+          \     \n"
+      payeeReference:
+        type: "string"
+        example: "PAEE5007"
+        description: "`status: Not Mapped`\ncore-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier\
+          \     \n"
+      payeeProductInstanceReference:
+        type: "string"
+        example: "PAIR7456"
+        description: "`status: Not Mapped`\ncore-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier\
+          \     \n"
+      payeeBankReference:
+        type: "string"
+        example: "PEBR2783"
+        description: "`status: Not Mapped`\ncore-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier\
+          \     \n"
+      amount:
+        type: "string"
+        example: "$5000"
+        description: "`status: Not Mapped`\ncore-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Amount\
+          \     \n"
+      currency:
+        type: "string"
+        example: "USD"
+        description: "`status: Not Mapped`\ncore-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text\
+          \     \n"
+      paymentSchedule:
+        type: "string"
+        example: "2018-08-28"
+        description: "`status: Not Mapped`\ncore-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Date\
+          \     \n"
+    example:
+      payerProductInstanceReference: "PARR6400"
+      amount: "$5000"
+      payeeReference: "PAEE5007"
+      payeeProductInstanceReference: "PAIR7456"
+      customerReference: "CSRE3456"
+      payerBankReference: "PYBR1093"
+      payeeBankReference: "PEBR2783"
+      paymentSchedule: "2018-08-28"
+      currency: "USD"
+      repeatingPaymentPurpose: "Adjustment/Billing"
+  RepeatingPaymentsBaseWithIdAndRoot:
+    type: "object"
+    properties:
+      repeatingPaymentFacilityReference:
+        type: "string"
+        example: "RPFF6453"
+        description: "`status: Not Mapped`\ncore-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier\
+          \     \n"
+      paymentRequestReference:
+        type: "string"
+        example: "PMRE5850"
+        description: "`status: Not Mapped`\ncore-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier\
+          \     \n"
+      repeatingPaymentPurpose:
+        type: "string"
+        example: "Adjustment/Billing"
+        description: "`status: Not Mapped`\ncore-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Name\
+          \      \n"
+      payerProductInstanceReference:
+        type: "string"
+        example: "PARR6400"
+        description: "`status: Not Mapped`\ncore-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier\
+          \     \n"
+      customerReference:
+        type: "string"
+        example: "CSRE3456"
+        description: "`status: Not Mapped`\ncore-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier\
+          \     \n"
+      payerBankReference:
+        type: "string"
+        example: "PYBR1093"
+        description: "`status: Not Mapped`\ncore-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier\
+          \     \n"
+      payeeReference:
+        type: "string"
+        example: "PAEE5007"
+        description: "`status: Not Mapped`\ncore-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier\
+          \     \n"
+      payeeProductInstanceReference:
+        type: "string"
+        example: "PAIR7456"
+        description: "`status: Not Mapped`\ncore-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier\
+          \     \n"
+      payeeBankReference:
+        type: "string"
+        example: "PEBR2783"
+        description: "`status: Not Mapped`\ncore-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier\
+          \     \n"
+      amount:
+        type: "string"
+        example: "$5000"
+        description: "`status: Not Mapped`\ncore-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Amount\
+          \     \n"
+      currency:
+        type: "string"
+        example: "USD"
+        description: "`status: Not Mapped`\ncore-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text\
+          \     \n"
+      paymentSchedule:
+        type: "string"
+        example: "1/3/6/12 Months"
+        description: "`status: Not Mapped`\ncore-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Duration\
+          \     \n"
+    example:
+      repeatingPaymentFacilityReference: "RPFF6453"
+      payerProductInstanceReference: "PARR6400"
+      amount: "$5000"
+      payeeReference: "PAEE5007"
+      payeeProductInstanceReference: "PAIR7456"
+      customerReference: "CSRE3456"
+      payerBankReference: "PYBR1093"
+      payeeBankReference: "PEBR2783"
+      paymentSchedule: "1/3/6/12 Months"
+      currency: "USD"
+      repeatingPaymentPurpose: "Adjustment/Billing"
+      paymentRequestReference: "PMRE5850"
+  RetrieveRemittancesResponse:
+    type: "object"
+    properties:
+      paymentRequestReference:
+        type: "string"
+        example: "PMRE5850"
+        description: "`status: Not Mapped`\ncore-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier\
+          \     \n"
+      paymentRequest:
+        type: "string"
+        example: "PR7649"
+        description: "`status: Not Mapped`\ncore-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Indicator\
+          \      \n"
+      payerProductInstanceReference:
+        type: "string"
+        example: "PARR6400"
+        description: "`status: Not Mapped`\ncore-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier\
+          \     \n"
+      customerReference:
+        type: "string"
+        example: "CSRE3456"
+        description: "`status: Not Mapped`\ncore-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier\
+          \     \n"
+      payerReference:
+        type: "string"
+        example: "PYRE5345"
+        description: "`status: Not Mapped`\ncore-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier\
+          \     \n"
+      payerBankReference:
+        type: "string"
+        example: "PYBR1093"
+        description: "`status: Not Mapped`\ncore-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier\
+          \     \n"
+      payeeReference:
+        type: "string"
+        example: "PAEE5007"
+        description: "`status: Not Mapped`\ncore-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier\
+          \     \n"
+      payeeProductInstanceReference:
+        type: "string"
+        example: "PAIR7456"
+        description: "`status: Not Mapped`\ncore-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier\
+          \     \n"
+      payeeBankReference:
+        type: "string"
+        example: "PEBR2783"
+        description: "`status: Not Mapped`\ncore-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier\
+          \     \n"
+      amount:
+        type: "string"
+        example: "$5000"
+        description: "`status: Not Mapped`\ncore-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Amount\
+          \     \n"
+      currency:
+        type: "string"
+        example: "USD"
+        description: "`status: Not Mapped`\ncore-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text\
+          \     \n"
+      valueDate:
+        type: "string"
+        example: "2018-08-28"
+        description: "`status: Not Mapped`\ncore-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Date\
+          \     \n"
+      paymentFeesCharges:
+        type: "string"
+        example: "$100"
+        description: "`status: Not Mapped`\ncore-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Amount\
+          \      \n"
+      paymentMechanism:
+        type: "string"
+        example: "SWIFT"
+        description: "`status: Not Mapped`\ncore-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Name\
+          \     \n"
+    example:
+      payerProductInstanceReference: "PARR6400"
+      amount: "$5000"
+      payeeReference: "PAEE5007"
+      paymentFeesCharges: "$100"
+      payeeProductInstanceReference: "PAIR7456"
+      payerBankReference: "PYBR1093"
+      payeeBankReference: "PEBR2783"
+      valueDate: "2018-08-28"
+      paymentRequestReference: "PMRE5850"
+      customerReference: "CSRE3456"
+      payerReference: "PYRE5345"
+      currency: "USD"
+      paymentRequest: "PR7649"
+      paymentMechanism: "SWIFT"
+  PaymentRequestWithIdAndRoot:
+    type: "object"
+    properties:
+      paymentOrderReference:
+        type: "string"
+        example: "PO9876654"
+        description: "`status: Not Mapped`\ncore-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier\
+          \       \n"
+      paymentRequestReference:
+        type: "string"
+        example: "PMRE5850"
+        description: "`status: Not Mapped`\ncore-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier\
+          \     \n"
+      productInstanceReference:
+        type: "string"
+        example: "PIR6400"
+        description: "`status: Not Mapped`\ncore-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier\
+          \     \n"
+      customerReference:
+        type: "string"
+        example: "CSRE3456"
+        description: "`status: Not Mapped`\ncore-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier\
+          \     \n"
+      payerBankReference:
+        type: "string"
+        example: "PYBR1093"
+        description: "`status: Not Mapped`\ncore-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier\
+          \     \n"
+      payeeReference:
+        type: "string"
+        example: "PAEE5007"
+        description: "`status: Not Mapped`\ncore-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier\
+          \     \n"
+      payeeProductInstanceReference:
+        type: "string"
+        example: "PAIR7456"
+        description: "`status: Not Mapped`\ncore-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier\
+          \     \n"
+      payeeBankReference:
+        type: "string"
+        example: "PEBR2783"
+        description: "`status: Not Mapped`\ncore-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier\
+          \     \n"
+      amount:
+        type: "string"
+        example: "$5000"
+        description: "`status: Not Mapped`\ncore-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Amount\
+          \     \n"
+      currency:
+        type: "string"
+        example: "USD"
+        description: "`status: Not Mapped`\ncore-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text\
+          \     \n"
+      valueDate:
+        type: "string"
+        example: "2018-08-28"
+        description: "`status: Not Mapped`\ncore-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Date\
+          \     \n"
+      paymentMechanism:
+        type: "string"
+        example: "SWIFT"
+        description: "`status: Not Mapped`\ncore-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Name\
+          \     \n"
+      paymentOrderResult:
+        type: "string"
+        example: "Success/Failure"
+        description: "`status: Not Mapped`\ncore-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text\
+          \     \n"
+    example:
+      amount: "$5000"
+      payeeReference: "PAEE5007"
+      payeeProductInstanceReference: "PAIR7456"
+      payerBankReference: "PYBR1093"
+      payeeBankReference: "PEBR2783"
+      paymentOrderResult: "Success/Failure"
+      valueDate: "2018-08-28"
+      paymentRequestReference: "PMRE5850"
+      paymentOrderReference: "PO9876654"
+      productInstanceReference: "PIR6400"
+      customerReference: "CSRE3456"
+      currency: "USD"
+      paymentMechanism: "SWIFT"
+  TransactionUpdateBase:
+    type: "object"
+    properties:
+      productInstanceReference:
+        type: "string"
+        example: "PIR6400"
+        description: "`status: Not Mapped`\ncore-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier\
+          \     \n"
+      customerReference:
+        type: "string"
+        example: "CSRE3456"
+        description: "`status: Not Mapped`\ncore-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier\
+          \     \n"
+      payerBankReference:
+        type: "string"
+        example: "PYBR1093"
+        description: "`status: Not Mapped`\ncore-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier\
+          \     \n"
+      payeeReference:
+        type: "string"
+        example: "PAEE5007"
+        description: "`status: Not Mapped`\ncore-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier\
+          \     \n"
+      payeeProductInstanceReference:
+        type: "string"
+        example: "PAIR7456"
+        description: "`status: Not Mapped`\ncore-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier\
+          \     \n"
+      payeeBankReference:
+        type: "string"
+        example: "PEBR2783"
+        description: "`status: Not Mapped`\ncore-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier\
+          \     \n"
+      amount:
+        type: "string"
+        example: "$5000"
+        description: "`status: Not Mapped`\ncore-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Amount\
+          \     \n"
+      currency:
+        type: "string"
+        example: "USD"
+        description: "`status: Not Mapped`\ncore-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text\
+          \     \n"
+      valueDate:
+        type: "string"
+        example: "2018-08-28"
+        description: "`status: Not Mapped`\ncore-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Date\
+          \     \n"
+      paymentMechanism:
+        type: "string"
+        example: "SWIFT"
+        description: "`status: Not Mapped`\ncore-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Name\
+          \     \n"
+    example:
+      productInstanceReference: "PIR6400"
+      amount: "$5000"
+      payeeReference: "PAEE5007"
+      payeeProductInstanceReference: "PAIR7456"
+      customerReference: "CSRE3456"
+      payerBankReference: "PYBR1093"
+      payeeBankReference: "PEBR2783"
+      currency: "USD"
+      valueDate: "2018-08-28"
+      paymentMechanism: "SWIFT"
+  TransactionUpdateBaseWithIdAndRoot:
+    type: "object"
+    properties:
+      transactionUpdateReference:
+        type: "string"
+        example: "TURE9340"
+        description: "`status: Not Mapped`\ncore-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier\
+          \     \n"
+      paymentRequestReference:
+        type: "string"
+        example: "PMRE5850"
+        description: "`status: Not Mapped`\ncore-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier\
+          \     \n"
+      productInstanceReference:
+        type: "string"
+        example: "PIR6400"
+        description: "`status: Not Mapped`\ncore-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier\
+          \     \n"
+      customerReference:
+        type: "string"
+        example: "CSRE3456"
+        description: "`status: Not Mapped`\ncore-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier\
+          \     \n"
+      payerBankReference:
+        type: "string"
+        example: "PYBR1093"
+        description: "`status: Not Mapped`\ncore-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier\
+          \     \n"
+      payeeReference:
+        type: "string"
+        example: "PAEE5007"
+        description: "`status: Not Mapped`\ncore-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier\
+          \     \n"
+      payeeProductInstanceReference:
+        type: "string"
+        example: "PAIR7456"
+        description: "`status: Not Mapped`\ncore-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier\
+          \     \n"
+      payeeBankReference:
+        type: "string"
+        example: "PEBR2783"
+        description: "`status: Not Mapped`\ncore-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier\
+          \     \n"
+      amount:
+        type: "string"
+        example: "$5000"
+        description: "`status: Not Mapped`\ncore-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Amount\
+          \     \n"
+      currency:
+        type: "string"
+        example: "USD"
+        description: "`status: Not Mapped`\ncore-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text\
+          \     \n"
+      valueDate:
+        type: "string"
+        example: "2018-08-28"
+        description: "`status: Not Mapped`\ncore-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Date\
+          \     \n"
+      paymentMechanism:
+        type: "string"
+        example: "SWIFT"
+        description: "`status: Not Mapped`\ncore-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Name\
+          \     \n"
+      transactionUpdateResult:
+        type: "string"
+        example: "Success/Failure"
+        description: "`status: Not Mapped`\ncore-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text\n"
+    example:
+      amount: "$5000"
+      payeeReference: "PAEE5007"
+      payeeProductInstanceReference: "PAIR7456"
+      payerBankReference: "PYBR1093"
+      payeeBankReference: "PEBR2783"
+      transactionUpdateResult: "Success/Failure"
+      valueDate: "2018-08-28"
+      transactionUpdateReference: "TURE9340"
+      paymentRequestReference: "PMRE5850"
+      productInstanceReference: "PIR6400"
+      customerReference: "CSRE3456"
+      currency: "USD"
+      paymentMechanism: "SWIFT"
