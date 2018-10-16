@@ -15,12 +15,12 @@ object TerminateApi {
    * 
    * 
    * Expected answers:
-   *   code 204 :  (successful)
+   *   code 204 :  (Successfully TerminatedConsumer Loan)
    * 
-   * @param crReferenceId Product Instance Reference
+   * @param crReferenceId Product Instance Reference (loan account number)
    */
-  def terminateCurrentAccountFulfillmentArrangement(crReferenceId: String): ApiRequest[Unit] =
-    ApiRequest[Unit](ApiMethods.DELETE, "https://virtserver.swaggerhub.com/BIAN/current-account/3.0.1", "/current-account/current-account-fulfillment-arrangement/{cr-reference-id}", "application/json")
+  def terminateConsumerLoanFulfillmentArrangement(crReferenceId: String): ApiRequest[Unit] =
+    ApiRequest[Unit](ApiMethods.DELETE, "https://virtserver.swaggerhub.com/BIAN/sd-consumer-loan/3.0.1", "/consumer-loan/consumer-loan-fulfillment-arrangement/{cr-reference-id}", "application/json")
       .withPathParam("cr-reference-id", crReferenceId)
       .withSuccessResponse[Unit](204)
       

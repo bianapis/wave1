@@ -5,8 +5,8 @@
  */
 package io.swagger.client.api
 
-import io.swagger.client.model.CurrentAccountBase
-import io.swagger.client.model.CurrentAccountBaseWithIdAndStatus
+import io.swagger.client.model.ConsumerLoanBase
+import io.swagger.client.model.ConsumerLoanWithIdAndStatus
 import io.swagger.client.core._
 import io.swagger.client.core.CollectionFormats._
 import io.swagger.client.core.ApiKeyLocations._
@@ -14,17 +14,17 @@ import io.swagger.client.core.ApiKeyLocations._
 object InitiateApi {
 
   /**
-   * 
+   * Initiate - Set-up a new consumer loan
    * 
    * Expected answers:
-   *   code 201 : CurrentAccountBaseWithIdAndStatus (A new current account fulfillment arrangement is created)
+   *   code 201 : ConsumerLoanWithIdAndStatus (Initiated setup of consumer loan)
    * 
-   * @param body Initiate control record request payload
+   * @param body 
    */
-  def initiateCurrentAccountFulfillmentArrangement(body: CurrentAccountBase): ApiRequest[CurrentAccountBaseWithIdAndStatus] =
-    ApiRequest[CurrentAccountBaseWithIdAndStatus](ApiMethods.POST, "https://virtserver.swaggerhub.com/BIAN/current-account/3.0.1", "/current-account/current-account-fulfillment-arrangement/initiation", "application/json")
+  def initiateConsumerLoanFulfillmentArrangement(body: Option[ConsumerLoanBase] = None): ApiRequest[ConsumerLoanWithIdAndStatus] =
+    ApiRequest[ConsumerLoanWithIdAndStatus](ApiMethods.POST, "https://virtserver.swaggerhub.com/BIAN/sd-consumer-loan/3.0.1", "/consumer-loan/consumer-loan-fulfillment-arrangement/initiation", "application/json")
       .withBody(body)
-      .withSuccessResponse[CurrentAccountBaseWithIdAndStatus](201)
+      .withSuccessResponse[ConsumerLoanWithIdAndStatus](201)
       
 
 }

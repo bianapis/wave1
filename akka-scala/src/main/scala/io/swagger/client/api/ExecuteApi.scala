@@ -5,10 +5,12 @@
  */
 package io.swagger.client.api
 
-import io.swagger.client.model.DepositBase
-import io.swagger.client.model.DepositBaseWithIdAndRoot
-import io.swagger.client.model.PaymentBase
-import io.swagger.client.model.PaymentBaseWithIdAndRoot
+import io.swagger.client.model.ConsumerLoanDisbursementWithId
+import io.swagger.client.model.ConsumerLoanDisbursementWithoutCommonAndId
+import io.swagger.client.model.ConsumerLoanPaymentWithoutCommonAndId
+import io.swagger.client.model.ConsumerLoanPaymentsWithId
+import io.swagger.client.model.ConsumerLoanWithdrawalWithId
+import io.swagger.client.model.ConsumerLoanWithdrawalWithoutCommonAndId
 import io.swagger.client.core._
 import io.swagger.client.core.CollectionFormats._
 import io.swagger.client.core.ApiKeyLocations._
@@ -16,65 +18,95 @@ import io.swagger.client.core.ApiKeyLocations._
 object ExecuteApi {
 
   /**
-   * Create a new Deposit
+   * Create a new consumer loan disbursement execution
    * 
    * Expected answers:
-   *   code 201 : DepositBaseWithIdAndRoot (Created a deposit successfully)
+   *   code 201 : ConsumerLoanDisbursementWithId (Successfully created a new consumer loan disbursement execution record)
    * 
-   * @param crReferenceId Product Instance Reference
-   * @param body Execute deposits request payload
+   * @param crReferenceId Product Instance Reference (loan account number)
+   * @param body 
    */
-  def executeCurrentAccountFulfillmentArrangementDepositCreate(crReferenceId: String, body: DepositBase): ApiRequest[DepositBaseWithIdAndRoot] =
-    ApiRequest[DepositBaseWithIdAndRoot](ApiMethods.POST, "https://virtserver.swaggerhub.com/BIAN/current-account/3.0.1", "/current-account/current-account-fulfillment-arrangement/{cr-reference-id}/deposits/execution", "application/json")
+  def executeConsumerLoanFulfillmentArrangementDisbursementCreate(crReferenceId: String, body: Option[ConsumerLoanDisbursementWithoutCommonAndId] = None): ApiRequest[ConsumerLoanDisbursementWithId] =
+    ApiRequest[ConsumerLoanDisbursementWithId](ApiMethods.POST, "https://virtserver.swaggerhub.com/BIAN/sd-consumer-loan/3.0.1", "/consumer-loan/consumer-loan-fulfillment-arrangement/{cr-reference-id}/disbursements/execution", "application/json")
       .withBody(body)
       .withPathParam("cr-reference-id", crReferenceId)
-      .withSuccessResponse[DepositBaseWithIdAndRoot](201)
+      .withSuccessResponse[ConsumerLoanDisbursementWithId](201)
         /**
-   * Update an exising Deposit
+   * Updated consumer loan disbursement execution
    * 
    * Expected answers:
-   *   code 200 : DepositBaseWithIdAndRoot (successful)
+   *   code 200 : ConsumerLoanDisbursementWithId (Successfully Updated consumer loan disbursement execution)
    * 
-   * @param crReferenceId Product Instance Reference
-   * @param bqReferenceId Deposit reference id
-   * @param body Execute deposits request payload
+   * @param crReferenceId Product Instance Reference (loan account number)
+   * @param bqReferenceId Disbursement Order Reference
+   * @param body 
    */
-  def executeCurrentAccountFulfillmentArrangementDepositUpdate(crReferenceId: String, bqReferenceId: String, body: DepositBase): ApiRequest[DepositBaseWithIdAndRoot] =
-    ApiRequest[DepositBaseWithIdAndRoot](ApiMethods.PUT, "https://virtserver.swaggerhub.com/BIAN/current-account/3.0.1", "/current-account/current-account-fulfillment-arrangement/{cr-reference-id}/deposits/{bq-reference-id}/execution", "application/json")
+  def executeConsumerLoanFulfillmentArrangementDisbursementUpdate(crReferenceId: String, bqReferenceId: String, body: Option[ConsumerLoanDisbursementWithoutCommonAndId] = None): ApiRequest[ConsumerLoanDisbursementWithId] =
+    ApiRequest[ConsumerLoanDisbursementWithId](ApiMethods.PUT, "https://virtserver.swaggerhub.com/BIAN/sd-consumer-loan/3.0.1", "/consumer-loan/consumer-loan-fulfillment-arrangement/{cr-reference-id}/disbursements/{bq-reference-id}/execution", "application/json")
       .withBody(body)
       .withPathParam("cr-reference-id", crReferenceId)
       .withPathParam("bq-reference-id", bqReferenceId)
-      .withSuccessResponse[DepositBaseWithIdAndRoot](200)
+      .withSuccessResponse[ConsumerLoanDisbursementWithId](200)
         /**
-   * Create a new Payment
+   * Create a Consumer Loan Payment Execution record
    * 
    * Expected answers:
-   *   code 201 : PaymentBaseWithIdAndRoot (Creted a a Payment successfully)
+   *   code 201 : ConsumerLoanPaymentsWithId (Successfully Created a Consumer Loan Payment Execution record)
    * 
-   * @param crReferenceId Product Instance Reference
-   * @param body Execute payments request payload
+   * @param crReferenceId Product Instance Reference (loan account number)
+   * @param body 
    */
-  def executeCurrentAccountFulfillmentArrangementPaymentCreate(crReferenceId: String, body: PaymentBase): ApiRequest[PaymentBaseWithIdAndRoot] =
-    ApiRequest[PaymentBaseWithIdAndRoot](ApiMethods.POST, "https://virtserver.swaggerhub.com/BIAN/current-account/3.0.1", "/current-account/current-account-fulfillment-arrangement/{cr-reference-id}/payments/execution", "application/json")
+  def executeConsumerLoanFulfillmentArrangementRepaymentCreate(crReferenceId: String, body: Option[ConsumerLoanPaymentWithoutCommonAndId] = None): ApiRequest[ConsumerLoanPaymentsWithId] =
+    ApiRequest[ConsumerLoanPaymentsWithId](ApiMethods.POST, "https://virtserver.swaggerhub.com/BIAN/sd-consumer-loan/3.0.1", "/consumer-loan/consumer-loan-fulfillment-arrangement/{cr-reference-id}/payments/execution", "application/json")
       .withBody(body)
       .withPathParam("cr-reference-id", crReferenceId)
-      .withSuccessResponse[PaymentBaseWithIdAndRoot](201)
+      .withSuccessResponse[ConsumerLoanPaymentsWithId](201)
         /**
-   * Update an exising Payment
+   * Update a Consumer Loan Payment Execution record
    * 
    * Expected answers:
-   *   code 200 : PaymentBaseWithIdAndRoot (successful)
+   *   code 200 : ConsumerLoanPaymentsWithId (Successfully Updated Consumer Loan Payment Execution record)
    * 
-   * @param crReferenceId Product Instance Reference
-   * @param bqReferenceId deposit reference id
-   * @param body Execute payments request payload
+   * @param crReferenceId Product Instance Reference (loan account number)
+   * @param bqReferenceId Payment Transaction Reference
+   * @param body 
    */
-  def executeCurrentAccountFulfillmentArrangementPaymentUpdate(crReferenceId: String, bqReferenceId: String, body: PaymentBase): ApiRequest[PaymentBaseWithIdAndRoot] =
-    ApiRequest[PaymentBaseWithIdAndRoot](ApiMethods.PUT, "https://virtserver.swaggerhub.com/BIAN/current-account/3.0.1", "/current-account/current-account-fulfillment-arrangement/{cr-reference-id}/payments/{bq-reference-id}/execution", "application/json")
+  def executeConsumerLoanFulfillmentArrangementRepaymentUpdate(crReferenceId: String, bqReferenceId: String, body: Option[ConsumerLoanPaymentWithoutCommonAndId] = None): ApiRequest[ConsumerLoanPaymentsWithId] =
+    ApiRequest[ConsumerLoanPaymentsWithId](ApiMethods.PUT, "https://virtserver.swaggerhub.com/BIAN/sd-consumer-loan/3.0.1", "/consumer-loan/consumer-loan-fulfillment-arrangement/{cr-reference-id}/payments/{bq-reference-id}/execution", "application/json")
       .withBody(body)
       .withPathParam("cr-reference-id", crReferenceId)
       .withPathParam("bq-reference-id", bqReferenceId)
-      .withSuccessResponse[PaymentBaseWithIdAndRoot](200)
+      .withSuccessResponse[ConsumerLoanPaymentsWithId](200)
+        /**
+   * Create a New Consumer Loan Withdrawl Execution Record
+   * 
+   * Expected answers:
+   *   code 201 : ConsumerLoanWithdrawalWithId (Successfully Created Consumer Loan Withdrawl Execution Record)
+   * 
+   * @param crReferenceId Product Instance Reference (loan account number)
+   * @param body 
+   */
+  def executeConsumerLoanFulfillmentArrangementWithdrawalCreate(crReferenceId: String, body: Option[ConsumerLoanWithdrawalWithoutCommonAndId] = None): ApiRequest[ConsumerLoanWithdrawalWithId] =
+    ApiRequest[ConsumerLoanWithdrawalWithId](ApiMethods.POST, "https://virtserver.swaggerhub.com/BIAN/sd-consumer-loan/3.0.1", "/consumer-loan/consumer-loan-fulfillment-arrangement/{cr-reference-id}/withdrawals/execution", "application/json")
+      .withBody(body)
+      .withPathParam("cr-reference-id", crReferenceId)
+      .withSuccessResponse[ConsumerLoanWithdrawalWithId](201)
+        /**
+   * Update a Consumer Loan Withdrawl Execution Record
+   * 
+   * Expected answers:
+   *   code 200 : ConsumerLoanWithdrawalWithId (Successfully Updated Consumer Loan Withdrawl Execution Record)
+   * 
+   * @param crReferenceId Product Instance Reference (loan account number)
+   * @param bqReferenceId Withdrawal Instruction Reference
+   * @param body 
+   */
+  def executeConsumerLoanFulfillmentArrangementWithdrawalUpdate(crReferenceId: String, bqReferenceId: String, body: Option[ConsumerLoanWithdrawalWithoutCommonAndId] = None): ApiRequest[ConsumerLoanWithdrawalWithId] =
+    ApiRequest[ConsumerLoanWithdrawalWithId](ApiMethods.PUT, "https://virtserver.swaggerhub.com/BIAN/sd-consumer-loan/3.0.1", "/consumer-loan/consumer-loan-fulfillment-arrangement/{cr-reference-id}/withdrawals/{bq-reference-id}/execution", "application/json")
+      .withBody(body)
+      .withPathParam("cr-reference-id", crReferenceId)
+      .withPathParam("bq-reference-id", bqReferenceId)
+      .withSuccessResponse[ConsumerLoanWithdrawalWithId](200)
       
 
 }
