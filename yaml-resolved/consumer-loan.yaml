@@ -662,7 +662,7 @@ definitions:
           general-info: term, revolving, evergreen\n"
       loanAmount:
         type: "number"
-        example: 4000000
+        example: 4000000.0
         description: "`status: Registered`\nbian-reference:  Loan(asAsset).InvestmentAmount\n\
           iso-link-1:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_FPv0acTGEeChad0JzLk7QA_-150026816/elements/_FepzGcTGEeChad0JzLk7QA_298530288)\n\
           `status: Registered`\nbian-reference:  Loan.PrincipalAmount\niso-link-2:\
@@ -774,7 +774,7 @@ definitions:
       partyReference: "PR3547"
       collateralReference: "COL232342"
       customerCommentary: "record of customer correspondence"
-      loanAmount: 4000000
+      loanAmount: 4000000.0
       bankBranchLocationReference: "BB72347724"
       involvedPartyObligationEntitlement: "involvedPartyObligationEntitlement"
       loanOutstandingBalance: "250000"
@@ -857,7 +857,7 @@ definitions:
           general-info: term, revolving, evergreen\n"
       loanAmount:
         type: "number"
-        example: 4000000
+        example: 4000000.0
         description: "`status: Registered`\nbian-reference:  Loan(asAsset).InvestmentAmount\n\
           iso-link-1:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_FPv0acTGEeChad0JzLk7QA_-150026816/elements/_FepzGcTGEeChad0JzLk7QA_298530288)\n\
           `status: Registered`\nbian-reference:  Loan.PrincipalAmount\niso-link-2:\
@@ -974,7 +974,7 @@ definitions:
       partyReference: "PR3547"
       collateralReference: "COL232342"
       customerCommentary: "record of customer correspondence"
-      loanAmount: 4000000
+      loanAmount: 4000000.0
       bankBranchLocationReference: "BB72347724"
       involvedPartyObligationEntitlement: "involvedPartyObligationEntitlement"
       loanOutstandingBalance: "250000"
