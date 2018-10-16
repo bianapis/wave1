@@ -1,0 +1,993 @@
+---
+swagger: "2.0"
+info:
+  description: "\n## Description: \nThis service domain administers the issuance of\
+    \ authentication tokens to customers and third party service providers. Tokens\
+    \ here include physical devices such as cards, fobs, readers and intangible 'devices'\
+    \ such as passwords and secret questions. Administration includes version tracking,\
+    \ replacement and duration/frequency limits. Specific product/service access permissions\
+    \ may be associated with an issued token when appropriate.\n## Example of use:\n\
+    A card is cancelled and a replacement card is generated and issued for a customer\
+    \ reporting a stolen card.\n## General comment:\nThis service domain administers\
+    \ the inventory management and allocation/issuance for all issued devices and\
+    \ materials (e.g. cards). This covers credit/debit cards and can include other\
+    \ identification/authentication devices such as keychain fobs. it also handles\
+    \ virtual token inventory such as passwords, secret questions and biometric records\
+    \ (signatures, voice/image). An aspect of the administration includes maintaining\
+    \ device reference details and states such as operating system release and age/duration\
+    \ in use. Specific product/service access permissions can be associated with an\
+    \ issued device.\n"
+  version: "4.0.0"
+  title: "Service Domain - Issued Device Administration"
+host: "virtserver.swaggerhub.com"
+basePath: "/BIAN/sd-issued-device-adminstrations/4.0.0"
+schemes:
+- "https"
+paths:
+  /issued-device-administration/issued-device-allocation/{cr-reference-id}/updation:
+    put:
+      tags:
+      - "update"
+      summary: "Update allocatable resource record"
+      operationId: "updateIssuedDeviceAllocation"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "cr-reference-id"
+        in: "path"
+        description: "Allocation Reference"
+        required: true
+        type: "string"
+      - in: "body"
+        name: "body"
+        description: "Update control record request payload"
+        required: true
+        schema:
+          $ref: "#/definitions/IssuedDeviceAllocationBasic"
+      responses:
+        200:
+          description: "Updated a Issued Device Allocation successfully"
+          schema:
+            $ref: "#/definitions/IssuedDeviceAllocationComplete"
+  /issued-device-administration/issued-device-allocation/{cr-reference-id}/recording:
+    post:
+      tags:
+      - "record"
+      summary: "Record a Issued Allocation"
+      operationId: "recordIssuedDeviceAllocation"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "cr-reference-id"
+        in: "path"
+        description: "Allocation Reference"
+        required: true
+        type: "string"
+      - in: "body"
+        name: "body"
+        description: "Record control record request payload"
+        required: true
+        schema:
+          $ref: "#/definitions/IssuedDeviceAllocationBasic"
+      responses:
+        201:
+          description: "Created a Issued Device Allocation successfully"
+          schema:
+            $ref: "#/definitions/IssuedDeviceAllocationRecordResponse"
+  /issued-device-administration/issued-device-allocation/provision:
+    post:
+      tags:
+      - "provide"
+      summary: "Provide a resource on request"
+      operationId: "provideIssuedDeviceAllocation"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        required: true
+        schema:
+          $ref: "#/definitions/IssuedDeviceAllocationBasic"
+      responses:
+        201:
+          description: "Provided a Issued Device Allocation successfully"
+          schema:
+            $ref: "#/definitions/IssuedDeviceAllocationComplete"
+  /issued-device-administration/issued-device-allocation:
+    get:
+      tags:
+      - "retrieve"
+      summary: "Retrieve allocation records Ids"
+      operationId: "retrieveIssuedDeviceAllocationReferenceIds"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "collection-filter"
+        in: "query"
+        description: "Filter to refine the result set. ex- \"customerReference ==\
+          \ 'CR123'\""
+        required: false
+        type: "string"
+      responses:
+        200:
+          description: "Issued Device Allocation IDs are retrieved successfully"
+          schema:
+            type: "array"
+            items:
+              type: "string"
+            example:
+            - "AR123"
+            - "AR345"
+  /issued-device-administration/issued-device-allocation/behaviour-qualifiers:
+    get:
+      tags:
+      - "retrieve"
+      summary: "Retrieve all Behaviour Qualifier names"
+      operationId: "retrieveIssuedDeviceAllocationBehaviorQualifiers"
+      produces:
+      - "application/json"
+      parameters: []
+      responses:
+        200:
+          description: "Issued Device Allocation Behaviour Qualifier names are retrieved\
+            \ successfully"
+          schema:
+            type: "array"
+            items:
+              type: "string"
+            example:
+            - "password"
+            - "question"
+            - "device"
+            - "reader"
+            - "cheques"
+  /issued-device-administration/issued-device-allocation/{cr-reference-id}/{behavior-qualifier}:
+    get:
+      tags:
+      - "retrieve"
+      summary: "Retrieve allocation Behaviour Qualifier Reference Ids"
+      operationId: "retrieveIssuedDeviceAllocationBehaviorQualifierReferenceIds"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "cr-reference-id"
+        in: "path"
+        description: "Allocation Reference"
+        required: true
+        type: "string"
+      - name: "behavior-qualifier"
+        in: "path"
+        description: "Behavior Qualifier Name. ex- cheque"
+        required: true
+        type: "string"
+      - name: "collection-filter"
+        in: "query"
+        description: "Filter to refine the result set. ex- 'sequenceNumber = 75123'"
+        required: false
+        type: "string"
+      responses:
+        200:
+          description: "Issued Device Allocation Behaviour Qualifier Reference Ids\
+            \ are retrieved successfully"
+          schema:
+            type: "array"
+            items:
+              type: "string"
+            example:
+            - "CR345"
+            - "CR789"
+  /issued-device-administration/issued-device-allocation/{cr-reference-id}:
+    get:
+      tags:
+      - "retrieve"
+      summary: "Retrieve Issued Device Allocation"
+      operationId: "retrieveIssuedDeviceAllocation"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "cr-reference-id"
+        in: "path"
+        description: "Allocation Reference"
+        required: true
+        type: "string"
+      responses:
+        200:
+          description: "Issued Device Allocation retrieved successfully"
+          schema:
+            $ref: "#/definitions/IssuedDeviceAllocationComplete"
+  /issued-device-administration/issued-device-allocation/{cr-reference-id}/passwords/{bq-reference-id}:
+    get:
+      tags:
+      - "retrieve"
+      summary: "Retrieve Password allocation"
+      operationId: "retrieveIssuedDeviceAllocationPassword"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "cr-reference-id"
+        in: "path"
+        description: "Allocation Reference"
+        required: true
+        type: "string"
+      - name: "bq-reference-id"
+        in: "path"
+        description: "Issued Device Password Reference"
+        required: true
+        type: "string"
+      responses:
+        200:
+          description: "Issued Device Password retrieved successfully"
+          schema:
+            $ref: "#/definitions/IssuedDeviceAllocationPasswordComplete"
+  /issued-device-administration/issued-device-allocation/{cr-reference-id}/questions/{bq-reference-id}:
+    get:
+      tags:
+      - "retrieve"
+      summary: "Retrieve Question allocation"
+      operationId: "retrieveIssuedDeviceAllocationQuestion"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "cr-reference-id"
+        in: "path"
+        description: "Allocation Reference"
+        required: true
+        type: "string"
+      - name: "bq-reference-id"
+        in: "path"
+        description: "Issued Device Question Reference"
+        required: true
+        type: "string"
+      responses:
+        200:
+          description: "Issued Device Allocations Questions retrieved successfully"
+          schema:
+            $ref: "#/definitions/IssuedDeviceAllocationQuestionComplete"
+  /issued-device-administration/issued-device-allocation/{cr-reference-id}/devices/{bq-reference-id}:
+    get:
+      tags:
+      - "retrieve"
+      summary: "Retrieve Allocated Device Reference"
+      operationId: "retrieveIssuedDeviceAllocationDevice"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "cr-reference-id"
+        in: "path"
+        description: "Allocation Reference"
+        required: true
+        type: "string"
+      - name: "bq-reference-id"
+        in: "path"
+        description: "Issued Device Device Reference"
+        required: true
+        type: "string"
+      responses:
+        200:
+          description: "Issued Device Device Reference retrieved successfully"
+          schema:
+            $ref: "#/definitions/IssuedDeviceAllocationDeviceComplete"
+  /issued-device-administration/issued-device-allocation/{cr-reference-id}/readers/{bq-reference-id}:
+    get:
+      tags:
+      - "retrieve"
+      summary: "Retrieve Reader allocation"
+      operationId: "retrieveIssuedDeviceAllocationReader"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "cr-reference-id"
+        in: "path"
+        description: "Allocation Reference"
+        required: true
+        type: "string"
+      - name: "bq-reference-id"
+        in: "path"
+        description: "Issued Device Reader Reference"
+        required: true
+        type: "string"
+      responses:
+        200:
+          description: "Issued Device Reader retrieved successfully"
+          schema:
+            $ref: "#/definitions/IssuedDeviceAllocationReaderComplete"
+  /issued-device-administration/issued-device-allocation/{cr-reference-id}/cheques/{bq-reference-id}:
+    get:
+      tags:
+      - "retrieve"
+      summary: "Retrieve Cheque allocation"
+      operationId: "retrieveIssuedDeviceAllocationCheque"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "cr-reference-id"
+        in: "path"
+        description: "Allocation Reference"
+        required: true
+        type: "string"
+      - name: "bq-reference-id"
+        in: "path"
+        description: "Issued Device Cheque Reference"
+        required: true
+        type: "string"
+      responses:
+        200:
+          description: "Issued Device Cheque retrieved successfully"
+          schema:
+            $ref: "#/definitions/IssuedDeviceAllocationChequeComplete"
+definitions:
+  IssuedDeviceAllocationBasic:
+    type: "object"
+    properties:
+      issuedDevicePasswordReference:
+        type: "string"
+        example: "PR5903859114167"
+        description: "`status: Provisionally Registered`\nbian-reference: AdministeredDevice\n"
+      issuedDevicePasswordRecord:
+        type: "object"
+        description: "`status: Provisionally Registered`\ngeneral-info: \"Record of\
+          \ issued device details\"\n"
+        properties: {}
+      issuedDeviceQuestionReference:
+        type: "string"
+        example: "QR5903859114167"
+        description: "`status: Provisionally Registered`\nbian-reference: AdministeredDevice\n"
+      issuedDeviceQuestionRecord:
+        type: "object"
+        description: "`status: Provisionally Registered`\ngeneral-info: \"Record of\
+          \ issued device details\"\n"
+        properties: {}
+      issuedDeviceDeviceReference:
+        type: "string"
+        example: "DR5903859114167"
+        description: "`status: Provisionally Registered`\nbian-reference: AdministeredDevice\n"
+      issuedDeviceDeviceRecord:
+        type: "object"
+        description: "`status: Provisionally Registered`\ngeneral-info: \"Record of\
+          \ issued device details\"\n"
+        properties: {}
+      issuedDeviceReaderReference:
+        type: "string"
+        example: "RR5903859114167"
+        description: "`status: Provisionally Registered`\nbian-reference: AdministeredDevice\n"
+      issuedDeviceReaderRecord:
+        type: "object"
+        description: "`status: Provisionally Registered`\ngeneral-info: \"Record of\
+          \ issued device details\"\n"
+        properties: {}
+      issuedDeviceChequeReference:
+        type: "string"
+        example: "CR5903859114167"
+        description: "`status: Provisionally Registered`\nbian-reference: AdministeredDevice\n"
+      issuedDeviceChequeRecord:
+        type: "object"
+        description: "`status: Provisionally Registered`\ngeneral-info: \"Record of\
+          \ issued device details\"\n"
+        properties: {}
+      customerReference:
+        type: "string"
+        example: "CRE378163745142"
+        description: "general-info: \"Assigned to\"\n`status: Provisionally Registered`\n\
+          bian-reference: AdministeredDevice(as Resource).CurrentAllocation.User(as\
+          \ Customer) \n`status: Provisionally Registered`\nbian-reference: AdministeredDevice(as\
+          \ Resource).PreviousAllocation.User(as Customer)\n"
+    description: "This is the top level/common definition of the issued item with\
+      \ referneced device specific properties listed in more detail below"
+    example:
+      issuedDevicePasswordRecord: "{}"
+      issuedDeviceChequeReference: "CR5903859114167"
+      issuedDeviceDeviceReference: "DR5903859114167"
+      issuedDeviceQuestionReference: "QR5903859114167"
+      issuedDeviceDeviceRecord: "{}"
+      issuedDeviceChequeRecord: "{}"
+      customerReference: "CRE378163745142"
+      issuedDeviceReaderRecord: "{}"
+      issuedDevicePasswordReference: "PR5903859114167"
+      issuedDeviceReaderReference: "RR5903859114167"
+      issuedDeviceQuestionRecord: "{}"
+  IssuedDeviceAllocationComplete:
+    type: "object"
+    properties:
+      allocationReference:
+        type: "string"
+        example: "AR48927485648"
+        description: "`status: Provisionally Registered`\nbian-reference: AdministeredDevice(as\
+          \ Resource).CurrentAllocation\n`status: Provisionally Registered`\nbian-reference:\
+          \ AdministeredDevice(as Resource).PreviousAllocation\n"
+      issuedDevicePasswordReference:
+        type: "string"
+        example: "PR5903859114167"
+        description: "`status: Provisionally Registered`\nbian-reference: AdministeredDevice\n"
+      issuedDevicePasswordRecord:
+        type: "object"
+        description: "`status: Provisionally Registered`\ngeneral-info: \"Record of\
+          \ issued device details\"\n"
+        properties: {}
+      issuedDeviceQuestionReference:
+        type: "string"
+        example: "QR5903859114167"
+        description: "`status: Provisionally Registered`\nbian-reference: AdministeredDevice\n"
+      issuedDeviceQuestionRecord:
+        type: "object"
+        description: "`status: Provisionally Registered`\ngeneral-info: \"Record of\
+          \ issued device details\"\n"
+        properties: {}
+      issuedDeviceDeviceReference:
+        type: "string"
+        example: "DR5903859114167"
+        description: "`status: Provisionally Registered`\nbian-reference: AdministeredDevice\n"
+      issuedDeviceDeviceRecord:
+        type: "object"
+        description: "`status: Provisionally Registered`\ngeneral-info: \"Record of\
+          \ issued device details\"\n"
+        properties: {}
+      issuedDeviceReaderReference:
+        type: "string"
+        example: "RR5903859114167"
+        description: "`status: Provisionally Registered`\nbian-reference: AdministeredDevice\n"
+      issuedDeviceReaderRecord:
+        type: "object"
+        description: "`status: Provisionally Registered`\ngeneral-info: \"Record of\
+          \ issued device details\"\n"
+        properties: {}
+      issuedDeviceChequeReference:
+        type: "string"
+        example: "CR5903859114167"
+        description: "`status: Provisionally Registered`\nbian-reference: AdministeredDevice\n"
+      issuedDeviceChequeRecord:
+        type: "object"
+        description: "`status: Provisionally Registered`\ngeneral-info: \"Record of\
+          \ issued device details\"\n"
+        properties: {}
+      customerReference:
+        type: "string"
+        example: "CRE378163745142"
+        description: "general-info: \"Assigned to\"\n`status: Provisionally Registered`\n\
+          bian-reference: AdministeredDevice(as Resource).CurrentAllocation.User(as\
+          \ Customer) \n`status: Provisionally Registered`\nbian-reference: AdministeredDevice(as\
+          \ Resource).PreviousAllocation.User(as Customer)\n"
+    description: "This is the top level/common definition of the issued item with\
+      \ referneced device specific properties listed in more detail below"
+    example:
+      allocationReference: "AR48927485648"
+      issuedDevicePasswordRecord: "{}"
+      issuedDeviceChequeReference: "CR5903859114167"
+      issuedDeviceDeviceReference: "DR5903859114167"
+      issuedDeviceQuestionReference: "QR5903859114167"
+      issuedDeviceDeviceRecord: "{}"
+      issuedDeviceChequeRecord: "{}"
+      customerReference: "CRE378163745142"
+      issuedDeviceReaderRecord: "{}"
+      issuedDevicePasswordReference: "PR5903859114167"
+      issuedDeviceReaderReference: "RR5903859114167"
+      issuedDeviceQuestionRecord: "{}"
+  IssuedDeviceAllocationPasswordComplete:
+    type: "object"
+    properties:
+      allocationReference:
+        type: "string"
+        example: "AR48927485648"
+        description: "`status: Provisionally Registered`\n"
+      issuedDevicePasswordReference:
+        type: "string"
+        example: "PR5903859114167"
+        description: "`status: Provisionally Registered`\nbian-reference: AdministeredDevice\n"
+      issuedDeviceType:
+        type: "string"
+        example: "PASSWORD"
+        description: "`status: Provisionally Registered`\nbian-reference: AdministeredDevice(as\
+          \ Resource).Type\n"
+      issuedDevicePasswordRecord:
+        type: "object"
+        description: "`status: Provisionally Registered`\ngeneral-info: \"Record of\
+          \ issued device details\"\n"
+        properties: {}
+      customerReference:
+        type: "string"
+        example: "CRE378163745142"
+        description: "general-info: \"Assigned to\"\n`status: Provisionally Registered`\n\
+          bian-reference: AdministeredDevice(as Resource).CurrentAllocation.User(as\
+          \ Customer) \n`status: Provisionally Registered`\nbian-reference: AdministeredDevice(as\
+          \ Resource).PreviousAllocation.User(as Customer)\n"
+      productInstanceReference:
+        type: "string"
+        example: "PIR7235464"
+        description: "general-info: \"Linked products and services\"\n`status: Provisionally\
+          \ Registered`\nbian-reference: AdministeredDevice(as Resource).CurrentAllocation.ProductUsingResource\n\
+          `status: Provisionally Registered`\nbian-reference: AdministeredDevice(as\
+          \ Resource).PreviousAllocation.ProductUsingResource\n"
+      associatedPermissions:
+        type: "string"
+        description: "general-info: \"Access/usage entitlement - e.g. as seen in PSD2\
+          \ - linked to product instance\"\n`status: Provisionally Registered`\nbian-reference:\
+          \ AdministeredDevice(as Resource).ResourceRestriction.AllowedRoleType\n\
+          `status: Provisionally Registered`\nbian-reference: AdministeredDevice(as\
+          \ Resource).ResourceRestriction.ProhibitedRoleType\n`status: Provisionally\
+          \ Registered`\nbian-reference: AdministeredDevice(as Resource).ResourceRestriction.AllowedRoleInstance\n\
+          `status: Provisionally Registered`\nbian-reference: AdministeredDevice(as\
+          \ Resource).ResourceRestriction.ProhibitedRoleInstance\n"
+      issueDate:
+        $ref: "#/definitions/ISODateTime"
+      validFromToDate:
+        type: "string"
+        example: "[10-12-2018, 31-12-2022]"
+        description: "`status: Provisionally Registered`\nbian-reference: AdministeredDevice(as\
+          \ Resource).ValidPeriod\n"
+      formatRules:
+        type: "string"
+        example: "Length, lower and upper case..."
+        description: "`status: Provisionally Registered`\ngeneral-info: \"Minimum\
+          \ requirements\"\n"
+      recentValues:
+        type: "string"
+        example: "[password,123456]"
+        description: "`status: Provisionally Registered`\nbian-reference: AdministeredDevice(as\
+          \ Resource).CurrentAllocation.User(as Customer).Player(as Person).PersonProfile.StoredAuthenticationData\n"
+      passwordValue:
+        type: "string"
+        example: "21asdf58sdf1a5248"
+        description: "`status: Provisionally Registered`\nbian-reference: AdministeredDevice(as\
+          \ Resource).CurrentAllocation.User(as Customer).Player(as Person).PersonProfile.StoredAuthenticationData\n\
+          general-info: \"Stored value checked against provided value - encrypted\"\
+          \n"
+      usageLog:
+        type: "string"
+        description: "general-info: \"Timing and frequency of access/use - includes\
+          \ errors\"\n`status: Provisionally Registered`\nbian-reference: AdministeredDevice.NormalEvent\n\
+          `status: Provisionally Registered`\nbian-reference: AdministeredDevice.FailureEvent\n"
+      issuedDeviceStatus:
+        type: "string"
+        example: "SUSPENDED"
+        description: "`status: Provisionally Registered`\nbian-reference: AdministeredDevice(as\
+          \ Resource).Status\ngeneral-info: \"ACTIVE, WATCH, SUSPENDED, TERMINATED,\
+          \ etc.\"\n"
+    example:
+      allocationReference: "AR48927485648"
+      recentValues: "[password,123456]"
+      issuedDeviceStatus: "SUSPENDED"
+      issuedDevicePasswordReference: "PR5903859114167"
+      issuedDeviceType: "PASSWORD"
+      productInstanceReference: "PIR7235464"
+      issuedDevicePasswordRecord: "{}"
+      associatedPermissions: "associatedPermissions"
+      passwordValue: "21asdf58sdf1a5248"
+      usageLog: "usageLog"
+      customerReference: "CRE378163745142"
+      formatRules: "Length, lower and upper case..."
+      issueDate: "2018-09-26T05:56:05.007"
+      validFromToDate: "[10-12-2018, 31-12-2022]"
+  IssuedDeviceAllocationQuestionComplete:
+    type: "object"
+    properties:
+      allocationReference:
+        type: "string"
+        example: "AR48927485648"
+        description: "`status: Provisionally Registered`\n"
+      issuedDeviceQuestionReference:
+        type: "string"
+        example: "QR5903859114167"
+        description: "`status: Provisionally Registered`\nbian-reference: AdministeredDevice\n"
+      issuedDeviceType:
+        type: "string"
+        example: "QUESTION"
+        description: "`status: Provisionally Registered`\nbian-reference: AdministeredDevice(as\
+          \ Resource).Type\n"
+      issuedDeviceQuestionRecord:
+        type: "object"
+        description: "`status: Provisionally Registered`\ngeneral-info: \"record of\
+          \ device attributes\"\n"
+        properties: {}
+      customerReference:
+        type: "string"
+        example: "CRE378163745142"
+        description: "general-info: \"Assigned to\"\n`status: Provisionally Registered`\n\
+          bian-reference: AdministeredDevice(as Resource).CurrentAllocation.User(as\
+          \ Customer) \n`status: Provisionally Registered`\nbian-reference: AdministeredDevice(as\
+          \ Resource).PreviousAllocation.User(as Customer)\n"
+      productInstanceReference:
+        type: "string"
+        example: "PIR7235464"
+        description: "general-info: \"Linked products and services\"\n`status: Provisionally\
+          \ Registered`\nbian-reference: AdministeredDevice(as Resource).CurrentAllocation.ProductUsingResource\n\
+          `status: Provisionally Registered`\nbian-reference: AdministeredDevice(as\
+          \ Resource).PreviousAllocation.ProductUsingResource\n"
+      associatedPermissions:
+        type: "string"
+        description: "general-info: \"Access/usage entitlement - e.g. as seen in PSD2\
+          \ - linked to product instance\"\n`status: Provisionally Registered`\nbian-reference:\
+          \ AdministeredDevice(as Resource).ResourceRestriction.AllowedRoleType\n\
+          `status: Provisionally Registered`\nbian-reference: AdministeredDevice(as\
+          \ Resource).ResourceRestriction.ProhibitedRoleType\n`status: Provisionally\
+          \ Registered`\nbian-reference: AdministeredDevice(as Resource).ResourceRestriction.AllowedRoleInstance\n\
+          `status: Provisionally Registered`\nbian-reference: AdministeredDevice(as\
+          \ Resource).ResourceRestriction.ProhibitedRoleInstance\n"
+      issueDate:
+        $ref: "#/definitions/ISODateTime"
+      validFromToDate:
+        type: "string"
+        example: "[10-12-2018, 31-12-2022]"
+        description: "`status: Provisionally Registered`\nbian-reference: AdministeredDevice(as\
+          \ Resource).ValidPeriod\n"
+      formatRules:
+        type: "string"
+        example: "Length, lower and upper case..."
+        description: "`status: Provisionally Registered`\ngeneral-info: \"Minimum\
+          \ requirements\"\n"
+      recentValues:
+        type: "string"
+        example: "[password,123456]"
+        description: "`status: Provisionally Registered`\nbian-reference: AdministeredDevice(as\
+          \ Resource).CurrentAllocation.User(as Customer).Player(as Person).PersonProfile.StoredAuthenticationData\n"
+      requestText:
+        type: "string"
+        description: "`status: Provisionally Registered`\nbian-reference: AdministeredDevice(as\
+          \ Resource).CurrentAllocation.User(as Customer).Player(as Person).PersonProfile.StoredAuthenticationData\n\
+          general-info: \"For secret questions/access prompts\"\n"
+      responseText:
+        type: "string"
+        description: "`status: Provisionally Registered`\nbian-reference: AdministeredDevice(as\
+          \ Resource).CurrentAllocation.User.Player(as Person).PersonProfile.StoredAuthenticationData\n\
+          general-info: \"Stored value checked against provided answer - encrypted\"\
+          \n"
+      usageLog:
+        type: "string"
+        description: "general-info: \"Timing and frequency of access/use - includes\
+          \ errors\"\n`status: Provisionally Registered`\nbian-reference: AdministeredDevice.NormalEvent\n\
+          `status: Provisionally Registered`\nbian-reference: AdministeredDevice.FailureEvent\n"
+      issuedDeviceStatus:
+        type: "string"
+        example: "SUSPENDED"
+        description: "`status: Provisionally Registered`\nbian-reference: AdministeredDevice(as\
+          \ Resource).Status\ngeneral-info: \"ACTIVE, WATCH, SUSPENDED, TERMINATED,\
+          \ etc.\"\n"
+    example:
+      allocationReference: "AR48927485648"
+      recentValues: "[password,123456]"
+      responseText: "responseText"
+      issuedDeviceStatus: "SUSPENDED"
+      issuedDeviceType: "QUESTION"
+      requestText: "requestText"
+      productInstanceReference: "PIR7235464"
+      associatedPermissions: "associatedPermissions"
+      usageLog: "usageLog"
+      issuedDeviceQuestionReference: "QR5903859114167"
+      customerReference: "CRE378163745142"
+      formatRules: "Length, lower and upper case..."
+      issueDate: "2018-09-26T05:56:05.007"
+      issuedDeviceQuestionRecord: "{}"
+      validFromToDate: "[10-12-2018, 31-12-2022]"
+  IssuedDeviceAllocationDeviceComplete:
+    type: "object"
+    properties:
+      allocationReference:
+        type: "string"
+        example: "AR48927485648"
+        description: "`status: Provisionally Registered`\n"
+      issuedDeviceDeviceReference:
+        type: "string"
+        example: "DR5903859114167"
+        description: "`status: Provisionally Registered`\nbian-reference: AdministeredDevice\n"
+      issuedDeviceType:
+        type: "string"
+        example: "DEVICE"
+        description: "`status: Provisionally Registered`\nbian-reference: AdministeredDevice(as\
+          \ Resource).Type\n"
+      issuedDeviceDeviceRecord:
+        type: "object"
+        description: "`status: Provisionally Registered`\ngeneral-info: \"Record of\
+          \ issued device details\"\n"
+        properties: {}
+      issuedDeviceSerialNumber:
+        type: "string"
+        example: "XXXX000-XXXX000"
+        description: "`status: Provisionally Registered`\nbian-reference: AdministeredDevice(as\
+          \ Resource).ResourceIdentification.Identification\n`status: Provisionally\
+          \ Registered`\nbian-reference: AdministeredDevice(as Resource).ResourceIdentification.IdentificationType\n"
+      versionNumber:
+        type: "string"
+        example: "V-2.0.0"
+        description: "`status: Provisionally Registered`\nbian-reference: AdministeredDevice.Version\n\
+          general-info: \"Operating system for smart devices\"\n"
+      customerReference:
+        type: "string"
+        example: "CRE378163745142"
+        description: "general-info: \"Assigned to\"\n`status: Provisionally Registered`\n\
+          bian-reference: AdministeredDevice(as Resource).CurrentAllocation.User(as\
+          \ Customer) \n`status: Provisionally Registered`\nbian-reference: AdministeredDevice(as\
+          \ Resource).PreviousAllocation.User(as Customer)\n"
+      customerCustomizationReference:
+        type: "string"
+        example: "CCR73654646"
+        description: "general-info: \"For device personalization\"\n`status: Provisionally\
+          \ Registered`\nbian-reference: AdministeredDevice(as Resource).AvailableOption\n\
+          `status: Provisionally Registered`\nbian-reference: AdministeredDevice(as\
+          \ Resource).CurrentAllocation.SelectedOption\n`status: Provisionally Registered`\n\
+          bian-reference: AdministeredDevice(as Resource).PreviousAllocation.SelectedOption\n"
+      productInstanceReference:
+        type: "string"
+        example: "PIR7235464"
+        description: "general-info: \"Linked products and services\"\n`status: Provisionally\
+          \ Registered`\nbian-reference: AdministeredDevice(as Resource).CurrentAllocation.ProductUsingResource\n\
+          `status: Provisionally Registered`\nbian-reference: AdministeredDevice(as\
+          \ Resource).PreviousAllocation.ProductUsingResource\n"
+      associatedPermissions:
+        type: "string"
+        description: "`status: Provisionally Registered`\nbian-reference: AdministeredDevice.ResourceRestriction\n\
+          general-info: \"Access/usage entitlement - e.g. as seen in PSD2 - linked\
+          \ to product instance\"\n"
+      issueDate:
+        type: "string"
+        example: "29-05-2018"
+        description: "`status: Provisionally Registered`\nbian-reference: AdministeredDevice(as\
+          \ Resource).CurrentAllocation.AllocationPeriod.FromDateTime\ngeneral-info:\
+          \ \"When was the Device issued\"\n"
+      deliveryMethod:
+        type: "string"
+        example: "MAIL"
+        description: "`status: Provisionally Registered`\ngeneral-info: \"e.g. mail,\
+          \ courrier,collect at branch, kiosk\"\n"
+      issueLocation:
+        type: "string"
+        example: "Snorkel Rd. 42 - UK"
+        description: "`status: Registered`\ngeneral-info: \"Delivery address\"\nbian-reference:\
+          \ AdministeredDevice(as Resource).CurrentAllocation.User(as Party).Location\n\
+          iso-link-1: [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_FNqJt8TGEeChad0JzLk7QA_-1317971633/elements/_z2I6YGx5EeKmZJ0Ago--9g_239738909)\n\
+          `status: Registered`\nbian-reference: AdministeredDevice(as Resource).CurrentAllocation.User(as\
+          \ System).Location\niso-link-2: [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_ExpjIMTGEeChad0JzLk7QA_159768178/elements/_ExpjI8TGEeChad0JzLk7QA_-1786346298)\n"
+      validFromToDate:
+        type: "string"
+        example: "[10-12-2018, 31-12-2022]"
+        description: "`status: Provisionally Registered`\nbian-reference: AdministeredDevice(as\
+          \ Resource).ValidPeriod\n"
+      issuedDeviceConfiguration:
+        type: "object"
+        description: "general-info: \"Stored values such as mag strip/chip settings\"\
+          \n`status: Provisionally Registered`\nbian-reference: AdministeredDevice.StoredData.BinaryData\n\
+          `status: Provisionally Registered`\nbian-reference: AdministeredDevice.StoredData.TexualData\n\
+          `status: Provisionally Registered`\nbian-reference: AdministeredDevice(as\
+          \ Resource).SelectedOption\n"
+        properties: {}
+      usageLog:
+        type: "string"
+        description: "general-info: \"Timing and frequency of access/use - includes\
+          \ errors\"\n`status: Provisionally Registered`\nbian-reference: AdministeredDevice.NormalEvent\n\
+          `status: Provisionally Registered`\nbian-reference: AdministeredDevice.FailureEvent\n"
+      issuedDeviceStatus:
+        type: "string"
+        example: "SUSPENDED"
+        description: "`status: Provisionally Registered`\nbian-reference: AdministeredDevice(as\
+          \ Resource).Status\ngeneral-info: \"ACTIVE, WATCH, SUSPENDED, TERMINATED,\
+          \ etc.\"\n"
+    example:
+      issuedDeviceConfiguration: "{}"
+      allocationReference: "AR48927485648"
+      issuedDeviceDeviceReference: "DR5903859114167"
+      deliveryMethod: "MAIL"
+      issuedDeviceDeviceRecord: "{}"
+      issuedDeviceStatus: "SUSPENDED"
+      customerCustomizationReference: "CCR73654646"
+      issuedDeviceType: "DEVICE"
+      versionNumber: "V-2.0.0"
+      issueLocation: "Snorkel Rd. 42 - UK"
+      issuedDeviceSerialNumber: "XXXX000-XXXX000"
+      productInstanceReference: "PIR7235464"
+      associatedPermissions: "associatedPermissions"
+      usageLog: "usageLog"
+      customerReference: "CRE378163745142"
+      issueDate: "29-05-2018"
+      validFromToDate: "[10-12-2018, 31-12-2022]"
+  IssuedDeviceAllocationReaderComplete:
+    type: "object"
+    properties:
+      allocationReference:
+        type: "string"
+        example: "48927485648"
+        description: "`status: Provisionally Registered`\n"
+      issuedDeviceReaderReference:
+        type: "string"
+        example: "5903859114167"
+        description: "`status: Provisionally Registered`\nbian-reference: AdministeredDevice\n"
+      issuedDeviceType:
+        type: "string"
+        example: "READER"
+        description: "`status: Provisionally Registered`\nbian-reference: AdministeredDevice(as\
+          \ Resource).Type\n"
+      issuedDeviceReaderRecord:
+        type: "object"
+        description: "`status: Provisionally Registered`\ngeneral-info: \"Record of\
+          \ issued device details\"\n"
+        properties: {}
+      issuedDeviceSerialNumber:
+        type: "string"
+        example: "XXXX000-XXXX000"
+        description: "`status: Provisionally Registered`\nbian-reference: AdministeredDevice(as\
+          \ Resource).ResourceIdentification.Identification\n`status: Provisionally\
+          \ Registered`\nbian-reference: AdministeredDevice(as Resource).ResourceIdentification.IdentificationType\n"
+      versionNumber:
+        type: "string"
+        description: "`status: Provisionally Registered`\nbian-reference: AdministeredDevice.Version\n\
+          general-info: \"Reader device operating system\"\n"
+      customerReference:
+        type: "string"
+        example: "CRE378163745142"
+        description: "general-info: \"Assigned to\"\n`status: Provisionally Registered`\n\
+          bian-reference: AdministeredDevice(as Resource).CurrentAllocation.User(as\
+          \ Customer) \n`status: Provisionally Registered`\nbian-reference: AdministeredDevice(as\
+          \ Resource).PreviousAllocation.User(as Customer)\n"
+      productInstanceReference:
+        type: "string"
+        example: "PIR7235464"
+        description: "general-info: \"Linked products and services\"\n`status: Provisionally\
+          \ Registered`\nbian-reference: AdministeredDevice(as Resource).CurrentAllocation.ProductUsingResource\n\
+          `status: Provisionally Registered`\nbian-reference: AdministeredDevice(as\
+          \ Resource).PreviousAllocation.ProductUsingResource\n"
+      associatedPermissions:
+        type: "string"
+        example: "LOCATION"
+        description: "`status: Provisionally Registered`\nbian-reference: AdministeredDevice(as\
+          \ Resource).ResourceRestriction \ngeneral-info: \"Access/usage entitlement\
+          \ - e.g. location\"\n"
+      issueDate:
+        $ref: "#/definitions/ISODateTime"
+      issueLocation:
+        type: "string"
+        example: "Snorkel Rd. 42 - UK"
+        description: "`status: Registered`\ngeneral-info: \"Delivery address\"\nbian-reference:\
+          \ AdministeredDevice(as Resource).CurrentAllocation.User(as Party).Location\n\
+          iso-link-1: [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_FNqJt8TGEeChad0JzLk7QA_-1317971633/elements/_z2I6YGx5EeKmZJ0Ago--9g_239738909)\n\
+          `status: Registered`\nbian-reference: AdministeredDevice(as Resource).CurrentAllocation.User(as\
+          \ System).Location\niso-link-2: [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_ExpjIMTGEeChad0JzLk7QA_159768178/elements/_ExpjI8TGEeChad0JzLk7QA_-1786346298)\n"
+      validFromToDate:
+        type: "string"
+        example: "[10-12-2018, 31-12-2022]"
+        description: "`status: Provisionally Registered`\nbian-reference: AdministeredDevice(as\
+          \ Resource).ValidPeriod\n"
+      issuedDeviceConfiguration:
+        type: "object"
+        description: "general-info: \"Stored values such as mag strip/chip settings\"\
+          \n`status: Provisionally Registered`\nbian-reference: AdministeredDevice(as\
+          \ Resource).AvailableOption\n`status: Provisionally Registered`\nbian-reference:\
+          \ AdministeredDevice(as Resource).SelectedOption\n"
+        properties: {}
+      usageLog:
+        type: "string"
+        description: "general-info: \"Timing and frequency of access/use - includes\
+          \ errors\"\n`status: Provisionally Registered`\nbian-reference: AdministeredDevice.NormalEvent\n\
+          `status: Provisionally Registered`\nbian-reference: AdministeredDevice.FailureEvent\n"
+      issuedDeviceStatus:
+        type: "string"
+        example: "OBSOLETE"
+        description: "`status: Provisionally Registered`\nbian-reference: AdministeredDevice(as\
+          \ Resource).Status\ngeneral-info: \"IN-USE, OBSOLETE, UNDER REPAIR, ETC.\"\
+          \n"
+    example:
+      issuedDeviceConfiguration: "{}"
+      allocationReference: "48927485648"
+      issuedDeviceStatus: "OBSOLETE"
+      issuedDeviceReaderRecord: "{}"
+      issuedDeviceType: "READER"
+      versionNumber: "versionNumber"
+      issueLocation: "Snorkel Rd. 42 - UK"
+      issuedDeviceSerialNumber: "XXXX000-XXXX000"
+      productInstanceReference: "PIR7235464"
+      associatedPermissions: "LOCATION"
+      usageLog: "usageLog"
+      customerReference: "CRE378163745142"
+      issuedDeviceReaderReference: "5903859114167"
+      issueDate: "2018-09-26T05:56:05.007"
+      validFromToDate: "[10-12-2018, 31-12-2022]"
+  IssuedDeviceAllocationChequeComplete:
+    type: "object"
+    properties:
+      allocationReference:
+        type: "string"
+        example: "48927485648"
+        description: "`status: Provisionally Registered`\n"
+      issuedDeviceChequeReference:
+        type: "string"
+        example: "5903859114167"
+        description: "`status: Provisionally Registered`\nbian-reference: AdministeredDevice\n"
+      issuedDeviceType:
+        type: "string"
+        example: "CHEQUE"
+        description: "`status: Provisionally Registered`\nbian-reference: AdministeredDevice(as\
+          \ Resource).Type\n"
+      issuedDeviceChequeRecord:
+        type: "object"
+        description: "`status: Provisionally Registered`\ngeneral-info: \"Record of\
+          \ issued device details\"\n"
+        properties: {}
+      customerReference:
+        type: "string"
+        example: "CRE378163745142"
+        description: "general-info: \"Assigned to\"\n`status: Provisionally Registered`\n\
+          bian-reference: AdministeredDevice(as Resource).CurrentAllocation.User(as\
+          \ Customer) \n`status: Provisionally Registered`\nbian-reference: AdministeredDevice(as\
+          \ Resource).PreviousAllocation.User(as Customer)\n"
+      productInstanceReference:
+        type: "string"
+        example: "asdf1a88454er1a4d"
+        description: "general-info: \"Linked account\"\n`status: Provisionally Registered`\n\
+          bian-reference: AdministeredDevice(as Resource).CurrentAllocation.ProductUsingResource\n\
+          `status: Provisionally Registered`\nbian-reference: AdministeredDevice(as\
+          \ Resource).PreviousAllocation.ProductUsingResource\n"
+      issuedDeviceTemplateOrValues:
+        type: "string"
+        example: "v454sfd1548791-dgdf1a8-df1484er1a4a"
+        description: "`status: Not Mapped`\ncore-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text\n"
+      issueDate:
+        $ref: "#/definitions/ISODateTime"
+      issueLocation:
+        type: "string"
+        example: "Snorkel Rd. 42 - UK"
+        description: "`status: Registered`\ngeneral-info: \"Delivery address\"\nbian-reference:\
+          \ AdministeredDevice(as Resource).CurrentAllocation.User(as Party).Location\n\
+          iso-link-1: [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_FNqJt8TGEeChad0JzLk7QA_-1317971633/elements/_z2I6YGx5EeKmZJ0Ago--9g_239738909)\n\
+          `status: Registered`\nbian-reference: AdministeredDevice(as Resource).CurrentAllocation.User(as\
+          \ System).Location\niso-link-2: [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_ExpjIMTGEeChad0JzLk7QA_159768178/elements/_ExpjI8TGEeChad0JzLk7QA_-1786346298)\n"
+      validFromToDate:
+        type: "string"
+        example: "[10-12-2018, 31-12-2022]"
+        description: "`status: Provisionally Registered`\nbian-reference: AdministeredDevice(as\
+          \ Resource).ValidPeriod\n"
+      sequenceNumber:
+        type: "string"
+        example: "[asdf1a88454er1a4d,kdgdf1a81484er1a4a]"
+        description: "general-info: \"Cheque number range issued\"\n`status: Provisionally\
+          \ Registered`\nbian-reference: AdministeredDevice(as Resource).ResourceIdentification.Identification\n\
+          `status: Provisionally Registered`\nbian-reference: AdministeredDevice(asResource).ResourceIdentification.IdentificationType\n"
+      issuedDeviceStatus:
+        type: "string"
+        example: "CASHED"
+        description: "`status: Provisionally Registered`\nbian-reference: AdministeredDevice(as\
+          \ Resource).Status\ngeneral-info: \"OPEN, CASHED, CANCELLED, ETC\"\n"
+    example:
+      productInstanceReference: "asdf1a88454er1a4d"
+      sequenceNumber: "[asdf1a88454er1a4d,kdgdf1a81484er1a4a]"
+      allocationReference: "48927485648"
+      issuedDeviceChequeReference: "5903859114167"
+      issuedDeviceChequeRecord: "{}"
+      customerReference: "CRE378163745142"
+      issuedDeviceStatus: "CASHED"
+      issueDate: "2018-09-26T05:56:05.007"
+      issuedDeviceType: "CHEQUE"
+      issuedDeviceTemplateOrValues: "v454sfd1548791-dgdf1a8-df1484er1a4a"
+      validFromToDate: "[10-12-2018, 31-12-2022]"
+      issueLocation: "Snorkel Rd. 42 - UK"
+  IssuedDeviceAllocationRecordResponse:
+    type: "object"
+    properties:
+      recordingRecordReference:
+        type: "string"
+        example: "789456321"
+        description: "`status: Provisionally Registered`\n"
+      recordingRecordStatus:
+        type: "string"
+        example: "APPLIED"
+        description: "`status: Provisionally Registered`\n"
+    example:
+      recordingRecordReference: "789456321"
+      recordingRecordStatus: "APPLIED"
+  ISODateTime:
+    type: "string"
+    pattern: "^(?:[1-9]\\d{3}-(?:(?:0[1-9]|1[0-2])-(?:0[1-9]|1\\d|2[0-8])|(?:0[13-9]|1[0-2])-(?:29|30)|(?:0[13578]|1[02])-31)|(?:[1-9]\\\
+      d(?:0[48]|[2468][048]|[13579][26])|(?:[2468][048]|[13579][26])00)-02-29)T(?:[01]\\\
+      d|2[0-3]):[0-5]\\d:[0-5]\\d(?:\\.[0-9]+)?(?:Z|[+-][01]\\d:[0-5]\\d)?$"
+    description: "`status: Registered`,\niso-link: [click_here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/datatypes/_YW1tKtp-Ed-ak6NoX_4Aeg_-1624336183)\n\
+      general-info: A particular point in the progression of time defined by a mandatory\
+      \ date and a mandatory time component, expressed in either UTC time format (YYYY-MM-DDThh:mm:ss.sssZ),\
+      \ local time with UTC offset format (YYYY-MM-DDThh:mm:ss.sss+/-hh:mm), or local\
+      \ time format (YYYY-MM-DDThh:mm:ss.sss). These representations are defined in\
+      \ \"XML Schema Part 2: Datatypes Second Edition - W3C Recommendation 28 October\
+      \ 2004\" which is aligned with ISO 8601.\nNote on the time format:\n1) beginning\
+      \ / end of calendar day\n00:00:00 = the beginning of a calendar day\n24:00:00\
+      \ = the end of a calendar day\n2) fractions of second in time format\nDecimal\
+      \ fractions of seconds may be included. In this case, the involved parties shall\
+      \ agree on the maximum number of digits that are allowed.\n"
+    example: "2018-09-26T05:56:05.007"
