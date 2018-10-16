@@ -5,8 +5,8 @@
  */
 package io.swagger.client.api
 
-import io.swagger.client.model.ConsumerLoanRecordRequest
-import io.swagger.client.model.ConsumerLoanRecordResponse
+import io.swagger.client.model.CustomerReferenceDataRecordRequest
+import io.swagger.client.model.CustomerReferenceDataRecordResponse
 import io.swagger.client.core._
 import io.swagger.client.core.CollectionFormats._
 import io.swagger.client.core.ApiKeyLocations._
@@ -14,19 +14,19 @@ import io.swagger.client.core.ApiKeyLocations._
 object RecordApi {
 
   /**
-   * Record activity/feedback against an active consumer loan
+   * 
    * 
    * Expected answers:
-   *   code 201 : ConsumerLoanRecordResponse (A new record is created)
+   *   code 201 : CustomerReferenceDataRecordResponse (Successfuly recorded usage against customer directory entry.)
    * 
-   * @param crReferenceId Product Instance Reference (loan account number)
-   * @param body 
+   * @param crReferenceId Customer Reference Data Directory Entry Reference
+   * @param body Record control record request payload
    */
-  def recordConsumerLoanFulfillmentArrangement(crReferenceId: String, body: Option[ConsumerLoanRecordRequest] = None): ApiRequest[ConsumerLoanRecordResponse] =
-    ApiRequest[ConsumerLoanRecordResponse](ApiMethods.POST, "https://virtserver.swaggerhub.com/BIAN/sd-consumer-loan/3.0.1", "/consumer-loan/consumer-loan-fulfillment-arrangement/{cr-reference-id}/recording", "application/json")
+  def recordCustomerDataDirectory(crReferenceId: String, body: CustomerReferenceDataRecordRequest): ApiRequest[CustomerReferenceDataRecordResponse] =
+    ApiRequest[CustomerReferenceDataRecordResponse](ApiMethods.POST, "https://virtserver.swaggerhub.com/BIAN/sd-customer-reference-data-management/4.0.0", "/customer-reference-data-management/customer-reference-data-directory/{cr-reference-id}/recording", "application/json")
       .withBody(body)
       .withPathParam("cr-reference-id", crReferenceId)
-      .withSuccessResponse[ConsumerLoanRecordResponse](201)
+      .withSuccessResponse[CustomerReferenceDataRecordResponse](201)
       
 
 }
