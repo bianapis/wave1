@@ -1,0 +1,1644 @@
+swagger: "2.0"
+info:
+  version: "4.0.0"
+  title: "Service Domain - Consumer Loan"
+  description: >
+  
+        ## Service Domain Role: 
+        
+        This service domain handles the fulfillment of a consumer loan product. This includes the initial set-up of the loan facility and the completion of scheduled and ad-hoc product processing tasks.
+
+        ## Example of Use:
+        
+        A consumer customer applies for and gets a loan to purchase new furniture.
+  
+        ## General comments:
+        
+        The consumer loan product may include different properties/features depending on a bank's preferences and policies. The loan is targeted at consumer customer and may be associated with a type of product and may or may not be secured by collateral.
+
+  
+host: "virtserver.swaggerhub.com"
+basePath: "/BIAN/sd-consumer-loan/4.0.0"
+schemes:
+- "https"
+paths:
+  /consumer-loan/consumer-loan-fulfillment-arrangement/initiation:
+    post:
+      tags:
+      - "initiate"
+      summary: "Initiate-new consumer loan"
+      description: "Initiate - Set-up a new consumer loan"
+      operationId: "initiateConsumerLoanFulfillmentArrangement"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        required: false
+        schema:
+          $ref: "#/definitions/ConsumerLoanBase"
+      responses:
+        201:
+          description: "Initiated setup of consumer loan"
+          schema:
+            $ref: "#/definitions/ConsumerLoanWithIdAndStatus"
+  /consumer-loan/consumer-loan-fulfillment-arrangement/{cr-reference-id}/recording:
+    post:
+      tags:
+      - "record"
+      summary: "Record active consumer loan"
+      description: "Record activity/feedback against an active consumer loan"
+      operationId: "recordConsumerLoanFulfillmentArrangement"
+      parameters:
+      - name: "cr-reference-id"
+        in: "path"
+        description: "Product Instance Reference (loan account number)"
+        required: true
+        type: "string"
+      - in: "body"
+        name: "body"
+        required: false
+        schema:
+          $ref: "#/definitions/ConsumerLoanRecordRequest"
+      responses:
+        201:
+          description: "A new record is created"
+          schema:
+            $ref: "#/definitions/ConsumerLoanRecordResponse"
+  /consumer-loan/consumer-loan-fulfillment-arrangement/{cr-reference-id}/disbursements/{bq-reference-id}/execution:
+    put:
+      tags:
+      - "execute"
+      summary: "Update disbursement"
+      description: "Updated consumer loan disbursement execution"
+      operationId: "executeConsumerLoanFulfillmentArrangementDisbursementUpdate"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "cr-reference-id"
+        in: "path"
+        description: "Product Instance Reference (loan account number)"
+        required: true
+        type: "string"
+      - name: "bq-reference-id"
+        in: "path"
+        description: "Disbursement Order Reference"
+        required: true
+        type: "string"
+      - in: "body"
+        name: "body"
+        required: false
+        schema:
+          $ref: "#/definitions/ConsumerLoanDisbursementWithoutCommonAndId"
+      responses:
+        200:
+          description: "Successfully Updated consumer loan disbursement execution"
+          schema:
+            $ref: "#/definitions/ConsumerLoanDisbursementWithId"
+  /consumer-loan/consumer-loan-fulfillment-arrangement/{cr-reference-id}/disbursements/execution:
+    post:
+      tags:
+      - "execute"
+      summary: "Create disbursement"
+      description: "Create a new consumer loan disbursement execution"
+      operationId: "executeConsumerLoanFulfillmentArrangementDisbursementCreate"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "cr-reference-id"
+        in: "path"
+        description: "Product Instance Reference (loan account number)"
+        required: true
+        type: "string"
+      - in: "body"
+        name: "body"
+        required: false
+        schema:
+          $ref: "#/definitions/ConsumerLoanDisbursementWithoutCommonAndId"
+      responses:
+        201:
+          description: "Successfully created a new consumer loan disbursement execution\
+            \ record"
+          schema:
+            $ref: "#/definitions/ConsumerLoanDisbursementWithId"
+  /consumer-loan/consumer-loan-fulfillment-arrangement/{cr-reference-id}/payments/{bq-reference-id}/execution:
+    put:
+      tags:
+      - "execute"
+      summary: "Update staged repayment"
+      description: "Update a Consumer Loan Payment Execution record"
+      operationId: "executeConsumerLoanFulfillmentArrangementRepaymentUpdate"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "cr-reference-id"
+        in: "path"
+        description: "Product Instance Reference (loan account number)"
+        required: true
+        type: "string"
+      - name: "bq-reference-id"
+        in: "path"
+        description: "Payment Transaction Reference"
+        required: true
+        type: "string"
+      - in: "body"
+        name: "body"
+        required: false
+        schema:
+          $ref: "#/definitions/ConsumerLoanPaymentWithoutCommonAndId"
+      responses:
+        200:
+          description: "Successfully Updated Consumer Loan Payment Execution record"
+          schema:
+            $ref: "#/definitions/ConsumerLoanPaymentsWithId"
+  /consumer-loan/consumer-loan-fulfillment-arrangement/{cr-reference-id}/payments/execution:
+    post:
+      tags:
+      - "execute"
+      summary: "Create staged repayment"
+      description: "Create a Consumer Loan Payment Execution record"
+      operationId: "executeConsumerLoanFulfillmentArrangementRepaymentCreate"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "cr-reference-id"
+        in: "path"
+        description: "Product Instance Reference (loan account number)"
+        required: true
+        type: "string"
+      - in: "body"
+        name: "body"
+        required: false
+        schema:
+          $ref: "#/definitions/ConsumerLoanPaymentWithoutCommonAndId"
+      responses:
+        201:
+          description: "Successfully Created a Consumer Loan Payment Execution record"
+          schema:
+            $ref: "#/definitions/ConsumerLoanPaymentsWithId"
+  /consumer-loan/consumer-loan-fulfillment-arrangement/{cr-reference-id}/withdrawals/{bq-reference-id}/execution:
+    put:
+      tags:
+      - "execute"
+      summary: "Update withdrawal"
+      description: "Update a Consumer Loan Withdrawl Execution Record"
+      operationId: "executeConsumerLoanFulfillmentArrangementWithdrawalUpdate"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "cr-reference-id"
+        in: "path"
+        description: "Product Instance Reference (loan account number)"
+        required: true
+        type: "string"
+      - name: "bq-reference-id"
+        in: "path"
+        description: "Withdrawal Instruction Reference"
+        required: true
+        type: "string"
+      - in: "body"
+        name: "body"
+        required: false
+        schema:
+          $ref: "#/definitions/ConsumerLoanWithdrawalWithoutCommonAndId"
+      responses:
+        200:
+          description: "Successfully Updated Consumer Loan Withdrawl Execution Record"
+          schema:
+            $ref: "#/definitions/ConsumerLoanWithdrawalWithId"
+  /consumer-loan/consumer-loan-fulfillment-arrangement/{cr-reference-id}/withdrawals/execution:
+    post:
+      tags:
+      - "execute"
+      summary: "Create withdrawal"
+      description: "Create a New Consumer Loan Withdrawl Execution Record"
+      operationId: "executeConsumerLoanFulfillmentArrangementWithdrawalCreate"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "cr-reference-id"
+        in: "path"
+        description: "Product Instance Reference (loan account number)"
+        required: true
+        type: "string"
+      - in: "body"
+        name: "body"
+        required: false
+        schema:
+          $ref: "#/definitions/ConsumerLoanWithdrawalWithoutCommonAndId"
+      responses:
+        201:
+          description: "Successfully Created Consumer Loan Withdrawl Execution Record"
+          schema:
+            $ref: "#/definitions/ConsumerLoanWithdrawalWithId"
+  /consumer-loan/consumer-loan-fulfillment-arrangement/{cr-reference-id}/restructurings/{bq-reference-id}/requisition:
+    put:
+      tags:
+      - "request"
+      summary: "Request restructuring updation"
+      description: "Update a restructuring request record"
+      operationId: "requestConsumerLoanFulfillmentArrangementRestructuringUpdate"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "cr-reference-id"
+        in: "path"
+        description: "Product Instance Reference (loan account number)"
+        required: true
+        type: "string"
+      - name: "bq-reference-id"
+        in: "path"
+        description: "Restructuring Task Reference"
+        required: true
+        type: "string"
+      - in: "body"
+        name: "body"
+        required: false
+        schema:
+          $ref: "#/definitions/ConsumerLoanRestructuringWithoutCommonAndId"
+      responses:
+        200:
+          description: "Successfully updated consumer loan restructuring request"
+          schema:
+            $ref: "#/definitions/ConsumerLoanRestructuringWithId"
+  /consumer-loan/consumer-loan-fulfillment-arrangement/{cr-reference-id}/restructurings/requisition:
+    post:
+      tags:
+      - "request"
+      summary: "Request restructuring creation"
+      description: "Create a new restructuring request record"
+      operationId: "requestConsumerLoanFulfillmentArrangementRestructuringCreate"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "cr-reference-id"
+        in: "path"
+        description: "Product Instance Reference (loan account number)"
+        required: true
+        type: "string"
+      - in: "body"
+        name: "body"
+        required: false
+        schema:
+          $ref: "#/definitions/ConsumerLoanRestructuringWithoutCommonAndId"
+      responses:
+        201:
+          description: "Successfuly created consumer loan restructuring request"
+          schema:
+            $ref: "#/definitions/ConsumerLoanRestructuringWithId"
+  /consumer-loan/consumer-loan-fulfillment-arrangement/:
+    get:
+      tags:
+      - "retrieve"
+      summary: "Retrieve Control Record Ids"
+      operationId: "RetrieveConsumerLoanReferenceIds"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "collection-filter"
+        in: "query"
+        description: "Filter to refine the result set. ex- 'customer-reference-id\
+          \ = CR123'"
+        required: false
+        type: "string"
+      responses:
+        200:
+          description: "successful"
+          schema:
+            type: "array"
+            items:
+              type: "string"
+            example:
+            - "PIR123"
+            - "PIR345"
+  /consumer-loan/consumer-loan-fulfillment-arrangement/behavior-qualifiers/:
+    get:
+      tags:
+      - "retrieve"
+      summary: "Retrieve all Behaviour Qualifier names"
+      operationId: "RetrieveConsumerLoanBehaviorQualifiers"
+      produces:
+      - "application/json"
+      parameters: []
+      responses:
+        200:
+          description: "successful"
+          schema:
+            type: "array"
+            items:
+              type: "string"
+            example:
+            - "disbursement"
+            - "maintenance"
+            - "withdrawal"
+            - "payment"
+            - "restructuring"
+            - "statements"
+  /consumer-loan/consumer-loan-fulfillment-arrangement/{cr-reference-id}/{behavior-qualifier}/:
+    get:
+      tags:
+      - "retrieve"
+      summary: "Retrieve Behaviour Qualifier Reference Ids."
+      operationId: "RetrieveBehaviorQualifierReferenceIds"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "cr-reference-id"
+        in: "path"
+        description: "Product Instance Reference"
+        required: true
+        type: "string"
+      - name: "behavior-qualifier"
+        in: "path"
+        description: "Behavior Qualifier Name. ex- payment"
+        required: true
+        type: "string"
+      - name: "collection-filter"
+        in: "query"
+        description: "Filter to refine the result set. ex- \"customerReference ==\
+          \ 'CR77745'\""
+        required: false
+        type: "string"
+      responses:
+        200:
+          description: "successful"
+          schema:
+            type: "array"
+            items:
+              type: "string"
+            example:
+            - "PTR345"
+            - "PTR789"
+            - "PTR456"
+  /consumer-loan/consumer-loan-fulfillment-arrangement/{cr-reference-id}:
+    get:
+      tags:
+      - "retrieve"
+      summary: "Retrieve consumer loan"
+      description: "retrieveConsumerLoanFulfillmentArrangement Service Operation"
+      operationId: "retrieveConsumerLoanFulfillmentArrangementWithBQs"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "cr-reference-id"
+        in: "path"
+        description: "Product Instance Reference (loan account number)"
+        required: true
+        type: "string"
+      responses:
+        200:
+          description: "Retrieved consumer loan reporting"
+          schema:
+            $ref: "#/definitions/ConsumerLoanWithIdAndStatus"
+    delete:
+      tags:
+      - "terminate"
+      summary: "Termination for an active loan"
+      operationId: "terminateConsumerLoanFulfillmentArrangement"
+      parameters:
+      - name: "cr-reference-id"
+        in: "path"
+        description: "Product Instance Reference (loan account number)"
+        required: true
+        type: "string"
+      responses:
+        204:
+          description: "Successfully TerminatedConsumer Loan"
+  /consumer-loan/consumer-loan-fulfillment-arrangement/{cr-reference-id}/disbursements/{bq-reference-id}:
+    get:
+      tags:
+      - "retrieve"
+      summary: "Retrieve Disbursements"
+      description: "Retrieve Consumer Loan Disbursement Record"
+      operationId: "Retrieve Disbursement"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "cr-reference-id"
+        in: "path"
+        description: "Product Instance Reference (loan account number)"
+        required: true
+        type: "string"
+      - name: "bq-reference-id"
+        in: "path"
+        description: "Disbursement Order Reference"
+        required: true
+        type: "string"
+      responses:
+        200:
+          description: "Successfully Retrieved Consumer Loan Disbursement Record"
+          schema:
+            $ref: "#/definitions/ConsumerLoanDisbursementWithId"
+  /consumer-loan/consumer-loan-fulfillment-arrangement/{cr-reference-id}/maintenances/{bq-reference-id}:
+    get:
+      tags:
+      - "retrieve"
+      summary: "Retrieve Maintenance"
+      description: "Retrieve Consumer Loan Maintenance Record"
+      operationId: "Retrieve Maintenance"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "cr-reference-id"
+        in: "path"
+        description: "Product Instance Reference (loan account number)"
+        required: true
+        type: "string"
+      - name: "bq-reference-id"
+        in: "path"
+        description: "Product Fulfillment Schedule"
+        required: true
+        type: "string"
+      responses:
+        200:
+          description: "Successfully Retrieved Consumer Loan Maintenance Record"
+          schema:
+            $ref: "#/definitions/ConsumerLoanMaintenanceWithId"
+  /consumer-loan/consumer-loan-fulfillment-arrangement/{cr-reference-id}/withdrawals/{bq-reference-id}:
+    get:
+      tags:
+      - "retrieve"
+      summary: "Retrieve Wthdrawl Record"
+      description: "Retrieve Consumer Loan Wthdrawl Record"
+      operationId: "Retrieve Withdrawal"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "cr-reference-id"
+        in: "path"
+        description: "Product Instance Reference (loan account number)"
+        required: true
+        type: "string"
+      - name: "bq-reference-id"
+        in: "path"
+        description: "Withdrawal Instruction Reference"
+        required: true
+        type: "string"
+      responses:
+        200:
+          description: "Successfully Retrieved Consumer Loan Withdrawl Record"
+          schema:
+            $ref: "#/definitions/ConsumerLoanWithdrawalWithId"
+  /consumer-loan/consumer-loan-fulfillment-arrangement/{cr-reference-id}/payments/{bq-reference-id}:
+    get:
+      tags:
+      - "retrieve"
+      summary: "Retrieve Payment"
+      description: "Retrieved Consumer Loan Payment Record"
+      operationId: "Retrieve Payment"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "cr-reference-id"
+        in: "path"
+        description: "Product Instance Reference (loan account number)"
+        required: true
+        type: "string"
+      - name: "bq-reference-id"
+        in: "path"
+        description: "Payment Transaction Reference"
+        required: true
+        type: "string"
+      responses:
+        200:
+          description: "Successfully Retrieved Consumer Loan Payment Record"
+          schema:
+            $ref: "#/definitions/ConsumerLoanPaymentsWithId"
+  /consumer-loan/consumer-loan-fulfillment-arrangement/{cr-reference-id}/restructurings/{bq-reference-id}:
+    get:
+      tags:
+      - "retrieve"
+      summary: "Retrieve Restructurings"
+      description: "Retrieve Consumer Loan Restructurings Record"
+      operationId: "Retrieve Restructuring"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "cr-reference-id"
+        in: "path"
+        description: "Product Instance Reference (loan account number)"
+        required: true
+        type: "string"
+      - name: "bq-reference-id"
+        in: "path"
+        description: "Restructuring Task Reference"
+        required: true
+        type: "string"
+      responses:
+        200:
+          description: "Successfully Retrieved Consumer Loan Restructurings Record"
+          schema:
+            $ref: "#/definitions/ConsumerLoanRestructuringWithId"
+  /consumer-loan/consumer-loan-fulfillment-arrangement/{cr-reference-id}/statements/{bq-reference-id}:
+    get:
+      tags:
+      - "retrieve"
+      summary: "Retrieved Statement"
+      description: "Retrieved Consumer Loan Statement"
+      operationId: "Retrieve Statements"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "cr-reference-id"
+        in: "path"
+        description: "Product Instance Reference (loan account number)"
+        required: true
+        type: "string"
+      - name: "bq-reference-id"
+        in: "path"
+        description: "Statement Instance Reference"
+        required: true
+        type: "string"
+      responses:
+        200:
+          description: "Successfully Retrieved Consumer Loan Statement Record"
+          schema:
+            $ref: "#/definitions/ConsumerLoanStatementWithId"
+  /consumer-loan/consumer-loan-fulfillment-arrangement/{cr-reference-id}/updation:
+    put:
+      tags:
+      - "update"
+      summary: "Update an Active Consumer Loan"
+      description: "Update an Active Consumer Loan"
+      operationId: "updateConsumerLoanFulfillmentArrangement"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "cr-reference-id"
+        in: "path"
+        description: "Product Instance Reference (loan account number)"
+        required: true
+        type: "string"
+      - in: "body"
+        name: "body"
+        description: "Update control record request payload"
+        required: true
+        schema:
+          $ref: "#/definitions/ConsumerLoanBase"
+      responses:
+        200:
+          description: "Successfully Updated Active Consumer Loan"
+          schema:
+            $ref: "#/definitions/ConsumerLoanWithIdAndStatus"
+definitions:
+  ConsumerLoanBase:
+    type: "object"
+    properties:
+      customerReference:
+        type: "string"
+        example: "CR72346234"
+        description: |
+          `status: Registered`
+          iso-link: [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_FNqJt8TGEeChad0JzLk7QA_-1317971633)
+          bian-reference: Loan.Agreement.TradePartyRole(as Borrower)(as Role).Player(as Party)
+          general-info: loan account holder
+      customerAgreementReference:
+        type: "string"
+        example: "CAR72346312"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      partyReference:
+        type: "string"
+        example: "PR3547"
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: LoanAgreement.TradePartyRole(as Borrower)(as Role).Player(as Party).AccountableParty
+      customerCreditAssessmentReference:
+        type: "string"
+        example: "CCAR2364264"
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: Loan.CreditCheck
+      insuranceReference:
+        type: "string"
+        example: "IR723465"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      delinquencyCollectionReference:
+        type: "string"
+        example: "DC7236424"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      bankBranchLocationReference:
+        type: "string"
+        example: "BB72347724"
+        description: |
+          `status: Registered`
+          bian-reference:  LoanAgreement.TradePartyRole(asLender)(asRole).Player(asParty).Location
+          iso-link:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_FNqJt8TGEeChad0JzLk7QA_-1317971633/elements/_z2I6YGx5EeKmZJ0Ago--9g_239738909)
+          general-info: for processing/logistics
+      bankAccountingUnitReference:
+        type: "string"
+        example: "BAU62734"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+          general-info: for booking
+      involvedPartyReference:
+        type: "string"
+        example: "IPR723645"
+        description: |
+          `status: Registered`
+          bian-reference:  LoanAgreement.CollateralPartyRole(asGiverRole)
+          iso-link-1:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_EuN0ocTGEeChad0JzLk7QA_1159142715)
+          `status: Registered`
+          bian-reference:  LoanAgreement.CollateralPartyRole(asTakerRole)
+          iso-link-2:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_Ex8eFcTGEeChad0JzLk7QA_-1939123823)
+          `status: Registered`
+          bian-reference:  LoanAgreement.GuaranteePartyRole(asGuaranteeBeneficiary)
+          iso-link-3:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_EuN0p8TGEeChad0JzLk7QA_-1821987913)
+          `status: Registered`
+          bian-reference:  LoanAgreement.GuaranteePartyRole(asGuarantorRole)
+          iso-link-4:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_EuN0psTGEeChad0JzLk7QA_150894546)
+          `status: Registered`
+          bian-reference:  LoanAgreement.LoanProduct.Loan(asAsset).Trade.TradePartyRole(asBorrower)
+          iso-link-5:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_t-Si4N1CEeGAp99n2TKigg_-919072642)
+          `status: Registered`
+          bian-reference:  LoanAgreement.LoanProduct.Loan(asAsset).Trade.TradePartyRole(asLender)
+          iso-link-6:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_t-Si4d1CEeGAp99n2TKigg_-1009340668)
+          general-info: guarantor/cosigner
+      involvedPartyObligationEntitlement:
+        type: "string"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      loanType:
+        type: "string"
+        example: "revolving"
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: Loan.LoanType
+          general-info: term, revolving, evergreen
+      loanAmount:
+        type: "number"
+        example: 4000000.0
+        description: |
+          `status: Registered`
+          bian-reference:  Loan(asAsset).InvestmentAmount
+          iso-link-1:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_FPv0acTGEeChad0JzLk7QA_-150026816/elements/_FepzGcTGEeChad0JzLk7QA_298530288)
+          `status: Registered`
+          bian-reference:  Loan.PrincipalAmount
+          iso-link-2:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_mw1ysHJTEeWwf47VrwMaTQ/elements/_QLjLYHJUEeWwf47VrwMaTQ)
+      loanCurrency:
+        type: "string"
+        example: "fixed"
+        description: |
+          `status: Registered`
+          bian-reference:  Loan(asAsset).InvestmentAmount
+          iso-link-1:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_FPv0acTGEeChad0JzLk7QA_-150026816/elements/_FepzGcTGEeChad0JzLk7QA_298530288)
+          `status: Registered`
+          bian-reference:  Loan(asDebt).PaymentCurrency
+          iso-link-2:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_Ff_P1MTGEeChad0JzLk7QA_-1514166912/elements/_X0hLUKRMEeO1ke9HGqKZhg)
+          `status: Registered`
+          bian-reference:  Loan.PrincipalAmount
+          iso-link-3:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_mw1ysHJTEeWwf47VrwMaTQ/elements/_QLjLYHJUEeWwf47VrwMaTQ)
+      loanRateType:
+        type: "string"
+        example: "fixed"
+        description: |
+          `status: Registered`
+          bian-reference:  Loan(asDebt).NextInterest.VariableInterest.VariableRateChangeFrequency
+          iso-link:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_Fd5lKcTGEeChad0JzLk7QA_-958104524/elements/_FeNHIMTGEeChad0JzLk7QA_-12422289)
+      loanApplicableRate:
+        type: "string"
+        example: "9%"
+        description: |
+          `status: Registered`
+          bian-reference:  Loan(asDebt).NextInterest.VariableInterest
+          iso-link:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_FXWRMsTGEeChad0JzLk7QA_-398781879/elements/_FXgCNMTGEeChad0JzLk7QA_-129916673)
+      repaymentType:
+        type: "string"
+        example: "Structured"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      loanRepaymentSchedule:
+        type: "string"
+        example: "monthly"
+        description: |
+          `status: Registered`
+          bian-reference:  Loan.InterestPaymentsSchedule.PaymentPeriod
+          iso-link-1:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_jF5agJh7EeOUgsYi4EbJBw/elements/_AcedgZh9EeORjJTqwAvaiQ)
+          `status: Registered`
+          bian-reference:  Loan.PrincipalPaymentsSchedule.PaymentPeriod
+          iso-link-2:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_jF5agJh7EeOUgsYi4EbJBw/elements/_AcedgZh9EeORjJTqwAvaiQ)
+      interestType:
+        type: "string"
+        example: "Prime plus"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      interestAccrualMethod:
+        type: "string"
+        example: "daily"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      stagedRepaymentStatement:
+        type: "string"
+        description: |
+          `status: Registered`
+          bian-reference:  Loan.InterestPaymentsSchedule.RelatedPaymentObligation.PaymentOffset
+          iso-link-1:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_FDPCYMTGEeChad0JzLk7QA_-1131921749/elements/_FDPCacTGEeChad0JzLk7QA_-72272631)
+          `status: Registered`
+          bian-reference:  Loan.PrincipalPaymentsSchedule.RelatedPaymentObligation.PaymentOffset
+          iso-link-2:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_FDPCYMTGEeChad0JzLk7QA_-1131921749/elements/_FDPCacTGEeChad0JzLk7QA_-72272632)
+      loanOutstandingBalance:
+        type: "string"
+        example: "250000"
+        description: |
+          `status: Registered`
+          bian-reference:  Loan.PrincipalAmount
+          iso-link:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_mw1ysHJTEeWwf47VrwMaTQ/elements/_QLjLYHJUEeWwf47VrwMaTQ)
+      loanOriginationDate:
+        $ref: 'https://api.swaggerhub.com/domains/BIAN/Common-Model/1.0.0#/definitions/ISODateTime'
+      loanMaturityDate:
+        $ref: 'https://api.swaggerhub.com/domains/BIAN/Common-Model/1.0.0#/definitions/ISODateTime'
+      collateralReference:
+        type: "string"
+        example: "COL232342"
+        description: |
+          `status: Registered`
+          bian-reference:  LoanAgreement(asMasterAgreement).CollateralAgreement.Collateral
+          iso-link:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_E6vNtsTGEeChad0JzLk7QA_393174175/elements/_lrcFQC1hEeGp2Zpvgj9Dtw_-638405304)
+      collateralAllocation:
+        type: "string"
+        example: "$450000"
+        description: |
+          `status: Registered`
+          bian-reference:  LoanAgreement(asMasterAgreement).CollateralAgreement.Collateral.Valuation
+          iso-link:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_FLlGEcTGEeChad0JzLk7QA_1826831344/elements/_AAYPOmIjEeGD28DQaMef-g)
+          general-info: value applied
+      configurationOptions:
+        type: "string"
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: Loan.LoanProduct(as Product).AvailableOption
+          `status: Provisionally Registered`
+          bian-reference: Loan.SelectedOption
+      taxReference:
+        type: "string"
+        example: "TR7454"
+        description: |
+          `status: Registered`
+          iso-link: [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_FEHzNMTGEeChad0JzLk7QA_-1382123937/elements/_FEHzNcTGEeChad0JzLk7QA_-1792766550)
+          bian-reference: LoanAgreement.TradePartyRole(as Borrower).Player(as Party).Identification.TaxIdentificationNumber
+          general-info: Tax-Id
+      loanAccessTerms:
+        type: "string"
+        example: "Withdrawls"
+        description: |
+          `status: Registered`
+          bian-reference:  Loan(asDebt).PrePaymentSpeed
+          iso-link:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_Ff_P1MTGEeChad0JzLk7QA_-1514166912/elements/_Fg4nt8TGEeChad0JzLk7QA_742037711)
+          `status: Provisionally Registered`
+          bian-reference:  Loan.Limit
+          general-info: allowed payments/withdrawals
+      customerCommentary:
+        type: "string"
+        example: "record of customer correspondence"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+  ConsumerLoanWithIdAndStatus:
+    type: "object"
+    properties:
+      productInstanceReference:
+        type: "string"
+        example: "PIR72562552"
+        description: |
+          `status: Registered`
+          bian-reference:  Loan.LoanAccount(asAccount).Identification
+          iso-link:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_E1rHgsTGEeChad0JzLk7QA_-1068889728/elements/_E1rHhcTGEeChad0JzLk7QA_-755813725)
+          general-info: loan account number
+      customerReference:
+        type: "string"
+        example: "CR72346234"
+        description: |
+          `status: Registered`
+          bian-reference:  Loan.Agreement.TradePartyRole(asBorrower)(asRole).Player(asParty)
+          iso-link:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_FNqJt8TGEeChad0JzLk7QA_-1317971633)
+          general-info: loan account holder
+      customerAgreementReference:
+        type: "string"
+        example: "CAR72346312"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      partyReference:
+        type: "string"
+        example: "PR3547"
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: LoanAgreement.TradePartyRole(as Borrower)(as Role).Player(as Party).AccountableParty
+      customerCreditAssessmentReference:
+        type: "string"
+        example: "CCAR2364264"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      insuranceReference:
+        type: "string"
+        example: "IR723465"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      delinquencyCollectionReference:
+        type: "string"
+        example: "DC7236424"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      bankBranchLocationReference:
+        type: "string"
+        example: "BB72347724"
+        description: |
+          `status: Registered`
+          bian-reference:  LoanAgreement.TradePartyRole(asLender)(asRole).Player(asParty).Location
+          iso-link:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_FNqJt8TGEeChad0JzLk7QA_-1317971633/elements/_z2I6YGx5EeKmZJ0Ago--9g_239738909)
+          general-info: for processing/logistics
+      bankAccountingUnitReference:
+        type: "string"
+        example: "BAU62734"
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: LoanAgreement.TradePartyRole(as Borrower)(as Role).Player(as Organisation).BusinessUnit
+          general-info: for booking
+      involvedPartyReference:
+        type: "string"
+        example: "IPR723645"
+        description: |
+          `status: Registered`
+          bian-reference:  LoanAgreement.CollateralPartyRole(asGiverRole)
+          iso-link-1:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_EuN0ocTGEeChad0JzLk7QA_1159142715)
+          `status: Registered`
+          bian-reference:  LoanAgreement.CollateralPartyRole(asTakerRole)
+          iso-link-2:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_Ex8eFcTGEeChad0JzLk7QA_-1939123823)
+          `status: Registered`
+          bian-reference:  LoanAgreement.GuaranteePartyRole(asGuaranteeBeneficiary)
+          iso-link-3:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_EuN0p8TGEeChad0JzLk7QA_-1821987913)
+          `status: Registered`
+          bian-reference:  LoanAgreement.GuaranteePartyRole(asGuarantorRole)
+          iso-link-4:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_EuN0psTGEeChad0JzLk7QA_150894546)
+          `status: Registered`
+          bian-reference:  LoanAgreement.LoanProduct.Loan(asAsset).Trade.TradePartyRole(asBorrower)
+          iso-link-5:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_t-Si4N1CEeGAp99n2TKigg_-919072642)
+          `status: Registered`
+          bian-reference:  LoanAgreement.LoanProduct.Loan(asAsset).Trade.TradePartyRole(asLender)
+          iso-link-6:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_t-Si4d1CEeGAp99n2TKigg_-1009340668)
+          general-info: guarantor/cosigner
+      involvedPartyObligationEntitlement:
+        type: "string"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      loanType:
+        type: "string"
+        example: "revolving"
+        description: |
+          `status: Provisionally Registered`
+          bian-reference: Loan.LoanType
+          general-info: term, revolving, evergreen
+      loanAmount:
+        type: "number"
+        example: 4000000.0
+        description: |
+          `status: Registered`
+          bian-reference:  Loan(asAsset).InvestmentAmount
+          iso-link-1:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_FPv0acTGEeChad0JzLk7QA_-150026816/elements/_FepzGcTGEeChad0JzLk7QA_298530288)
+          `status: Registered`
+          bian-reference:  Loan.PrincipalAmount
+          iso-link-2:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_mw1ysHJTEeWwf47VrwMaTQ/elements/_QLjLYHJUEeWwf47VrwMaTQ)
+      loanCurrency:
+        type: "string"
+        example: "fixed"
+        description: |
+          `status: Registered`
+          bian-reference:  Loan(asAsset).InvestmentAmount
+          iso-link:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_FPv0acTGEeChad0JzLk7QA_-150026816/elements/_FepzGcTGEeChad0JzLk7QA_298530288)
+          `status: Registered`
+          bian-reference:  Loan(asDebt).PaymentCurrency
+          iso-link:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_Ff_P1MTGEeChad0JzLk7QA_-1514166912/elements/_X0hLUKRMEeO1ke9HGqKZhg)
+          `status: Registered`
+          bian-reference:  Loan.PrincipalAmount
+          iso-link:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_mw1ysHJTEeWwf47VrwMaTQ/elements/_QLjLYHJUEeWwf47VrwMaTQ)
+      loanRateType:
+        type: "string"
+        description: |
+          `status: Registered`
+          bian-reference:  Loan(asDebt).NextInterest.VariableInterest.VariableRateChangeFrequency
+          iso-link:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_Fd5lKcTGEeChad0JzLk7QA_-958104524/elements/_FeNHIMTGEeChad0JzLk7QA_-12422289)
+      loanApplicableRate:
+        type: "string"
+        example: "9%"
+        description: |
+          `status: Registered`
+          bian-reference:  Loan(asDebt).NextInterest.VariableInterest
+          iso-link:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_FXWRMsTGEeChad0JzLk7QA_-398781879/elements/_FXgCNMTGEeChad0JzLk7QA_-129916673)
+      repaymentType:
+        type: "string"
+        example: "Structured"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      loanRepaymentSchedule:
+        type: "string"
+        example: "monthly"
+        description: |
+          `status: Registered`
+          bian-reference:  Loan.InterestPaymentsSchedule.PaymentPeriod
+          iso-link-1:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_jF5agJh7EeOUgsYi4EbJBw/elements/_AcedgZh9EeORjJTqwAvaiQ)
+          `status: Registered`
+          bian-reference:  Loan.PrincipalPaymentsSchedule.PaymentPeriod
+          iso-link-2:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_jF5agJh7EeOUgsYi4EbJBw/elements/_AcedgZh9EeORjJTqwAvaiQ)
+      interestType:
+        type: "string"
+        example: "Prime plus"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      interestAccrualMethod:
+        type: "string"
+        example: "daily"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      stagedRepaymentStatement:
+        type: "string"
+        description: |
+          `status: Registered`
+          bian-reference:  Loan.InterestPaymentsSchedule.RelatedPaymentObligation.PaymentOffset
+          iso-link-1:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_FDPCYMTGEeChad0JzLk7QA_-1131921749/elements/_FDPCacTGEeChad0JzLk7QA_-72272631)
+          `status: Registered`
+          bian-reference:  Loan.PrincipalPaymentsSchedule.RelatedPaymentObligation.PaymentOffset
+          iso-link-2:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_FDPCYMTGEeChad0JzLk7QA_-1131921749/elements/_FDPCacTGEeChad0JzLk7QA_-72272632)
+      loanOutstandingBalance:
+        type: "string"
+        example: "250000"
+        description: |
+          `status: Registered`
+          bian-reference:  Loan.PrincipalAmount
+          iso-link:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_mw1ysHJTEeWwf47VrwMaTQ/elements/_QLjLYHJUEeWwf47VrwMaTQ)
+      loanOriginationDate:
+        $ref: 'https://api.swaggerhub.com/domains/BIAN/Common-Model/1.0.0#/definitions/ISODateTime'
+      loanMaturityDate:
+        $ref: 'https://api.swaggerhub.com/domains/BIAN/Common-Model/1.0.0#/definitions/ISODateTime'
+      collateralReference:
+        type: "string"
+        example: "COL232342"
+        description: |
+          `status: Registered`
+          bian-reference:  LoanAgreement(asMasterAgreement).CollateralAgreement.Collateral
+          iso-link:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_E6vNtsTGEeChad0JzLk7QA_393174175/elements/_lrcFQC1hEeGp2Zpvgj9Dtw_-638405304)
+      collateralAllocation:
+        type: "string"
+        example: "$450000"
+        description: |
+          `status: Registered`
+          bian-reference:  LoanAgreement(asMasterAgreement).CollateralAgreement.Collateral.Valuation
+          iso-link:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_FLlGEcTGEeChad0JzLk7QA_1826831344/elements/_AAYPOmIjEeGD28DQaMef-g)
+          general-info: value applied
+      configurationOptions:
+        type: "string"
+        description: |
+          `status: Provisionally Registered`
+          bian-reference:  Loan.LoanProduct(asProduct).AvailableOption
+          `status: Provisionally Registered`
+          bian-reference:  Loan.SelectedOption
+      taxReference:
+        type: "string"
+        example: "TR7454"
+        description: |
+          `status: Registered`
+          bian-reference:  LoanAgreement.TradePartyRole(asBorrower).Player(asParty).Identification.TaxIdentificationNumber
+          iso-link:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_FEHzNMTGEeChad0JzLk7QA_-1382123937/elements/_FEHzNcTGEeChad0JzLk7QA_-1792766550)
+          general-info: Tax-Id
+      loanAccessTerms:
+        type: "string"
+        example: "Withdrawls"
+        description: |
+          `status: Registered`
+          bian-reference:  Loan(asDebt).PrePaymentSpeed
+          iso-link:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_Ff_P1MTGEeChad0JzLk7QA_-1514166912/elements/_Fg4nt8TGEeChad0JzLk7QA_742037711)
+          `status: Provisionally Registered`
+          bian-reference:  Loan.Limit
+          general-info: allowed payments/withdrawals
+      loanStatus:
+        type: "string"
+        example: "active"
+        description: |
+          `status: Provisionally Registered`
+          bian-reference:  Loan.LoanStatus
+          general-info: active, overdue, in-suspense, etc.
+      customerCommentary:
+        type: "string"
+        example: "record of customer correspondence"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+  ConsumerLoanDisbursementWithoutCommonAndId:
+    type: "object"
+    properties:
+      customerReference:
+        type: "string"
+        example: "CR7245624"
+        description: |
+          `status: Registered`
+          bian-reference:  LoanAgreement.TradePartyRole(asBorrower)(asRole).Player(asParty)
+          iso-link:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_FNqJt8TGEeChad0JzLk7QA_-1317971633)
+          general-info: loan account holder
+      payeeReference:
+        type: "string"
+        example: "8Z232342"
+        description: |
+          `status: Registered`
+          bian-reference:  Loan.Disbursement(asPayment).PaymentPartyRole(asCreditorRole)
+          iso-link:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_EteNycTGEeChad0JzLk7QA_-591715083)
+      payeeProductInstanceReference:
+        type: "string"
+        example: "8Z232342"
+        description: |
+          `status: Registered`
+          bian-reference:  Loan.Disbursement(asPayment).PaymentPartyRole(asCreditorRole)(asPaymentPartyRole).CashAccount
+          iso-link-1:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_EvtpdMTGEeChad0JzLk7QA_-1076538618/elements/_EvtpdsTGEeChad0JzLk7QA_1151666800)
+          `status: Provisionally Registered`
+          bian-reference:  Loan.LoanAccount
+          `status: Registered`
+          bian-reference:  Loan.LoanAccount
+          iso-link-2:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_E4gZEcTGEeChad0JzLk7QA_2010102988)
+          general-info: payee account
+      payeeBankReference:
+        type: "string"
+        example: "8Z232342"
+        description: |
+          `status: Registered`
+          bian-reference:  Loan.Disbursement(asPayment).PaymentPartyRole(asCreditorAgentRole)
+          iso-link:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_EteNyMTGEeChad0JzLk7QA_-246206935)
+      amount:
+        $ref: 'https://api.swaggerhub.com/domains/BIAN/Common-Model/1.0.0#/definitions/CurrencyAndAmount'
+      currency:
+        $ref: 'https://api.swaggerhub.com/domains/BIAN/Common-Model/1.0.0#/definitions/CurrencyCode'
+      valueDate:
+        $ref: 'https://api.swaggerhub.com/domains/BIAN/Common-Model/1.0.0#/definitions/ISODateTime'
+  ConsumerLoanDisbursementWithId:
+    type: "object"
+    properties:
+      productInstanceReference:
+        type: "string"
+        example: "PIR724626245"
+        description: |
+          `status: Registered`
+          bian-reference:  Loan.LoanAccount(asAccount).Identification
+          iso-link:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_E1rHgsTGEeChad0JzLk7QA_-1068889728/elements/_E1rHhcTGEeChad0JzLk7QA_-755813725)
+          general-info: loan account number
+      disbursementOrderReference:
+        type: "string"
+        example: "DOR745276232"
+        description: |
+          `status: Provisionally Registered`
+          bian-reference:  Loan.Disbursement.DisbursementOrder
+      customerReference:
+        type: "string"
+        example: "CR7245624"
+        description: |
+          `status: Registered`
+          bian-reference:  LoanAgreement.TradePartyRole(asBorrower)(asRole).Player(asParty)
+          iso-link:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_FNqJt8TGEeChad0JzLk7QA_-1317971633)
+          general-info: loan account holder
+      payeeReference:
+        type: "string"
+        example: "PER72467254"
+        description: |
+          `status: Registered`
+          bian-reference:  Loan.Disbursement(asPayment).PaymentPartyRole(asCreditorRole)
+          iso-link:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_EteNycTGEeChad0JzLk7QA_-591715083)
+      payeeProductInstanceReference:
+        type: "string"
+        example: "PPIR72465237542"
+        description: |
+          `status: Registered`
+          bian-reference:  Loan.Disbursement(asPayment).PaymentPartyRole(asCreditorRole)(asPaymentPartyRole).CashAccount
+          iso-link-1:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_EvtpdMTGEeChad0JzLk7QA_-1076538618/elements/_EvtpdsTGEeChad0JzLk7QA_1151666800)
+          `status: Provisionally Registered`
+          bian-reference:  Loan.LoanAccount
+          `status: Registered`
+          bian-reference:  Loan.LoanAccount
+          iso-link-2:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_E4gZEcTGEeChad0JzLk7QA_2010102988)
+          general-info: payee account
+      payeeBankReference:
+        type: "string"
+        example: "PBR7265724652"
+        description: |
+          `status: Registered`
+          bian-reference:  Loan.Disbursement(asPayment).PaymentPartyRole(asCreditorAgentRole)
+          iso-link:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_EteNyMTGEeChad0JzLk7QA_-246206935)
+      amount:
+        $ref: 'https://api.swaggerhub.com/domains/BIAN/Common-Model/1.0.0#/definitions/CurrencyAndAmount'
+      currency:
+        $ref: 'https://api.swaggerhub.com/domains/BIAN/Common-Model/1.0.0#/definitions/CurrencyCode'
+      valueDate:
+        $ref: 'https://api.swaggerhub.com/domains/BIAN/Common-Model/1.0.0#/definitions/ISODateTime'
+  ConsumerLoanMaintenanceWithId:
+    type: "object"
+    properties:
+      productInstanceReference:
+        type: "string"
+        example: "PIR724626245"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+          general-info: loan account number
+      productFulfillmentSchedule:
+        type: "string"
+        example: "tasks, e.g. reporting and loan review actions"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+          general-info: tasks, e.g. reporting and loan review actions
+      reportType:
+        type: "string"
+        example: "accounting"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Code
+          general-info: e.g tax, regulatory, accounting
+      loanTaxReport:
+        type: "object"
+        example: "loan tax report"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+      loanFeeType:
+        type: "string"
+        example: "range of fees possible for different actions"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      loanFees:
+        type: "string"
+        example: "$500"
+        description: |
+          `status: Provisionally Registered`
+          bian-reference:  Loan.LoanAccount(asAccount).Adjustment(asCharges)
+          `status: Registered`
+          bian-reference:  Loan.LoanAccount(asAccount).Adjustment(asCharges)
+          iso-link:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_FMBK9sTGEeChad0JzLk7QA_-398781908)
+          general-info: as booked against loan account
+      penalties:
+        type: "string"
+        example: "$1000"
+        description: |
+          `status: Provisionally Registered`
+          bian-reference:  Loan.LoanAccount(asAccount).Adjustment(asPenalty)
+          `status: Registered`
+          bian-reference:  Loan.LoanAccount(asAccount).Adjustment(asPenalty)
+          iso-link:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_eEiTMHRkEeKIFpWttHerUA_-261419352)
+          general-info: as booked against loan account
+      collateralValuation:
+        type: "string"
+        example: "$400000"
+        description: |
+          `status: Registered`
+          bian-reference:  LoanAgreement(asMasterAgreement).GovernedContract(asCollateralAgreement).Collateral.Valuation
+          iso-link:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_FLlGEcTGEeChad0JzLk7QA_1826831344/elements/_AAYPOmIjEeGD28DQaMef-g)
+          general-info: value confirmed as of date
+  ConsumerLoanWithdrawalWithoutCommonAndId:
+    type: "object"
+    properties:
+      customerReference:
+        type: "string"
+        example: "C723674324"
+        description: |
+          `status: Registered`
+          bian-reference:  LoanAgreement.TradePartyRole(asBorrower)
+          iso-link:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_t-Si4N1CEeGAp99n2TKigg_-919072642)
+          general-info: loan account holder
+      payeeReference:
+        type: "string"
+        example: "PR7Z626234"
+        description: |
+          `status: Registered`
+          bian-reference:  Loan.Withdrawal(asPayment).PaymentPartyRole(asCreditorRole)
+          iso-link:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_EteNycTGEeChad0JzLk7QA_-591715083)
+      payeeProductInstanceReference:
+        type: "string"
+        example: "PPI7Z626234"
+        description: |
+          `status: Registered`
+          bian-reference:  Loan.Withdrawal(asPayment).PaymentPartyRole(asCreditorRole)(asPaymentPartyRole).CashAccount
+          iso-link:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_EvtpdMTGEeChad0JzLk7QA_-1076538618/elements/_EvtpdsTGEeChad0JzLk7QA_1151666800)
+          general-info: payee account
+      payeeBankReference:
+        type: "string"
+        example: "PBR7Z626234"
+        description: |
+          `status: Registered`
+          bian-reference:  Loan.Withdrawal(asPayment).PaymentPartyRole(asCreditorAgentRole)
+          iso-link:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_EteNyMTGEeChad0JzLk7QA_-246206935)
+      amount:
+        $ref: 'https://api.swaggerhub.com/domains/BIAN/Common-Model/1.0.0#/definitions/CurrencyAndAmount'
+      currency:
+        $ref: 'https://api.swaggerhub.com/domains/BIAN/Common-Model/1.0.0#/definitions/CurrencyCode'
+      valueDate:
+        $ref: 'https://api.swaggerhub.com/domains/BIAN/Common-Model/1.0.0#/definitions/ISODateTime'
+  ConsumerLoanWithdrawalWithId:
+    type: "object"
+    properties:
+      productInstanceReference:
+        type: "string"
+        example: "PI72562552"
+        description: |
+          `status: Registered`
+          bian-reference:  Loan.LoanAccount(asAccount).Identification
+          iso-link:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_E1rHgsTGEeChad0JzLk7QA_-1068889728/elements/_E1rHhcTGEeChad0JzLk7QA_-755813725)
+          general-info: loan account number
+      withdrawlInstructionReference:
+        type: "string"
+        example: "WI72456265"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      customerReference:
+        type: "string"
+        example: "C723674324"
+        description: |
+          `status: Registered`
+          bian-reference:  LoanAgreement.TradePartyRole(asBorrower)
+          iso-link:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_t-Si4N1CEeGAp99n2TKigg_-919072642)
+          general-info: loan account holder
+      payeeReference:
+        type: "string"
+        example: "PR7Z626234"
+        description: |
+          `status: Registered`
+          bian-reference:  Loan.Withdrawal(asPayment).PaymentPartyRole(asCreditorRole)
+          iso-link:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_EteNycTGEeChad0JzLk7QA_-591715083)
+      payeeProductInstanceReference:
+        type: "string"
+        example: "PPI7Z626234"
+        description: |
+          `status: Registered`
+          bian-reference:  Loan.Withdrawal(asPayment).PaymentPartyRole(asCreditorRole)(asPaymentPartyRole).CashAccount
+          iso-link:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_EvtpdMTGEeChad0JzLk7QA_-1076538618/elements/_EvtpdsTGEeChad0JzLk7QA_1151666800)
+          general-info: payee account
+      payeeBankReference:
+        type: "string"
+        example: "PBR7Z626234"
+        description: |
+          `status: Registered`
+          bian-reference:  Loan.Withdrawal(asPayment).PaymentPartyRole(asCreditorAgentRole)
+          iso-link:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_EteNyMTGEeChad0JzLk7QA_-246206935)
+      amount:
+        $ref: 'https://api.swaggerhub.com/domains/BIAN/Common-Model/1.0.0#/definitions/CurrencyAndAmount'
+      currency:
+        $ref: 'https://api.swaggerhub.com/domains/BIAN/Common-Model/1.0.0#/definitions/CurrencyCode'
+      valueDate:
+        $ref: 'https://api.swaggerhub.com/domains/BIAN/Common-Model/1.0.0#/definitions/ISODateTime'
+  ConsumerLoanPaymentWithoutCommonAndId:
+    type: "object"
+    properties:
+      paymentType:
+        type: "string"
+        example: "scheduled repayment"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      loanApplicableRate:
+        type: "string"
+        example: "9%"
+        description: |
+          `status: Registered`
+          bian-reference:  Loan(asDebt).NextInterest.VariableInterest
+          iso-link:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_FXWRMsTGEeChad0JzLk7QA_-398781879/elements/_FXgCNMTGEeChad0JzLk7QA_-129916673)
+      customerReference:
+        type: "string"
+        example: "C723674324"
+        description: |
+          `status: Registered`
+          bian-reference:  Loan.LoanAccount(asAccount).AccountPartyRole(asAccountOwnerRole)
+          iso-link:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_EysE9cTGEeChad0JzLk7QA_-200588046)
+          general-info: loan account holder
+      payerReference:
+        type: "string"
+        example: "PR7Z626234"
+        description: |
+          `status: Registered`
+          bian-reference:  Loan.InterestPaymentsSchedule.RelatedPaymentObligation.PaymentOffset.PartyRole(asDebtorRole)
+          iso-link-1:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_Etn-xcTGEeChad0JzLk7QA_1929472526)
+          `status: Registered`
+          bian-reference:  Loan.PrincipalPaymentsSchedule.RelatedPaymentObligation.PaymentOffset.PartyRole(asDebtorRole)
+          iso-link-2:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_Etn-xcTGEeChad0JzLk7QA_1929472526)
+      payerProductInstanceReference:
+        type: "string"
+        example: "PPI7Z626234"
+        description: |
+          `status: Registered`
+          bian-reference:  Loan.InterestPaymentsSchedule.RelatedPaymentObligation.PaymentOffset.PartyRole(asDebtorRole)(asPaymentPartyRole).CashAccount
+          iso-link-1:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_EvtpdMTGEeChad0JzLk7QA_-1076538618/elements/_EvtpdsTGEeChad0JzLk7QA_1151666800)
+          `status: Registered`
+          bian-reference:  Loan.PrincipalPaymentsSchedule.RelatedPaymentObligation.PaymentOffset.PartyRole(asDebtorRole)(asPaymentPartyRole).CashAccount
+          iso-link-2:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_EvtpdMTGEeChad0JzLk7QA_-1076538618/elements/_EvtpdsTGEeChad0JzLk7QA_1151666800)
+      payerBankReference:
+        type: "string"
+        example: "PBR7Z626234"
+        description: |
+          `status: Registered`
+          bian-reference:  Loan.InterestPaymentsSchedule.RelatedPaymentObligation.PaymentOffset.PartyRole(asDebtorRole).CashAccount(asAccount).AccountPartyRole(asAccountServicerRole)
+          iso-link-1:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_Ey118MTGEeChad0JzLk7QA_1536519000)
+          `status: Registered`
+          bian-reference:  Loan.PrincipalPaymentsSchedule.RelatedPaymentObligation.PaymentOffset.PartyRole(asDebtorRole).CashAccount(asAccount).AccountPartyRole(asAccountServicerRole)
+          iso-link-2:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_Ey118MTGEeChad0JzLk7QA_1536519000)
+      amount:
+        $ref: 'https://api.swaggerhub.com/domains/BIAN/Common-Model/1.0.0#/definitions/CurrencyAndAmount'
+      currency:
+        $ref: 'https://api.swaggerhub.com/domains/BIAN/Common-Model/1.0.0#/definitions/CurrencyCode'
+      valueDate:
+        $ref: 'https://api.swaggerhub.com/domains/BIAN/Common-Model/1.0.0#/definitions/ISODateTime'
+      stagedRepaymentStatement:
+        type: "string"
+        description: |
+          `status: Registered`
+          bian-reference:  Loan.InterestPaymentsSchedule.RelatedPaymentObligation.PaymentOffset
+          iso-link-1:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_FDPCYMTGEeChad0JzLk7QA_-1131921749/elements/_FDPCacTGEeChad0JzLk7QA_-72272631)
+          `status: Registered`
+          bian-reference:  Loan.PrincipalPaymentsSchedule.RelatedPaymentObligation.PaymentOffset
+          iso-link-2:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_FDPCYMTGEeChad0JzLk7QA_-1131921749/elements/_FDPCacTGEeChad0JzLk7QA_-72272631)
+      loanOutstandingBalance:
+        type: "number"
+        example: "$340000"
+        description: |
+          `status: Registered`
+          bian-reference:  Loan.PrincipalAmount
+          iso-link:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_mw1ysHJTEeWwf47VrwMaTQ/elements/_QLjLYHJUEeWwf47VrwMaTQ)
+  ConsumerLoanPaymentsWithId:
+    type: "object"
+    properties:
+      productInstanceReference:
+        type: "string"
+        example: "PI72562552"
+        description: |
+          `status: Registered`
+          bian-reference:  Loan.LoanAccount(asAccount).Identification
+          iso-link:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_E1rHgsTGEeChad0JzLk7QA_-1068889728/elements/_E1rHhcTGEeChad0JzLk7QA_-755813725)
+          general-info: loan account number
+      paymentTransactionReference:
+        type: "string"
+        example: "WI72456265"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      paymentType:
+        type: "string"
+        example: "scheduled repayment"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      loanApplicableRate:
+        type: "string"
+        example: "9%"
+        description: |
+          `status: Registered`
+          bian-reference:  Loan(asDebt).NextInterest.VariableInterest
+          iso-link:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_FXWRMsTGEeChad0JzLk7QA_-398781879/elements/_FXgCNMTGEeChad0JzLk7QA_-129916673)
+      customerReference:
+        type: "string"
+        example: "C723674324"
+        description: |
+          `status: Registered`
+          bian-reference:  Loan.LoanAccount(asAccount).AccountPartyRole(asAccountOwnerRole)
+          iso-link:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_EysE9cTGEeChad0JzLk7QA_-200588046)
+          general-info: loan account holder
+      payerReference:
+        type: "string"
+        example: "PR7Z626234"
+        description: |
+          `status: Registered`
+          bian-reference:  Loan.InterestPaymentsSchedule.RelatedPaymentObligation.PaymentOffset.PartyRole(asDebtorRole)
+          iso-link-1:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_Etn-xcTGEeChad0JzLk7QA_1929472526)
+          `status: Registered`
+          bian-reference:  Loan.PrincipalPaymentsSchedule.RelatedPaymentObligation.PaymentOffset.PartyRole(asDebtorRole)
+          iso-link-2:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_Etn-xcTGEeChad0JzLk7QA_1929472526)
+      payerProductInstanceReference:
+        type: "string"
+        example: "PPI7Z626234"
+        description: |
+          `status: Registered`
+          bian-reference:  Loan.InterestPaymentsSchedule.RelatedPaymentObligation.PaymentOffset.PartyRole(asDebtorRole)(asPaymentPartyRole).CashAccount
+          iso-link-1:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_EvtpdMTGEeChad0JzLk7QA_-1076538618/elements/_EvtpdsTGEeChad0JzLk7QA_1151666800)
+          `status: Registered`
+          bian-reference-2:  Loan.PrincipalPaymentsSchedule.RelatedPaymentObligation.PaymentOffset.PartyRole(asDebtorRole)(asPaymentPartyRole).CashAccount
+          iso-link:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_EvtpdMTGEeChad0JzLk7QA_-1076538618/elements/_EvtpdsTGEeChad0JzLk7QA_1151666800)
+      payerBankReference:
+        type: "string"
+        example: "PBR7Z626234"
+        description: |
+          `status: Registered`
+          bian-reference:  Loan.InterestPaymentsSchedule.RelatedPaymentObligation.PaymentOffset.PartyRole(asDebtorRole).CashAccount(asAccount).AccountPartyRole(asAccountServicerRole)
+          iso-link-1:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_Ey118MTGEeChad0JzLk7QA_1536519000)
+          `status: Registered`
+          bian-reference:  Loan.PrincipalPaymentsSchedule.RelatedPaymentObligation.PaymentOffset.PartyRole(asDebtorRole).CashAccount(asAccount).AccountPartyRole(asAccountServicerRole)
+          iso-link-2:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_Ey118MTGEeChad0JzLk7QA_1536519000)
+      amount:
+        $ref: 'https://api.swaggerhub.com/domains/BIAN/Common-Model/1.0.0#/definitions/CurrencyAndAmount'
+      currency:
+        $ref: 'https://api.swaggerhub.com/domains/BIAN/Common-Model/1.0.0#/definitions/CurrencyCode'
+      valueDate:
+        $ref: 'https://api.swaggerhub.com/domains/BIAN/Common-Model/1.0.0#/definitions/ISODateTime'
+      stagedRepaymentStatement:
+        type: "string"
+        description: |
+          `status: Registered`
+          bian-reference:  Loan.InterestPaymentsSchedule.RelatedPaymentObligation.PaymentOffset
+          iso-link-1:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_FDPCYMTGEeChad0JzLk7QA_-1131921749/elements/_FDPCacTGEeChad0JzLk7QA_-72272631)
+          `status: Registered`
+          bian-reference:  Loan.PrincipalPaymentsSchedule.RelatedPaymentObligation.PaymentOffset
+          iso-link-2:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_FDPCYMTGEeChad0JzLk7QA_-1131921749/elements/_FDPCacTGEeChad0JzLk7QA_-72272631)
+      loanOutstandingBalance:
+        type: "number"
+        example: "$340000"
+        description: |
+          `status: Registered`
+          bian-reference:  Loan.PrincipalAmount
+          iso-link:  [click-here](https://www.iso20022.org/standardsrepository/public/wqt/Description/mx/dico/bc/_mw1ysHJTEeWwf47VrwMaTQ/elements/_QLjLYHJUEeWwf47VrwMaTQ)
+  ConsumerLoanRestructuringWithoutCommonAndId:
+    type: "object"
+    properties:
+      restructuringTask:
+        type: "string"
+        example: "Write down amount"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      restructuringEvaluation:
+        type: "string"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+          general-info: definition of issue to resolve
+      restructuringSolution:
+        type: "string"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+          general-info: definition of loan terms and configuration impact
+      restructingWriteDown:
+        type: "string"
+        example: "loss"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+          general-info: loss/costs of restructuring
+    title: "ConsumerLoanRestructuringWithoutCommonAndId"
+  ConsumerLoanRestructuringWithId:
+    type: "object"
+    properties:
+      productInstanceReference:
+        type: "string"
+        example: "PI72562552"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+          general-info: loan account number
+      restructuringTaskReference:
+        type: "string"
+        example: "RTR72456265"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      restructuringTask:
+        type: "string"
+        example: "Write down amount"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      restructuringEvaluation:
+        type: "string"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+          general-info: definition of issue to resolve
+      restructuringSolution:
+        type: "string"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+          general-info: definition of loan terms and configuration impact
+      restructingWriteDown:
+        type: "string"
+        example: "loss"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+          general-info: loss/costs of restructuring
+  ConsumerLoanStatementWithId:
+    type: "object"
+    properties:
+      productInstanceReference:
+        type: "string"
+        example: "PI72562552"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+          general-info: loan account number
+      statementInstanceReference:
+        type: "string"
+        example: "SIR72456265"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      statementType:
+        type: "string"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      statementTransactionType:
+        type: "string"
+        example: "statement content"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+          general-info: statement content
+      statementPeriod:
+        type: "string"
+        example: "2018-07-01 to 2018-07-31"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Duration
+          general-info: from-to
+      transactionRecordReference:
+        type: "string"
+        example: "TR7234245"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      transactionType:
+        type: "string"
+        example: "payment"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      transactionPrincipleAmount:
+        $ref: 'https://api.swaggerhub.com/domains/BIAN/Common-Model/1.0.0#/definitions/CurrencyAndAmount'
+      transactionDateTime:
+        $ref: 'https://api.swaggerhub.com/domains/BIAN/Common-Model/1.0.0#/definitions/ISODateTime'
+  ConsumerLoanRecordRequest:
+    type: "object"
+    properties:
+      recordingRecordType:
+        type: "string"
+        example: "Behavior model performance feedback"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
+      recordingRecord:
+        type: "object"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Binary
+        properties: {}
+      recordingRecordDateTime:
+        $ref: 'https://api.swaggerhub.com/domains/BIAN/Common-Model/1.0.0#/definitions/ISODateTime'
+      empolyeeBusinessUnitReference:
+        type: "string"
+        example: "Ref6798"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+  ConsumerLoanRecordResponse:
+    type: "object"
+    properties:
+      recordingRecordReference:
+        type: "string"
+        example: "RRR3456"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::ISO20022andUNCEFACT::Identifier
+      recordingRecordStatus:
+        type: "string"
+        example: "Applied"
+        description: |
+          `status: Not Mapped`
+          core-data-type-reference: BIAN::DataTypesLibrary::CoreDataTypes::UNCEFACT::Text
