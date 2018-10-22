@@ -16,7 +16,7 @@ info:
   version: "4.0.0"
   title: "Service Domain - Customer Reference Data Management"
 host: "virtserver.swaggerhub.com"
-basePath: "/BIAN/sd-customer-refererence-data-management/4.0.0"
+basePath: "/BIAN/sd-customer-reference-data-management/4.0.0"
 schemes:
 - "https"
 paths:
